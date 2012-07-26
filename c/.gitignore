@@ -1,0 +1,6 @@
+reader
+*~
+*.pyc
+*.dSYM
+#*
+
