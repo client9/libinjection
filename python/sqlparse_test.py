@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+#  Copyright 2012, Nick Galbreath
+#  nickg@client9.com
+#  GPL v2 License -- Commericial Licenses available.
+#  http://www.gnu.org/licenses/gpl-2.0.txt
+#
 import unittest
 from sqlparse_exploits import Attacker
 import urllib

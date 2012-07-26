@@ -1,4 +1,9 @@
-
+/**
+ * Copyright 2012, Nick Galbreath
+ * nickg@client9.com
+ * GPL v2 License -- Commericial Licenses available.
+ *
+ */
 #include <iostream>
 #include <fstream>
 #include <string>

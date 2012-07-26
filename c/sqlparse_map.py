@@ -1,5 +1,13 @@
 #!/usr/bin/env python
 
+#
+#  Copyright 2012, Nick Galbreath
+#  nickg@client9.com
+#  GPL v2 License -- Commericial Licenses available.
+#  http://www.gnu.org/licenses/gpl-2.0.txt
+#
+
+http://www.gnu.org/licenses/gpl-2.0.txt
 
 keywords = dict({
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',

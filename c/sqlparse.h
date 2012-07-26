@@ -1,3 +1,14 @@
+/**
+ * Copyright 2012, Nick Galbreath
+ * nickg@client9.com
+ * GPL v2 License -- Commericial Licenses available.
+ *
+ * (setq-default indent-tabs-mode nil)
+ * (setq c-default-style "k&r"
+ *     c-basic-offset 4)
+ *  indent -kr -nut
+ */
+
 #ifndef _SQLPARSE_H
 #define _SQLPARSE_H
 
