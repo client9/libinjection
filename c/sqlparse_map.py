@@ -7,8 +7,6 @@
 #  http://www.gnu.org/licenses/gpl-2.0.txt
 #
 
-http://www.gnu.org/licenses/gpl-2.0.txt
-
 keywords = dict({
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',
 
