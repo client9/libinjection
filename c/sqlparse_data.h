@@ -1035,6 +1035,7 @@ static const keyword_t keywords[] = {
     {"TINYINT", 'k'},
     {"TINYTEXT", 'k'},
     {"TOP", 'k'},
+    {"TO_CHAR", 'f'},
     {"TO_DAYS", 'f'},
     {"TO_SECONDS", 'f'},
     {"TRAILING", 'k'},
@@ -1092,7 +1093,7 @@ static const keyword_t keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t keywords_sz = 443;
+static const size_t keywords_sz = 444;
 static const char* multikeywords_start[] = {
     "ALTER",
     "CROSS",

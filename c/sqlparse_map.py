@@ -409,6 +409,7 @@ keywords = dict({
 'TINYBLOB'                    : 'k',
 'TINYINT'                     : 'k',
 'TINYTEXT'                    : 'k',
+'TO_CHAR'                     : 'f', # oracle
 'TO_DAYS'                     : 'f',
 'TO_SECONDS'                  : 'f',
 'TOP'                         : 'k',
