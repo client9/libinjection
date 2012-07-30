@@ -411,6 +411,7 @@ keywords = dict({
 'TINYTEXT'                    : 'k',
 'TO_DAYS'                     : 'f',
 'TO_SECONDS'                  : 'f',
+'TOP'                         : 'k',
 'TRAILING'                    : 'k',
 'TRIGGER'                     : 'k',
 'TRIM'                        : 'f',
@@ -782,6 +783,8 @@ sqlipat = frozenset([
 '1))Un',
 '1)Unk',
 '1Uk',
+'kok(k',
+'1Ukns',
 '1Uk1',
 '1Uk1,',
 '1Uk1c',
@@ -1067,6 +1070,7 @@ sqlipat = frozenset([
 '1&(v)',
 'kf(v:',
 'kv)',
+'kk1vn',
 '1n&f(',
 '1nkf(',
 'f((k(',
@@ -1078,7 +1082,14 @@ sqlipat = frozenset([
 'sn,f(',
 'k1,1c',
 '1&k(f',
-'1&1ok'
+'1&1ok',
+'kk1vk',
+'kk1nk',
+'kk1kk',
+'sUkk1',
+'1Ukk1',
+'s&1c',
+'1nk1c'
 ])
 
         # special in that single char is a valid operator

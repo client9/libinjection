@@ -183,6 +183,7 @@ static const char* patmap[] = {
     "1Ukf(",
     "1Ukk(",
     "1Ukk,",
+    "1Ukk1",
     "1Ukkk",
     "1Ukkn",
     "1Ukn&",
@@ -192,6 +193,7 @@ static const char* patmap[] = {
     "1Uknc",
     "1Uknk",
     "1Ukno",
+    "1Ukns",
     "1Uko1",
     "1Ukok",
     "1Uks,",
@@ -218,6 +220,7 @@ static const char* patmap[] = {
     "1n&f(",
     "1nUk1",
     "1nUkn",
+    "1nk1c",
     "1nkf(",
     "1o(((",
     "1o((1",
@@ -296,9 +299,14 @@ static const char* patmap[] = {
     "kf(n,",
     "kf(v:",
     "kk(f(",
+    "kk1kk",
+    "kk1nk",
+    "kk1vk",
+    "kk1vn",
     "kn1kk",
     "kn1vk",
     "kn1vn",
+    "kok(k",
     "kv)",
     "kvk(1",
     "n&(1)",
@@ -398,6 +406,7 @@ static const char* patmap[] = {
     "s&(kf",
     "s&1Bf",
     "s&1Uk",
+    "s&1c",
     "s&1f(",
     "s&1o(",
     "s&1o1",
@@ -528,6 +537,7 @@ static const char* patmap[] = {
     "sUk1k",
     "sUk1o",
     "sUkf(",
+    "sUkk1",
     "sUkkk",
     "sUkn(",
     "sUkn,",
@@ -635,7 +645,7 @@ static const char* patmap[] = {
     "vUk1,",
     "vok1,",
 };
-static const size_t patmap_sz = 601;
+static const size_t patmap_sz = 611;
 
 static const keyword_t keywords[] = {
     {"ABS", 'f'},
@@ -1024,6 +1034,7 @@ static const keyword_t keywords[] = {
     {"TINYBLOB", 'k'},
     {"TINYINT", 'k'},
     {"TINYTEXT", 'k'},
+    {"TOP", 'k'},
     {"TO_DAYS", 'f'},
     {"TO_SECONDS", 'f'},
     {"TRAILING", 'k'},
@@ -1081,7 +1092,7 @@ static const keyword_t keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t keywords_sz = 442;
+static const size_t keywords_sz = 443;
 static const char* multikeywords_start[] = {
     "ALTER",
     "CROSS",
