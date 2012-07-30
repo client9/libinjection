@@ -51,6 +51,7 @@ static const char* patmap[] = {
     "1&1o(",
     "1&1o1",
     "1&1of",
+    "1&1ok",
     "1&1on",
     "1&1oo",
     "1&1ov",
@@ -61,6 +62,7 @@ static const char* patmap[] = {
     "1&f(k",
     "1&f(n",
     "1&f(v",
+    "1&k(f",
     "1&kUk",
     "1&n()",
     "1&no1",
@@ -633,7 +635,7 @@ static const char* patmap[] = {
     "vUk1,",
     "vok1,",
 };
-static const size_t patmap_sz = 599;
+static const size_t patmap_sz = 601;
 
 static const keyword_t keywords[] = {
     {"ABS", 'f'},

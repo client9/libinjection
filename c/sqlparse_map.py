@@ -1076,7 +1076,9 @@ sqlipat = frozenset([
 'n&f(f',
 'nkf(1',
 'sn,f(',
-'k1,1c'
+'k1,1c',
+'1&k(f',
+'1&1ok'
 ])
 
         # special in that single char is a valid operator
