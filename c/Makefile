@@ -31,7 +31,7 @@ help:
 	@echo "make http -- runs mini-http server, handy for viewing lcov"
 	@echo ""
 
-reader: Makefile reader.cpp sqlparse_data.c sqlparse.h sqlparse.c
+reader: Makefile reader.cpp sqlparse_data.h sqlparse.h sqlparse.c
 	g++ ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.cpp -L/usr/local/lib -lmodpbase64
 
 test_tokens.cpp: test_tokens.hpp
