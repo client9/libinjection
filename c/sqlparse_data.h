@@ -866,7 +866,7 @@ static const keyword_t keywords[] = {
     {"LOCALTIME", 'k'},
     {"LOCALTIMESTAMP", 'k'},
     {"LOCATE", 'f'},
-    {"LOCK", 'k'},
+    {"LOCK", 'n'},
     {"LOG", 'f'},
     {"LOG10", 'f'},
     {"LOG2", 'f'},
@@ -932,6 +932,7 @@ static const keyword_t keywords[] = {
     {"PASSWORD", 'k'},
     {"PERIOD_ADD", 'f'},
     {"PERIOID_DIFF", 'f'},
+    {"PG_ADVISORY_LOCK", 'f'},
     {"PG_SLEEP", 'f'},
     {"PI", 'f'},
     {"POSITION", 'f'},
@@ -1096,7 +1097,7 @@ static const keyword_t keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t keywords_sz = 444;
+static const size_t keywords_sz = 445;
 static const char* multikeywords_start[] = {
     "ALTER",
     "CROSS",
@@ -1107,6 +1108,7 @@ static const char* multikeywords_start[] = {
     "INTERSECT",
     "IS",
     "LEFT",
+    "LOCK",
     "NATURAL",
     "NOT",
     "NOT SIMILAR",
@@ -1119,7 +1121,7 @@ static const char* multikeywords_start[] = {
     "SOUNDS",
     "UNION",
 };
-static const size_t multikeywords_start_sz = 20;
+static const size_t multikeywords_start_sz = 21;
 static const keyword_t multikeywords[] = {
     {"ALTER DOMAIN", 'k'},
     {"ALTER TABLE", 'k'},
@@ -1132,6 +1134,8 @@ static const keyword_t multikeywords[] = {
     {"IS NOT", 'o'},
     {"LEFT JOIN", 'k'},
     {"LEFT OUTER", 'k'},
+    {"LOCK TABLE", 'k'},
+    {"LOCK TABLES", 'k'},
     {"NATURAL FULL", 'k'},
     {"NATURAL INNER", 'k'},
     {"NATURAL JOIN", 'k'},
@@ -1153,7 +1157,7 @@ static const keyword_t multikeywords[] = {
     {"SOUNDS LIKE", 'o'},
     {"UNION ALL", 'U'},
 };
-static const size_t multikeywords_sz = 31;
+static const size_t multikeywords_sz = 33;
 
 typedef size_t (*pt2Function)(const char* cs, const size_t len, size_t pos, stoken_t* st);
 static const pt2Function char_parse_map[] = {

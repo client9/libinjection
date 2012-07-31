@@ -62,7 +62,7 @@ test_positive: reader
 
 # invert... fail if any are sqli
 test_negative: reader
-	./reader -i ../data/false_*
+	./reader -i ../data/false_*.txt
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
