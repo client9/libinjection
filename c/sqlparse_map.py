@@ -1090,7 +1090,10 @@ sqlipat = frozenset([
 'sUkk1',
 '1Ukk1',
 's&1c',
-'1nk1c'
+'1nk1c',
+'1Ukf,',
+'1&k(1',
+'1Uk1o'
 ])
 
         # special in that single char is a valid operator
