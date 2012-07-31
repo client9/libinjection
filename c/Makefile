@@ -59,7 +59,7 @@ test_negative: reader
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
-sqlparse_data.h: sqlparse_map.py sqlparse2c.py
+sqlparse_data.h: sqlparse_map.py sqlparse2c.py fingerprints.txt
 	./sqlparse2c.py > ./sqlparse_data.h
 
 indent: sqlparse.h sqlparse.c
