@@ -25,6 +25,8 @@ help:
 	@echo "make test_negative -- test false positives"
 	@echo "make test_positive -- test sqli"
 	@echo "make indent -- re-idents main c file"
+	@echo "make unused -- print unused fingerprints"
+	@echo "make sort -- resort fingerprints"
 	@echo "make clean  -- cleanup"
 	@echo "make lcov -- lcov"
 	@echo "make reader -- line by line analyzer"
@@ -49,6 +51,11 @@ test_unit: sqlparse_data.c sqlparse.c sqlparse.h test_tokens.cpp
 	g++ -I../cxxtest ${CFLAGS} -o test_tokens test_tokens.cpp sqlparse.c
 	./test_tokens
 
+unused:
+	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
+	diff /tmp/junk fingerprints.txt  | grep '>'
+
+
 # fail if any input is 'safe', e.g. not SQLi
 test_positive: reader
 	./reader ../data/sqli-*.txt
@@ -64,6 +71,10 @@ sqlparse_data.h: sqlparse_map.py sqlparse2c.py fingerprints.txt
 
 indent: sqlparse.h sqlparse.c
 	${INDENT} -kr -nut sqlparse.h sqlparse.c
+
+sort:
+	sort -u fingerprints.txt > /tmp/junk
+	mv /tmp/junk fingerprints.txt
 clean:
 	rm -f *~ *.pyc
 	rm -f test_tokens test_tokens.cpp test_speed.cpp reader test_speed
