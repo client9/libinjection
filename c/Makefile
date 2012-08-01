@@ -42,11 +42,11 @@ test_tokens.cpp: test_tokens.hpp
 test_speed.cpp: test_speed.hpp
 	../cxxtest/bin/cxxtestgen --error-printer -o test_speed.cpp test_speed.hpp
 
-test_speed: sqlparse_data.c sqlparse.c sqlparse.h test_speed.cpp
+test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.cpp
 	g++ -I../cxxtest ${CFLAGS} -o test_speed sqlparse.c test_speed.cpp
 	./test_speed
 
-test_unit: sqlparse_data.c sqlparse.c sqlparse.h test_tokens.cpp
+test_unit: sqlparse_data.h sqlparse.c sqlparse.h test_tokens.cpp
 	rm -f ./test_tokens
 	g++ -I../cxxtest ${CFLAGS} -o test_tokens test_tokens.cpp sqlparse.c
 	./test_tokens
