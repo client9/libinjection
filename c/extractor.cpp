@@ -46,10 +46,15 @@ string normalize(string s) {
 }
 static bool is_special(std::string& str) {
   string nval(normalize(str));
-  if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQSTUVWXYZ")) {
-    // all alpha can't be string
+  //  / *
+  if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQSTUVWXYZ _-+")) {
+    // all alpha, a few symbols can't be string
     return false;
-  } else if (string::npos == nval.find_first_not_of("0123456789. ()[]{}-+:;,")) {
+  } else if (string::npos == nval.find_first_not_of("0123456789. ()[]{}_-+:;,")) {
+    // all numbers and random symbols
+    return false;
+  } else if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQSTUVWXYZ0123456789._-+:;,")) {
+    // big blobs of text without whitespace
     return false;
   } else {
     return true;
@@ -111,6 +116,8 @@ public:
 
     void test_positive(const char* fname, istream* is)  {
 
+      bool invert = true;
+
         LineIterator li(fname, is);
 
         qsiter_t qsi;
@@ -150,7 +157,17 @@ public:
 	    } else if (true) {
 	      // RAW MODE -- line is full input to be evalutated.
 	      if (is_special(orig)) {
-		cout << orig << endl;
+		if (invert) {
+		  //
+		} else {
+		  cout << orig << endl;
+		}
+	      } else {
+		if (invert) {
+		  cout << orig << endl;
+		} else {
+		  //
+		}
 	      }
 	    }
         } /* while li.next() */
@@ -164,8 +181,8 @@ int main( int argc, const char* argv[] ) {
     if (argc == 1) {
         atest.test_positive("stdin", &(cin));
     } else {
-        for (int i = 1; i < argc; ++i) {
-            ifstream is(argv[1]);
+        for (int i = 2; i < argc; ++i) {
+            ifstream is(argv[i]);
             atest.test_positive(argv[1], &is);
         }
     }
