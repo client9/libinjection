@@ -664,8 +664,8 @@ phrases = dict({
 'OWN3D BY': 'B',
 'SELECT ALL': 'k',
 'READ WRITE': 'k',
-'LOCK TABLE': 'k',
-'LOCK TABLES': 'k',
+'LOCK TABLE': 'k',   # PGSQL/ORACLE http://www.postgresql.org/docs/current/static/sql-lock.html
+'LOCK TABLES': 'k',  # MYSQL http://dev.mysql.com/doc/refman/4.1/en/lock-tables.html
 'LEFT OUTER': 'k',
 'LEFT JOIN': 'k',
 'RIGHT OUTER': 'k',
