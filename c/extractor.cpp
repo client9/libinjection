@@ -47,13 +47,13 @@ string normalize(string s) {
 static bool is_special(std::string& str) {
   string nval(normalize(str));
   //  / *
-  if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQSTUVWXYZ _-+")) {
+  if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ _-+")) {
     // all alpha, a few symbols can't be string
     return false;
   } else if (string::npos == nval.find_first_not_of("0123456789. ()[]{}_-+:;,")) {
     // all numbers and random symbols
     return false;
-  } else if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQSTUVWXYZ0123456789._-+:;,")) {
+  } else if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-+:;,")) {
     // big blobs of text without whitespace
     return false;
   } else {
@@ -160,7 +160,9 @@ public:
 		if (invert) {
 		  //
 		} else {
-		  cout << orig << endl;
+		  string tmp(normalize(orig));
+		  cout << tmp << "    |    " << orig << endl;
+		  //cout << orig << endl;
 		}
 	      } else {
 		if (invert) {
