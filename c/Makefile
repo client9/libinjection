@@ -82,34 +82,34 @@ clean:
 	rm -rf *.gcno *.gcda
 	rm -rf lcov-html
 	rm -rf core* a.out
+
 lcov:
 	rm -f test_tokens
 	../cxxtest/bin/cxxtestgen --error-printer -o test_tokens.cpp test_tokens.hpp
 	g++ -g -fprofile-arcs -ftest-coverage -O0 -I../cxxtest -o test_tokens test_tokens.cpp sqlparse.c
 	lcov -b . --directory . --zerocounters
 	./test_tokens
-	lcov -b . --directory . --capture --output-file stringencoders.info
-	lcov -b . --directory . --remove stringencoders.info '/usr/include*' -o stringencoders.info
-	lcov -b . --directory . --remove stringencoders.info 'cxxtest/*' -o stringencoders.info
-	lcov -b . --directory . --remove stringencoders.info 'test_*' -o stringencoders.info
+	lcov -b . --directory . --capture --output-file libinjection.info
+	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'cxxtest/*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'test_*' -o libinjection.info
 	rm -rf lcov-html
 	mkdir lcov-html
-	genhtml -o lcov-html stringencoders.info
+	genhtml -o lcov-html libinjection.info
 .PHONY: lcov
 
 
-
-lcov-reader: Makefile reader.cpp sqlparse_data.c sqlparse.h sqlparse.c
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader sqlparse.c reader.cpp -lmodpbase64
+lcov-reader: Makefile reader.cpp sqlparse_data.h sqlparse.h sqlparse.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o lcov-reader sqlparse.c reader.cpp -lmodpbase64
 	lcov -b . --directory . --zerocounters
-	./reader ../urls*.txt
-	lcov -b . --directory . --capture --output-file stringencoders.info
-	lcov -b . --directory . --remove stringencoders.info '/usr/include*' -o stringencoders.info
-	lcov -b . --directory . --remove stringencoders.info 'cxxtest/*' -o stringencoders.info
-	lcov -b . --directory . --remove stringencoders.info 'test_*' -o stringencoders.info
+	-./lcov-reader ../data/*.txt
+	lcov -b . --directory . --capture --output-file libinjection.info
+	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'cxxtest/*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'test_*' -o libinjection.info
 	rm -rf lcov-html
 	mkdir lcov-html
-	genhtml -o lcov-html stringencoders.info
+	genhtml -o lcov-html libinjection.info
 .PHONY: lcov
 
 
