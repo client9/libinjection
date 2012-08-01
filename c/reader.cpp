@@ -24,19 +24,19 @@ static void replaceAll(std::string& str, const std::string& from, const std::str
 class LineIterator {
 private:
     const string fname;
-    ifstream myfile;
+    istream& myfile;
     int linenum;
     string line;
 
 public:
-    LineIterator(const char* filename)
-        : fname(filename), myfile(filename), linenum(0)
+  LineIterator(istream& is, const char* filename)
+        : fname(filename), myfile(is), linenum(0)
         {
 
         }
 
-    LineIterator(const string& filename)
-        : fname(filename), myfile(fname.c_str()), linenum(0)
+  LineIterator(istream& is, const string& filename)
+        : fname(filename), myfile(is), linenum(0)
         {
 
         }
@@ -54,7 +54,7 @@ public:
     }
 
     bool next() {
-        while (myfile.is_open() && myfile.good()) {
+      while (/*myfile.is_open() && */ myfile.good()) {
             linenum +=1;
             getline(myfile, line);
             if (line.length() > 0 && line.at(0) != '#') {
@@ -103,11 +103,10 @@ public:
         return s;
     }
 
-    void test_positive(const char* fname) {
+  void test_positive(istream& is, const char* fname) {
 
-        LineIterator li(fname);
-
-        sfilter sf;
+      LineIterator li(is, fname);
+      sfilter sf;
 
         while (li.next()) {
             string newline(normalize(li.getLine()));
@@ -145,33 +144,38 @@ public:
 
 int main( int argc, const char* argv[] ) {
     tester atest;
-
-    if (argc == 1) {
-        cerr << "must provide filename\n";
-        return 1;
-    }
-
-    int offset = 1;
     bool invert = false;
 
-    if (strcmp(argv[1], "-i") == 0) {
+
+    if (argc == 1) {
+      atest.test_positive(cin, "stdin");
+    } else if (argc == 2 && (strcmp(argv[1], "-i") == 0)) {
+      invert = true;
+      atest.test_positive(cin, "stdin");
+    } else {
+      int offset = 1;
+
+      if (strcmp(argv[1], "-i") == 0) {
         offset = 2;
         invert = true;
-    }
+      }
 
-    for (int i = offset; i < argc; ++i) {
-        atest.test_positive(argv[i]);
+      for (int i = offset; i < argc; ++i) {
+	ifstream is(argv[i]);
+        atest.test_positive(is, argv[i]);
+      }
     }
 
     cerr << "SQLI  : " << atest.test_ok << "\n";
     cerr << "SAFE  : " << atest.test_fail << "\n";
     cerr << "TOTAL : " << atest.test_ok + atest.test_fail << "\n";
 
+    // error codes aren't > 127, else it wraps around
     if (invert) {
         // e.g. NOT sqli
-        return atest.test_ok;
+      return (atest.test_ok > 127) ? 127 : atest.test_ok;
     } else {
-        // SQLI
-        return atest.test_fail;
+      // SQLI
+      return (atest.test_fail > 127) ? 127 : atest.test_fail;
     }
 }
