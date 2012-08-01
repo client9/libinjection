@@ -36,6 +36,9 @@ help:
 reader: Makefile reader.cpp sqlparse_data.h sqlparse.h sqlparse.c
 	g++ ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.cpp -L/usr/local/lib -lmodpbase64
 
+extractor: Makefile extractor.cpp
+	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp -L/usr/local/lib -lmodpbase64
+
 test_tokens.cpp: test_tokens.hpp
 	../cxxtest/bin/cxxtestgen --error-printer -o test_tokens.cpp test_tokens.hpp
 
