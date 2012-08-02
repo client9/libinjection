@@ -45,20 +45,20 @@ string normalize(string s) {
     return s;
 }
 static bool is_special(std::string& str) {
-  string nval(normalize(str));
-  //  / *
-  if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ _-+")) {
-    // all alpha, a few symbols can't be string
-    return false;
-  } else if (string::npos == nval.find_first_not_of("0123456789. ()[]{}_-+:;,")) {
-    // all numbers and random symbols
-    return false;
-  } else if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-+:;,")) {
-    // big blobs of text without whitespace
-    return false;
-  } else {
-    return true;
-  }
+    string nval(normalize(str));
+    //  / *
+    if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ _-+")) {
+        // all alpha, a few symbols can't be string
+        return false;
+    } else if (string::npos == nval.find_first_not_of("0123456789. ()[]{}_-+:;,")) {
+        // all numbers and random symbols
+        return false;
+    } else if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-+:;,")) {
+        // big blobs of text without whitespace
+        return false;
+    } else {
+        return true;
+    }
 }
 
 class LineIterator {
@@ -116,7 +116,7 @@ public:
 
     void test_positive(const char* fname, istream* is)  {
 
-      bool invert = true;
+        bool invert = false;
 
         LineIterator li(fname, is);
 
@@ -127,51 +127,51 @@ public:
             //cout << li.getLinenum() << "\n";
             //string qs(orig.substr(pos, endpos-pos));
             //cout << "QS = " << qs << "\n";
-	    if (false) {
-	      // LOG FILE MODE
-	      size_t pos = orig.find("GET ");
-	      if (pos == string::npos) {
-                pos = orig.find("POST ");
+            if (false) {
+                // LOG FILE MODE
+                size_t pos = orig.find("GET ");
                 if (pos == string::npos) {
-		  continue;
+                    pos = orig.find("POST ");
+                    if (pos == string::npos) {
+                        continue;
+                    }
                 }
-	      }
-	      pos = orig.find('?', pos+4);
-	      if (pos == string::npos) {
-                continue;
-	      }
-	      pos += 1;
-	      size_t endpos = orig.find(" ", pos);
-	      if (endpos == string::npos) {
-                continue;
-	      }
-	      qsiter_reset(&qsi, orig.data() + pos, endpos-pos);
-	      bool issqli = false;
-	      while (!issqli && qsiter_next(&qsi)) {
-                if (qsi.vallen) {
-                    //cout << "VALLEN = " << qsi.vallen << "\n";
-		  string val(qsi.val, qsi.vallen);
-		  is_special(val);
+                pos = orig.find('?', pos+4);
+                if (pos == string::npos) {
+                    continue;
                 }
-	      }
-	    } else if (true) {
-	      // RAW MODE -- line is full input to be evalutated.
-	      if (is_special(orig)) {
-		if (invert) {
-		  //
-		} else {
-		  string tmp(normalize(orig));
-		  cout << tmp << "    |    " << orig << endl;
-		  //cout << orig << endl;
-		}
-	      } else {
-		if (invert) {
-		  cout << orig << endl;
-		} else {
-		  //
-		}
-	      }
-	    }
+                pos += 1;
+                size_t endpos = orig.find(" ", pos);
+                if (endpos == string::npos) {
+                    continue;
+                }
+                qsiter_reset(&qsi, orig.data() + pos, endpos-pos);
+                bool issqli = false;
+                while (!issqli && qsiter_next(&qsi)) {
+                    if (qsi.vallen) {
+                        //cout << "VALLEN = " << qsi.vallen << "\n";
+                        string val(qsi.val, qsi.vallen);
+                        is_special(val);
+                    }
+                }
+            } else if (true) {
+                // RAW MODE -- line is full input to be evalutated.
+                if (is_special(orig)) {
+                    if (invert) {
+                        //
+                    } else {
+                        string tmp(normalize(orig));
+                        cout << tmp << "    |    " << orig << endl;
+                        //cout << orig << endl;
+                    }
+                } else {
+                    if (invert) {
+                        cout << orig << endl;
+                    } else {
+                        //
+                    }
+                }
+            }
         } /* while li.next() */
     } /* tester */
 }; /* class */
