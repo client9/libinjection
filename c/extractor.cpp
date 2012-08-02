@@ -139,7 +139,7 @@ public:
                 } else {
                     pos += 4;
                 }
-                size_t endpos = orig.find(" ", pos);
+                size_t endpos = orig.find(' ', pos);
                 if (endpos == string::npos) {
                     continue;
                 }
@@ -152,7 +152,7 @@ public:
 
                 qsiter_reset(&qsi, orig.data() + pos, endpos-pos);
                 bool issqli = false;
-                while (!issqli && qsiter_next(&qsi) && qsi.vallen) {
+                while (!issqli && qsiter_next(&qsi)) {
                     string val(qsi.val, qsi.vallen);
                     string tmp(normalize(val));
                     issqli = is_sqli(&sf, tmp.c_str(), tmp.size());
