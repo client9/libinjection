@@ -133,17 +133,23 @@ public:
                     pos = orig.find("POST ");
                     if (pos == string::npos) {
                         continue;
+                    } else {
+                        pos += 5;
                     }
+                } else {
+                    pos += 4;
                 }
-                pos = orig.find('?', pos+4);
-                if (pos == string::npos) {
-                    continue;
-                }
-                pos += 1;
                 size_t endpos = orig.find(" ", pos);
                 if (endpos == string::npos) {
                     continue;
                 }
+
+                pos = orig.find('?', pos);
+                if (pos == string::npos || pos > endpos) {
+                    continue;
+                }
+                pos += 1;
+
                 qsiter_reset(&qsi, orig.data() + pos, endpos-pos);
                 bool issqli = false;
                 while (!issqli && qsiter_next(&qsi) && qsi.vallen) {
