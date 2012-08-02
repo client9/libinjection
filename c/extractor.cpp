@@ -12,6 +12,8 @@
 #include "modp_ascii.h"
 #include "modp_qsiter.h"
 
+#include "sqlparse.h"
+
 using namespace std;
 
 static void replaceAll(std::string& str, const std::string& from, const std::string& to) {
@@ -107,7 +109,6 @@ public:
 
 
 class tester {
-private:
 
 public:
     tester()
@@ -115,6 +116,7 @@ public:
         }
 
     void test_positive(const char* fname, istream* is)  {
+        sfilter sf;
 
         bool invert = false;
 
@@ -124,10 +126,7 @@ public:
 
         while (li.next()) {
             string orig(li.getLine());
-            //cout << li.getLinenum() << "\n";
-            //string qs(orig.substr(pos, endpos-pos));
-            //cout << "QS = " << qs << "\n";
-            if (false) {
+            if (true) {
                 // LOG FILE MODE
                 size_t pos = orig.find("GET ");
                 if (pos == string::npos) {
@@ -147,12 +146,13 @@ public:
                 }
                 qsiter_reset(&qsi, orig.data() + pos, endpos-pos);
                 bool issqli = false;
-                while (!issqli && qsiter_next(&qsi)) {
-                    if (qsi.vallen) {
-                        //cout << "VALLEN = " << qsi.vallen << "\n";
-                        string val(qsi.val, qsi.vallen);
-                        is_special(val);
-                    }
+                while (!issqli && qsiter_next(&qsi) && qsi.vallen) {
+                    string val(qsi.val, qsi.vallen);
+                    string tmp(normalize(val));
+                    issqli = is_sqli(&sf, tmp.c_str(), tmp.size());
+                }
+                if (issqli) {
+                    cout << orig << "\n";
                 }
             } else if (true) {
                 // RAW MODE -- line is full input to be evalutated.
