@@ -4,7 +4,7 @@
  * GPL v2 License -- Commericial Licenses available.
  *
  *
- * This is for testing against files in ../data/*.txt
+ * This is for testing against files in ../data/ *.txt
  * Reads from stdin or a list of files, and emits if a line
  * is a SQLi attack or not, and does basic statistics
  *
