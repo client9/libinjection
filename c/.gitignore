@@ -1,4 +1,7 @@
 reader
+lcov-reader
+extractor
+is_sqli
 *~
 *.pyc
 *.dSYM
