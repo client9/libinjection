@@ -90,18 +90,16 @@ public:
 
         // convert '+' to ' ', convert %XX to char
         modp::url_decode(s);
-        modp::toupper(s);
 
         while (1) {
             size_t olen = s.length();
             modp::url_decode_raw(s);
-            modp::toupper(s);
-
             if (s.length() == olen) {
                 break;
             }
         }
 
+        modp::toupper(s);
         replaceAll(s, "&QUOT;", "\"");
         // TBD all &#34 and backtick as well?
         replaceAll(s, "&#39;", "'");

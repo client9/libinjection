@@ -26,26 +26,22 @@ static void replaceAll(std::string& str, const std::string& from, const std::str
 }
 
 string normalize(string s) {
-
     // convert '+' to ' ', convert %XX to char
     modp::url_decode(s);
-    modp::toupper(s);
-
     while (1) {
         size_t olen = s.length();
         modp::url_decode_raw(s);
-        modp::toupper(s);
-
         if (s.length() == olen) {
             break;
         }
     }
-
+    modp::toupper(s);
     replaceAll(s, "&QUOT;", "\"");
     // TBD all &#34 and backtick as well?
     replaceAll(s, "&#39;", "'");
     return s;
 }
+
 static bool is_special(std::string& str) {
     string nval(normalize(str));
     //  / *
