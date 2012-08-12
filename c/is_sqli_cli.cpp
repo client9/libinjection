@@ -19,36 +19,6 @@ using namespace std;
 
 #include "sqlparse.h"
 
-static void replaceAll(std::string& str,
-                       const std::string& from,
-                       const std::string& to)
-{
-    size_t start_pos = 0;
-
-    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
-        str.replace(start_pos, from.length(), to);
-        start_pos += to.length(); // ...
-    }
-}
-
-static string normalize(string s)
-{
-    // convert '+' to ' ', convert %XX to char
-    modp::url_decode(s);
-    while (1) {
-        size_t olen = s.length();
-        modp::url_decode_raw(s);
-        if (s.length() == olen) {
-            break;
-        }
-    }
-
-    modp::toupper(s);
-    replaceAll(s, "&QUOT;", "\"");
-    // TBD all &#34 and backtick as well?
-    replaceAll(s, "&#39;", "'");
-    return s;
-}
 
 int main(int argc, const char* argv[])
 {
@@ -88,18 +58,20 @@ int main(int argc, const char* argv[])
         while (qsiter_next(&qsi)) {
             string key(qsi.key, qsi.keylen);
             string val(qsi.val, qsi.vallen);
-            string tmp(normalize(val));
-            if (is_sqli(&sf, tmp.c_str(), tmp.size())) {
+            string tmp(val);
+            tmp.erase(qs_normalize((char*)tmp.data(), tmp.size()), std::string::npos);
+            if (is_sqli(&sf, tmp.data(), tmp.size())) {
                 cout << sf.pat << "\t" << key << "\t" << modp::toprint(tmp) << "\n";
                 return 0;
             }
         }
         break;
     case 2:
-        string newline(normalize(argv[offset]));
-        bool issqli = is_sqli(&sf, newline.c_str(), newline.size());
+        string tmp(argv[offset]);
+        tmp.erase(qs_normalize((char*)tmp.data(), tmp.size()), std::string::npos);
+        bool issqli = is_sqli(&sf, tmp.data(), tmp.size());
         if (issqli) {
-            cout << sf.pat << "\t" << "\t" << modp::toprint(newline) << "\n";
+            cout << sf.pat << "\t" << "\t" << modp::toprint(tmp) << "\n";
         }
     }
     return 0;

@@ -170,6 +170,9 @@ bool filter_fold(sfilter * sf, stoken_t * sout);
 
 bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     const char delim);
+
+size_t qs_normalize(char *s, size_t slen);
+
 bool is_sqli(sfilter * sql_state, const char *s, size_t slen);
 
 unsigned long long pat2int(const char *pat);

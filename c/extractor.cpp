@@ -16,34 +16,10 @@
 
 using namespace std;
 
-static void replaceAll(std::string& str, const std::string& from, const std::string& to) {
-    size_t start_pos = 0;
-
-    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
-        str.replace(start_pos, from.length(), to);
-        start_pos += to.length(); // ...
-    }
-}
-
-string normalize(string s) {
-    // convert '+' to ' ', convert %XX to char
-    modp::url_decode(s);
-    while (1) {
-        size_t olen = s.length();
-        modp::url_decode_raw(s);
-        if (s.length() == olen) {
-            break;
-        }
-    }
-    modp::toupper(s);
-    replaceAll(s, "&QUOT;", "\"");
-    // TBD all &#34 and backtick as well?
-    replaceAll(s, "&#39;", "'");
-    return s;
-}
-
 static bool is_special(std::string& str) {
-    string nval(normalize(str));
+    string nval(str);
+    size_t len = qs_normalize((char*) nval.data(), nval.size());
+    nval.erase(len, std::string::npos);
     //  / *
     if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ _-+")) {
         // all alpha, a few symbols can't be string
@@ -150,8 +126,9 @@ public:
                 bool issqli = false;
                 while (!issqli && qsiter_next(&qsi)) {
                     string val(qsi.val, qsi.vallen);
-                    string tmp(normalize(val));
-                    issqli = is_sqli(&sf, tmp.c_str(), tmp.size());
+                    string tmp(val);
+                    tmp.erase(qs_normalize((char*)tmp.data(), tmp.size()), std::string::npos);
+                    issqli = is_sqli(&sf, tmp.data(), tmp.size());
                 }
                 if (issqli) {
                     cout << orig << "\n";
@@ -162,7 +139,8 @@ public:
                     if (invert) {
                         //
                     } else {
-                        string tmp(normalize(orig));
+                        string tmp(orig);
+                        tmp.erase(qs_normalize((char*)tmp.data(), tmp.size()), std::string::npos);
                         cout << tmp << "    |    " << orig << endl;
                         //cout << orig << endl;
                     }
