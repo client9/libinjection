@@ -83,7 +83,7 @@ namespace modp {
      */
     inline std::string& xml_decode(std::string& s)
     {
-        int d = modp_xml_decode(const_cast<char*>(s.data()), s.data(), s.size());
+        size_t d = modp_xml_decode(const_cast<char*>(s.data()), s.data(), s.size());
         s.erase(d, std::string::npos);
         return s;
     }

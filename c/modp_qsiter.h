@@ -14,7 +14,9 @@
 
 BEGIN_C
 
-#include <string.h>
+#include "modp_stdint.h"
+
+// TBD
 #include <stdbool.h>
 
 /**
@@ -32,7 +34,7 @@ BEGIN_C
  *    // callers job to alloc/free memory
  *
  *    const char* key = (const char*) malloc(qsi.keylen + 1);
- *    strcpy(key, qsi->key, qsi->keylen);   
+ *    strcpy(key, qsi->key, qsi->keylen);
  *    const char* val = (const char*) malloc(qsi.vallen + 1);
  *    strcpy(val, qsi->val, qsi->vallen);
  *    printf("key = %s, value = %s\n", key, val);
@@ -40,7 +42,7 @@ BEGIN_C
  *    free(value);
  * }
  *
- * 
+ *
  */
 struct qsiter_t {
   const char* s;
