@@ -2,6 +2,8 @@
 #ifndef MODP_STDINT_H_
 #define MODP_STDINT_H_
 
+#include <string.h>
+
 #ifndef _WIN32
 #  include <stdint.h>
 #else

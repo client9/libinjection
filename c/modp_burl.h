@@ -28,6 +28,8 @@
 
 BEGIN_C
 
+#include "modp_stdint.h"
+
 /**
  * Url encode a string.  This uses a very strict definition of url
  * encoding.  The only characters NOT encoded are A-Z, a-z, 0-9, "-",
@@ -42,7 +44,7 @@ BEGIN_C
  * \param[in] len  The length of the input string, excluding any
  *   final null byte.
  */
-int modp_burl_encode(char* dest, const char* str, int len);
+size_t modp_burl_encode(char* dest, const char* str, size_t len);
 
 /**
  * Url encode a string.  This uses a minimal definition of url
@@ -56,7 +58,7 @@ int modp_burl_encode(char* dest, const char* str, int len);
  * \param[in] len  The length of the input string, excluding any
  *   final null byte.
  */
-int modp_burl_min_encode(char* dest, const char* str, int len);
+size_t modp_burl_min_encode(char* dest, const char* str, size_t len);
 
 /** \brief get size of output string w/o doing actual encoding
  *
@@ -64,7 +66,7 @@ int modp_burl_min_encode(char* dest, const char* str, int len);
  * \param[in] len length of input string
  * \return length of output string NOT including any final null byte
  */
-int modp_burl_min_encode_strlen(const char* src, const int len);
+size_t modp_burl_min_encode_strlen(const char* src, const size_t len);
 
 /**
  * Provides the maximum size for output string given
@@ -87,7 +89,7 @@ int modp_burl_min_encode_strlen(const char* src, const int len);
  * \return the size of the output string, excluding the final
  *   null byte.
  */
-int modp_burl_encode_strlen(const char* str, const int len);
+size_t modp_burl_encode_strlen(const char* str, const size_t len);
 
 /**
  * URL Decode a string
@@ -99,7 +101,7 @@ int modp_burl_encode_strlen(const char* str, const int len);
  *   null byte)
  * \return the strlen of the output string.
  */
-int modp_burl_decode(char* dest, const char* str, int len);
+size_t modp_burl_decode(char* dest, const char* str, size_t len);
 
 /**
  * URL Decode a string, '+' is preserved
@@ -111,7 +113,7 @@ int modp_burl_decode(char* dest, const char* str, int len);
  *   null byte)
  * \return the strlen of the output string.
  */
-int modp_burl_decode_raw(char* dest, const char* str, int len);
+size_t modp_burl_decode_raw(char* dest, const char* str, size_t len);
 
 /**
  * Returns memory required to decoded a url-encoded

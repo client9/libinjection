@@ -45,7 +45,7 @@
 #include "modp_stdint.h"
 #include "modp_burl_data.h"
 
-int modp_burl_encode(char* dest, const char* src, int len)
+size_t modp_burl_encode(char* dest, const char* src, size_t len)
 {
 
     const char* deststart = dest;
@@ -72,14 +72,14 @@ int modp_burl_encode(char* dest, const char* src, int len)
         }
     }
     *dest = '\0';
-    return (int)(dest - deststart); // compute "strlen" of dest.
+    return (size_t)(dest - deststart); // compute "strlen" of dest.
 }
 
 /**
  * The implementation is identical except it uses a
  * different array
  */
-int modp_burl_min_encode(char* dest, const char* src, int len)
+size_t modp_burl_min_encode(char* dest, const char* src, size_t len)
 {
 
     const char* deststart = dest;
@@ -106,16 +106,16 @@ int modp_burl_min_encode(char* dest, const char* src, int len)
         }
     }
     *dest = '\0';
-    return (int)(dest - deststart); // compute "strlen" of dest.
+    return (size_t)(dest - deststart); // compute "strlen" of dest.
 }
 
 /**
  * Give exact size of encoded output string
  * without doing the encoding
  */
-int modp_burl_encode_strlen(const char* src, const int len)
+size_t modp_burl_encode_strlen(const char* src, const size_t len)
 {
-    int count = 0;
+    size_t count = 0;
     const char* srcend = src + len;
     while (src < srcend) {
         if (gsUrlEncodeMap[ (uint8_t) *src++]) {
@@ -131,9 +131,9 @@ int modp_burl_encode_strlen(const char* src, const int len)
  * Give exact size of encoded output string
  * without doing the encoding
  */
-int modp_burl_min_encode_strlen(const char* src, const int len)
+size_t modp_burl_min_encode_strlen(const char* src, const size_t len)
 {
-    int count = 0;
+    size_t count = 0;
     const char* srcend = src + len;
     while (src < srcend) {
         if (gsUrlEncodeMinMap[ (uint8_t) *src++]) {
@@ -145,7 +145,7 @@ int modp_burl_min_encode_strlen(const char* src, const int len)
     return count;
 }
 
-int modp_burl_decode(char* dest, const char* s, int len)
+size_t modp_burl_decode(char* dest, const char* s, size_t len)
 {
     uint32_t d = 0; // used for decoding %XX
     const uint8_t* src = (const uint8_t*) s;
@@ -190,10 +190,10 @@ int modp_burl_decode(char* dest, const char* s, int len)
     }
 
     *dest = '\0';
-    return (int)(dest - deststart); // compute "strlen" of dest.
+    return (size_t)(dest - deststart); // compute "strlen" of dest.
 }
 
-int modp_burl_decode_raw(char* dest, const char* s, int len)
+size_t modp_burl_decode_raw(char* dest, const char* s, size_t len)
 {
     uint32_t d = 0; // used for decoding %XX
     const uint8_t* src = (const uint8_t*) s;
@@ -225,5 +225,5 @@ int modp_burl_decode_raw(char* dest, const char* s, int len)
     }
 
     *dest = '\0';
-    return (int)(dest - deststart); // compute "strlen" of dest.
+    return (size_t)(dest - deststart); // compute "strlen" of dest.
 }

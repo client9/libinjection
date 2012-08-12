@@ -46,13 +46,13 @@
 #include "modp_stdint.h"
 #include "modp_ascii_data.h"
 
-void modp_toupper_copy(char* dest, const char* str, int len)
+void modp_toupper_copy(char* dest, const char* str, size_t len)
 {
-    int i;
+    size_t i;
     uint32_t eax, ebx;
     const uint8_t* ustr = (const uint8_t*) str;
-    const int leftover = len % 4;
-    const int imax = len / 4;
+    const size_t leftover = len % 4;
+    const size_t imax = len / 4;
     const uint32_t* s = (const uint32_t*) str;
     uint32_t* d = (uint32_t*) dest;
     for (i = 0; i != imax; ++i) {
@@ -77,13 +77,13 @@ void modp_toupper_copy(char* dest, const char* str, int len)
     }
 }
 
-void modp_tolower_copy(char* dest, const char* str, int len)
+void modp_tolower_copy(char* dest, const char* str, size_t len)
 {
-    int i;
+    size_t i;
     uint32_t eax, ebx;
     const uint8_t* ustr = (const uint8_t*) str;
-    const int leftover = len % 4;
-    const int imax = len / 4;
+    const size_t leftover = len % 4;
+    const size_t  imax = len / 4;
     const uint32_t* s = (const uint32_t*) str;
     uint32_t* d = (uint32_t*) dest;
     for (i = 0; i != imax; ++i) {
@@ -108,23 +108,23 @@ void modp_tolower_copy(char* dest, const char* str, int len)
     }
 }
 
-void modp_toupper(char* str, int len)
+void modp_toupper(char* str, size_t len)
 {
     modp_toupper_copy(str, str, len);
 }
 
-void modp_tolower(char* str, int len)
+void modp_tolower(char* str, size_t len)
 {
     modp_tolower_copy(str,str,len);
 }
 
-void modp_toprint_copy(char* dest, const char* str, int len)
+void modp_toprint_copy(char* dest, const char* str, size_t len)
 {
-    int i;
+    size_t i;
     uint8_t c1,c2,c3,c4;
 
-    const int leftover = len % 4;
-    const int imax = len - leftover;
+    const size_t leftover = len % 4;
+    const size_t imax = len - leftover;
     const uint8_t* s = (const uint8_t*) str;
     for (i = 0; i != imax ; i+=4) {
         /*
@@ -147,7 +147,7 @@ void modp_toprint_copy(char* dest, const char* str, int len)
     }
 }
 
-void modp_toprint(char* str, int len)
+void modp_toprint(char* str, size_t len)
 {
     modp_toprint_copy(str,str,len);
 }

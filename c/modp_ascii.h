@@ -28,11 +28,13 @@
 
 BEGIN_C
 
+#include "modp_stdint.h"
+
 /*
  * \param[in,out] str the input string
  * \param[in] len the length of input string (the strlen)
  */
-void modp_toupper(char* str, int len);
+void modp_toupper(char* str, size_t len);
 
 /** \brief make lower case copy of input string
  *
@@ -47,7 +49,7 @@ void modp_toupper(char* str, int len);
  * This is based on the algorithm by Paul Hsieh
  * http://www.azillionmonkeys.com/qed/asmexample.html
  */
-void modp_toupper_copy(char* dest, const char* str, int len);
+void modp_toupper_copy(char* dest, const char* str, size_t len);
 
 /** \brief lower case a string in place
  *
@@ -55,7 +57,7 @@ void modp_toupper_copy(char* dest, const char* str, int len);
  * \param[in] len the length of input string (the strlen)
  *
  */
-void modp_tolower(char* str, int len);
+void modp_tolower(char* str, size_t len);
 
 /** \brief make lower case copy of input string
  *
@@ -70,7 +72,7 @@ void modp_tolower(char* str, int len);
  * This is based on the algorithm by Paul Hsieh
  * http://www.azillionmonkeys.com/qed/asmexample.html
  */
-void modp_tolower_copy(char* dest, const char* str, int len);
+void modp_tolower_copy(char* dest, const char* str, size_t len);
 
 /** \brief turn a string into 7-bit printable ascii.
  *
@@ -81,7 +83,7 @@ void modp_tolower_copy(char* dest, const char* str, int len);
  * \param[in] len the length of input string (the strlen)
  *
  */
-void modp_toprint(char* str, int len);
+void modp_toprint(char* str, size_t len);
 
 /** \brief make a printable copy of a string
  *
@@ -96,7 +98,7 @@ void modp_toprint(char* str, int len);
  * bytes.  This appends a trailing NULL character at the end of
  * dest!
  */
-void modp_toprint_copy(char* dest, const char* str, int len);
+void modp_toprint_copy(char* dest, const char* str, size_t len);
 
 END_C
 
