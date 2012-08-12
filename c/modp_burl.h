@@ -133,7 +133,7 @@ namespace modp {
     inline std::string url_encode(const char* s, size_t len)
     {
         std::string x(modp_burl_encode_len(len), '\0');
-        int d = modp_burl_encode(const_cast<char*>(x.data()), s, len);
+        size_t d = modp_burl_encode(const_cast<char*>(x.data()), s, len);
         x.erase(d, std::string::npos);
         return x;
     }
@@ -170,7 +170,7 @@ namespace modp {
     inline std::string& url_min_encode(std::string& s)
     {
         std::string x(modp_burl_encode_len(s.size()), '\0');
-        int d = modp_burl_min_encode(const_cast<char*>(x.data()), s.data(), s.size());
+        size_t d = modp_burl_min_encode(const_cast<char*>(x.data()), s.data(), s.size());
         x.erase(d, std::string::npos);
         s.swap(x);
         return s;
@@ -179,7 +179,7 @@ namespace modp {
     inline std::string url_min_encode(const std::string& s)
     {
         std::string x(modp_burl_encode_len(s.size()), '\0');
-        int d = modp_burl_min_encode(const_cast<char*>(x.data()), s.data(), s.size());
+        size_t d = modp_burl_min_encode(const_cast<char*>(x.data()), s.data(), s.size());
         x.erase(d, std::string::npos);
         return x;
     }
@@ -194,14 +194,14 @@ namespace modp {
      */
     inline std::string& url_decode(std::string& s)
     {
-        int d = modp_burl_decode(const_cast<char*>(s.data()), s.data(), s.size());
+        size_t d = modp_burl_decode(const_cast<char*>(s.data()), s.data(), s.size());
         s.erase(d, std::string::npos);
         return s;
     }
 
     inline std::string& url_decode_raw(std::string& s)
     {
-        int d = modp_burl_decode_raw(const_cast<char*>(s.data()), s.data(), s.size());
+        size_t d = modp_burl_decode_raw(const_cast<char*>(s.data()), s.data(), s.size());
         s.erase(d, std::string::npos);
         return s;
     }
