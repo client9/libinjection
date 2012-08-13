@@ -28,4 +28,5 @@ typedef unsigned char bool;
 #define false 0
 #endif
 
+#endif /* _WIN32 */
 #endif /* MODP_STDINT_H_ */
