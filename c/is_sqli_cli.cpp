@@ -59,7 +59,7 @@ int main(int argc, const char* argv[])
             string key(qsi.key, qsi.keylen);
             string val(qsi.val, qsi.vallen);
             string tmp(val);
-            tmp.erase(qs_normalize((char*)tmp.data(), tmp.size()), std::string::npos);
+            tmp.erase(qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
             if (is_sqli(&sf, tmp.data(), tmp.size())) {
                 cout << sf.pat << "\t" << key << "\t" << modp::toprint(tmp) << "\n";
                 return 0;
@@ -68,7 +68,7 @@ int main(int argc, const char* argv[])
         break;
     case 2:
         string tmp(argv[offset]);
-        tmp.erase(qs_normalize((char*)tmp.data(), tmp.size()), std::string::npos);
+        tmp.erase(qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
         bool issqli = is_sqli(&sf, tmp.data(), tmp.size());
         if (issqli) {
             cout << sf.pat << "\t" << "\t" << modp::toprint(tmp) << "\n";

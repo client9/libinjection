@@ -62,7 +62,7 @@ uint32_t modp_xml_parse_dec_entity(const char* s, size_t len);
  * \param[in] len  The length of the input string, excluding any
  *   final null byte.
  */
-size_t modp_xml_decode(char* dest, const char* str, int len);
+size_t modp_xml_decode(char* dest, const char* str, size_t len);
 
 
 END_C

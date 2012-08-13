@@ -1,6 +1,6 @@
 
 STATIC=-static
-CFLAGS=-g -O3 -Wall -Wextra
+CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wmissing-prototypes -Wconversion
 INDENT=indent
 # Apple over-rides
 #   Trying to avoid using libtool

@@ -200,7 +200,7 @@ uint32_t modp_xml_parse_hex_entity(const char* s, size_t len)
     return modp_xml_validate_unicode(val);
 }
 
-size_t modp_xml_decode(char* dest, const char* s, int len)
+size_t modp_xml_decode(char* dest, const char* s, size_t len)
 {
     const uint8_t* src = (const uint8_t*) s;
     const char* deststart = dest;
@@ -219,15 +219,15 @@ size_t modp_xml_decode(char* dest, const char* s, int len)
             *dest++ = (char) *src++;
             continue;
         }
-        size_t len = pos - src;
+        size_t elen = pos - src;
         //printf("GOT %lu for %s\n", len, src);
         if (*(src+1) == '#') {
             if (*(src+2) == 'x' || *(src+2) == 'X') {
                 //printf("DO: %s\n",(const char*)src+3);
-                unichar = modp_xml_parse_hex_entity((const char*)(src + 3), len - 3);
+                unichar = modp_xml_parse_hex_entity((const char*)(src + 3), elen - 3);
             } else {
                 //
-                unichar = modp_xml_parse_dec_entity((const char*)(src + 2), len - 2);
+                unichar = modp_xml_parse_dec_entity((const char*)(src + 2), elen - 2);
             }
             if (unichar == 0) {
                 *dest++ = (char) *src++;

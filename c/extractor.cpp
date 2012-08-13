@@ -18,7 +18,7 @@ using namespace std;
 
 static bool is_special(std::string& str) {
     string nval(str);
-    size_t len = qs_normalize((char*) nval.data(), nval.size());
+    size_t len = qs_normalize(const_cast<char*>(nval.data()), nval.size());
     nval.erase(len, std::string::npos);
     //  / *
     if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ _-+")) {
@@ -127,7 +127,7 @@ public:
                 while (!issqli && qsiter_next(&qsi)) {
                     string val(qsi.val, qsi.vallen);
                     string tmp(val);
-                    tmp.erase(qs_normalize((char*)tmp.data(), tmp.size()), std::string::npos);
+                    tmp.erase(qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
                     issqli = is_sqli(&sf, tmp.data(), tmp.size());
                 }
                 if (issqli) {
@@ -140,7 +140,7 @@ public:
                         //
                     } else {
                         string tmp(orig);
-                        tmp.erase(qs_normalize((char*)tmp.data(), tmp.size()), std::string::npos);
+                        tmp.erase(qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
                         cout << tmp << "    |    " << orig << endl;
                         //cout << orig << endl;
                     }

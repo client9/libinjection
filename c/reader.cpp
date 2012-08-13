@@ -125,7 +125,7 @@ public:
             while (li.next()) {
                 string newline(li.getLine());
 
-                char* data = (char*) newline.data();
+                char* data = const_cast<char*>(newline.data());
                 size_t datalen = newline.size();
 
                 datalen = qs_normalize(data, datalen);
@@ -142,7 +142,7 @@ public:
                     cout << fname << "\t"
                          << std::dec << li.getLinenum() << "\tTrue\t"
                          << sf.pat << "\t"
-                         << std::dec << pat2int(sf.pat) << "\t"
+                        //<< std::dec << pat2int(sf.pat) << "\t"
                          << std::dec << "0" << "\t"
                          << modp::toprint(newline)
                          << "\n";
@@ -151,7 +151,7 @@ public:
                     cout << fname << "\t"
                          << std::dec << li.getLinenum() << "\tFalse\t"
                          << sf.pat << "\t"
-                         << std::dec << pat2int(sf.pat) << "\t"
+                        //<< std::dec << pat2int(sf.pat) << "\t"
                          << std::dec << sf.reason << "\t"
                          << modp::toprint(newline)
                          << "\n";

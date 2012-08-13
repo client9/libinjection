@@ -30,11 +30,11 @@ print '};'
 print 'static const size_t patmap_sz = %d;' % (len(sqlipat))
 print
 
-print "static const keyword_t keywords[] = {"
+print "static const keyword_t sql_keywords[] = {"
 for k in sorted(keywords.keys()):
     print "    {\"%s\", '%s'}," % (k, keywords[k])
 print "};";
-print "static const size_t keywords_sz = %d;" % (len(keywords), )
+print "static const size_t sql_keywords_sz = %d;" % (len(keywords), )
 
 
 multikeywords_start = set()

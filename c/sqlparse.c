@@ -16,7 +16,7 @@
 #include <assert.h>
 
 // order is important here
-#include "sqlparse.h"
+#include "sqlparse_private.h"
 #include "sqlparse_data.h"
 
 #include "modp_burl.h"
@@ -392,7 +392,7 @@ size_t parse_word(const char *cs, const size_t UNUSED(len), size_t pos,
         strspn(cs + pos, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     st_assign(st, 'n', cs + pos, slen);
     if (slen < ST_MAX_SIZE) {
-        char ch = bsearch_keyword_type(st->val, keywords, keywords_sz);
+        char ch = bsearch_keyword_type(st->val, sql_keywords, sql_keywords_sz);
         if (ch == CHAR_NULL) {
             ch = 'n';
         }
@@ -427,13 +427,13 @@ size_t parse_number(const char *cs, const size_t len, size_t pos,
 {
     if (pos + 1 < len && cs[pos] == '0' && cs[pos + 1] == 'X') {
         // TBD compare if isxdigit
-        size_t len = strspn(cs + pos + 2, "0123456789ABCDEF");
-        if (len == 0) {
+        size_t xlen = strspn(cs + pos + 2, "0123456789ABCDEF");
+        if (xlen == 0) {
             st_assign_cstr(st, 'n', "0X");
             return pos + 2;
         } else {
-            st_assign(st, '1', cs, 2 + len);
-            return pos + 2 + len;
+            st_assign(st, '1', cs, 2 + xlen);
+            return pos + 2 + xlen;
         }
     }
     size_t start = pos;

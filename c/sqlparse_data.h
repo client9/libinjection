@@ -645,7 +645,7 @@ static const char* patmap[] = {
 };
 static const size_t patmap_sz = 609;
 
-static const keyword_t keywords[] = {
+static const keyword_t sql_keywords[] = {
     {"ABS", 'f'},
     {"ACCESSIBLE", 'k'},
     {"ACOS", 'f'},
@@ -1092,7 +1092,7 @@ static const keyword_t keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t keywords_sz = 445;
+static const size_t sql_keywords_sz = 445;
 static const char* multikeywords_start[] = {
     "ALTER",
     "CROSS",
