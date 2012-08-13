@@ -16,9 +16,6 @@ BEGIN_C
 
 #include "modp_stdint.h"
 
-// TBD
-#include <stdbool.h>
-
 /**
  * Query string key value pair iterator.  Uses no heap, makes no copy, makes
  *  no modification of input.  Think of this as a super-strtok_r.  This

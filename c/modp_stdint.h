@@ -6,6 +6,7 @@
 
 #ifndef _WIN32
 #  include <stdint.h>
+#  include <stdbool.h>
 #else
 /* win64 is llp64 so these are the same for 32/64bit
    so no check for _WIN64 is required.
@@ -18,6 +19,13 @@
   typedef signed int int32_t;
   typedef unsigned __int64 uint64_t;
   typedef signed __int64 int64_t;
+
+/* windows doesn't do C99 and stdbool */
+
+#ifndef __cplusplus
+typedef unsigned char bool;
+#define true 1
+#define false 0
 #endif
 
 #endif /* MODP_STDINT_H_ */
