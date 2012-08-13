@@ -93,9 +93,9 @@ void st_copy(stoken_t * dest, const stoken_t * src)
 const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
 {
 
-    int pos;
+    size_t pos;
     int left = 0;
-    int right = nmemb - 1;
+    int right = (int)nmemb - 1;
     int cmp = 0;
 
     while (left <= right) {
@@ -120,7 +120,7 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
     int right = (int) numb - 1;
 
     while (left <= right) {
-        size_t pos = (left + right) / 2;
+        int pos = (left + right) / 2;
         int cmp = strcmp(keywords[pos].word, key);
         if (cmp == 0) {
             return keywords[pos].type;
