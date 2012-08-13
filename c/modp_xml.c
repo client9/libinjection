@@ -1,6 +1,5 @@
 /* -*- mode: c++; c-basic-offset: 4; indent-tabs-mode: nil; tab-width: 4 -*- */
 /* vi: set expandtab shiftwidth=4 tabstop=4: */
-#include <stdio.h>
 /**
  * \file
  * <pre>
@@ -213,17 +212,15 @@ size_t modp_xml_decode(char* dest, const char* s, size_t len)
             continue;
         }
 
-        const uint8_t* pos = (const uint8_t*) memchr(src+1, ';', srcend - src - 1);
+        const uint8_t* pos = (const uint8_t*) memchr(src+1, ';', (size_t)(srcend - src - 1));
         if (pos == NULL) {
             // if not found, just copy
             *dest++ = (char) *src++;
             continue;
         }
         size_t elen = pos - src;
-        //printf("GOT %lu for %s\n", len, src);
         if (*(src+1) == '#') {
             if (*(src+2) == 'x' || *(src+2) == 'X') {
-                //printf("DO: %s\n",(const char*)src+3);
                 unichar = modp_xml_parse_hex_entity((const char*)(src + 3), elen - 3);
             } else {
                 //
@@ -235,22 +232,22 @@ size_t modp_xml_decode(char* dest, const char* s, size_t len)
                 dest += modp_xml_unicode_char_to_utf8(dest, unichar);
                 src = pos + 1;
             }
-        } else if (len == 5 && src[1] == 'q' && src[2] == 'u' &&
+        } else if (elen == 5 && src[1] == 'q' && src[2] == 'u' &&
                    src[3] == 'o' && src[4] == 't') {
             *dest++ = '"';
             src = pos + 1;
-        } else if (len == 5 && src[1] == 'a' && src[2] == 'p' &&
+        } else if (elen == 5 && src[1] == 'a' && src[2] == 'p' &&
                    src[3] == 'o' && src[4] == 's') {
             *dest++ = '\'';
             src = pos + 1;
-        } else if (len == 4 && src[1] == 'a' && src[2] == 'm' &&
+        } else if (elen == 4 && src[1] == 'a' && src[2] == 'm' &&
                    src[3] == 'p') {
             *dest++ = '&';
             src = pos + 1;
-        } else if (len == 3 && src[1] == 'l' && src[2] == 't') {
+        } else if (elen == 3 && src[1] == 'l' && src[2] == 't') {
             *dest++ = '<';
             src = pos +1 ;
-        } else if (len == 3 && src[1] == 'g' && src[2] == 't') {
+        } else if (elen == 3 && src[1] == 'g' && src[2] == 't') {
             *dest++ = '>';
             src = pos +1 ;
         } else {
@@ -260,5 +257,5 @@ size_t modp_xml_decode(char* dest, const char* s, size_t len)
     }
 
     *dest = '\0';
-    return (int)(dest - deststart); // compute "strlen" of dest.
+    return (size_t)(dest - deststart); // compute "strlen" of dest.
 }
