@@ -1,5 +1,5 @@
 
-#include "sqlparse.h"
+#include "sqlparse_private.h"
 #include "sqlparse_data.h"
 #include <time.h>
 
@@ -528,23 +528,23 @@ public:
         {
             {
                 const char* op = "FOOBAR";
-                TS_ASSERT_EQUALS(CHAR_NULL, bsearch_keyword_type(op, keywords, keywords_sz));
+                TS_ASSERT_EQUALS(CHAR_NULL, bsearch_keyword_type(op, sql_keywords, sql_keywords_sz));
 
             }
 
             {
                 const char* op = "SELECT";
-                TS_ASSERT_EQUALS('k', bsearch_keyword_type(op, keywords, keywords_sz));
+                TS_ASSERT_EQUALS('k', bsearch_keyword_type(op, sql_keywords, sql_keywords_sz));
             }
 
             {
                 const char* op = "COS";
-                TS_ASSERT_EQUALS('f', bsearch_keyword_type(op, keywords, keywords_sz));
+                TS_ASSERT_EQUALS('f', bsearch_keyword_type(op, sql_keywords, sql_keywords_sz));
             }
 
             {
                 const char* op = "UNION";
-                TS_ASSERT_EQUALS('U',  bsearch_keyword_type(op, keywords, keywords_sz));
+                TS_ASSERT_EQUALS('U',  bsearch_keyword_type(op, sql_keywords, sql_keywords_sz));
             }
         }
 

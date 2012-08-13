@@ -1,5 +1,5 @@
 
-#include "sqlparse.h"
+#include "sqlparse_private.h"
 #include "sqlparse_data.h"
 #include <time.h>
 
