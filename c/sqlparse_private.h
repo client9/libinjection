@@ -17,6 +17,8 @@
 #define CHAR_SINGLE '\''
 #define CHAR_DOUBLE '"'
 
+bool streq(const char *a, const char *b);
+
 
 stoken_t *st_new();
 void st_destroy(stoken_t ** st);

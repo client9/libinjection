@@ -12,8 +12,6 @@
 #ifndef _SQLPARSE_H
 #define _SQLPARSE_H
 
-bool streq(const char *a, const char *b);
-
 /*
  * These are done to prevent editors from being confusing by
  * opening "{" and indenting the whole file
