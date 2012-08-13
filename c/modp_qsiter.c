@@ -49,7 +49,7 @@ void qsiter_reset(struct qsiter_t* qsi, const char* s, size_t len)
     qsi->s = s;
     qsi->len = len;
     qsi->pos = 0;
-    
+
     qsi->key = NULL;
     qsi->keylen = 0;
     qsi->val = NULL;
@@ -67,8 +67,8 @@ bool qsiter_next(struct qsiter_t* qsi)
     }
 
     const char* charstart = qsi->s + qsi->pos;
-    char* ends = (char*) memchr(charstart, '&', qsi->len - qsi->pos);
-    
+    const char* ends = (const char*) memchr(charstart, '&', qsi->len - qsi->pos);
+
     if (ends == NULL) {
         char* eq = (char*) memchr(charstart, '=', qsi->len - qsi->pos);
         if (eq == NULL) {
@@ -86,7 +86,7 @@ bool qsiter_next(struct qsiter_t* qsi)
         return true;
     } else {
         // &&foo=bar
-        char* eq = (char*) memchr(charstart, '=', ends - charstart);
+        char* eq = (char*) memchr(charstart, '=', (size_t)(ends - charstart));
         if (eq == NULL) {
             qsi->key = charstart;
             qsi->keylen = ends - charstart;
