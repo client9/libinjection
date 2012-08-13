@@ -3,10 +3,19 @@
  * nickg@client9.com
  * GPL v2 License -- Commericial Licenses available.
  *
- * (setq-default indent-tabs-mode nil)
- * (setq c-default-style "k&r"
- *     c-basic-offset 4)
- *  indent -kr -nut
+ *
+ * HOW TO USE:
+ *
+ *   // Normalize query or postvar value
+ *   // ATTENTION: this modifies user_string... make copy if that is not ok
+ *   size_t new_len = qs_normalize(user_string, user_string_len);
+ *
+ *   sfilter s;
+ *   bool sqli = is_sqli(&s, user_string, new_len);
+ *
+ *   // That's it!  sfilter s has some data on how it matched or not
+ *   // details to come!
+ *
  */
 
 #ifndef _SQLPARSE_H
@@ -24,19 +33,8 @@
 #define CPP_START
 #define CPP_END
 #endif
-
-// props to http://sourcefrog.net/weblog/software/languages/C/unused.html
-
-#ifdef UNUSED
-#elif defined(__GNUC__)
-# define UNUSED(x) UNUSED_ ## x __attribute__((unused))
-#elif defined(__LCLINT__)
-# define UNUSED(x) /*@unused@*/ x
-#else
-# define UNUSED(x) x
-#endif
-
 CPP_START
+
 #define ST_MAX_SIZE 31
 #define MAX_TOKENS 5
 
@@ -72,10 +70,24 @@ typedef struct {
     int reason;
 } sfilter;
 
-void sfilter_reset(sfilter * sf, const char *s, size_t slen);
-
+/**
+ * Normalizes input string to prepare for SQLi testing:
+ *
+ *   repeats url decoding until doesn't change
+ *   does html unescaping
+ *   upper case (ascii only)
+ *
+ * This modifies the input string and is ALWAYS smaller than original input
+ * Ending NULL is added.
+ *
+ */
 size_t qs_normalize(char *s, size_t slen);
 
+/**
+ *
+ *
+ * \return TRUE if SQLi, FALSE is benign
+ */
 bool is_sqli(sfilter * sql_state, const char *s, size_t slen);
 
 CPP_END

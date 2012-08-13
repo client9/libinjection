@@ -13,6 +13,17 @@
 
 #include "sqlparse.h"
 
+// props to http://sourcefrog.net/weblog/software/languages/C/unused.html
+
+#ifdef UNUSED
+#elif defined(__GNUC__)
+# define UNUSED(x) UNUSED_ ## x __attribute__((unused))
+#elif defined(__LCLINT__)
+# define UNUSED(x) /*@unused@*/ x
+#else
+# define UNUSED(x) x
+#endif
+
 #define CHAR_NULL '\0'
 #define CHAR_SINGLE '\''
 #define CHAR_DOUBLE '"'
@@ -96,6 +107,9 @@ bool parse_token(const char *cs, const size_t len, size_t * pos,
  * if they can be merged into a multi-keyword
  */
 bool syntax_merge_words(stoken_t * a, stoken_t * b);
+
+
+void sfilter_reset(sfilter * sf, const char *s, size_t slen);
 
 
 /**
