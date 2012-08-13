@@ -48,11 +48,6 @@ typedef struct {
 } stoken_t;
 
 typedef struct {
-    const char *word;
-    char type;
-} keyword_t;
-
-typedef struct {
     /* input */
     const char *s;
     size_t slen;
@@ -84,7 +79,6 @@ void sfilter_reset(sfilter * sf, const char *s, size_t slen);
 size_t qs_normalize(char *s, size_t slen);
 
 bool is_sqli(sfilter * sql_state, const char *s, size_t slen);
-
 
 CPP_END
 #endif /* _SQLPARSE_H */

@@ -41,6 +41,10 @@ bool st_is_multiword_start(const stoken_t * st);
 const char *bsearch_cstr(const char *key, const char *base[],
                          size_t nmemb);
 
+typedef struct {
+    const char *word;
+    char type;
+} keyword_t;
 
 char bsearch_keyword_type(const char *key, const keyword_t keywords[],
                           size_t len);
