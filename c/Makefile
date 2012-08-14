@@ -1,6 +1,6 @@
 
 STATIC=-static
-CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wconversion
+CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align
 INDENT=indent
 # Apple over-rides
 #   Trying to avoid using libtool
@@ -35,6 +35,9 @@ help:
 
 reader: Makefile reader.cpp sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c
 	g++ ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.cpp modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+
+reader2: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c
+	gcc ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
