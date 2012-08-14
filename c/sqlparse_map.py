@@ -414,7 +414,7 @@ keywords = dict({
 'TO_DAYS'                     : 'f',
 'TO_SECONDS'                  : 'f',
 'TOP'                         : 'k',
-'TRAILING'                    : 'k',
+'TRAILING'                    : 'n', # only used in TRIM(TRAILING  http://www.w3resource.com/sql/character-functions/trim.php
 'TRIGGER'                     : 'k',
 'TRIM'                        : 'f',
 'TRUE'                        : 'k',

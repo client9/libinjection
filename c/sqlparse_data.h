@@ -1037,7 +1037,7 @@ static const keyword_t sql_keywords[] = {
     {"TO_CHAR", 'f'},
     {"TO_DAYS", 'f'},
     {"TO_SECONDS", 'f'},
-    {"TRAILING", 'k'},
+    {"TRAILING", 'n'},
     {"TRIGGER", 'k'},
     {"TRIM", 'f'},
     {"TRUE", 'k'},
