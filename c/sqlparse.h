@@ -35,6 +35,8 @@
 #endif
 CPP_START
 
+#include "modp_stdint.h"
+
 #define ST_MAX_SIZE 31
 #define MAX_TOKENS 5
 

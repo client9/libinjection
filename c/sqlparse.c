@@ -251,6 +251,8 @@ size_t parse_dash(const char *cs, const size_t len, size_t pos,
 
 size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
 {
+    size_t i;
+
     if (pos + 2 >= len) {
         return 0;
     }
@@ -275,7 +277,7 @@ size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
         return 4;
     }
 
-    for (size_t i = pos + 5; i <= pos + 7; ++i) {
+    for (i = pos + 5; i <= pos + 7; ++i) {
         if (!isdigit(cs[i])) {
             return 3;
         }
