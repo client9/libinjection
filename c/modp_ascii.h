@@ -100,6 +100,11 @@ void modp_toprint(char* str, size_t len);
  */
 void modp_toprint_copy(char* dest, const char* str, size_t len);
 
+/**
+ *
+ */
+size_t modp_rtrim(char* str, size_t len);
+
 END_C
 
 #ifdef __cplusplus
@@ -144,6 +149,13 @@ namespace modp {
     {
         modp_toprint(const_cast<char*>(str.c_str()), str.size());
         return str;
+    }
+
+    inline std::string& rtrim(std::string& s)
+    {
+        size_t d = modp_rtrim(const_cast<char*>(s.data()), s.size());
+        s.erase(d, std::string::npos);
+        return s;
     }
 }
 
