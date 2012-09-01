@@ -2,11 +2,14 @@
 &f()o
 &f(1)
 1&((f
+1&((k
 1&(1,
 1&(1o
 1&(f(
+1&(k(
 1&(k1
 1&(kf
+1&(kk
 1&(kn
 1&(ko
 1&(v)
@@ -29,6 +32,7 @@
 1&f(v
 1&k(1
 1&k(f
+1&k1k
 1&kUk
 1&n()
 1&no1
@@ -125,8 +129,11 @@
 1;kok
 1B1
 1B1,1
+1B1,n
 1B1Uk
 1B1c
+1B1k1
+1B1ks
 1Bf(1
 1Bf(f
 1Bk(1
@@ -137,6 +144,7 @@
 1U1,1
 1Uc
 1Uk
+1Uk(1
 1Uk(k
 1Uk(n
 1Uk1
@@ -195,6 +203,7 @@
 1o(1)
 1o(1o
 1o(f(
+1o(k(
 1o(k1
 1o(kf
 1o(kn
@@ -216,6 +225,7 @@
 1of(1
 1of(f
 1of(n
+1of(s
 1ok(1
 1ok(k
 1ok1
@@ -272,6 +282,8 @@ kk1vn
 kn1kk
 kn1vk
 kn1vn
+ko(k(
+ko(kf
 kok(k
 kv)
 kvk(1
