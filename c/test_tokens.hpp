@@ -866,7 +866,7 @@ public:
 
             int tlen = 0;
             while (tlen < MAX_TOKENS &&
-                   filter_syntax(sql_state, &(sql_state->tokenvec[tlen]))) {
+                   sqli_tokenize(sql_state, &(sql_state->tokenvec[tlen]))) {
                 sql_state->pat[tlen] = sql_state->tokenvec[tlen].type;
                 tlen += 1;
             }

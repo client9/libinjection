@@ -119,8 +119,7 @@ void sfilter_reset(sfilter * sf, const char *s, size_t slen);
  * * Merge multi-word keywords and operators into one
  *   e.g. "UNION", "ALL" --> "UNION ALL"
  */
-
-bool filter_syntax(sfilter * sf, stoken_t * sout);
+bool sqli_tokenize(sfilter * sf, stoken_t * sout);
 
 bool filter_fold(sfilter * sf, stoken_t * sout);
 

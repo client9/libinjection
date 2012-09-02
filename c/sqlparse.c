@@ -545,7 +545,7 @@ bool syntax_merge_words(stoken_t * a, stoken_t * b)
     }
 }
 
-bool filter_syntax(sfilter * sf, stoken_t * sout)
+bool sqli_tokenize(sfilter * sf, stoken_t * sout)
 {
     stoken_t *last = &sf->syntax_last;
     stoken_t *current = &sf->syntax_current;
@@ -682,7 +682,7 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
         return true;
     }
 
-    while (filter_syntax(sf, current)) {
+    while (sqli_tokenize(sf, current)) {
         //printf("state = %d\n", sf->fold_state);
         //printf("current = %c, %s\n", current->type, current->val);
         if (sf->fold_state == 0) {
