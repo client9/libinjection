@@ -58,10 +58,11 @@ test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.cpp
 	g++ -I../cxxtest ${CFLAGS} -o test_speed sqlparse.c test_speed.cpp  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./test_speed
 
-test_unit: sqlparse_data.h sqlparse.c sqlparse.h test_tokens.cpp
+test_unit: sqli sqlparse_data.h sqlparse.c sqlparse.h test_tokens.cpp
 	rm -f ./test_tokens
 	g++ -I../cxxtest ${CFLAGS} -o test_tokens test_tokens.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./test_tokens
+	./test_driver.py ../tests/test-*.txt
 
 unused:
 	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
