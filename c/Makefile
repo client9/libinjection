@@ -111,19 +111,18 @@ lcov:
 .PHONY: lcov
 
 
-lcov-reader: Makefile reader.cpp sqlparse_data.h sqlparse.h sqlparse.c
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o lcov-reader sqlparse.c reader.cpp -lmodpbase64
+lcov-reader: Makefile sqlparse_data.h sqlparse.h sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	lcov -b . --directory . --zerocounters
-	-./lcov-reader ../data/*.txt
+	-./reader ../data/*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'cxxtest/*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'test_*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'modp_*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'reader' -o libinjection.info
 	rm -rf lcov-html
 	mkdir lcov-html
 	genhtml -o lcov-html libinjection.info
-.PHONY: lcov
-
+.PHONY: lcov-reader
 
 http:
 	python -m  SimpleHTTPServer
