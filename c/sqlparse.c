@@ -453,7 +453,6 @@ size_t parse_number(const char *cs, const size_t len, size_t pos,
     return pos;
 }
 
-//bool parse_token(sfilter * sf, stoken_t *sout) {
 bool parse_token(const char *cs, const size_t len, size_t * pos,
                  stoken_t * st, char delim)
 {
@@ -532,6 +531,10 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
             continue;
         }
         st_clear(&sf->syntax_comment);
+
+        //
+        // If we don't have a saved token
+        //
         if (last->type == CHAR_NULL) {
             switch (ttype) {
 
@@ -563,6 +566,10 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
             }
         }
 
+        //
+        // We have a saved token
+        //
+
         switch (ttype) {
         case 's':
             if (last->type == 's') {
@@ -578,7 +585,10 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
         case 'o':
 //        case 'U':
 //        case '&':
-            if (st_is_unary_op(current)) {
+            // first case to handle "IS" + "NOT"
+            if (syntax_merge_words(last, current)) {
+                continue;
+            } else if (st_is_unary_op(current)) {
                 if (last->type == 'o' || last->type == '&'
                     || last->type == 'U') {
                     //if (st_is_unary_op(last)) {
@@ -588,8 +598,6 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
                     st_copy(last, current);
                     return true;
                 }
-            } else if (syntax_merge_words(last, current)) {
-                continue;
             } else {
                 // no match
                 st_copy(sout, last);
