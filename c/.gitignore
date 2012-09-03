@@ -6,4 +6,5 @@ is_sqli
 *.pyc
 *.dSYM
 #*
-
+*.gcda
+*.gcno
