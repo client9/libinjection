@@ -1,0 +1,8 @@
+--TEST--
+Blackslash test
+--INPUT--
+SELECT \X;
+--EXPECTED--
+k SELECT
+n \X
+; ;
