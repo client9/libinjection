@@ -29,6 +29,9 @@ def read_test(arg):
         elif state:
             info[state] += line + '\n'
 
+    # remove last newline from input
+    info['--INPUT--'] = info['--INPUT--'][0:-1]
+
     return (info['--TEST--'],info['--INPUT--'],info['--EXPECTED--'])
 
 if __name__ == '__main__':
