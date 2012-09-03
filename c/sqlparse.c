@@ -32,19 +32,6 @@ bool streq(const char *a, const char *b)
     return strcmp(a, b) == 0;
 }
 
-stoken_t *st_new()
-{
-    stoken_t *st = (stoken_t *) malloc(sizeof(stoken_t));
-    st->type = CHAR_NULL;
-    st->val[0] = CHAR_NULL;
-    return st;
-}
-
-void st_destroy(stoken_t ** st)
-{
-    free(*st);
-}
-
 void st_clear(stoken_t * st)
 {
     st->type = CHAR_NULL;

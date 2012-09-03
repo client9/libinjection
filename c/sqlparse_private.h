@@ -30,9 +30,6 @@
 
 bool streq(const char *a, const char *b);
 
-
-stoken_t *st_new();
-void st_destroy(stoken_t ** st);
 void st_clear(stoken_t * st);
 void st_assign_char(stoken_t * st, const char stype, const char value);
 void st_set_type(stoken_t * st, const char stype);
