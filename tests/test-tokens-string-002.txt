@@ -1,8 +1,8 @@
 --TEST--
-Strings, tokens are truncated
+Strings, tokens are truncated to 31 chars (+1 NULL == 32 chars total)
 --INPUT--
 SELECT '123456789012345678901234567890';
 --EXPECTED--
 k SELECT
-s '123456789012345678901234567890';
+s '123456789012345678901234567890
 ; ;
