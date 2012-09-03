@@ -21,21 +21,11 @@
 #ifndef _SQLPARSE_H
 #define _SQLPARSE_H
 
-/*
- * These are done to prevent editors from being confusing by
- * opening "{" and indenting the whole file
- */
+#include "modp_stdint.h"
 
 #ifdef __cplusplus
-#define CPP_START extern "C" {
-#define CPP_END }
-#else
-#define CPP_START
-#define CPP_END
+extern "C" {
 #endif
-CPP_START
-
-#include "modp_stdint.h"
 
 #define ST_MAX_SIZE 32
 #define MAX_TOKENS 5
@@ -73,24 +63,14 @@ typedef struct {
 } sfilter;
 
 /**
- * Normalizes input string to prepare for SQLi testing:
- *
- *   repeats url decoding until doesn't change
- *   does html unescaping
- *   upper case (ascii only)
- *
- * This modifies the input string and is ALWAYS smaller than original input
- * Ending NULL is added.
- *
- */
-size_t qs_normalize(char *s, size_t slen);
-
-/**
  *
  *
  * \return TRUE if SQLi, FALSE is benign
  */
 bool is_sqli(sfilter * sql_state, const char *s, size_t slen);
 
-CPP_END
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* _SQLPARSE_H */

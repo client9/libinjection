@@ -5,6 +5,7 @@
 #include "modp_ascii.h"
 
 #include "sqlparse.h"
+#include "sqli_normalize.h"
 
 static int g_test_ok = 0;
 static int g_test_fail = 0;
@@ -24,7 +25,7 @@ void test_positive(FILE* fd, const char* fname)
         if (linebuf[0] == '#') {
             continue;
         }
-        len = qs_normalize(linebuf, len);
+        len = sqli_qs_normalize(linebuf, len);
         bool issqli = is_sqli(&sf, linebuf, len);
         if (issqli) {
             g_test_ok += 1;

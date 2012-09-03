@@ -36,17 +36,17 @@ help:
 reader2: Makefile reader.cpp sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c
 	g++ ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.cpp modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c
-	gcc ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c sqli_normalize.c
+	gcc ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c
-	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_qs_normalize.h sqli_normalize.c sqlparse_data.h modp_xml.c
+	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c
-	g++ ${STATIC} ${CFLAGS} -o is_sqli is_sqli_cli.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_normalize.c
+	g++ ${STATIC} ${CFLAGS} -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_qs_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-sqli: Makefile sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c
-	g++ ${STATIC} ${CFLAGS} -o sqli sqli_cli.cpp sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
+sqli: Makefile sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h
+	g++ ${STATIC} ${CFLAGS} -o sqli sqli_cli.cpp sqlparse.c modp_ascii.c
 
 test_tokens.cpp: test_tokens.hpp
 	../cxxtest/bin/cxxtestgen --error-printer -o test_tokens.cpp test_tokens.hpp

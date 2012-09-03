@@ -19,10 +19,6 @@
 #include "sqlparse_private.h"
 #include "sqlparse_data.h"
 
-#include "modp_burl.h"
-#include "modp_ascii.h"
-#include "modp_xml.h"
-
 #ifndef MIN
 #define MIN(x,y) x < y ? x : y
 #endif
@@ -843,32 +839,6 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
 
     //printf("i = %d, PAT = %s\n", i, sql_state->pat);
     return true;
-}
-
-size_t qs_normalize(char *s, size_t slen)
-{
-    size_t newlen;
-
-    // turn '+' into ' '
-    slen = modp_burl_decode(s, s, slen);
-    while (1) {
-        // plain decode
-        newlen = modp_burl_decode_raw(s, s, slen);
-        if (slen == newlen) {
-            // if no changes in size, we are done
-            break;
-        }
-        slen = newlen;
-    }
-    // due to bad cut-n-paste we see HTML entities in
-    // query strings and post vars.  Decode so we aren't
-    // trying to make "&quot;" as "& quot ;" in sql
-    slen = modp_xml_decode(s, s, slen);
-
-    // upcase
-    modp_toupper(s, slen);
-
-    return slen;
 }
 
 bool is_sqli(sfilter * sql_state, const char *s, size_t slen)

@@ -105,9 +105,7 @@ bool parse_token(const char *cs, const size_t len, size_t * pos,
  */
 bool syntax_merge_words(stoken_t * a, stoken_t * b);
 
-
 void sfilter_reset(sfilter * sf, const char *s, size_t slen);
-
 
 /**
  * Takes a raw stream of SQL tokens and does the following:
