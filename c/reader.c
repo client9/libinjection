@@ -12,7 +12,7 @@ static int g_test_fail = 0;
 
 void test_positive(FILE* fd, const char* fname)
 {
-    char linebuf[4096];
+    char linebuf[8192];
     int linenum = 0;
     sfilter sf;
 
