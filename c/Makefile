@@ -95,7 +95,7 @@ clean:
 	rm -rf *.gcno *.gcda
 	rm -rf lcov-html
 	rm -rf core* a.out
-	rm -f reader extractor is_sqli lcov-reader
+	rm -f reader extractor is_sqli lcov-reader sqli
 
 lcov:
 	g++ -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.cpp sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
