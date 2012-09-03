@@ -573,7 +573,7 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
         switch (ttype) {
         case 's':
             if (last->type == 's') {
-                //this->last_token.second += this->current.second;
+                // "FOO" "BAR" == "FOO" (skip second string)
                 continue;
             } else {
                 st_copy(sout, last);
@@ -583,21 +583,15 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
             break;
 
         case 'o':
-//        case 'U':
-//        case '&':
             // first case to handle "IS" + "NOT"
             if (syntax_merge_words(last, current)) {
                 continue;
-            } else if (st_is_unary_op(current)) {
-                if (last->type == 'o' || last->type == '&'
-                    || last->type == 'U') {
-                    //if (st_is_unary_op(last)) {
-                    continue;
-                } else {
-                    st_copy(sout, last);
-                    st_copy(last, current);
-                    return true;
-                }
+            } else if (st_is_unary_op(current) && (last->type == 'o' || last->type == '&'
+                                                   || last->type == 'U')) {
+                // if an operator is followed by a unary operator, skip it.
+                // 1, + ==> "+" is not unary, it's arithmetic
+                // AND, + ==> "+" is unary
+                continue;
             } else {
                 // no match
                 st_copy(sout, last);
