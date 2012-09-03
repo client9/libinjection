@@ -23,24 +23,6 @@ using namespace std;
 int main(int argc, const char* argv[])
 {
     int offset = 1;
-    int itype = 2;
-
-    if (argc > 2) {
-
-        if (!strcmp(argv[1], "-u")) {
-            // URL
-            itype = 0;
-            offset += 1;
-        } else if (!strcmp(argv[1], "-q")) {
-            // query string (no initial '?')
-            itype = 1;
-            offset += 1;
-        } else if (!strcmp(argv[1], "-d")) {
-            // direct user input
-            itype = 2;
-            offset += 1;
-        }
-    }
 
     sfilter sf;
     stoken_t current;
