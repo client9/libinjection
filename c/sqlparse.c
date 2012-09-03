@@ -409,7 +409,7 @@ size_t parse_var(const char *cs, const size_t len, size_t pos,
     size_t pos1 = pos + 1;
 
     // move past optional other '@'
-    if (pos < len && cs[pos1] == '@') {
+    if (pos1 < len && cs[pos1] == '@') {
         pos1 += 1;
     }
 
