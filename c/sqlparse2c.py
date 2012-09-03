@@ -60,7 +60,6 @@ print "static const size_t multikeywords_sz = %d;" % (len(phrases), )
 
 fnmap = {
     CHAR_WORD: 'parse_word',
-    CHAR_NONE: 'parse_none',
     CHAR_WHITE: 'parse_white',
     CHAR_OP1: 'parse_operator1',
     CHAR_OP2: 'parse_operator2',

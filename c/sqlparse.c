@@ -176,14 +176,6 @@ bool st_is_arith_op(const stoken_t * st)
                                  strcmp(st->val, "DIV")));
 }
 
-
-size_t parse_none(const char *cs, const size_t UNUSED(len), size_t pos,
-                  stoken_t * st)
-{
-    st_assign_char(st, 'n', cs[pos]);
-    return pos + 1;
-}
-
 size_t parse_white(const char *UNUSED(cs), const size_t UNUSED(len),
                    size_t pos, stoken_t * UNUSED(st))
 {
