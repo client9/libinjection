@@ -1,0 +1,8 @@
+--TEST--
+Strings, c-style string merging.  We only keep the first one
+--INPUT--
+SELECT 'FOO' "BAR";
+--EXPECTED--
+k SELECT
+s 'FOO'
+; ;

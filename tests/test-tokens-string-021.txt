@@ -1,0 +1,7 @@
+--TEST--
+Strings, c-style string merging.  Different state
+--INPUT--
+'FOO' "BAR";
+--EXPECTED--
+s 'FOO'
+; ;
