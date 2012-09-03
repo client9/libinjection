@@ -98,15 +98,13 @@ clean:
 	rm -f reader extractor is_sqli lcov-reader
 
 lcov:
-	rm -f test_tokens
-	../cxxtest/bin/cxxtestgen --error-printer -o test_tokens.cpp test_tokens.hpp
-	g++ -g -fprofile-arcs -ftest-coverage -O0 -I../cxxtest -o test_tokens test_tokens.cpp sqlparse.c
+	g++ -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.cpp sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
 	lcov -b . --directory . --zerocounters
-	./test_tokens
+	./test_driver.py ../tests/test-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'cxxtest/*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'test_*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'modp_*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'sqli' -o libinjection.info
 	rm -rf lcov-html
 	mkdir lcov-html
 	genhtml -o lcov-html libinjection.info
