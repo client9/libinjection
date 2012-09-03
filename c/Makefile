@@ -33,9 +33,6 @@ help:
 	@echo "make http -- runs mini-http server, handy for viewing lcov"
 	@echo ""
 
-reader2: Makefile reader.cpp sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c
-	g++ ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.cpp modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
-
 reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c sqli_normalize.c
 	gcc ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
