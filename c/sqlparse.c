@@ -861,6 +861,9 @@ bool is_sqli(sfilter * sql_state, const char *s, size_t slen)
     return false;
 }
 
+/*
+ not used yet
+
 // [('o', 228), ('k', 220), ('1', 217), (')', 157), ('(', 156), ('s', 154), ('n', 77), ('f', 73), (';', 59), (',', 35), ('v', 17), ('c', 15),
 int char2int(char c)
 {
@@ -882,3 +885,4 @@ unsigned long long pat2int(const char *pat)
     }
     return val;
 }
+*/
