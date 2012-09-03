@@ -4,4 +4,4 @@ Blackslash test
 SELECT \
 --EXPECTED--
 k SELECT
-n \
+? \

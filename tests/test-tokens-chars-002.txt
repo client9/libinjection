@@ -4,5 +4,6 @@ Blackslash test
 SELECT \X;
 --EXPECTED--
 k SELECT
-n \X
+? \
+n X
 ; ;
