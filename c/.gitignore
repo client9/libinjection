@@ -8,3 +8,4 @@ is_sqli
 #*
 *.gcda
 *.gcno
+*.info
