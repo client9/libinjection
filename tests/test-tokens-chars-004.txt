@@ -1,0 +1,11 @@
+--TEST--
+Misc chars
+--INPUT--
+SELECT [1];
+--EXPECTED--
+k SELECT
+? [
+1 1
+? ]
+; ;
+
