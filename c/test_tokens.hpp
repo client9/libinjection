@@ -12,17 +12,6 @@ class MyTestSuite : public CxxTest::TestSuite
 {
 public:
 
-    void testCreateDelete(void)
-        {
-            stoken_t* st = st_new();
-            st_clear(st);
-            TS_ASSERT(st_is_empty(st));
-            st_assign_cstr(st, 'o', "FOO");
-            TS_ASSERT(!st_is_empty(st));
-            st_destroy(&st);
-
-        }
-
     /**
      * test parsing of '#' eol comment
      */
