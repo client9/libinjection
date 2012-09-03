@@ -1,0 +1,8 @@
+--TEST--
+keyword parsing
+--INPUT--
+SELECT Z;
+--EXPECTED--
+k SELECT
+n Z
+; ;
