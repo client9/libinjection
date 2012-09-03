@@ -4,6 +4,6 @@
 SELECT 0X;
 --EXPECTED--
 k SELECT
-n 0X;
+n 0X
 ; ;
 

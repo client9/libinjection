@@ -434,7 +434,7 @@ size_t parse_number(const char *cs, const size_t len, size_t pos,
             st_assign_cstr(st, 'n', "0X");
             return pos + 2;
         } else {
-            st_assign(st, '1', cs, 2 + xlen);
+            st_assign(st, '1', cs + pos, 2 + xlen);
             return pos + 2 + xlen;
         }
     }
