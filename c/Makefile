@@ -86,7 +86,7 @@ indent: sqlparse.h sqlparse.c
 	${INDENT} -kr -nut sqlparse.h sqlparse.c
 
 sort:
-	sort -u fingerprints.txt > /tmp/junk
+	LC_ALL=C sort -u fingerprints.txt > /tmp/junk
 	mv /tmp/junk fingerprints.txt
 clean:
 	rm -f *~ *.pyc
