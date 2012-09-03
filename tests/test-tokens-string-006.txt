@@ -1,0 +1,8 @@
+--TEST--
+Strings, basic
+--INPUT--
+SELECT 'FOO\'BAR';
+--EXPECTED--
+k SELECT
+s 'FOO\'BAR'
+; ;

@@ -1,0 +1,9 @@
+--TEST--
+Comments, C-style. MySQL dangling
+--INPUT--
+SELECT 1 /*!00000 ,2
+--EXPECTED--
+k SELECT
+1 1
+, ,
+1 2

@@ -1,0 +1,8 @@
+--TEST--
+Variables
+--INPUT--
+SELECT @@VERSION;
+--EXPECTED--
+k SELECT
+v @@VERSION
+; ;

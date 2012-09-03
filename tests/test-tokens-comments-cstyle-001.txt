@@ -1,0 +1,8 @@
+--TEST--
+Comments, C-style
+--INPUT--
+SELECT 1 /* 2 */;
+--EXPECTED--
+k SELECT
+1 1
+; ;

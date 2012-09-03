@@ -1,0 +1,9 @@
+--TEST--
+"0x" is not valid
+--INPUT--
+SELECT 0X;
+--EXPECTED--
+k SELECT
+n 0X;
+; ;
+

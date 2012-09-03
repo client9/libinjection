@@ -14,6 +14,7 @@
 #include <string>
 
 #include "sqlparse.h"
+#include "modp_ascii.h"
 
 using namespace std;
 
@@ -123,7 +124,8 @@ public:
             sfilter sf;
 
             while (li.next()) {
-                string newline(li.getLine());
+                string line2(li.getLine());
+                string newline(modp::rtrim(line2));
 
                 char* data = const_cast<char*>(newline.data());
                 size_t datalen = newline.size();
