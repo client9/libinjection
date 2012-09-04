@@ -19,10 +19,6 @@
 #include "sqlparse_private.h"
 #include "sqlparse_data.h"
 
-#ifndef MIN
-#define MIN(x,y) x < y ? x : y
-#endif
-
 bool streq(const char *a, const char *b)
 {
     return strcmp(a, b) == 0;
@@ -49,7 +45,7 @@ void st_assign_char(stoken_t * st, const char stype, const char value)
 void st_assign(stoken_t * st, const char stype, const char *value,
                size_t len)
 {
-    size_t last = MIN(len, ST_MAX_SIZE - 1);
+    size_t last = len < (ST_MAX_SIZE - 1) ? len : (ST_MAX_SIZE - 1);
     st->type = stype;
     strncpy(st->val, value, last);
     st->val[last] = CHAR_NULL;
