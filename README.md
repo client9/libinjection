@@ -10,11 +10,11 @@ for details and presentations.
 To use:
 look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
 
->   // clean up input... always makes input smaller.
->   len = sqli_qs_normalize(linebuf, len);
->
->   // test it.  1 = is isql, 0 = benign
->   bool issqli = is_sqli(&sf, linebuf, len);
+   // clean up input... always makes input smaller.
+   len = sqli_qs_normalize(linebuf, len);
+   
+   // test it.  1 = is isql, 0 = benign
+   bool issqli = is_sqli(&sf, linebuf, len);
 
 Copyright (c) 2012 Nick Galbreath
 [GPL v2 License](/COPYING.txt) commercial licenses available.
