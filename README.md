@@ -10,6 +10,11 @@ for details and presentations.
 To use:
 look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
 
+    #include "sqlparse.h"
+
+    // state data structure
+    sfilter sf;
+
     // clean up input... always makes input smaller.
     len = sqli_qs_normalize(linebuf, len);
     
