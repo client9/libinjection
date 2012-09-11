@@ -198,7 +198,7 @@ size_t parse_char(const char *cs, const size_t UNUSED(len), size_t pos,
 size_t parse_eol_comment(const char *cs, const size_t len, size_t pos,
                          stoken_t * st)
 {
-    const char *endpos = strchr(cs + pos, '\n');
+    const char *endpos = (const char *) memchr((const void*)(cs + pos), '\n', len - pos);
     if (endpos == NULL) {
         st_assign_cstr(st, 'c', cs + pos);
         return len;
@@ -334,7 +334,7 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
                          stoken_t * st, char delim, size_t offset)
 {
     // offset is to skip the perhaps first quote char
-    const char *qpos = strchr(cs + pos + offset, delim);
+    const char *qpos = (const char *) memchr((const void*)(cs + pos + offset), delim, len - pos - offset);
     while (true) {
         if (qpos == NULL) {
             st_assign_cstr(st, 's', cs + pos);
@@ -343,7 +343,7 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             st_assign(st, 's', cs + pos, qpos - (cs + pos) + 1);
             return qpos - cs + 1;
         } else {
-            qpos = strchr(qpos + 1, delim);
+            qpos = (const char*) memchr((const void*)(qpos + 1), delim, (cs + len) - (qpos+1));
         }
     }
 }
@@ -465,7 +465,6 @@ bool parse_token(const char *cs, const size_t len, size_t * pos,
             *pos += 1;
             continue;
         }
-        //printf("CHAR = %c, POS=%d\n", (char)(ch), *pos);
         pt2Function fnptr = char_parse_map[ch];
         *pos = (*fnptr) (cs, len, *pos, st);
         if (st->type != CHAR_NULL) {
