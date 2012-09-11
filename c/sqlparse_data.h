@@ -689,6 +689,10 @@ static const keyword_t sql_keywords[] = {
     {"BETWEEN", 'k'},
     {"BIGINT", 'k'},
     {"BINARY", 'k'},
+    {"BINARY_DOUBLE_INFINITY", '1'},
+    {"BINARY_DOUBLE_NAN", '1'},
+    {"BINARY_FLOAT_INFINITY", '1'},
+    {"BINARY_FLOAT_NAN", '1'},
     {"BINBINARY", 'f'},
     {"BIT_AND", 'f'},
     {"BIT_COUNT", 'f'},
@@ -1108,7 +1112,7 @@ static const keyword_t sql_keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t sql_keywords_sz = 445;
+static const size_t sql_keywords_sz = 449;
 static const char* multikeywords_start[] = {
     "ALTER",
     "CROSS",

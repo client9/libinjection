@@ -1,0 +1,7 @@
+--TEST--
+smoke
+--INPUT--
+SELECT binary_double_infinity
+--EXPECTED--
+k SELECT
+1 BINARY_DOUBLE_INFINITY
