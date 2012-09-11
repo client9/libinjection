@@ -3,7 +3,7 @@ libinjection
 
 SQL / SQLI tokenizer parser analyzer.
 
-See [http://www.client9.com/projects/libinjection](http://www.client9.com/projects/libinjection) for details
+See [http://www.client9.com/projects/libinjection/](http://www.client9.com/projects/libinjection/) for details
 
 Copyright (c) 2012 Nick Galbreath
 [GPL v2 License](/COPYING.txt) commercial licenses available.
