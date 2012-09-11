@@ -140,8 +140,10 @@
 1Bk(1
 1Bn,n
 1Bnk1
+1U((k
 1U(k1
 1U(kf
+1U(kn
 1U1,1
 1Uc
 1Uk
