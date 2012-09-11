@@ -75,6 +75,7 @@ static const char* patmap[] = {
     "1&o(1",
     "1&o1o",
     "1&so1",
+    "1&sos",
     "1)&(1",
     "1)&(f",
     "1)&(k",
@@ -658,7 +659,7 @@ static const char* patmap[] = {
     "vUk1,",
     "vok1,",
 };
-static const size_t patmap_sz = 624;
+static const size_t patmap_sz = 625;
 
 static const keyword_t sql_keywords[] = {
     {"ABS", 'f'},
