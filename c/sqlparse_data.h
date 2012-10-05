@@ -1187,7 +1187,7 @@ static const keyword_t multikeywords[] = {
 };
 static const size_t multikeywords_sz = 33;
 
-typedef size_t (*pt2Function)(const char* cs, const size_t len, size_t pos, stoken_t* st);
+typedef size_t (*pt2Function)(sfilter *sf);
 static const pt2Function char_parse_map[] = {
    &parse_white, /* 0 */
    &parse_white, /* 1 */

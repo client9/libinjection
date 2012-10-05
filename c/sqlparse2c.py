@@ -75,7 +75,7 @@ fnmap = {
 
 }
 print
-print "typedef size_t (*pt2Function)(const char* cs, const size_t len, size_t pos, stoken_t* st);"
+print "typedef size_t (*pt2Function)(sfilter *sf);"
 print "static const pt2Function char_parse_map[] = {"
 pos = 0
 for c in charmap:

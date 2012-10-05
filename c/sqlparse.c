@@ -168,54 +168,71 @@ bool st_is_arith_op(const stoken_t * st)
                                  strcmp(st->val, "DIV")));
 }
 
-size_t parse_white(const char *UNUSED(cs), const size_t UNUSED(len),
-                   size_t pos, stoken_t * UNUSED(st))
+size_t parse_white(sfilter * sf)
 {
+    return sf->pos + 1;
+}
+
+size_t parse_operator1(sfilter * sf)
+{
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    size_t pos = sf->pos;
+
+    st_assign_char(current, 'o', cs[pos]);
     return pos + 1;
 }
 
-size_t parse_operator1(const char *cs, const size_t UNUSED(len),
-                       size_t pos, stoken_t * st)
+size_t parse_other(sfilter * sf)
 {
-    st_assign_char(st, 'o', cs[pos]);
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    size_t pos = sf->pos;
+
+    st_assign_char(current, '?', cs[pos]);
     return pos + 1;
 }
 
-size_t parse_other(const char *cs, const size_t UNUSED(len), size_t pos,
-                   stoken_t * st)
+size_t parse_char(sfilter * sf)
 {
-    st_assign_char(st, '?', cs[pos]);
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    size_t pos = sf->pos;
+
+    st_assign_char(current, cs[pos], cs[pos]);
     return pos + 1;
 }
 
-size_t parse_char(const char *cs, const size_t UNUSED(len), size_t pos,
-                  stoken_t * st)
+size_t parse_eol_comment(sfilter * sf)
 {
-    st_assign_char(st, cs[pos], cs[pos]);
-    return pos + 1;
-}
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
 
-size_t parse_eol_comment(const char *cs, const size_t len, size_t pos,
-                         stoken_t * st)
-{
-    const char *endpos = (const char *) memchr((const void*)(cs + pos), '\n', len - pos);
+    const char *endpos = (const char *) memchr((const void*)(cs + pos), '\n', slen - pos);
     if (endpos == NULL) {
-        st_assign_cstr(st, 'c', cs + pos);
-        return len;
+        st_assign_cstr(current, 'c', cs + pos);
+        return slen;
     } else {
-        st_assign(st, 'c', cs + pos, endpos - cs - pos);
+        st_assign(current, 'c', cs + pos, endpos - cs - pos);
         return (endpos - cs) + 1;
     }
 }
 
-size_t parse_dash(const char *cs, const size_t len, size_t pos,
-                  stoken_t * st)
+size_t parse_dash(sfilter *sf)
 {
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
+
     size_t pos1 = pos + 1;
-    if (pos1 < len && cs[pos1] == '-') {
-        return parse_eol_comment(cs, len, pos, st);
+    if (pos1 < slen && cs[pos1] == '-') {
+        return parse_eol_comment(sf);
     } else {
-        st_assign_char(st, 'o', '-');
+        st_assign_char(current, 'o', '-');
         return pos1;
     }
 }
@@ -256,48 +273,60 @@ size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
     return 8;
 }
 
-size_t parse_slash(const char *cs, const size_t len, size_t pos,
-                   stoken_t * st)
+size_t parse_slash(sfilter * sf)
 {
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
     size_t pos1 = pos + 1;
-    if (pos1 == len || cs[pos1] != '*') {
-        return parse_operator1(cs, len, pos, st);
+    if (pos1 == slen || cs[pos1] != '*') {
+        return parse_operator1(sf);
     }
-    size_t inc = is_mysql_comment(cs, len, pos);
+    size_t inc = is_mysql_comment(cs, slen, pos);
 
     if (inc == 0) {
         const char *ptr = strstr(cs + pos, "*/");
         if (ptr == NULL) {
             // unterminated comment
-            st_assign_cstr(st, 'c', cs + pos);
-            return len;
+            st_assign_cstr(current, 'c', cs + pos);
+            return slen;
         } else {
-            st_assign(st, 'c', cs + pos, (ptr + 2) - (cs + pos));
+            st_assign(current, 'c', cs + pos, (ptr + 2) - (cs + pos));
             return (ptr - cs) + 2;
         }
     } else {
         // MySQL Comment
-        st_clear(st);
+        st_clear(current);
         return pos + inc;
     }
 }
 
-size_t parse_backslash(const char *cs, const size_t len, size_t pos,
-                       stoken_t * st)
+size_t parse_backslash(sfilter *sf)
 {
-    if (pos + 1 < len && cs[pos + 1] == 'N') {
-        st_assign_cstr(st, 'k', "NULL");
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
+    if (pos + 1 < slen && cs[pos + 1] == 'N') {
+        st_assign_cstr(current, 'k', "NULL");
         return pos + 2;
     } else {
-        return parse_other(cs, len, pos, st);
+        return parse_other(sf);
     }
 }
 
-size_t parse_operator2(const char *cs, const size_t len, size_t pos,
-                       stoken_t * st)
+size_t parse_operator2(sfilter * sf)
 {
-    if (pos + 1 >= len) {
-        return parse_operator1(cs, len, pos, st);
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
+    if (pos + 1 >= slen) {
+        return parse_operator1(sf);
     }
     char op2[3] = { cs[pos], cs[pos + 1], CHAR_NULL };
 
@@ -308,25 +337,25 @@ size_t parse_operator2(const char *cs, const size_t len, size_t pos,
     // TODO: do we need "&& this->is_started_mysql_comment"
     //       so we don't have FP?
     if (op2[0] == '*' && op2[1] == '/') {
-        st_clear(st);
+        st_clear(current);
         return pos + 2;
-    } else if (pos + 2 < len && op2[0] == '<' && op2[1] == '='
+    } else if (pos + 2 < slen && op2[0] == '<' && op2[1] == '='
                && cs[pos + 2] == '>') {
         // special 3-char operator
 
-        st_assign_cstr(st, 'o', "<=>");
+        st_assign_cstr(current, 'o', "<=>");
         return pos + 3;
     } else if (is_operator2(op2)) {
         if (streq(op2, "&&") || streq(op2, "||")) {
-            st_assign_cstr(st, '&', op2);
+            st_assign_cstr(current, '&', op2);
         } else {
             // normal 2 char operator
-            st_assign_cstr(st, 'o', op2);
+            st_assign_cstr(current, 'o', op2);
         }
         return pos + 2;
     } else {
         // must be a single char operator
-        return parse_operator1(cs, len, pos, st);
+        return parse_operator1(sf);
     }
 }
 
@@ -351,61 +380,79 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
 /**
  * Used when first char is a ' or "
  */
-size_t parse_string(const char *cs, const size_t len, size_t pos,
-                    stoken_t * st)
+size_t parse_string(sfilter *sf)
 {
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
     // assert cs[pos] == single or double quote
-    return parse_string_core(cs, len, pos, st, cs[pos], 1);
+    return parse_string_core(cs, slen, pos, current, cs[pos], 1);
 }
 
-size_t parse_word(const char *cs, const size_t UNUSED(len), size_t pos,
-                  stoken_t * st)
+size_t parse_word(sfilter *sf)
 {
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    //const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
+    // BUG BUG BUG.. does not take into account line length
     size_t slen =
         strspn(cs + pos, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
-    st_assign(st, 'n', cs + pos, slen);
+
+    st_assign(current, 'n', cs + pos, slen);
     if (slen < ST_MAX_SIZE) {
-        char ch = bsearch_keyword_type(st->val, sql_keywords, sql_keywords_sz);
+        char ch = bsearch_keyword_type(current->val, sql_keywords, sql_keywords_sz);
         if (ch == CHAR_NULL) {
             ch = 'n';
         }
-        st->type = ch;
+        current->type = ch;
     }
     return pos + slen;
 }
 
-size_t parse_var(const char *cs, const size_t len, size_t pos,
-                 stoken_t * st)
+size_t parse_var(sfilter *sf)
 {
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
     size_t pos1 = pos + 1;
 
     // move past optional other '@'
-    if (pos1 < len && cs[pos1] == '@') {
+    if (pos1 < slen && cs[pos1] == '@') {
         pos1 += 1;
     }
 
-    size_t slen =
+    size_t xlen =
         strspn(cs + pos1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (slen == 0) {
-        st_assign(st, 'v', cs + pos, (pos1 - pos));
+        st_assign(current, 'v', cs + pos, (pos1 - pos));
         return pos1;
     } else {
-        st_assign(st, 'v', cs + pos, slen + (pos1 - pos));
-        return pos1 + slen;
+        st_assign(current, 'v', cs + pos, slen + (pos1 - pos));
+        return pos1 + xlen;
     }
 }
 
-size_t parse_number(const char *cs, const size_t len, size_t pos,
-                    stoken_t * st)
+size_t parse_number(sfilter *sf)
 {
-    if (pos + 1 < len && cs[pos] == '0' && cs[pos + 1] == 'X') {
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
+    if (pos + 1 < slen && cs[pos] == '0' && cs[pos + 1] == 'X') {
         // TBD compare if isxdigit
         size_t xlen = strspn(cs + pos + 2, "0123456789ABCDEF");
         if (xlen == 0) {
-            st_assign_cstr(st, 'n', "0X");
+            st_assign_cstr(current, 'n', "0X");
             return pos + 2;
         } else {
-            st_assign(st, '1', cs + pos, 2 + xlen);
+            st_assign(current, '1', cs + pos, 2 + xlen);
             return pos + 2 + xlen;
         }
     }
@@ -416,18 +463,18 @@ size_t parse_number(const char *cs, const size_t len, size_t pos,
     }
     if (cs[pos] == '.') {
         pos += 1;
-        while (pos < len && isdigit(cs[pos])) {
+        while (pos < slen && isdigit(cs[pos])) {
             pos += 1;
         }
         if (pos - start == 1) {
-            st_assign_char(st, 'n', '.');
+            st_assign_char(current, 'n', '.');
             return pos;
         }
     }
 
     if (cs[pos] == 'E') {
         pos += 1;
-        if (pos < len && (cs[pos] == '+' || cs[pos] == '-')) {
+        if (pos < slen && (cs[pos] == '+' || cs[pos] == '-')) {
             pos += 1;
         }
         while (isdigit(cs[pos])) {
@@ -438,36 +485,40 @@ size_t parse_number(const char *cs, const size_t len, size_t pos,
         // which is not a number, grab as many alphanum
         // as possible
         pos += 1;
-        while (pos < len && isalnum(cs[pos])) {
+        while (pos < slen && isalnum(cs[pos])) {
             pos += 1;
         }
-        st_assign(st, 'n', cs + start, pos - start);
+        st_assign(current, 'n', cs + start, pos - start);
         return pos;
     }
 
-    st_assign(st, '1', cs + start, pos - start);
+    st_assign(current, '1', cs + start, pos - start);
     return pos;
 }
 
-bool parse_token(const char *cs, const size_t len, size_t * pos,
-                 stoken_t * st, char delim)
+bool parse_token(sfilter * sf)
 {
-    st_clear(st);
+    stoken_t *current = &sf->syntax_current;
+    const char *s = sf->s;
+    const size_t slen = sf->slen;
+    size_t *pos = &sf->pos;
 
-    if (*pos == 0 && delim != CHAR_NULL) {
-        *pos = parse_string_core(cs, len, 0, st, delim, 0);
+    st_clear(current);
+
+    if (*pos == 0 && sf->delim != CHAR_NULL) {
+        *pos = parse_string_core(s, slen, 0, current, sf->delim, 0);
         return true;
     }
 
-    while (*pos < len) {
-        const int ch = (int) (cs[*pos]);
+    while (*pos < slen) {
+        const int ch = (int) (s[*pos]);
         if (ch < 0 || ch > 127) {
             *pos += 1;
             continue;
         }
         pt2Function fnptr = char_parse_map[ch];
-        *pos = (*fnptr) (cs, len, *pos, st);
-        if (st->type != CHAR_NULL) {
+        *pos = (*fnptr) (sf);
+        if (current->type != CHAR_NULL) {
             //printf("POS = %d, %s \n", *pos, st->val);
             return true;
         }
@@ -519,7 +570,7 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
     stoken_t *last = &sf->syntax_last;
     stoken_t *current = &sf->syntax_current;
 
-    while (parse_token(sf->s, sf->slen, &sf->pos, current, sf->delim)) {
+    while (parse_token(sf)) {
         char ttype = current->type;
         if (ttype == 'c') {
             st_copy(&sf->syntax_comment, current);

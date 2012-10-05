@@ -63,41 +63,26 @@ bool is_operator2(const char *key);
 
 bool is_sqli_pattern(const char *key);
 
-
-size_t parse_none(const char *cs, const size_t len, size_t pos,
-                  stoken_t * st);
-size_t parse_other(const char *cs, const size_t len, size_t pos,
-                   stoken_t * st);
-size_t parse_white(const char *cs, const size_t len, size_t pos,
-                   stoken_t * st);
-size_t parse_operator1(const char *cs, const size_t len, size_t pos,
-                       stoken_t * st);
-size_t parse_char(const char *cs, const size_t len, size_t pos,
-                  stoken_t * st);
-size_t parse_eol_comment(const char *cs, const size_t len, size_t pos,
-                         stoken_t * st);
-size_t parse_dash(const char *cs, const size_t len, size_t pos,
-                  stoken_t * st);
+size_t parse_none(sfilter * sf);
+size_t parse_other(sfilter * sf);
+size_t parse_white(sfilter * sf);
+size_t parse_operator1(sfilter *sf);
+size_t parse_char(sfilter *sf);
+size_t parse_eol_comment(sfilter *sf);
+size_t parse_dash(sfilter *sf);
 size_t is_mysql_comment(const char *cs, const size_t len, size_t pos);
-size_t parse_slash(const char *cs, const size_t len, size_t pos,
-                   stoken_t * st);
-size_t parse_backslash(const char *cs, const size_t len, size_t pos,
-                       stoken_t * st);
-size_t parse_operator2(const char *cs, const size_t len, size_t pos,
-                       stoken_t * st);
+size_t parse_slash(sfilter *sf);
+size_t parse_backslash(sfilter * sf);
+size_t parse_operator2(sfilter *sf);
 size_t parse_string_core(const char *cs, const size_t len, size_t pos,
                          stoken_t * st, char delim, size_t offset);
-size_t parse_string(const char *cs, const size_t len, size_t pos,
-                    stoken_t * st);
-size_t parse_word(const char *cs, const size_t len, size_t pos,
-                  stoken_t * st);
-size_t parse_var(const char *cs, const size_t len, size_t pos,
-                 stoken_t * st);
-size_t parse_number(const char *cs, const size_t len, size_t pos,
-                    stoken_t * st);
+size_t parse_string(sfilter *sf);
+size_t parse_word(sfilter * sf);
+size_t parse_var(sfilter * sf);
 
-bool parse_token(const char *cs, const size_t len, size_t * pos,
-                 stoken_t * st, char delim);
+size_t parse_number(sfilter * sf);
+
+bool parse_token(sfilter * sf);
 
 /**
  * Looks at syntax_last and syntax_current to see
