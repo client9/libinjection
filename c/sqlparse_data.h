@@ -124,10 +124,13 @@ static const char* patmap[] = {
     "1)B1c",
     "1)B1o",
     "1)U(k",
+    "1)Uk(",
     "1)Uk1",
     "1)Ukf",
     "1)Ukk",
     "1)Ukn",
+    "1)Uko",
+    "1)Ukv",
     "1)Unk",
     "1)k1",
     "1)k1c",
@@ -274,12 +277,15 @@ static const char* patmap[] = {
     "1ok1,",
     "1ok1c",
     "1ok1k",
+    "1okUk",
     "1okf(",
     "1oks,",
     "1oksc",
     "1okv,",
     "1onos",
+    "1osUk",
     "1oso1",
+    "1ovUk",
     ";kknc",
     "Uk1,1",
     "Uk1,f",
@@ -666,7 +672,7 @@ static const char* patmap[] = {
     "vUk1,",
     "vok1,",
 };
-static const size_t patmap_sz = 632;
+static const size_t patmap_sz = 638;
 
 static const keyword_t sql_keywords[] = {
     {"ABS", 'f'},

