@@ -42,6 +42,7 @@ typedef struct {
 
     /* current tokenize state */
     size_t pos;
+    bool in_comment;
 
     /* syntax fixups state */
     stoken_t syntax_current;

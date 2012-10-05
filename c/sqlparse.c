@@ -298,6 +298,7 @@ size_t parse_slash(sfilter * sf)
         }
     } else {
         // MySQL Comment
+        sf->in_comment = true;
         st_clear(current);
         return pos + inc;
     }
@@ -334,9 +335,8 @@ size_t parse_operator2(sfilter * sf)
     // instead of turning:
     // /*! FOO */  into FOO by rewriting the string, we
     // turn it into FOO */ and ignore the ending comment
-    // TODO: do we need "&& this->is_started_mysql_comment"
-    //       so we don't have FP?
-    if (op2[0] == '*' && op2[1] == '/') {
+    if (sf->in_comment && op2[0] == '*' && op2[1] == '/') {
+        sf->in_comment = false;
         st_clear(current);
         return pos + 2;
     } else if (pos + 2 < slen && op2[0] == '<' && op2[1] == '='
