@@ -55,7 +55,7 @@ test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.cpp
 	g++ -I../cxxtest ${CFLAGS} -o test_speed sqlparse.c test_speed.cpp  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./test_speed
 
-test_unit: sqli sqlparse_data.h sqlparse.c sqlparse.h test_tokens.cpp
+test_unit: sqli sqlparse_data.h sqlparse.c sqlparse.h
 	./test_driver.py ../tests/test-*.txt
 
 unused:
