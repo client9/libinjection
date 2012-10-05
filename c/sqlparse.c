@@ -429,11 +429,11 @@ size_t parse_var(sfilter *sf)
 
     size_t xlen =
         strspn(cs + pos1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
-    if (slen == 0) {
+    if (xlen == 0) {
         st_assign(current, 'v', cs + pos, (pos1 - pos));
         return pos1;
     } else {
-        st_assign(current, 'v', cs + pos, slen + (pos1 - pos));
+        st_assign(current, 'v', cs + pos, xlen + (pos1 - pos));
         return pos1 + xlen;
     }
 }
