@@ -13,17 +13,6 @@
 
 #include "sqlparse.h"
 
-// props to http://sourcefrog.net/weblog/software/languages/C/unused.html
-
-#ifdef UNUSED
-#elif defined(__GNUC__)
-# define UNUSED(x) UNUSED_ ## x __attribute__((unused))
-#elif defined(__LCLINT__)
-# define UNUSED(x) /*@unused@*/ x
-#else
-# define UNUSED(x) x
-#endif
-
 #define CHAR_NULL '\0'
 #define CHAR_SINGLE '\''
 #define CHAR_DOUBLE '"'
