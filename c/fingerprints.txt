@@ -261,7 +261,9 @@ f((kf
 f()&f
 f()of
 f(1)&
+f(1)U
 f(1)o
+f(1,1
 f(1,f
 f(1o1
 f(f()
@@ -302,8 +304,10 @@ ko(k(
 ko(kf
 kok(k
 kv)
+kvf(1
 kvk(1
 n&(1)
+n&(1,
 n&(k1
 n&(o1
 n&1f(
@@ -380,6 +384,7 @@ no1of
 no1oo
 nof(1
 nok(1
+nok(f
 nok(k
 o1kf(
 oUk1,
