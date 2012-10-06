@@ -60,6 +60,7 @@ static const keyword_t sql_keywords[] = {
     {"BENCHMARK", 'f'},
     {"BETWEEN", 'k'},
     {"BIGINT", 'k'},
+    {"BIN", 'f'},
     {"BINARY", 'k'},
     {"BINARY_DOUBLE_INFINITY", '1'},
     {"BINARY_DOUBLE_NAN", '1'},
@@ -82,7 +83,7 @@ static const keyword_t sql_keywords[] = {
     {"CEIL", 'f'},
     {"CEILING", 'f'},
     {"CHANGE", 'k'},
-    {"CHAR", 'k'},
+    {"CHAR", 'f'},
     {"CHARACTER", 'k'},
     {"CHARACTER_LENGTH", 'f'},
     {"CHARSET", 'f'},
@@ -484,7 +485,7 @@ static const keyword_t sql_keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t sql_keywords_sz = 449;
+static const size_t sql_keywords_sz = 450;
 static const char* multikeywords_start[] = {
     "ALTER",
     "CROSS",
