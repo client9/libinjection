@@ -40,6 +40,7 @@ keywords = dict({
 'BENCHMARK'                   : 'f',
 'BETWEEN'                     : 'k',
 'BIGINT'                      : 'k',
+'BIN'                         : 'f',
 'BINARY'                      : 'k',
 'BINARY_DOUBLE_INFINITY'      : '1',
 'BINARY_DOUBLE_NAN'           : '1',
@@ -63,7 +64,7 @@ keywords = dict({
 'CEILING'                     : 'f',
 'CHANGE'                      : 'k',
 # sometimes a function too
-'CHAR'                        : 'k',
+'CHAR'                        : 'f',
 
 'CHARACTER'                   : 'k',
 'CHARACTER_LENGTH'            : 'f',
