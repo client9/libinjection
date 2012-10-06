@@ -93,7 +93,8 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout);
 bool filter_fold(sfilter * sf, stoken_t * sout);
 
 bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
-                    const char delim);
+                    const char delim,
+                    ptr_fingerprints_fn fn);
 
 int char2int(char c);
 unsigned long long pat2int(const char *pat);

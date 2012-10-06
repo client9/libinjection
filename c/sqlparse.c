@@ -91,7 +91,6 @@ const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
     return NULL;
 }
 
-
 char bsearch_keyword_type(const char *key, const keyword_t * keywords,
                           size_t numb)
 {
@@ -116,11 +115,6 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
 bool is_operator2(const char *key)
 {
     return bsearch_cstr(key, operators2, operators2_sz) != NULL;
-}
-
-bool is_sqli_pattern(const char *key)
-{
-    return bsearch_cstr(key, patmap, patmap_sz) != NULL;
 }
 
 bool st_is_multiword_start(const stoken_t * st)
@@ -784,7 +778,7 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
 }
 
 bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
-                    const char delim)
+                    const char delim, ptr_fingerprints_fn fn)
 {
     sfilter_reset(sql_state, s, slen);
     sql_state->delim = delim;
@@ -825,8 +819,8 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
             return false;
         }
     }
-    // loss of 10% due to bsearch
-    bool patmatch = is_sqli_pattern(sql_state->pat);
+
+    bool patmatch = fn(sql_state->pat);
     //bool patmatch = false;
     if (!patmatch) {
         sql_state->reason = __LINE__;
@@ -889,20 +883,21 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     return true;
 }
 
-bool is_sqli(sfilter * sql_state, const char *s, size_t slen)
+bool is_sqli(sfilter * sql_state, const char *s, size_t slen,
+    ptr_fingerprints_fn fn)
 {
 
-    if (is_string_sqli(sql_state, s, slen, CHAR_NULL)) {
+    if (is_string_sqli(sql_state, s, slen, CHAR_NULL, fn)) {
         return true;
     }
 
     if (memchr(s, CHAR_SINGLE, slen)
-        && is_string_sqli(sql_state, s, slen, CHAR_SINGLE)) {
+        && is_string_sqli(sql_state, s, slen, CHAR_SINGLE, fn)) {
         return true;
     }
 
     if (memchr(s, CHAR_DOUBLE, slen)
-        && is_string_sqli(sql_state, s, slen, CHAR_DOUBLE)) {
+        && is_string_sqli(sql_state, s, slen, CHAR_DOUBLE, fn)) {
         return true;
     }
 

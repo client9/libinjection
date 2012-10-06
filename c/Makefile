@@ -33,20 +33,17 @@ help:
 	@echo "make http -- runs mini-http server, handy for viewing lcov"
 	@echo ""
 
-reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c sqli_normalize.c
+reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c sqli_normalize.c sqli_fingerprints.h
 	gcc ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_qs_normalize.h sqli_normalize.c sqlparse_data.h modp_xml.c
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_normalize.c
-	g++ ${STATIC} ${CFLAGS} -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_qs_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	g++ ${STATIC} ${CFLAGS} -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-sqli: Makefile sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h
+sqli: Makefile sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
 	g++ ${STATIC} ${CFLAGS} -o sqli sqli_cli.cpp sqlparse.c modp_ascii.c sqli_normalize.c modp_burl.c modp_xml.c
-
-test_tokens.cpp: test_tokens.hpp
-	../cxxtest/bin/cxxtestgen --error-printer -o test_tokens.cpp test_tokens.hpp
 
 test_speed.cpp: test_speed.hpp
 	../cxxtest/bin/cxxtestgen --error-printer -o test_speed.cpp test_speed.hpp
@@ -73,7 +70,10 @@ test_negative: reader
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
-sqlparse_data.h: sqlparse_map.py sqlparse2c.py fingerprints.txt
+sqli_fingerprints.h: fingerprints.txt fingerprints2c.py
+	./fingerprints2c.py > ./sqli_fingerprints.h
+
+sqlparse_data.h: sqlparse_map.py sqlparse2c.py
 	./sqlparse2c.py > ./sqlparse_data.h
 
 indent: sqlparse.h sqlparse.c

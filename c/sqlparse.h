@@ -64,11 +64,17 @@ typedef struct {
 } sfilter;
 
 /**
+ * Pointer to function, takes cstr input, return true/false
+ */
+typedef bool (*ptr_fingerprints_fn)(const char*);
+
+/**
  *
  *
  * \return TRUE if SQLi, FALSE is benign
  */
-bool is_sqli(sfilter * sql_state, const char *s, size_t slen);
+bool is_sqli(sfilter * sql_state, const char *s, size_t slen,
+             ptr_fingerprints_fn fn);
 
 #ifdef __cplusplus
 }

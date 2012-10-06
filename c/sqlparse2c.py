@@ -19,17 +19,7 @@ for  k in sorted(list(double_char_operators)):
     print '    "%s",' % (k,)
 print '};'
 print 'static const size_t operators2_sz = %d;' % (len(double_char_operators))
-
-with open('fingerprints.txt', 'r') as fd:
-    sqlipat = [ line.strip() for line in fd ]
-
-print 'static const char* patmap[] = {'
-for k in sorted(sqlipat):
-    print '    "%s",' % (k,)
-print '};'
-print 'static const size_t patmap_sz = %d;' % (len(sqlipat))
 print
-
 print "static const keyword_t sql_keywords[] = {"
 for k in sorted(keywords.keys()):
     print "    {\"%s\", '%s'}," % (k, keywords[k])

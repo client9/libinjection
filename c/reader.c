@@ -6,6 +6,7 @@
 
 #include "sqlparse.h"
 #include "sqli_normalize.h"
+#include "sqli_fingerprints.h"
 
 static int g_test_ok = 0;
 static int g_test_fail = 0;
@@ -26,7 +27,7 @@ void test_positive(FILE* fd, const char* fname)
             continue;
         }
         len = sqli_qs_normalize(linebuf, len);
-        bool issqli = is_sqli(&sf, linebuf, len);
+        bool issqli = is_sqli(&sf, linebuf, len, is_sqli_pattern);
         if (issqli) {
             g_test_ok += 1;
         } else {
