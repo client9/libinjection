@@ -81,7 +81,7 @@ sort:
 	mv /tmp/junk fingerprints.txt
 clean:
 	rm -f *~ *.pyc
-	rm -f test_tokens test_tokens.cpp test_speed.cpp test_speed
+	rm -f test_tokens test_speed
 	rm -rf *.dSYM
 	rm -rf *.gcno *.gcda *.info
 	rm -rf lcov-html
