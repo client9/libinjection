@@ -1,15 +1,8 @@
 
 #include "sqlparse_private.h"
-#include "sqlparse_data.h"
+#include "sqli_fingerprints.h"
 #include <time.h>
-
-#include <cxxtest/TestSuite.h>
-#include <string>
-using std::string;
-
-class TestSpeed : public CxxTest::TestSuite
-{
-public:
+#include <stdio.h>
 
     void testParseToken(void)
         {
@@ -17,17 +10,19 @@ public:
 
             const size_t slen = strlen(s);
             const int imax = 1000000;
-            stoken_t st;
+            int i;
+            sfilter sf;
             clock_t t0 = clock();
-            for (int i = imax; i != 0; --i) {
-                size_t pos = 0;
-                while (parse_token(s, slen, &pos, &st, CHAR_NULL)) {
+            for (i = imax; i != 0; --i) {
+                sfilter_reset(&sf, s, slen);
+                while (parse_token(&sf)) {
                     //printf("[ %c, %s]\n", st.type, st.val);
                 }
             }
             clock_t t1 = clock();
             double total = (double)(t1-t0) / (double)CLOCKS_PER_SEC;
-            printf("TPS = %f\n", (double) imax / total);
+            printf("Raw Tokenization TPS          = %f\n",
+                   (double) imax / total);
         }
 
 
@@ -36,18 +31,20 @@ public:
             const char* s  = "123 LIKE -1234.5678E+2; APPLE 19.123 'FOO' \"BAR\" /* BAR */ UNION ALL SELECT (2,3,4) || COS(+0X04) --FOOBAR";
             const size_t slen = strlen(s);
             const int imax = 1000000;
+            int i;
             stoken_t st;
             sfilter sf;
             clock_t t0 = clock();
-            for (int i = imax; i != 0; --i) {
+            for (i = imax; i != 0; --i) {
                 sfilter_reset(&sf, s, slen);
-                while (filter_syntax(&sf, &st)) {
-                    //printf("[ %c, %s]\n", st.type, st.val);
+                while (sqli_tokenize(&sf, &st)) {
+                    /* NOP */
                 }
             }
             clock_t t1 = clock();
             double total = (double)(t1-t0) / (double)CLOCKS_PER_SEC;
-            printf("TPS = %f\n", (double) imax / total);
+            printf("SQLi Tokenize TPS             = %f\n",
+                   (double) imax / total);
         }
 
     void testParseFold(void)
@@ -55,18 +52,20 @@ public:
             const char* s  = "123 LIKE -1234.5678E+2; APPLE 19.123 'FOO' \"BAR\" /* BAR */ UNION ALL SELECT (2,3,4) || COS(+0X04) --FOOBAR";
             const size_t slen = strlen(s);
             const int imax = 1000000;
+            int i;
             stoken_t st;
             sfilter sf;
             clock_t t0 = clock();
-            for (int i = imax; i != 0; --i) {
+            for (i = imax; i != 0; --i) {
                 sfilter_reset(&sf, s, slen);
                 while (filter_fold(&sf, &st)) {
-                    //printf("[ %c, %s]\n", st.type, st.val);
+                    /* NOP */
                 }
             }
             clock_t t1 = clock();
             double total = (double)(t1-t0) / (double)CLOCKS_PER_SEC;
-            printf("TPS = %f\n", (double) imax / total);
+            printf("Tokenize + Folding TPS        = %f\n",
+                   (double) imax / total);
         }
 
     void testIsSQL(void)
@@ -74,14 +73,23 @@ public:
             const char* s  = "123 LIKE -1234.5678E+2; APPLE 19.123 'FOO' \"BAR\" /* BAR */ UNION ALL SELECT (2,3,4) || COS(+0X04) --FOOBAR";
             const size_t slen = strlen(s);
             const int imax = 1000000;
+            int i;
             sfilter sf;
             clock_t t0 = clock();
-            for (int i = imax; i != 0; --i) {
-                is_sqli(&sf, s, slen);
+            for (i = imax; i != 0; --i) {
+                is_sqli(&sf, s, slen, is_sqli_pattern);
             }
             clock_t t1 = clock();
             double total = (double)(t1-t0) / (double)CLOCKS_PER_SEC;
-            printf("TPS = %f\n", (double) imax / total);
+            printf("IsSQLi TPS                    = %f\n",
+                   (double) imax / total);
         }
 
-};
+int main()
+{
+    testParseToken();
+    testParseSyntax();
+    testParseFold();
+    testIsSQL();
+    return 0;
+}
