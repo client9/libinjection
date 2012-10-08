@@ -45,7 +45,7 @@ is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml
 sqli: Makefile sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
 	g++ ${STATIC} ${CFLAGS} -o sqli sqli_cli.cpp sqlparse.c modp_ascii.c sqli_normalize.c modp_burl.c modp_xml.c
 
-test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.cpp
+test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.c
 	gcc ${CFLAGS} -o test_speed sqlparse.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./test_speed
 
