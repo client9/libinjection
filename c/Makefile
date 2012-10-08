@@ -74,7 +74,8 @@ sqlparse_data.h: sqlparse_map.py sqlparse2c.py
 	./sqlparse2c.py > ./sqlparse_data.h
 
 indent: sqlparse.h sqlparse.c
-	${INDENT} -kr -nut sqlparse.h sqlparse.c
+	${INDENT} -kr -nut sqlparse.h sqlparse.c test_speed.c sqli_normalize.c reader.c
+.PHONY: indent
 
 sort:
 	LC_ALL=C sort -u fingerprints.txt > /tmp/junk

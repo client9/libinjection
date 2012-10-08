@@ -403,9 +403,8 @@ size_t parse_word(sfilter * sf)
 
     st_assign(current, 'n', cs + pos, slen);
     if (slen < ST_MAX_SIZE) {
-        char ch =
-            bsearch_keyword_type(current->val, sql_keywords,
-                                 sql_keywords_sz);
+        char ch = bsearch_keyword_type(current->val, sql_keywords,
+                                       sql_keywords_sz);
         if (ch == CHAR_NULL) {
             ch = 'n';
         }
