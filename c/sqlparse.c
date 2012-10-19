@@ -19,6 +19,20 @@
 #include "sqlparse_private.h"
 #include "sqlparse_data.h"
 
+size_t strlenspn(const char *s, size_t len, const char *accept)
+{
+    size_t i;
+    for (i = 0; i < len; ++i) {
+        /* likely we can do better by inlining this function
+         * but this works for now
+         */
+        if (strchr(accept, s[i]) == NULL) {
+            return i;
+        }
+    }
+    return len;
+}
+
 bool streq(const char *a, const char *b)
 {
     return strcmp(a, b) == 0;
@@ -394,12 +408,10 @@ size_t parse_word(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
-    //const size_t slen = sf->slen;
     size_t pos = sf->pos;
 
-    // BUG BUG BUG.. does not take into account line length
     size_t slen =
-        strspn(cs + pos, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+        strlenspn(cs + pos, sf->slen - pos, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
 
     st_assign(current, 'n', cs + pos, slen);
     if (slen < ST_MAX_SIZE) {
@@ -428,7 +440,7 @@ size_t parse_var(sfilter * sf)
     }
 
     size_t xlen =
-        strspn(cs + pos1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+        strlenspn(cs + pos1, slen - pos1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
         st_assign(current, 'v', cs + pos, (pos1 - pos));
         return pos1;
@@ -447,7 +459,7 @@ size_t parse_number(sfilter * sf)
 
     if (pos + 1 < slen && cs[pos] == '0' && cs[pos + 1] == 'X') {
         // TBD compare if isxdigit
-        size_t xlen = strspn(cs + pos + 2, "0123456789ABCDEF");
+        size_t xlen = strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEF");
         if (xlen == 0) {
             st_assign_cstr(current, 'n', "0X");
             return pos + 2;
