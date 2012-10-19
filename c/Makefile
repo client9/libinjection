@@ -1,6 +1,8 @@
 
-STATIC=-static
-CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align
+#STATIC=-static
+STATIC=
+CC=gcc
+CFLAGS=-g -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align
 INDENT=indent
 # Apple over-rides
 #   Trying to avoid using libtool
@@ -40,17 +42,20 @@ extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_qs_normalize.h sqli
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_normalize.c
-	g++ ${STATIC} ${CFLAGS} -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	${CC} ${STATIC} ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-sqli: Makefile sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
-	g++ ${STATIC} ${CFLAGS} -o sqli sqli_cli.cpp sqlparse.c modp_ascii.c sqli_normalize.c modp_burl.c modp_xml.c
+sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h
+	${CC} ${STATIC} ${CFLAGS} -O0 -o sqli sqli_cli.c sqlparse.c modp_ascii.c
 
 test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.cpp
 	gcc ${CFLAGS} -o test_speed sqlparse.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./test_speed
 
-test_unit: sqli sqlparse_data.h sqlparse.c sqlparse.h
+test_unit: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
 	./test_driver.py ../tests/test-*.txt
+
+valgrind: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
+	./test_driver.py --valgrind ../tests/test-*.txt
 
 unused:
 	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
