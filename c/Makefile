@@ -36,7 +36,7 @@ help:
 reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c sqli_normalize.c sqli_fingerprints.h
 	gcc ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_qs_normalize.h sqli_normalize.c sqlparse_data.h modp_xml.c
+extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_normalize.h sqli_normalize.c sqlparse_data.h modp_xml.c
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_normalize.c
@@ -77,8 +77,11 @@ indent: sqlparse.h sqlparse.c
 	${INDENT} -kr -nut sqlparse.h sqlparse.c
 
 sort:
+	wc -l fingerprints.txt
 	LC_ALL=C sort -u fingerprints.txt > /tmp/junk
 	mv /tmp/junk fingerprints.txt
+	wc -l fingerprints.txt
+
 clean:
 	rm -f *~ *.pyc
 	rm -f test_tokens test_speed
