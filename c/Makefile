@@ -45,7 +45,7 @@ sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h
 	${CC} ${CFLAGS} -o sqli sqli_cli.c sqlparse.c modp_ascii.c
 
 
-test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.cpp
+test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.c
 	${CC} ${CFLAGS} -o test_speed sqlparse.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./test_speed
 
