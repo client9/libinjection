@@ -17,6 +17,13 @@
 #define CHAR_SINGLE '\''
 #define CHAR_DOUBLE '"'
 
+/***
+ * The stdlib function 'strspn' assumes input to null-delimited.
+ * This allows us to specifying and input length and allows
+ * embedded nulls
+ */
+size_t strlenspn(const char *s, size_t len, const char *accept);
+
 bool streq(const char *a, const char *b);
 
 void st_clear(stoken_t * st);

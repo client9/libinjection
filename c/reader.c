@@ -11,7 +11,7 @@
 static int g_test_ok = 0;
 static int g_test_fail = 0;
 
-void test_positive(FILE* fd, const char* fname)
+void test_positive(FILE * fd, const char *fname)
 {
     char linebuf[8192];
     int linenum = 0;
@@ -38,14 +38,11 @@ void test_positive(FILE* fd, const char* fname)
 
         fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
                 fname, linenum,
-                (issqli ? "True" : "False"),
-                sf.pat,
-                sf.reason,
-                linebuf);
+                (issqli ? "True" : "False"), sf.pat, sf.reason, linebuf);
     }
 }
 
-int main(int argc, const char* argv[])
+int main(int argc, const char *argv[])
 {
     int i;
     bool invert = false;

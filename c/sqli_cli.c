@@ -9,14 +9,11 @@
  * is a SQLi attack or not, and does basic statistics
  *
  */
-#include <iostream>
-#include <string>
-using namespace std;
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-#include "modp_burl.h"
 #include "modp_ascii.h"
-#include "modp_qsiter.h"
-
 #include "sqlparse_private.h"
 
 
@@ -26,15 +23,22 @@ int main(int argc, const char* argv[])
 
     sfilter sf;
     stoken_t current;
-
-    string tmp(argv[offset]);
-    modp::toupper(tmp);
-
-    sfilter_reset(&sf, tmp.data(), tmp.size());
-
-    while (sqli_tokenize(&sf, &current)) {
-        cout << current.type << " " << current.val << "\n";
+    if (argc < 1) {
+        return 1;
     }
 
+    size_t slen = strlen(argv[offset]);
+    char* copy = (char*) malloc(slen + 1);
+    if (copy == NULL) {
+        return 1;
+    }
+    modp_toupper_copy(copy, argv[offset], slen);
+
+    sfilter_reset(&sf, copy, slen);
+
+    while (sqli_tokenize(&sf, &current)) {
+        printf("%c %s\n", current.type, current.val);
+    }
+    free(copy);
     return 0;
 }

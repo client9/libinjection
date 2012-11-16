@@ -19,6 +19,20 @@
 #include "sqlparse_private.h"
 #include "sqlparse_data.h"
 
+size_t strlenspn(const char *s, size_t len, const char *accept)
+{
+    size_t i;
+    for (i = 0; i < len; ++i) {
+        /* likely we can do better by inlining this function
+         * but this works for now
+         */
+        if (strchr(accept, s[i]) == NULL) {
+            return i;
+        }
+    }
+    return len;
+}
+
 bool streq(const char *a, const char *b)
 {
     return strcmp(a, b) == 0;
@@ -74,7 +88,7 @@ const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
 
     int pos;
     int left = 0;
-    int right = (int)nmemb - 1;
+    int right = (int) nmemb - 1;
     int cmp = 0;
 
     while (left <= right) {
@@ -204,7 +218,8 @@ size_t parse_eol_comment(sfilter * sf)
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
 
-    const char *endpos = (const char *) memchr((const void*)(cs + pos), '\n', slen - pos);
+    const char *endpos =
+        (const char *) memchr((const void *) (cs + pos), '\n', slen - pos);
     if (endpos == NULL) {
         st_assign_cstr(current, 'c', cs + pos);
         return slen;
@@ -214,7 +229,7 @@ size_t parse_eol_comment(sfilter * sf)
     }
 }
 
-size_t parse_dash(sfilter *sf)
+size_t parse_dash(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
@@ -298,7 +313,7 @@ size_t parse_slash(sfilter * sf)
     }
 }
 
-size_t parse_backslash(sfilter *sf)
+size_t parse_backslash(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
@@ -357,7 +372,9 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
                          stoken_t * st, char delim, size_t offset)
 {
     // offset is to skip the perhaps first quote char
-    const char *qpos = (const char *) memchr((const void*)(cs + pos + offset), delim, len - pos - offset);
+    const char *qpos =
+        (const char *) memchr((const void *) (cs + pos + offset), delim,
+                              len - pos - offset);
     while (true) {
         if (qpos == NULL) {
             st_assign_cstr(st, 's', cs + pos);
@@ -366,7 +383,9 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             st_assign(st, 's', cs + pos, qpos - (cs + pos) + 1);
             return qpos - cs + 1;
         } else {
-            qpos = (const char*) memchr((const void*)(qpos + 1), delim, (cs + len) - (qpos+1));
+            qpos =
+                (const char *) memchr((const void *) (qpos + 1), delim,
+                                      (cs + len) - (qpos + 1));
         }
     }
 }
@@ -374,7 +393,7 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
 /**
  * Used when first char is a ' or "
  */
-size_t parse_string(sfilter *sf)
+size_t parse_string(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
@@ -385,20 +404,19 @@ size_t parse_string(sfilter *sf)
     return parse_string_core(cs, slen, pos, current, cs[pos], 1);
 }
 
-size_t parse_word(sfilter *sf)
+size_t parse_word(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
-    //const size_t slen = sf->slen;
     size_t pos = sf->pos;
 
-    // BUG BUG BUG.. does not take into account line length
     size_t slen =
-        strspn(cs + pos, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+        strlenspn(cs + pos, sf->slen - pos, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
 
     st_assign(current, 'n', cs + pos, slen);
     if (slen < ST_MAX_SIZE) {
-        char ch = bsearch_keyword_type(current->val, sql_keywords, sql_keywords_sz);
+        char ch = bsearch_keyword_type(current->val, sql_keywords,
+                                       sql_keywords_sz);
         if (ch == CHAR_NULL) {
             ch = 'n';
         }
@@ -407,7 +425,7 @@ size_t parse_word(sfilter *sf)
     return pos + slen;
 }
 
-size_t parse_var(sfilter *sf)
+size_t parse_var(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
@@ -422,7 +440,7 @@ size_t parse_var(sfilter *sf)
     }
 
     size_t xlen =
-        strspn(cs + pos1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+        strlenspn(cs + pos1, slen - pos1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
         st_assign(current, 'v', cs + pos, (pos1 - pos));
         return pos1;
@@ -432,7 +450,7 @@ size_t parse_var(sfilter *sf)
     }
 }
 
-size_t parse_number(sfilter *sf)
+size_t parse_number(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
@@ -441,7 +459,7 @@ size_t parse_number(sfilter *sf)
 
     if (pos + 1 < slen && cs[pos] == '0' && cs[pos + 1] == 'X') {
         // TBD compare if isxdigit
-        size_t xlen = strspn(cs + pos + 2, "0123456789ABCDEF");
+        size_t xlen = strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEF");
         if (xlen == 0) {
             st_assign_cstr(current, 'n', "0X");
             return pos + 2;
@@ -605,7 +623,6 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
                 return true;
             }
         }
-
         //
         // We have a saved token
         //
@@ -626,8 +643,9 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
             // first case to handle "IS" + "NOT"
             if (syntax_merge_words(last, current)) {
                 continue;
-            } else if (st_is_unary_op(current) && (last->type == 'o' || last->type == '&'
-                                                   || last->type == 'U')) {
+            } else if (st_is_unary_op(current)
+                       && (last->type == 'o' || last->type == '&'
+                           || last->type == 'U')) {
                 // if an operator is followed by a unary operator, skip it.
                 // 1, + ==> "+" is not unary, it's arithmetic
                 // AND, + ==> "+" is unary
@@ -884,7 +902,7 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
 }
 
 bool is_sqli(sfilter * sql_state, const char *s, size_t slen,
-    ptr_fingerprints_fn fn)
+             ptr_fingerprints_fn fn)
 {
 
     if (is_string_sqli(sql_state, s, slen, CHAR_NULL, fn)) {

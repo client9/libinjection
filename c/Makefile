@@ -1,5 +1,5 @@
 
-STATIC=-static
+CC=gcc
 CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align
 INDENT=indent
 # Apple over-rides
@@ -7,7 +7,6 @@ INDENT=indent
 #
 APPLE=$(shell uname -a | grep -c Darwin)
 ifeq ($(APPLE),1)
-	STATIC=
 	SONAME=dylib
 	RT=
 	INDENT=gnuindent
@@ -34,23 +33,27 @@ help:
 	@echo ""
 
 reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c sqli_normalize.c sqli_fingerprints.h
-	gcc ${STATIC} ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	${CC}  ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_normalize.h sqli_normalize.c sqlparse_data.h modp_xml.c
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_normalize.c
-	g++ ${STATIC} ${CFLAGS} -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	${CC}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-sqli: Makefile sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
-	g++ ${STATIC} ${CFLAGS} -o sqli sqli_cli.cpp sqlparse.c modp_ascii.c sqli_normalize.c modp_burl.c modp_xml.c
+sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h
+	${CC} ${CFLAGS} -o sqli sqli_cli.c sqlparse.c modp_ascii.c
 
-test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.c
-	gcc ${CFLAGS} -o test_speed sqlparse.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+
+test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.cpp
+	${CC} ${CFLAGS} -o test_speed sqlparse.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./test_speed
 
-test_unit: sqli sqlparse_data.h sqlparse.c sqlparse.h
+test_unit: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
 	./test_driver.py ../tests/test-*.txt
+
+valgrind: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
+	./test_driver.py --valgrind ../tests/test-*.txt
 
 unused:
 	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
@@ -74,7 +77,8 @@ sqlparse_data.h: sqlparse_map.py sqlparse2c.py
 	./sqlparse2c.py > ./sqlparse_data.h
 
 indent: sqlparse.h sqlparse.c
-	${INDENT} -kr -nut sqlparse.h sqlparse.c
+	${INDENT} -kr -nut sqlparse.h sqlparse.c test_speed.c sqli_normalize.c reader.c
+.PHONY: indent
 
 sort:
 	wc -l fingerprints.txt

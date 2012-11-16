@@ -2,8 +2,12 @@
 
 from subprocess import check_output
 
-def run_test(name, data):
-    actual = check_output(['./sqli', data[1]])
+def run_test(name, data, valgrind=False):
+    if valgrind:
+        actual = check_output(['valgrind', '--gen-suppressions=no', '--read-var-info=yes', '--leak-check=full', '--error-exitcode=1', '--track-origins=yes', './sqli', data[1]])
+    else:
+        actual = check_output(['./sqli', data[1]])
+
     if actual.strip() != data[2].strip():
         print "not ok: " + name
         print "EXPECTED: \n" + data[2]
@@ -36,8 +40,19 @@ def read_test(arg):
 
 if __name__ == '__main__':
     import sys
-    for name in sys.argv[1:]:
-        testdata = read_test(name)
-        run_test(name, testdata)
 
+    # hack for command line switch
+    # if argv1 had 'valgrind'
+
+    i= 1
+    valgrind = False
+    if 'valgrind' in sys.argv[1]:
+        i = 2
+        valgrind = True
+
+    for name in sys.argv[i:]:
+        print name
+        testdata = read_test(name)
+        run_test(name, testdata, valgrind)
+        print '----------------'
 
