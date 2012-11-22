@@ -195,6 +195,7 @@
 1)o(v
 1)o1)
 1)o1B
+1)o1U
 1)o1f
 1)o1k
 1)o1o
@@ -207,11 +208,13 @@
 1)ono
 1)os)
 1)osB
+1)osU
 1)osf
 1)osk
 1)oso
 1)ov)
 1)ovB
+1)ovU
 1)ovf
 1)ovk
 1)ovo
@@ -451,6 +454,8 @@
 1ok(k
 1ok(s
 1ok(v
+1ok)U
+1ok)o
 1ok1
 1ok1,
 1ok1c
@@ -468,6 +473,7 @@
 1onos
 1onov
 1os)&
+1os)U
 1os)o
 1osBf
 1osUk
@@ -480,6 +486,7 @@
 1osos
 1osov
 1ov)&
+1ov)U
 1ov)o
 1ovBf
 1ovUk
@@ -1077,6 +1084,7 @@ s)on&
 s)ono
 s)os)
 s)osB
+s)osU
 s)osf
 s)osk
 s)oso
@@ -1675,6 +1683,7 @@ v)o(n
 v)o(s
 v)o(v
 v)o1B
+v)o1U
 v)o1f
 v)o1k
 v)o1o
@@ -1687,10 +1696,12 @@ v)on&
 v)ono
 v)os)
 v)osB
+v)osU
 v)osf
 v)osk
 v)oso
 v)ovB
+v)ovU
 v)ovf
 v)ovk
 v)ovo

