@@ -321,7 +321,7 @@ size_t parse_backslash(sfilter * sf)
     size_t pos = sf->pos;
 
     if (pos + 1 < slen && cs[pos + 1] == 'N') {
-        st_assign_cstr(current, 'k', "NULL");
+        st_assign_cstr(current, '1', "NULL");
         return pos + 2;
     } else {
         return parse_other(sf);
