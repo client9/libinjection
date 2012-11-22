@@ -12,13 +12,15 @@
 #include "modp_ascii.h"
 #include "modp_qsiter.h"
 
+#include "sqli_normalize.h"
+#include "sqli_fingerprints.h"
 #include "sqlparse.h"
 
 using namespace std;
 
 static bool is_special(std::string& str) {
     string nval(str);
-    size_t len = qs_normalize(const_cast<char*>(nval.data()), nval.size());
+    size_t len = sqli_qs_normalize(const_cast<char*>(nval.data()), nval.size());
     nval.erase(len, std::string::npos);
     //  / *
     if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ _-+")) {
@@ -98,7 +100,7 @@ public:
 
         while (li.next()) {
             string orig(li.getLine());
-            if (true) {
+            if (false) {
                 // LOG FILE MODE
                 size_t pos = orig.find("GET ");
                 if (pos == string::npos) {
@@ -127,21 +129,23 @@ public:
                 while (!issqli && qsiter_next(&qsi)) {
                     string val(qsi.val, qsi.vallen);
                     string tmp(val);
-                    tmp.erase(qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
-                    issqli = is_sqli(&sf, tmp.data(), tmp.size());
+                    tmp.erase(sqli_qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
+                    issqli = is_sqli(&sf, tmp.data(), tmp.size(), is_sqli_pattern);
                 }
                 if (issqli) {
                     cout << orig << "\n";
                 }
             } else if (true) {
+                bool issqli = false;
+                string tmp(orig);
                 // RAW MODE -- line is full input to be evalutated.
                 if (is_special(orig)) {
                     if (invert) {
                         //
                     } else {
-                        string tmp(orig);
-                        tmp.erase(qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
-                        cout << tmp << "    |    " << orig << endl;
+                        tmp.erase(sqli_qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
+                        issqli = is_sqli(&sf, tmp.data(), tmp.size(), is_sqli_pattern);
+                        //cout << tmp << "    |    " << orig << endl;
                         //cout << orig << endl;
                     }
                 } else {
@@ -150,6 +154,9 @@ public:
                     } else {
                         //
                     }
+                }
+                if (issqli) {
+                    cout << tmp << "\n";
                 }
             }
         } /* while li.next() */
