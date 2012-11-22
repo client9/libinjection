@@ -155,7 +155,7 @@ keywords = dict({
 'EXTRACT'                     : 'f',
 'EXTRACTVALUE'                : 'f',
 'EXTRACT_VALUE'               : 'f',
-'FALSE'                       : 'k',
+'FALSE'                       : '1',
 'FETCH'                       : 'k',
 'FIELD'                       : 'f',
 'FIND_IN_SET'                 : 'f',
@@ -422,7 +422,7 @@ keywords = dict({
 'TRAILING'                    : 'n', # only used in TRIM(TRAILING  http://www.w3resource.com/sql/character-functions/trim.php
 'TRIGGER'                     : 'k',
 'TRIM'                        : 'f',
-'TRUE'                        : 'k',
+'TRUE'                        : '1',
 'TRUNCATE'                    : 'f',
 'UCASE'                       : 'f',
 'UNCOMPRESS'                  : 'f',
