@@ -1,5 +1,6 @@
 
 CC=gcc
+CXX=g++
 CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align
 INDENT=indent
 # Apple over-rides
@@ -39,7 +40,7 @@ extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_normalize.h sqli_no
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_normalize.c  sqli_fingerprints.h sqlparse_data.h
-	${CC}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h  sqli_fingerprints.h
 	${CC} ${CFLAGS} -o sqli sqli_cli.c sqlparse.c modp_ascii.c
