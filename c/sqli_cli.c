@@ -19,12 +19,18 @@
 
 int main(int argc, const char* argv[])
 {
+    int fold = 0;
+
     int offset = 1;
 
     sfilter sf;
     stoken_t current;
     if (argc < 1) {
         return 1;
+    }
+    if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
+        fold = 1;
+        offset += 1;
     }
 
     size_t slen = strlen(argv[offset]);
@@ -36,9 +42,16 @@ int main(int argc, const char* argv[])
 
     sfilter_reset(&sf, copy, slen);
 
-    while (sqli_tokenize(&sf, &current)) {
-        printf("%c %s\n", current.type, current.val);
+    if (fold == 1) {
+        while (filter_fold(&sf, &current)) {
+            printf("%c %s\n", current.type, current.val);
+        }
+    } else {
+        while (sqli_tokenize(&sf, &current)) {
+            printf("%c %s\n", current.type, current.val);
+        }
     }
+
     free(copy);
     return 0;
 }
