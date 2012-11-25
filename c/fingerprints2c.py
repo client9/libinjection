@@ -2,8 +2,7 @@
 #
 #  Copyright 2012, Nick Galbreath
 #  nickg@client9.com
-#  GPL v2 License -- Commericial Licenses available.
-#  http://www.gnu.org/licenses/gpl-2.0.txt
+#  BSD License -- see COPYING.txt for details
 #
 
 from sqlparse_map import *

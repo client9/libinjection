@@ -1,7 +1,7 @@
 /**
  * Copyright 2012, Nick Galbreath
  * nickg@client9.com
- * GPL v2 License -- Commericial Licenses available.
+ * BSD License -- see COPYING.txt for details
  *
  * (setq-default indent-tabs-mode nil)
  * (setq c-default-style "k&r"

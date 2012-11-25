@@ -1,8 +1,7 @@
 /**
  * Copyright 2012, Nick Galbreath
  * nickg@client9.com
- * GPL v2 License -- Commericial Licenses available.
- *
+ * BSD License -- see COPYING.txt for details
  *
  * This is for testing against files in ../data/ *.txt
  * Reads from stdin or a list of files, and emits if a line
