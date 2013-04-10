@@ -1,5 +1,5 @@
 /**
- * Copyright 2012, Nick Galbreath
+ * Copyright 2012,2013  Nick Galbreath
  * nickg@client9.com
  * BSD License -- see COPYING.txt for details
  *
@@ -295,17 +295,29 @@ size_t parse_slash(sfilter * sf)
     if (pos1 == slen || cs[pos1] != '*') {
         return parse_operator1(sf);
     }
-    size_t inc = is_mysql_comment(cs, slen, pos);
 
+    size_t inc = is_mysql_comment(cs, slen, pos);
     if (inc == 0) {
-        const char *ptr = strstr(cs + pos, "*/");
+
+        // skip over initial '/*'
+        const char *ptr = memmem(cs + pos + 2, slen - (pos + 2), "*/", 2);
         if (ptr == NULL) {
             // unterminated comment
             st_assign_cstr(current, 'c', cs + pos);
             return slen;
         } else {
-            st_assign(current, 'c', cs + pos, (ptr + 2) - (cs + pos));
-            return (ptr - cs) + 2;
+            // postgresql allows nested comments which makes
+            // this is incompatible with parsing so
+            // if we find a '/*' inside the coment, then
+            // make a new token.
+            char ctype = 'c';
+            const size_t clen = (ptr + 2) - (cs + pos);
+            if (memmem(cs + pos + 2, ptr - (cs + pos + 2), "/*", 2) != NULL) {
+                ctype = 'X';
+            }
+            st_assign(current, ctype, cs + pos, clen);
+
+            return pos + clen;
         }
     } else {
         // MySQL Comment
@@ -548,7 +560,6 @@ bool parse_token(sfilter * sf)
         pt2Function fnptr = char_parse_map[ch];
         *pos = (*fnptr) (sf);
         if (current->type != CHAR_NULL) {
-            //printf("POS = %d, %s \n", *pos, st->val);
             return true;
         }
     }
@@ -583,7 +594,6 @@ bool syntax_merge_words(stoken_t * a, stoken_t * b)
     memcpy(tmp + sz1 + 1, b->val, sz2);
     tmp[sz3] = CHAR_NULL;
 
-    //printf("\nTMP = %s\n", tmp);
     char ch = bsearch_keyword_type(tmp, multikeywords, multikeywords_sz);
     if (ch != CHAR_NULL) {
         // -1, don't copy the null byte
@@ -724,19 +734,14 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
     stoken_t *last = &sf->fold_last;
     stoken_t *current = &sf->fold_current;
 
-    //printf("state = %d\n", sf->fold_state);
     if (sf->fold_state == 4 && !st_is_empty(last)) {
-        //printf("LINE = %d\n", __LINE__);
         st_copy(sout, last);
-        //printf("%d emit = %c, %s\n", __LINE__, sout->type, sout->val);
         sf->fold_state = 2;
         st_clear(last);
         return true;
     }
 
     while (sqli_tokenize(sf, current)) {
-        //printf("state = %d\n", sf->fold_state);
-        //printf("current = %c, %s\n", current->type, current->val);
         if (sf->fold_state == 0) {
             if (current->type == '(') {
                 continue;
@@ -748,31 +753,21 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
         }
 
         if (st_is_empty(last)) {
-            //printf("LINE = %d\n", __LINE__);
             if (current->type == '1') {
-                //printf("LINE = %d\n", __LINE__);
                 sf->fold_state = 2;
                 st_copy(last, current);
             }
-            //printf("LINE = %d\n", __LINE__);
             st_copy(sout, current);
-            //printf("emit = %c, %s\n", sout->type, sout->val);
             return true;
         } else if (last->type == '1' && st_is_arith_op(current)) {
-            //printf("LINE = %d\n", __LINE__);
             st_copy(last, current);
-            //sf->fold_state = 1;
         } else if (last->type == 'o' && current->type == '1') {
-            //printf("LINE = %d\n", __LINE__);
-            //continue;
             st_copy(last, current);
         } else {
-            //printf("LINE = %d\n", __LINE__);
             if (sf->fold_state == 2) {
                 if (last->type != '1') {
                     st_copy(sout, last);
                     st_copy(last, current);
-                    // printf("%d emit = %c, %s\n", __LINE__, sout->type, sout->val);
                     sf->fold_state = 4;
                 } else {
                     st_copy(sout, current);
@@ -780,19 +775,15 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
                 }
                 return true;
             } else {
-                //printf("LINE = %d\n", __LINE__);
                 if (last->type == 'o') {
-                    //printf("STATE = %d, LINE = %d\n", sf->fold_state, __LINE__);
                     st_copy(sout, last);
                     st_copy(last, current);
                     sf->fold_state = 4;
                 } else {
-                    //printf("LINE = %d\n", __LINE__);
                     sf->fold_state = 2;
                     st_copy(sout, current);
                     st_clear(last);
                 }
-                //printf("emit = %c, %s\n", sout->type, sout->val);
                 return true;
             }
         }
@@ -800,7 +791,6 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
 
     if (!st_is_empty(last)) {
         if (st_is_arith_op(last)) {
-            //printf("\nstate = %d, emit = %c, %s\n", sf->fold_state, last->type, last->val);
             st_copy(sout, last);
             st_clear(last);
             return true;
@@ -827,16 +817,9 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         }
 
         sql_state->pat[tlen] = sql_state->tokenvec[tlen].type;
-
-        //printf("i = %d, char = %c, %s\n", tlen, sql_state->pat[tlen],
-        //       sql_state->tokenvec[tlen].val);
         tlen += 1;
     }
     sql_state->pat[tlen] = CHAR_NULL;
-
-    //assert(strlen(sql_state->pat) <= 5);
-
-    //printf("PAT = %s\n", sql_state->pat);
 
     // check to make sure we don't have a dangling
     // function without a "(" (then it's not a function)
@@ -854,6 +837,14 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
             return false;
         }
     }
+    // check for 'X' in pattern
+    // this means parsing could not be done
+    // accurately due to pgsql's double comments
+    // or other syntax that isn't consistent
+    // should be very rare false positive
+    if (strchr(sql_state->pat, 'X')) {
+        return true;
+    }
 
     bool patmatch = fn(sql_state->pat);
     //bool patmatch = false;
@@ -868,22 +859,6 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         // no opening quote, no closing quote
         // and each string has data
         if (streq(sql_state->pat, "sos")) {
-            if (0) {
-            printf("%s\n", "GOT SOS");
-            if (sql_state->tokenvec[0].str_open == CHAR_NULL) {
-                printf("open string is null\n");
-            } else {
-                printf("open string is real\n");
-            }
-
-            if (sql_state->tokenvec[2].str_open == CHAR_NULL) {
-                printf("close string is null\n");
-            } else {
-                printf("close string is real\n");
-            }
-            printf("first string is *%s*\n", sql_state->tokenvec[0].val);
-            printf("second string is *%s*\n", sql_state->tokenvec[2].val);
-            }
             if ((sql_state->tokenvec[0].str_open == CHAR_NULL) &&
                 (sql_state->tokenvec[2].str_close == CHAR_NULL) &&
                 strlen(sql_state->tokenvec[0].val) &&
@@ -937,7 +912,6 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     return false;
                 } else {
                     sql_state->reason = __LINE__;
-                    //printf("False: %s not slqi\n", sql_state->pat);
                     return false;
                 }
             }
@@ -946,7 +920,6 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
 
     }                           /* end switch */
 
-    //printf("i = %d, PAT = %s\n", i, sql_state->pat);
     return true;
 }
 
