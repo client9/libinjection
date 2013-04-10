@@ -742,6 +742,8 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
     }
 
     while (sqli_tokenize(sf, current)) {
+        // 0 = start of statement
+        // skip ( and unary ops
         if (sf->fold_state == 0) {
             if (current->type == '(') {
                 continue;
@@ -753,10 +755,20 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
         }
 
         if (st_is_empty(last)) {
-            if (current->type == '1') {
+            if (current->type == '1' || current->type == '(') {
                 sf->fold_state = 2;
                 st_copy(last, current);
             }
+            st_copy(sout, current);
+            return true;
+        } else if (last->type == '(' && st_is_unary_op(current)) {
+            // similar to beginning of statement
+            // an opening '(' resets state, and we should skip all
+            // unary operators
+            continue;
+        } else if (last->type == '(' && current->type == '(') {
+            // if we get another '(' after another
+            // emit 1, but keep state
             st_copy(sout, current);
             return true;
         } else if (last->type == '1' && st_is_arith_op(current)) {
@@ -765,7 +777,7 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
             st_copy(last, current);
         } else {
             if (sf->fold_state == 2) {
-                if (last->type != '1') {
+                if (last->type != '1' && last->type != '(') {
                     st_copy(sout, last);
                     st_copy(last, current);
                     sf->fold_state = 4;
