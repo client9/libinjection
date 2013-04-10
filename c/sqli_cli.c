@@ -24,7 +24,7 @@ int main(int argc, const char* argv[])
 
     sfilter sf;
     stoken_t current;
-    if (argc < 1) {
+    if (argc < 2) {
         return 1;
     }
     if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
