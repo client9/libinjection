@@ -41,6 +41,8 @@ bool streq(const char *a, const char *b)
 void st_clear(stoken_t * st)
 {
     st->type = CHAR_NULL;
+    st->str_open = CHAR_NULL;
+    st->str_close = CHAR_NULL;
     st->val[0] = CHAR_NULL;
 }
 
@@ -375,12 +377,27 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
     const char *qpos =
         (const char *) memchr((const void *) (cs + pos + offset), delim,
                               len - pos - offset);
+
+    // then keep string open/close info
+    if (offset == 1) {
+        // this is real quote
+        st->str_open = delim;
+    } else {
+        // this was a simulated quote
+        st->str_open = CHAR_NULL;
+    }
+
     while (true) {
         if (qpos == NULL) {
-            st_assign_cstr(st, 's', cs + pos);
+            // string ended with no trailing quote
+            // assign what we have
+            st_assign_cstr(st, 's', cs + pos + offset);
+            st->str_close = CHAR_NULL;
             return len;
         } else if (*(qpos - 1) != '\\') {
-            st_assign(st, 's', cs + pos, qpos - (cs + pos) + 1);
+            // ending quote is not escaped.. copy and end
+            st_assign(st, 's', cs + pos + offset, qpos - (cs + pos + offset));
+            st->str_close = delim;
             return qpos - cs + 1;
         } else {
             qpos =
@@ -847,19 +864,51 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     switch (tlen) {
 
     case 3:{
-            if (streq(sql_state->pat, "sos") &&
-                (st_is_arith_op(&sql_state->tokenvec[1]) ||
-                 st_is_english_op(&sql_state->tokenvec[1]) ||
-                 sql_state->delim == CHAR_NULL)) {
+        // ...foo' + 'bar...
+        // no opening quote, no closing quote
+        // and each string has data
+        if (streq(sql_state->pat, "sos")) {
+            if (0) {
+            printf("%s\n", "GOT SOS");
+            if (sql_state->tokenvec[0].str_open == CHAR_NULL) {
+                printf("open string is null\n");
+            } else {
+                printf("open string is real\n");
+            }
+
+            if (sql_state->tokenvec[2].str_open == CHAR_NULL) {
+                printf("close string is null\n");
+            } else {
+                printf("close string is real\n");
+            }
+            printf("first string is *%s*\n", sql_state->tokenvec[0].val);
+            printf("second string is *%s*\n", sql_state->tokenvec[2].val);
+            }
+            if ((sql_state->tokenvec[0].str_open == CHAR_NULL) &&
+                (sql_state->tokenvec[2].str_close == CHAR_NULL) &&
+                strlen(sql_state->tokenvec[0].val) &&
+                strlen(sql_state->tokenvec[2].val) &&
+                (sql_state->tokenvec[2].val[0] != ' ')
+                ) {
+
+                // if ....foo" + "bar....
+                // and not   " + "bar....
+                // and not   ...foo" + "
+                // and not  " + "
+                // and not ...foo "+" bar
+
+                return true;
+            } else {
+                // not sqli
                 sql_state->reason = __LINE__;
                 return false;
-            } else {
-                return true;
             }
+        } else {
+                return true;
         }
         break;
+    }
     case 5:{
-
             if (sql_state->pat[1] == 'o' && sql_state->pat[3] == 'o') {
 
                 if (sql_state->pat[2] == 'v') {

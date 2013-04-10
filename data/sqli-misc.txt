@@ -128,3 +128,8 @@ TRUE DIV(SELECT ((ORD(LEFT
 1001 rlike(@version-1)union select 1,2,3,4 from credit_cards
 1001 rlike(1-@version)union select 1,2,3,4 from credit_cards
 1001 rlike('1')union select 1,2,3,4 from credit_cards
+# http://vagosec.org/2013/04/mysql-implicit-type-conversion/
+# a'+'b encoded is a%27%2B%27b
+# as of 2013-04-10 not detected due to high FP rates
+a%27%2B%27b
+

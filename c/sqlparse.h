@@ -32,6 +32,8 @@ extern "C" {
 
 typedef struct {
     char type;
+    char str_open;
+    char str_close;
     char val[ST_MAX_SIZE];
 } stoken_t;
 

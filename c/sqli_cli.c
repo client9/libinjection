@@ -47,7 +47,19 @@ int main(int argc, const char* argv[])
         }
     } else {
         while (sqli_tokenize(&sf, &current)) {
-            printf("%c %s\n", current.type, current.val);
+            if (current.type == 's') {
+                printf("%c ", current.type);
+                if (current.str_open != CHAR_NULL) {
+                    printf("%c", current.str_open);
+                }
+                printf("%s", current.val);
+                if (current.str_close != CHAR_NULL) {
+                    printf("%c", current.str_open);
+                }
+                printf("%s", "\n");
+            } else {
+                printf("%c %s\n", current.type, current.val);
+            }
         }
     }
 
