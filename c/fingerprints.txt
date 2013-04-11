@@ -941,6 +941,7 @@ s&os
 s&oso
 s&ov
 s&ovo
+s&s
 s&s:o
 s&sBf
 s&sU(
