@@ -135,9 +135,7 @@ TRUE DIV(SELECT ((ORD(LEFT
 1001 RLIKE (-(1)) UNION SELECT 1 FROM CREDIT_CARDS
 1001 RLIKE (-(-1)) UNION SELECT 1 FROM CREDIT_CARDS
 
-
 # http://vagosec.org/2013/04/mysql-implicit-type-conversion/
 # a'+'b encoded is a%27%2B%27b
-# as of 2013-04-10 not detected due to high FP rates
 a%27%2B%27b
-
+' OR 1='1
