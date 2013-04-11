@@ -686,6 +686,8 @@ phrases = dict({
 'NOT LIKE': 'o',
 'NOT BETWEEN': 'o',
 'NOT SIMILAR': 'o',
+'NOT RLIKE': 'o',
+'NOT REGEXP': 'o',
 'NOT IN': 'o',
 'SIMILAR TO' : 'o',
 'NOT SIMILAR TO': 'o',
