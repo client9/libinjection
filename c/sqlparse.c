@@ -832,11 +832,9 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     }
     sql_state->pat[tlen] = CHAR_NULL;
 
-    // check to make sure we don't have a dangling
-    // function without a "(" (then it's not a function)
-    // (and then not a SQLi).  This is the only reason
-    // we need the 6th token.  It might be possible to
-    // skip the parsing if token 5 is NOT a function type
+    // if token 5 (last) looks like a functino word (such as ABS or ASCII)
+    // then check token 6 to see if it's a "(".
+    // if NOT then, it's not a function.
 
     if (tlen == MAX_TOKENS && !all_done
         && sql_state->pat[MAX_TOKENS - 1] == 'f') {
