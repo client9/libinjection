@@ -149,8 +149,7 @@ bool st_is_english_op(const stoken_t * st)
                                  strcmp(st->val, "CASE") &&
                                  strcmp(st->val, "LIKE") &&
                                  strcmp(st->val, "IS") &&
-                                 strcmp(st->val, "MOD"))
-        );
+                                 strcmp(st->val, "MOD")));
 }
 
 bool st_is_unary_op(const stoken_t * st)
@@ -870,20 +869,11 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         // ...foo' + 'bar...
         // no opening quote, no closing quote
         // and each string has data
-        if (streq(sql_state->pat, "sos")) {
+        if (streq(sql_state->pat, "sos") || streq(sql_state->pat, "s&s")) {
             if ((sql_state->tokenvec[0].str_open == CHAR_NULL) &&
-                (sql_state->tokenvec[2].str_close == CHAR_NULL) &&
-                strlen(sql_state->tokenvec[0].val) &&
-                strlen(sql_state->tokenvec[2].val) &&
-                (sql_state->tokenvec[2].val[0] != ' ')
-                ) {
+                (sql_state->tokenvec[2].str_close == CHAR_NULL)) {
 
                 // if ....foo" + "bar....
-                // and not   " + "bar....
-                // and not   ...foo" + "
-                // and not  " + "
-                // and not ...foo "+" bar
-
                 return true;
             } else {
                 // not sqli

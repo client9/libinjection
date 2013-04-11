@@ -533,6 +533,8 @@ static const keyword_t multikeywords[] = {
     {"NOT BETWEEN", 'o'},
     {"NOT IN", 'o'},
     {"NOT LIKE", 'o'},
+    {"NOT REGEXP", 'o'},
+    {"NOT RLIKE", 'o'},
     {"NOT SIMILAR", 'o'},
     {"NOT SIMILAR TO", 'o'},
     {"ORDER BY", 'B'},
@@ -545,7 +547,7 @@ static const keyword_t multikeywords[] = {
     {"SOUNDS LIKE", 'o'},
     {"UNION ALL", 'U'},
 };
-static const size_t multikeywords_sz = 33;
+static const size_t multikeywords_sz = 35;
 
 typedef size_t (*pt2Function)(sfilter *sf);
 static const pt2Function char_parse_map[] = {
