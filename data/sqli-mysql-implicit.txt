@@ -1,0 +1,63 @@
+# mysql implicit conversions tests
+A' AND 'B
+A 'AND' B
+A' && 'B
+A '&&' B
+A' = 'B
+A '=' B
+A' & 'B
+A '&' B
+A' | 'B
+A '|' B
+A' ^ 'B
+A '^' B
+A' DIV 'B
+A 'DIV' B
+A' / 'B
+A '/' B
+A' <=> 'B
+A '<=>' B
+A' >= 'B
+A '>=' B
+A' > 'B
+A '>' B
+A' << 'B
+A '<<' B
+A' <= 'B
+A '<=' B
+A' < 'B
+A '<' B
+A' LIKE 'B
+A 'LIKE' B
+A' - 'B
+A '-' B
+A' % 'B
+A '%' B
+A' MOD 'B
+A 'MOD' B
+A' != 'B
+A '!=' B
+A' <> 'B
+A '<>' B
+A' NOT LIKE 'B
+A 'NOT LIKE' B
+A' NOT REGEXP 'B
+A 'NOT REGEXP' B
+A' OR 'B
+A 'OR' B
+A' || 'B
+A '||' B
+A' + 'B
+A '+' B
+A' REGEXP 'B
+A 'REGEXP' B
+A' >> 'B
+A '>>' B
+A' RLIKE 'B
+A 'RLIKE' B
+A' SOUNDS LIKE 'B
+A 'SOUNDS LIKE' B
+A' * 'B
+A '*' B
+A' XOR 'B
+A 'XOR' B
