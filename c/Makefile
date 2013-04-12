@@ -58,6 +58,10 @@ test_unit: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
 valgrind: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
 	./test_driver.py --valgrind ../tests/test-*.txt
 
+cppcheck:
+	rm -f cppcheck-result.xml
+	cppcheck --enable=all --inconclusive --std=posix  --xml . 2> cppcheck-result.xml
+
 unused:
 	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
 	diff /tmp/junk fingerprints.txt  | grep '>'
