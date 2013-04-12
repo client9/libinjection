@@ -299,7 +299,7 @@ size_t parse_slash(sfilter * sf)
     if (inc == 0) {
 
         // skip over initial '/*'
-        const char *ptr = memmem(cs + pos + 2, slen - (pos + 2), "*/", 2);
+        const char *ptr = (const char*) memmem(cs + pos + 2, slen - (pos + 2), "*/", 2);
         if (ptr == NULL) {
             // unterminated comment
             st_assign_cstr(current, 'c', cs + pos);
