@@ -106,11 +106,12 @@ sqli-gcov:
 gcovr-unittest-xml: sqli-gcov
 	gcovr --version
 	./test_driver.py ../tests/test-*.txt
-	gcovr -d -o libinjection-unittest-gcov.xml  --gcov-exclude='.*modp_.*' --xml -r `pwd`
+	gcovr -d -o libinjection-unittest-gcov.xml --gcov-exclude='.*modp_.*' --xml -r `pwd`
 
 # for jenkins
 gcovr-samples-xml: sqli-gcov
-	rm -f libinjection-samples-gcov.xml
+	rm -f reader libinjection-samples-gcov.xml
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	gcovr --version
 	-${MAKE} test_positive > /dev/null
 	-${MAKE} test_negative > /dev/null
