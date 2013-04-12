@@ -98,7 +98,7 @@ clean:
 	rm -rf core* a.out
 	rm -f reader extractor is_sqli lcov-reader sqli
 
-gcov:
+sqli-gcov:
 	rm -f sqli
 	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
 
