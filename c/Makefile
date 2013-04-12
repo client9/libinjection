@@ -33,6 +33,8 @@ help:
 	@echo "make http -- runs mini-http server, handy for viewing lcov"
 	@echo ""
 
+allbin: reader extractor is_sqli sqli
+
 reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c sqli_normalize.c sqli_fingerprints.h
 	${CC}  ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
@@ -126,3 +128,4 @@ lcov-reader: Makefile sqlparse_data.h sqlparse.h sqlparse.c reader.c sqli_normal
 http:
 	python -m  SimpleHTTPServer
 .PHONY: http
+
