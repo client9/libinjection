@@ -1,7 +1,7 @@
 
 CC=gcc
 CXX=g++
-CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align
+CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Werror
 INDENT=indent
 # Apple over-rides
 #   Trying to avoid using libtool
