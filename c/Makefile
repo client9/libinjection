@@ -105,7 +105,7 @@ sqli-gcov:
 gcovr-xml: sqli-gcov
 	gcovr --version
 	./test_driver.py ../tests/test-*.txt
-	gcovr -o cobertura-coverage.xml --xml -r `pwd`
+	gcovr -o libinjection-gcov.xml  --gcov-exclude='*modp*' --xml -r `pwd`
 
 lcov: sqli-gcov
 	lcov -b . --directory . --zerocounters
