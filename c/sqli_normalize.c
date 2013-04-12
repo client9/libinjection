@@ -26,13 +26,11 @@
 
 size_t sqli_qs_normalize(char *s, size_t slen)
 {
-    size_t newlen;
-
     // turn '+' into ' '
     slen = modp_burl_decode(s, s, slen);
     while (1) {
         // plain decode
-        newlen = modp_burl_decode_raw(s, s, slen);
+        size_t newlen = modp_burl_decode_raw(s, s, slen);
         if (slen == newlen) {
             // if no changes in size, we are done
             break;

@@ -92,15 +92,12 @@ void st_copy(stoken_t * dest, const stoken_t * src)
 
 const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
 {
-
-    int pos;
     int left = 0;
     int right = (int) nmemb - 1;
-    int cmp = 0;
 
     while (left <= right) {
-        pos = (left + right) / 2;
-        cmp = strcmp(base[pos], key);
+        int pos = (left + right) / 2;
+        int cmp = strcmp(base[pos], key);
         if (cmp == 0) {
             return base[pos];
         } else if (cmp < 0) {
