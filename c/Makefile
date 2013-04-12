@@ -93,7 +93,7 @@ clean:
 	rm -f *~ *.pyc
 	rm -f test_tokens test_speed
 	rm -rf *.dSYM
-	rm -rf *.gcno *.gcda *.info cppcheck-result.xml
+	rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
 	rm -rf lcov-html
 	rm -rf core* a.out
 	rm -f reader extractor is_sqli lcov-reader sqli
@@ -104,7 +104,8 @@ sqli-gcov:
 
 gcovr-xml: sqli-gcov
 	gcovr --version
-	gcovr --xml -r `pwd`
+	./test_driver.py ../tests/test-*.txt
+	gcovr -o cobertura-coverage.xml --xml -r `pwd`
 
 lcov: sqli-gcov
 	lcov -b . --directory . --zerocounters
