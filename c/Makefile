@@ -99,7 +99,8 @@ clean:
 	rm -f reader extractor is_sqli lcov-reader sqli
 
 lcov:
-	g++ -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.cpp sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
+	rm -f sqli
+	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
 	lcov -b . --directory . --zerocounters
 	./test_driver.py ../tests/test-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
