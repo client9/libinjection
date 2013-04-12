@@ -22,7 +22,7 @@ def toc():
     print "static const keyword_t sql_keywords[] = {"
     for k in sorted(keywords.keys()):
         print "    {\"%s\", '%s'}," % (k, keywords[k])
-    print "};";
+    print "};"
     print "static const size_t sql_keywords_sz = %d;" % (len(keywords), )
 
     multikeywords_start = set()
@@ -36,7 +36,7 @@ def toc():
     print "static const char* multikeywords_start[] = {"
     for k in sorted(list(multikeywords_start)):
         print "    \"%s\"," % (k)
-    print "};";
+    print "};"
 
     dlen = len(multikeywords_start)
     print "static const size_t multikeywords_start_sz = %d;" % (dlen,)

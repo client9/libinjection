@@ -36,7 +36,7 @@ def read_test(arg):
     # remove last newline from input
     info['--INPUT--'] = info['--INPUT--'][0:-1]
 
-    return (info['--TEST--'],info['--INPUT--'],info['--EXPECTED--'])
+    return (info['--TEST--'], info['--INPUT--'], info['--EXPECTED--'])
 
 if __name__ == '__main__':
     import sys
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     # hack for command line switch
     # if argv1 had 'valgrind'
 
-    i= 1
+    i = 1
     valgrind = False
     if 'valgrind' in sys.argv[1]:
         i = 2
