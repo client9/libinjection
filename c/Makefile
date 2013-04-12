@@ -112,7 +112,8 @@ gcovr-unittest-xml: sqli-gcov
 gcovr-samples-xml: sqli-gcov
 	rm -f libinjection-samples-gcov.xml
 	gcovr --version
-	${MAKE} test_positive test_negative
+	-${MAKE} test_positive > /dev/null
+	-${MAKE} test_negative > /dev/null
 	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='.*modp_.*' --xml -r `pwd`
 
 lcov: sqli-gcov
