@@ -1,7 +1,5 @@
-
 #ifndef _SQLPARSE_DATA_H
 #define _SQLPARSE_DATA_H
-
 #include "sqlparse.h"
 
 static const char* operators2[] = {

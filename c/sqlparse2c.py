@@ -8,17 +8,16 @@
 from sqlparse_map import *
 
 def toc():
-    print """
-#ifndef _SQLPARSE_DATA_H
-#define _SQLPARSE_DATA_H
-
-#include "sqlparse.h"
-"""
+    print "#ifndef _SQLPARSE_DATA_H"
+    print "#define _SQLPARSE_DATA_H"
+    print "#include \"sqlparse.h\""
+    print
     print 'static const char* operators2[] = {'
     for  k in sorted(list(double_char_operators)):
         print '    "%s",' % (k,)
     print '};'
-    print 'static const size_t operators2_sz = %d;' % (len(double_char_operators))
+    dlen = len(double_char_operators)
+    print 'static const size_t operators2_sz = %d;' % (dlen,)
     print
     print "static const keyword_t sql_keywords[] = {"
     for k in sorted(keywords.keys()):
@@ -26,9 +25,8 @@ def toc():
     print "};";
     print "static const size_t sql_keywords_sz = %d;" % (len(keywords), )
 
-
     multikeywords_start = set()
-    for k,v in phrases.iteritems():
+    for k, v in phrases.iteritems():
         parts = k.split(' ')
         plen = len(parts)
         multikeywords_start.add(parts[0])
@@ -40,12 +38,13 @@ def toc():
         print "    \"%s\"," % (k)
     print "};";
 
-    print "static const size_t multikeywords_start_sz = %d;" % (len(multikeywords_start), )
+    dlen = len(multikeywords_start)
+    print "static const size_t multikeywords_start_sz = %d;" % (dlen,)
 
     print "static const keyword_t multikeywords[] = {"
     for k in sorted(phrases.keys()):
         print "    {\"%s\", '%s'}," % (k, phrases[k])
-    print "};";
+    print "};"
     print "static const size_t multikeywords_sz = %d;" % (len(phrases), )
 
     fnmap = {
@@ -68,9 +67,9 @@ def toc():
     print "static const pt2Function char_parse_map[] = {"
     pos = 0
     for c in charmap:
-        print "   &%s, /* %d */" % (fnmap[c],pos)
+        print "   &%s, /* %d */" % (fnmap[c], pos)
         pos += 1
-    print "};";
+    print "};"
 
     print "#endif"
 
