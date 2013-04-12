@@ -93,7 +93,7 @@ clean:
 	rm -f *~ *.pyc
 	rm -f test_tokens test_speed
 	rm -rf *.dSYM
-	rm -rf *.gcno *.gcda *.info
+	rm -rf *.gcno *.gcda *.info cppcheck-result.xml
 	rm -rf lcov-html
 	rm -rf core* a.out
 	rm -f reader extractor is_sqli lcov-reader sqli
