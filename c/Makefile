@@ -98,9 +98,15 @@ clean:
 	rm -rf core* a.out
 	rm -f reader extractor is_sqli lcov-reader sqli
 
-lcov:
+gcov:
 	rm -f sqli
 	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
+
+gcovr-xml: sqli-gcov
+	gcovr --version
+	gcovr --xml -r `pwd`
+
+lcov: sqli-gcov
 	lcov -b . --directory . --zerocounters
 	./test_driver.py ../tests/test-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
