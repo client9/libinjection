@@ -57,15 +57,15 @@ public:
 
         }
 
-    const string& getFilename() {
+    const string& getFilename() const {
         return this->fname;
     }
 
-    int getLinenum() {
+    int getLinenum() const {
         return this->linenum;
     }
 
-    const string& getLine() {
+    const string& getLine() const {
         return this->line;
     }
 
