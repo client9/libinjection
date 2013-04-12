@@ -29,6 +29,7 @@ mysql_ops = (
     'REGEXP',
     '>>',
     'RLIKE',
+    'NOT RLIKE',
     'SOUNDS LIKE',
     '*',
     'XOR'
@@ -37,5 +38,10 @@ mysql_ops = (
 print '# mysql implicit conversions tests'
 
 for op in mysql_ops:
+    if op == '+':
+        op = '%2B'
+
     print "A' {0} 'B".format(op)
     print "A '{0}' B".format(op)
+    print "'{0}'".format(op)
+    print "' {0} '".format(op)
