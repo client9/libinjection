@@ -102,10 +102,18 @@ sqli-gcov:
 	rm -f sqli
 	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
 
-gcovr-xml: sqli-gcov
+# for jenkins
+gcovr-unittest-xml: sqli-gcov
 	gcovr --version
 	./test_driver.py ../tests/test-*.txt
-	gcovr -o libinjection-gcov.xml  --gcov-exclude='.*modp_.*' --xml -r `pwd`
+	gcovr -d -o libinjection-gcov.xml  --gcov-exclude='.*modp_.*' --xml -r `pwd`
+
+# for jenkins
+gcovr-samples-xml: sqli-gcov
+	rm -f libinjection-samples-gcov.xml
+	gcovr --version
+	$MAKE test_postive test_negative
+	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='.*modp_.*' --xml -r `pwd`
 
 lcov: sqli-gcov
 	lcov -b . --directory . --zerocounters
