@@ -1,4 +1,5 @@
-
+/*
+ */
 #include "sqlparse_private.h"
 #include "sqli_fingerprints.h"
 #include <time.h>
