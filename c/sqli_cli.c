@@ -1,5 +1,5 @@
 /**
- * Copyright 2012, Nick Galbreath
+ * Copyright 2012, 2013 Nick Galbreath
  * nickg@client9.com
  * BSD License -- see COPYING.txt for details
  *
