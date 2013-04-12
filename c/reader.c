@@ -51,6 +51,7 @@ int main(int argc, const char *argv[])
         invert = true;
         test_positive(stdin, "stdin");
     } else {
+        int i;
         int offset = 1;
 
         if (strcmp(argv[1], "-i") == 0) {
@@ -58,7 +59,7 @@ int main(int argc, const char *argv[])
             invert = true;
         }
 
-        for (int i = offset; i < argc; ++i) {
+        for (i = offset; i < argc; ++i) {
             FILE* fd = fopen(argv[i], "r");
             if (fd) {
                 test_positive(fd, argv[i]);
