@@ -27,7 +27,7 @@ look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
     //   etc
     // details to come
 
-Copyright (c) 2012 Nick Galbreath
+Copyright (c) 2012,2013 Nick Galbreath
 Licensed under standard BSD open source license
 See /COPYING.txt -- commercial licenses available.
 Send requests to nickg@client9.com
