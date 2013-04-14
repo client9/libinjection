@@ -3,6 +3,7 @@
 &1ovU
 &f()o
 &f(1)
+&f(1o
 &f(s)
 &f(v)
 &so1U
@@ -30,8 +31,10 @@
 1&(v)
 1&(v,
 1&(vo
+1&1
 1&1Bf
 1&1Uk
+1&1c
 1&1f(
 1&1o(
 1&1o1
@@ -301,6 +304,7 @@
 1Bvk1
 1Bvks
 1Bvkv
+1U
 1U((k
 1U(k1
 1U(kf
@@ -380,6 +384,7 @@
 1Uv,1
 1Uv,s
 1Uv,v
+1c
 1f()k
 1k1U(
 1k1Uk
@@ -396,6 +401,8 @@
 1kksc
 1kkvc
 1knkn
+1kno1
+1kokn
 1ksU(
 1ksUk
 1ksc
@@ -403,6 +410,7 @@
 1kvUk
 1kvc
 1n&f(
+1n)Uk
 1nUk1
 1nUkn
 1nUks
@@ -470,7 +478,6 @@
 1okv,
 1okvc
 1okvk
-1onos
 1onov
 1os)&
 1os)U
@@ -675,6 +682,7 @@ n&(s)
 n&(s,
 n&(v)
 n&(v,
+n&1Bf
 n&1f(
 n&1o(
 n&1o1
@@ -778,11 +786,13 @@ n;ko(
 n;kok
 nUk(k
 nUk1,
+nUkf(
 nUkn,
 nUks,
 nUkv,
 nUnk(
 nk1Uk
+nk1o1
 nkf(1
 nkf(s
 nkf(v
@@ -814,7 +824,6 @@ no1ov
 nof(1
 nof(s
 nof(v
-nok(1
 nok(f
 nok(k
 nok(s
@@ -882,6 +891,7 @@ s&(so
 s&(v)
 s&(v,
 s&(vo
+s&1
 s&1Bf
 s&1Uk
 s&1c
@@ -1082,7 +1092,6 @@ s)ok1
 s)oks
 s)okv
 s)on&
-s)ono
 s)os)
 s)osB
 s)osU
@@ -1263,6 +1272,7 @@ sUon1
 sUonv
 sUv,1
 sUv,v
+sc
 sf()k
 sf(1)
 sf(n,
@@ -1334,6 +1344,7 @@ snUkv
 snk1c
 snkf(
 snkvc
+sno(s
 sno1U
 snosU
 snovU
@@ -1906,6 +1917,7 @@ vUs,v
 vUv,1
 vUv,s
 vUv,v
+vc
 vf()k
 vf(1)
 vf(n,

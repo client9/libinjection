@@ -20,6 +20,12 @@
 #include <ctype.h>
 #include <assert.h>
 
+#if 0
+#define FOLD_DEBUG printf("%d: Fold state = %d, current=%c, last=%c\n", __LINE__, sf->fold_state, current->type, last->type == CHAR_NULL ? '~': last->type)
+#else
+#define FOLD_DEBUG
+#endif
+
 // order is important here
 #include "sqlparse_private.h"
 #include "sqlparse_data.h"
@@ -524,13 +530,10 @@ size_t parse_number(sfilter * sf)
         }
     } else if (isalpha(cs[pos])) {
         // oh no, we have something like '6FOO'
-        // which is not a number, grab as many alphanum
-        // as possible
-        pos += 1;
-        while (pos < slen && isalnum(cs[pos])) {
-            pos += 1;
-        }
-        st_assign(current, 'n', cs + start, pos - start);
+        // use microsoft style parsing and take just
+        // the number part and leave the rest to be
+        // parsed later
+        st_assign(current, '1', cs + start, pos - start);
         return pos;
     }
 
@@ -756,7 +759,9 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
         }
 
         if (st_is_empty(last)) {
-            if (current->type == '1' || current->type == '(') {
+            FOLD_DEBUG;
+;
+            if (current->type == '1' || current->type == 'n' || current->type == '(') {
                 sf->fold_state = 2;
                 st_copy(last, current);
             }
@@ -772,17 +777,21 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
             // emit 1, but keep state
             st_copy(sout, current);
             return true;
-        } else if (last->type == '1' && st_is_arith_op(current)) {
+        } else if ((last->type == '1' || last->type == 'n') && st_is_arith_op(current)) {
+            FOLD_DEBUG;
             st_copy(last, current);
-        } else if (last->type == 'o' && current->type == '1') {
+        } else if (last->type == 'o' && (current->type == '1' || current->type == 'n')) {
+            FOLD_DEBUG;
             st_copy(last, current);
         } else {
             if (sf->fold_state == 2) {
-                if (last->type != '1' && last->type != '(') {
+                if (last->type != '1' && last->type != '(' && last->type != 'n') {
+                    FOLD_DEBUG;
                     st_copy(sout, last);
                     st_copy(last, current);
                     sf->fold_state = 4;
                 } else {
+                    FOLD_DEBUG;
                     st_copy(sout, current);
                     st_clear(last);
                 }
@@ -864,7 +873,20 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         return false;
     }
     switch (tlen) {
-
+    case 2: {
+        // if 'comment' is '#' ignore.. too many FP
+        if (sql_state->tokenvec[1].val[0] == '#') {
+            sql_state->reason = __LINE__;
+            return false;
+        }
+        // detect obvious sqli scans.. many people put '--' in plain text
+        // so only detect if input ends with '--', e.g. 1-- but not 1-- foo
+        if ((strlen(sql_state->tokenvec[1].val) > 2) && sql_state->tokenvec[1].val[0] == '-') {
+            sql_state->reason = __LINE__;
+            return false;
+        }
+        break;
+        }
     case 3:{
         // ...foo' + 'bar...
         // no opening quote, no closing quote
@@ -913,8 +935,9 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     sql_state->reason = __LINE__;
                     return false;
                 } else {
-                    sql_state->reason = __LINE__;
-                    return false;
+                    // vvv aparently does nothing... TBD
+                    //sql_state->reason = __LINE__;
+                    //return false;
                 }
             }
         }

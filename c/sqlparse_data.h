@@ -370,7 +370,7 @@ static const keyword_t sql_keywords[] = {
     {"SHA", 'f'},
     {"SHA1", 'f'},
     {"SHA2", 'f'},
-    {"SHOW", 'k'},
+    {"SHOW", 'n'},
     {"SHUTDOWN", 'k'},
     {"SIGN", 'f'},
     {"SIGNAL", 'k'},
@@ -441,6 +441,7 @@ static const keyword_t sql_keywords[] = {
     {"UNION", 'U'},
     {"UNIQUE", 'n'},
     {"UNIX_TIMESTAMP", 'f'},
+    {"UNI_ON", 'U'},
     {"UNLOCK", 'k'},
     {"UNSIGNED", 'k'},
     {"UPDATE", 'k'},
@@ -483,7 +484,7 @@ static const keyword_t sql_keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t sql_keywords_sz = 450;
+static const size_t sql_keywords_sz = 451;
 static const char* multikeywords_start[] = {
     "ALTER",
     "CROSS",

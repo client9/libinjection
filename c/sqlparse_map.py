@@ -361,7 +361,7 @@ keywords = dict({
 'SHA'                         : 'f',
 'SHA1'                        : 'f',
 'SHA2'                        : 'f',
-'SHOW'                        : 'k',
+'SHOW'                        : 'n',
 'SHUTDOWN'                    : 'k',
 'SIGN'                        : 'f',
 'SIGNAL'                      : 'k',
@@ -401,7 +401,7 @@ keywords = dict({
 'SYSOBJECTS'                  : 'k',  # http://msdn.microsoft.com/en-us/library/aa260447(v=sql.80).aspx
 'SYSUSERS'                    : 'k',  # MSSQL
 'SYSTEM_USER'                 : 'f',
-'TABLE'                       : 'k',
+'TABLE'                       : 'k',  # none, because SQLi really can't use 'TABLE'
 'TAN'                         : 'f',
 'TERMINATED'                  : 'k',
 'THEN'                        : 'k',
@@ -429,6 +429,7 @@ keywords = dict({
 'UNDO'                        : 'k',
 'UNHEX'                       : 'f',
 'UNION'                       : 'U',
+'UNI_ON'                      : 'U',  # odd variation that comes up
 # only used as a function (DB2) or as "CREATE UNIQUE"
 'UNIQUE'                      : 'n',
 'UNIX_TIMESTAMP'              : 'f',
