@@ -138,3 +138,9 @@ TRUE DIV(SELECT ((ORD(LEFT
 # a'+'b encoded is a%27%2B%27b
 a%27%2B%27b
 ' OR 1='1
+
+# new variations
+X' != 'Y' = 0 = 1
+X' = 'X' = 0 = 1
+X' = 'X' = 'X' = 0 = '1
+X' - 'Y' - 0 = '1
