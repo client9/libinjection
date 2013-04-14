@@ -919,21 +919,21 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                                              "=")) {
                     // query string fragment ...foo"&page=2
                     sql_state->reason = __LINE__;
-                    return false;
+                    return true;
                 } else if (sql_state->delim == CHAR_NULL &&
                            streq(sql_state->pat, "sosos")) {
                     // "foo" and "bar" and "dingbat"
                     //   likely search term
-                    sql_state->reason = __LINE__;
-                    return false;
+                    //sql_state->reason = __LINE__;
+                    return true;
                 } else if (!st_is_arith_op(&sql_state->tokenvec[3]) &&
                            strcmp(sql_state->tokenvec[1].val,
                                   sql_state->tokenvec[3].val)) {
                     return true;
                 } else if (streq(sql_state->tokenvec[1].val,
                                  sql_state->tokenvec[3].val)) {
-                    sql_state->reason = __LINE__;
-                    return false;
+                    //sql_state->reason = __LINE__;
+                    //return true;
                 } else {
                     // vvv aparently does nothing... TBD
                     //sql_state->reason = __LINE__;

@@ -574,6 +574,7 @@ k1,1,
 k1,1c
 k1,1k
 k1,f(
+k1,n,
 k1,s,
 k1,sc
 k1,sk
@@ -816,7 +817,6 @@ no1&v
 no1Uk
 no1f(
 no1o(
-no1o1
 no1of
 no1oo
 no1os
@@ -828,6 +828,7 @@ nok(f
 nok(k
 nok(s
 nok(v
+nono1
 nos&1
 nos&v
 nosUk
@@ -1433,7 +1434,6 @@ sokvo
 sonk1
 sonks
 sonkv
-sono1
 sonos
 sonov
 sos
