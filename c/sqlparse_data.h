@@ -679,4 +679,5 @@ static const pt2Function char_parse_map[] = {
    &parse_operator1, /* 126 */
    &parse_white, /* 127 */
 };
+
 #endif
