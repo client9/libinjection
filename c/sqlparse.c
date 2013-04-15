@@ -285,7 +285,7 @@ size_t parse_slash(sfilter * sf)
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
-    size_t cur = cs + pos;
+    const char* cur = cs + pos;
 
     size_t pos1 = pos + 1;
     if (pos1 == slen || cs[pos1] != '*') {
