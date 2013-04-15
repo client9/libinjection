@@ -512,150 +512,135 @@ double_char_operators = (
                 # '!~*'
                 )
 
-CHAR_WORD = 0
-CHAR_NONE = 1
-CHAR_WHITE = 2
-CHAR_STR = 3
-CHAR_OP1 = 4
-CHAR_OP2 = 5
-CHAR_CHAR = 6
-CHAR_COM1 = 7
-CHAR_DASH = 8
-CHAR_SLASH = 9
-CHAR_BACK = 10
-CHAR_NUM = 11
-CHAR_VAR = 13
-CHAR_OTHER = 14
-
 charmap = [
-            CHAR_WHITE, # 0
-            CHAR_WHITE, # 1
-            CHAR_WHITE, # 2
-            CHAR_WHITE, # 3
-            CHAR_WHITE, # 4
-            CHAR_WHITE, # 5
-            CHAR_WHITE, # 6
-            CHAR_WHITE, # 7
-            CHAR_WHITE, # 8
-            CHAR_WHITE, # 9
-            CHAR_WHITE, # 10
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE, # 20
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_WHITE, #30
-            CHAR_WHITE,
-            CHAR_WHITE,
-            CHAR_OP2,   # 33 !
-            CHAR_STR,   # 34 "
-            CHAR_COM1,  # 35 "#"
-            CHAR_WHITE,  # 36 $ -- ignore optional currency symbol for TSQL money types
-            CHAR_OP1,   # 37 %
-            CHAR_OP2,   # 38 &
-            CHAR_STR,   # 39 '
-            CHAR_CHAR,  # 40 (
-            CHAR_CHAR,  # 41 )
-            CHAR_OP2,   # 42 *
-            CHAR_OP1,   # 43 +
-            CHAR_CHAR,  # 44 ,
-            CHAR_DASH,  # 45 -
-            CHAR_NUM,   # 46 .
-            CHAR_SLASH, # 47 /
-            CHAR_NUM,   # 48 0
-            CHAR_NUM,   # 49 1
-            CHAR_NUM,   # 50 2
-            CHAR_NUM,   # 51 3
-            CHAR_NUM,   # 52 4
-            CHAR_NUM,   # 53 5
-            CHAR_NUM,   # 54 6
-            CHAR_NUM,   # 55 7
-            CHAR_NUM,   # 56 8
-            CHAR_NUM,   # 57 9
-            CHAR_CHAR,  # 58 : colon
-            CHAR_CHAR,  # 59 ; semiclon
-            CHAR_OP2,   # 60 <
-            CHAR_OP2,   # 61 =
-            CHAR_OP2,   # 62 >
-            CHAR_OTHER, # 63 ?   BEEP BEEP
-            CHAR_VAR,   # 64 @
-            CHAR_WORD,  # 65 A
-            CHAR_WORD,  # 66 B
-            CHAR_WORD,  # @
-            CHAR_WORD,  # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # Z
-            CHAR_OTHER,           # [
-            CHAR_BACK,            # \\
-            CHAR_OTHER,           # ]
-            CHAR_OP1,             # ^
-            CHAR_WORD,            # _
-            CHAR_WORD,            # backtick
-            CHAR_WORD,            # A
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # @
-            CHAR_WORD,            # z
-            CHAR_OTHER,            # 123 { left brace
-            CHAR_OP2,             # 124 | pipe
-            CHAR_OTHER,            # 125 } right brace
-            CHAR_OP1,             # 126  ~
-            CHAR_WHITE
+            'CHAR_WHITE', # 0
+            'CHAR_WHITE', # 1
+            'CHAR_WHITE', # 2
+            'CHAR_WHITE', # 3
+            'CHAR_WHITE', # 4
+            'CHAR_WHITE', # 5
+            'CHAR_WHITE', # 6
+            'CHAR_WHITE', # 7
+            'CHAR_WHITE', # 8
+            'CHAR_WHITE', # 9
+            'CHAR_WHITE', # 10
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE', # 20
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_WHITE', #30
+            'CHAR_WHITE',
+            'CHAR_WHITE',
+            'CHAR_OP2',   # 33 !
+            'CHAR_STR',   # 34 "
+            'CHAR_COM1',  # 35 "#"
+            'CHAR_WHITE',  # 36 $ -- ignore optional currency symbol for TSQL money types
+            'CHAR_OP1',   # 37 %
+            'CHAR_OP2',   # 38 &
+            'CHAR_STR',   # 39 '
+            'CHAR_CHAR',  # 40 (
+            'CHAR_CHAR',  # 41 )
+            'CHAR_OP2',   # 42 *
+            'CHAR_OP1',   # 43 +
+            'CHAR_CHAR',  # 44 ,
+            'CHAR_DASH',  # 45 -
+            'CHAR_NUM',   # 46 .
+            'CHAR_SLASH', # 47 /
+            'CHAR_NUM',   # 48 0
+            'CHAR_NUM',   # 49 1
+            'CHAR_NUM',   # 50 2
+            'CHAR_NUM',   # 51 3
+            'CHAR_NUM',   # 52 4
+            'CHAR_NUM',   # 53 5
+            'CHAR_NUM',   # 54 6
+            'CHAR_NUM',   # 55 7
+            'CHAR_NUM',   # 56 8
+            'CHAR_NUM',   # 57 9
+            'CHAR_CHAR',  # 58 : colon
+            'CHAR_CHAR',  # 59 ; semiclon
+            'CHAR_OP2',   # 60 <
+            'CHAR_OP2',   # 61 =
+            'CHAR_OP2',   # 62 >
+            'CHAR_OTHER', # 63 ?   BEEP BEEP
+            'CHAR_VAR',   # 64 @
+            'CHAR_WORD',  # 65 A
+            'CHAR_WORD',  # 66 B
+            'CHAR_WORD',  # @
+            'CHAR_WORD',  # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # Z
+            'CHAR_OTHER',           # [
+            'CHAR_BACK',            # \\
+            'CHAR_OTHER',           # ]
+            'CHAR_OP1',             # ^
+            'CHAR_WORD',            # _
+            'CHAR_WORD',            # backtick
+            'CHAR_WORD',            # A
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # @
+            'CHAR_WORD',            # z
+            'CHAR_OTHER',            # 123 { left brace
+            'CHAR_OP2',             # 124 | pipe
+            'CHAR_OTHER',            # 125 } right brace
+            'CHAR_OP1',             # 126  ~
+            'CHAR_WHITE'
 ]
 
 phrases = dict({
@@ -706,5 +691,5 @@ if __name__ == '__main__':
         'phrases': phrases
         }
 
-    print json.dumps(objs, sort_keys=True, indent=4)
+    print json.dumps(objs, sort_keys=True,indent=4)
 

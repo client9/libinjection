@@ -48,19 +48,19 @@ def toc():
     print "static const size_t multikeywords_sz = %d;" % (len(phrases), )
 
     fnmap = {
-        CHAR_WORD: 'parse_word',
-        CHAR_WHITE: 'parse_white',
-        CHAR_OP1: 'parse_operator1',
-        CHAR_OP2: 'parse_operator2',
-        CHAR_BACK: 'parse_backslash',
-        CHAR_DASH: 'parse_dash',
-        CHAR_STR: 'parse_string',
-        CHAR_COM1: 'parse_eol_comment',
-        CHAR_NUM: 'parse_number',
-        CHAR_SLASH: 'parse_slash',
-        CHAR_CHAR: 'parse_char',
-        CHAR_VAR: 'parse_var',
-        CHAR_OTHER: 'parse_other'
+        'CHAR_WORD': 'parse_word',
+        'CHAR_WHITE': 'parse_white',
+        'CHAR_OP1': 'parse_operator1',
+        'CHAR_OP2': 'parse_operator2',
+        'CHAR_BACK': 'parse_backslash',
+        'CHAR_DASH': 'parse_dash',
+        'CHAR_STR': 'parse_string',
+        'CHAR_COM1': 'parse_eol_comment',
+        'CHAR_NUM': 'parse_number',
+        'CHAR_SLASH': 'parse_slash',
+        'CHAR_CHAR': 'parse_char',
+        'CHAR_VAR': 'parse_var',
+        'CHAR_OTHER': 'parse_other'
         }
     print
     print "typedef size_t (*pt2Function)(sfilter *sf);"
