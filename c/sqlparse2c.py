@@ -7,26 +7,28 @@
 
 from sqlparse_map import *
 
-def toc():
+def toc(obj):
     print "#ifndef _SQLPARSE_DATA_H"
     print "#define _SQLPARSE_DATA_H"
     print "#include \"sqlparse.h\""
     print
+
+    
     print 'static const char* operators2[] = {'
-    for  k in sorted(list(double_char_operators)):
+    for  k in sorted(list(obj[u'double_char_operators'])):
         print '    "%s",' % (k,)
     print '};'
-    dlen = len(double_char_operators)
+    dlen = len(obj['double_char_operators'])
     print 'static const size_t operators2_sz = %d;' % (dlen,)
     print
     print "static const keyword_t sql_keywords[] = {"
-    for k in sorted(keywords.keys()):
+    for k in sorted(obj['keywords'].keys()):
         print "    {\"%s\", '%s'}," % (k, keywords[k])
     print "};"
-    print "static const size_t sql_keywords_sz = %d;" % (len(keywords), )
+    print "static const size_t sql_keywords_sz = %d;" % (len(obj['keywords']), )
 
     multikeywords_start = set()
-    for k, v in phrases.iteritems():
+    for k, v in obj['phrases'].iteritems():
         parts = k.split(' ')
         plen = len(parts)
         multikeywords_start.add(parts[0])
@@ -42,10 +44,10 @@ def toc():
     print "static const size_t multikeywords_start_sz = %d;" % (dlen,)
 
     print "static const keyword_t multikeywords[] = {"
-    for k in sorted(phrases.keys()):
+    for k in sorted(obj['phrases'].keys()):
         print "    {\"%s\", '%s'}," % (k, phrases[k])
     print "};"
-    print "static const size_t multikeywords_sz = %d;" % (len(phrases), )
+    print "static const size_t multikeywords_sz = %d;" % (len(obj['phrases']), )
 
     fnmap = {
         'CHAR_WORD': 'parse_word',
@@ -66,7 +68,7 @@ def toc():
     print "typedef size_t (*pt2Function)(sfilter *sf);"
     print "static const pt2Function char_parse_map[] = {"
     pos = 0
-    for c in charmap:
+    for c in obj['charmap']:
         print "   &%s, /* %d */" % (fnmap[c], pos)
         pos += 1
     print "};"
@@ -75,4 +77,7 @@ def toc():
 
 
 if __name__ == '__main__':
-    toc()
+    import sys
+    import json
+    obj = json.load(sys.stdin)
+    toc(obj)

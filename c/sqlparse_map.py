@@ -687,7 +687,7 @@ if __name__ == '__main__':
     objs = {
         'keywords': keywords,
         'charmap': charmap,
-        'double_char_operatators': double_char_operators,
+        'double_char_operators': double_char_operators,
         'phrases': phrases
         }
 
