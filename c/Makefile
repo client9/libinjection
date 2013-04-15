@@ -110,7 +110,7 @@ sqli-gcov: sqli_fingerprints.h
 gcovr-unittest-xml: sqli-gcov
 	gcovr --version
 	./test_driver.py ../tests/test-*.txt
-	gcovr -d -o libinjection-unittest-gcov.xml --gcov-exclude='.*modp_.*' --xml -r `pwd`
+	gcovr -d -o libinjection-unittest-gcov.xml --gcov-exclude='.*modp_.*'  --gcov-exclude='*reader*' --xml -r `pwd`
 
 # for jenkins
 gcovr-samples-xml: sqli-gcov
@@ -119,7 +119,7 @@ gcovr-samples-xml: sqli-gcov
 	gcovr --version
 	-${MAKE} test_positive > /dev/null
 	-${MAKE} test_negative > /dev/null
-	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='.*modp_.*' --xml -r `pwd`
+	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='.*modp_.*' --gcov-exclude='*reader*' --xml -r `pwd`
 
 lcov: sqli-gcov
 	lcov -b . --directory . --zerocounters
