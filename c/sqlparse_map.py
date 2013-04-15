@@ -765,5 +765,5 @@ if __name__ == '__main__':
         'phrases': phrases
         }
 
-    print json.dumps(objs, sort_keys=True,indent=4)
+    print json.dumps(objs, sort_keys=True, indent=4)
 

@@ -4,6 +4,10 @@
 #  nickg@client9.com
 #  BSD License -- see COPYING.txt for details
 #
+"""
+Turns a fingerprints.txt into a C header (.h) file
+"""
+
 
 print """
 #ifndef _SQLPARSE_FINGERPRINTS_H
