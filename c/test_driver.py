@@ -30,7 +30,7 @@ def run(args):
             raise Exception("Test died!: " + stderrdata)
         return stdoutdata
 
-def run_test(name, data, valgrind=False):
+def run_test(test_name, data, valgrind=False):
     """
     runs a test
     """
@@ -44,11 +44,11 @@ def run_test(name, data, valgrind=False):
         actual = run(['./sqli', data[1]])
 
     if actual.strip() != data[2].strip():
-        print "not ok: " + name
+        print "not ok: " + test_name
         print "EXPECTED: \n" + data[2]
         print "GOT: \n" + actual
     else:
-        print "ok: " + name
+        print "ok: " + test_name
 
 def read_test(arg):
     """
