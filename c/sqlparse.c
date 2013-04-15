@@ -295,7 +295,8 @@ size_t parse_slash(sfilter * sf)
     if (inc == 0) {
 
         // skip over initial '/*'
-        const char *ptr = (const char*) memmem(cs + pos + 2, slen - (pos + 2), "*/", 2);
+        const char *ptr =
+            (const char *) memmem(cs + pos + 2, slen - (pos + 2), "*/", 2);
         if (ptr == NULL) {
             // unterminated comment
             st_assign_cstr(current, 'c', cs + pos);
@@ -307,7 +308,8 @@ size_t parse_slash(sfilter * sf)
             // make a new token.
             char ctype = 'c';
             const size_t clen = (ptr + 2) - (cs + pos);
-            if (memmem(cs + pos + 2, ptr - (cs + pos + 2), "/*", 2) != NULL) {
+            if (memmem(cs + pos + 2, ptr - (cs + pos + 2), "/*", 2) !=
+                NULL) {
                 ctype = 'X';
             }
             st_assign(current, ctype, cs + pos, clen);
@@ -403,7 +405,8 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             return len;
         } else if (*(qpos - 1) != '\\') {
             // ending quote is not escaped.. copy and end
-            st_assign(st, 's', cs + pos + offset, qpos - (cs + pos + offset));
+            st_assign(st, 's', cs + pos + offset,
+                      qpos - (cs + pos + offset));
             st->str_close = delim;
             return qpos - cs + 1;
         } else {
@@ -435,7 +438,8 @@ size_t parse_word(sfilter * sf)
     size_t pos = sf->pos;
 
     size_t slen =
-        strlenspn(cs + pos, sf->slen - pos, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+        strlenspn(cs + pos, sf->slen - pos,
+                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
 
     st_assign(current, 'n', cs + pos, slen);
     if (slen < ST_MAX_SIZE) {
@@ -464,7 +468,8 @@ size_t parse_var(sfilter * sf)
     }
 
     size_t xlen =
-        strlenspn(cs + pos1, slen - pos1, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+        strlenspn(cs + pos1, slen - pos1,
+                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
         st_assign(current, 'v', cs + pos, (pos1 - pos));
         return pos1;
@@ -483,7 +488,8 @@ size_t parse_number(sfilter * sf)
 
     if (pos + 1 < slen && cs[pos] == '0' && cs[pos + 1] == 'X') {
         // TBD compare if isxdigit
-        size_t xlen = strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEF");
+        size_t xlen =
+            strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEF");
         if (xlen == 0) {
             st_assign_cstr(current, 'n', "0X");
             return pos + 2;
@@ -748,8 +754,8 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
 
         if (st_is_empty(last)) {
             FOLD_DEBUG;
-;
-            if (current->type == '1' || current->type == 'n' || current->type == '(') {
+            if (current->type == '1' || current->type == 'n'
+                || current->type == '(') {
                 sf->fold_state = 2;
                 st_copy(last, current);
             }
@@ -765,15 +771,18 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
             // emit 1, but keep state
             st_copy(sout, current);
             return true;
-        } else if ((last->type == '1' || last->type == 'n') && st_is_arith_op(current)) {
+        } else if ((last->type == '1' || last->type == 'n')
+                   && st_is_arith_op(current)) {
             FOLD_DEBUG;
             st_copy(last, current);
-        } else if (last->type == 'o' && (current->type == '1' || current->type == 'n')) {
+        } else if (last->type == 'o'
+                   && (current->type == '1' || current->type == 'n')) {
             FOLD_DEBUG;
             st_copy(last, current);
         } else {
             if (sf->fold_state == 2) {
-                if (last->type != '1' && last->type != '(' && last->type != 'n') {
+                if (last->type != '1' && last->type != '('
+                    && last->type != 'n') {
                     FOLD_DEBUG;
                     st_copy(sout, last);
                     st_copy(last, current);
@@ -861,39 +870,41 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         return false;
     }
     switch (tlen) {
-    case 2: {
-        // if 'comment' is '#' ignore.. too many FP
-        if (sql_state->tokenvec[1].val[0] == '#') {
-            sql_state->reason = __LINE__;
-            return false;
-        }
-        // detect obvious sqli scans.. many people put '--' in plain text
-        // so only detect if input ends with '--', e.g. 1-- but not 1-- foo
-        if ((strlen(sql_state->tokenvec[1].val) > 2) && sql_state->tokenvec[1].val[0] == '-') {
-            sql_state->reason = __LINE__;
-            return false;
-        }
-        break;
-        }
-    case 3:{
-        // ...foo' + 'bar...
-        // no opening quote, no closing quote
-        // and each string has data
-        if (streq(sql_state->pat, "sos") || streq(sql_state->pat, "s&s")) {
-            if ((sql_state->tokenvec[0].str_open == CHAR_NULL) &&
-                (sql_state->tokenvec[2].str_close == CHAR_NULL)) {
-
-                // if ....foo" + "bar....
-                return true;
-            } else {
-                // not sqli
+    case 2:{
+            // if 'comment' is '#' ignore.. too many FP
+            if (sql_state->tokenvec[1].val[0] == '#') {
                 sql_state->reason = __LINE__;
                 return false;
             }
-        break;
+            // detect obvious sqli scans.. many people put '--' in plain text
+            // so only detect if input ends with '--', e.g. 1-- but not 1-- foo
+            if ((strlen(sql_state->tokenvec[1].val) > 2)
+                && sql_state->tokenvec[1].val[0] == '-') {
+                sql_state->reason = __LINE__;
+                return false;
+            }
+            break;
         }
-    }   /* case 3 */
-    }   /* end switch */
+    case 3:{
+            // ...foo' + 'bar...
+            // no opening quote, no closing quote
+            // and each string has data
+            if (streq(sql_state->pat, "sos")
+                || streq(sql_state->pat, "s&s")) {
+                if ((sql_state->tokenvec[0].str_open == CHAR_NULL)
+                    && (sql_state->tokenvec[2].str_close == CHAR_NULL)) {
+
+                    // if ....foo" + "bar....
+                    return true;
+                } else {
+                    // not sqli
+                    sql_state->reason = __LINE__;
+                    return false;
+                }
+                break;
+            }
+        }                       /* case 3 */
+    }                           /* end switch */
     return true;
 }
 
