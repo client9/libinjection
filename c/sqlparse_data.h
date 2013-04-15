@@ -228,8 +228,7 @@ static const keyword_t sql_keywords[] = {
     {"IS", 'o'},
     {"ISNULL", 'f'},
     {"IS_FREE_LOCK", 'f'},
-    {"IS_MEMBER", 'f'},
-    {"IS_SRVROLEMEMBER", 'f'},
+    {"IS_MEMBERIS_SRVROLEMEMBER", 'f'},
     {"IS_USED_LOCK", 'f'},
     {"ITERATE", 'k'},
     {"JOIN", 'k'},
@@ -484,7 +483,7 @@ static const keyword_t sql_keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t sql_keywords_sz = 451;
+static const size_t sql_keywords_sz = 450;
 static const char* multikeywords_start[] = {
     "ALTER",
     "CROSS",

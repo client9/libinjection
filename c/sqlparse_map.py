@@ -1,12 +1,17 @@
 #!/usr/bin/env python
-
 #
-#  Copyright 2012, Nick Galbreath
+#  Copyright 2012, 2013 Nick Galbreath
 #  nickg@client9.com
 #  BSD License -- see COPYING.txt for details
 #
 
-keywords = dict({
+"""
+Data for libinjection.   These are simple data structures
+which are exported to JSON.  This is done so comments can be
+added to the data directly (JSON doesn't support comments).
+"""
+
+keywords = {
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',
 
 # http://blog.red-database-security.com/2009/01/17/tutorial-oracle-sql-injection-in-webapps-part-i/print/
@@ -23,7 +28,10 @@ keywords = dict({
 'AES_ENCRYPT'                 : 'f',
 'AGAINST'                     : 'k',
 'ALTER'                       : 'k',
-'ALL_USERS'                   : 'k', # oracle
+
+# 'ALL_USERS' - oracle
+'ALL_USERS'                   : 'k',
+
 'ANALYZE'                     : 'k',
 'AND'                         : '&',
 'AS'                          : 'k',
@@ -62,6 +70,8 @@ keywords = dict({
 'CEIL'                        : 'f',
 'CEILING'                     : 'f',
 'CHANGE'                      : 'k',
+
+# 'CHAR'
 # sometimes a function too
 'CHAR'                        : 'f',
 
@@ -142,9 +152,13 @@ keywords = dict({
 'ENCODE'                      : 'f',
 'ENCRYPT'                     : 'f',
 'ESCAPED'                     : 'k',
+
 # TBD
 #'END'                         : 'k',
-'EXEC'                        : 'k',   # mssql
+
+# 'EXEC' - MSSQL
+#
+'EXEC'                        : 'k',
 'EXECUTE'                     : 'k',
 'EXISTS'                      : 'k',
 'EXIT'                        : 'k',
@@ -176,17 +190,25 @@ keywords = dict({
 'GREATEST'                    : 'f',
 'GROUP'                       : 'n',
 'GROUP_CONCAT'                : 'f',
-'HAVING'                      : 'k',  # MSSQL
+
+#
+# 'HAVING' - MSSQL
+'HAVING'                      : 'k',
+
 'HEX'                         : 'f',
 'HIGH_PRIORITY'               : 'k',
 'HOUR'                        : 'f',
 'HOUR_MICROSECOND'            : 'k',
 'HOUR_MINUTE'                 : 'k',
 'HOUR_SECOND'                 : 'k',
-'HOST_NAME'                   : 'f',  # unknown DB
-# if is normally a function, except in TSQL
+
+# 'HOST_NAME' -- unknown db
+'HOST_NAME'                   : 'f',
+
+# 'IF - if is normally a function, except in TSQL
 # http://msdn.microsoft.com/en-us/library/ms182717.aspx
 'IF'                          : 'k',
+
 'IFF'                         : 'f',
 'IFNULL'                      : 'f',
 'IGNORE'                      : 'k',
@@ -216,8 +238,12 @@ keywords = dict({
 'IS'                          : 'o',
 'ISNULL'                      : 'f',
 'IS_FREE_LOCK'                : 'f',
-'IS_MEMBER'                   : 'f',  # MSSQL
-'IS_SRVROLEMEMBER'            : 'f',  # MSSQL
+#
+# 'IS_MEMBER' - MSSQL
+'IS_MEMBER'
+#                : 'f',
+# 'IS_SRV...' MSSQL
+'IS_SRVROLEMEMBER'            : 'f',
 'IS_USED_LOCK'                : 'f',
 'ITERATE'                     : 'k',
 'JOIN'                        : 'k',
@@ -287,13 +313,21 @@ keywords = dict({
 'OCTET_LENGTH'                : 'f',
 'OFFSET'                      : 'k',
 'OLD_PASSWORD'                : 'f',
+
 # need to investigate how used
 #'ON'                          : 'k',
 'ONE_SHOT'                    : 'k',
+
 # obviously not SQL but used in attacks
 'OWN3D'                       : 'k',
-'OPEN'                        : 'k', # http://msdn.microsoft.com/en-us/library/ms190500.aspx
-'OPENDATASOURCE'              : 'f', # http://msdn.microsoft.com/en-us/library/ms179856.aspx
+
+# 'OPEN'
+# http://msdn.microsoft.com/en-us/library/ms190500.aspx
+'OPEN'                        : 'k',
+
+# 'OPENDATASOURCE'
+# http://msdn.microsoft.com/en-us/library/ms179856.aspx
+'OPENDATASOURCE'              : 'f',
 'OPENXML'                     : 'f',
 'OPENQUERY'                   : 'f',
 'OPENROWSET'                  : 'f',
@@ -306,7 +340,9 @@ keywords = dict({
 'OUT'                         : 'k',
 'OUTFILE'                     : 'k',
 'PARTITION'                   : 'k',
-'PASSWORD'                    : 'k',  # keyword "SET PASSWORD", and a function
+
+# keyword "SET PASSWORD", and a function
+'PASSWORD'                    : 'k',
 'PERIOD_ADD'                  : 'f',
 'PERIOID_DIFF'                : 'f',
 'PG_ADVISORY_LOCK'            : 'f',
@@ -323,12 +359,16 @@ keywords = dict({
 'QUOTE'                       : 'f',
 'RADIANS'                     : 'f',
 'RAND'                        : 'f',
-'RANDOMBLOB'                  : 'f',  # sqlite3
+
+# 'RANDOMBLOB' - sqlite3
+'RANDOMBLOB'                  : 'f',
 'RANGE'                       : 'k',
 'READ'                        : 'k',
 'READS'                       : 'k',
 'READ_WRITE'                  : 'k',
-'REAL'                        : 'n',   # only used in data definition
+
+# 'REAL' only used in data definition
+'REAL'                        : 'n',
 'REFERENCES'                  : 'k',
 'REGEXP'                      : 'o',
 'RELEASE'                     : 'k',
@@ -397,11 +437,22 @@ keywords = dict({
 'SUBTIME'                     : 'f',
 'SUM'                         : 'f',
 'SYSDATE'                     : 'f',
-'SYSCOLUMNS'                  : 'k',  # http://msdn.microsoft.com/en-us/library/aa260398(v=sql.80).aspx
-'SYSOBJECTS'                  : 'k',  # http://msdn.microsoft.com/en-us/library/aa260447(v=sql.80).aspx
-'SYSUSERS'                    : 'k',  # MSSQL
+
+# 'SYSCOLUMNS'
+# http://msdn.microsoft.com/en-us/library/aa260398(v=sql.80).aspx
+'SYSCOLUMNS'                  : 'k',
+
+# 'SYSOBJECTS'
+# http://msdn.microsoft.com/en-us/library/aa260447(v=sql.80).aspx
+'SYSOBJECTS'                  : 'k',
+
+# 'SYSUSERS' - MSSQL
+'SYSUSERS'                    : 'k',
 'SYSTEM_USER'                 : 'f',
-'TABLE'                       : 'k',  # none, because SQLi really can't use 'TABLE'
+
+# 'TABLE'
+# because SQLi really can't use 'TABLE'
+'TABLE'                       : 'k',
 'TAN'                         : 'f',
 'TERMINATED'                  : 'k',
 'THEN'                        : 'k',
@@ -414,11 +465,16 @@ keywords = dict({
 'TINYBLOB'                    : 'k',
 'TINYINT'                     : 'k',
 'TINYTEXT'                    : 'k',
-'TO_CHAR'                     : 'f', # oracle
+#
+# 'TO_CHAR' -- oracle
+'TO_CHAR'                     : 'f',
 'TO_DAYS'                     : 'f',
 'TO_SECONDS'                  : 'f',
 'TOP'                         : 'k',
-'TRAILING'                    : 'n', # only used in TRIM(TRAILING  http://www.w3resource.com/sql/character-functions/trim.php
+
+# 'TRAILING' -- only used in TRIM(TRAILING
+# http://www.w3resource.com/sql/character-functions/trim.php
+'TRAILING'                    : 'n',
 'TRIGGER'                     : 'k',
 'TRIM'                        : 'f',
 'TRUE'                        : '1',
@@ -429,9 +485,14 @@ keywords = dict({
 'UNDO'                        : 'k',
 'UNHEX'                       : 'f',
 'UNION'                       : 'U',
-'UNI_ON'                      : 'U',  # odd variation that comes up
+
+# 'UNI_ON' -- odd variation that comes up
+'UNI_ON'                      : 'U',
+
+# 'UNIQUE'
 # only used as a function (DB2) or as "CREATE UNIQUE"
 'UNIQUE'                      : 'n',
+
 'UNIX_TIMESTAMP'              : 'f',
 'UNLOCK'                      : 'k',
 'UNSIGNED'                    : 'k',
@@ -440,7 +501,10 @@ keywords = dict({
 'UPPER'                       : 'f',
 'USAGE'                       : 'k',
 'USE'                         : 'k',
-#'USER'                       : 'k',   # MySQL function?
+
+# 'USER' -- a MySQL function?
+#'USER'                       : 'k',
+
 'USING'                       : 'f',
 'UTC_DATE'                    : 'k',
 'UTC_TIME'                    : 'k',
@@ -464,9 +528,10 @@ keywords = dict({
 'WHERE'                       : 'k',
 'WHILE'                       : 'k',
 'WITH'                        : 'k',
-'XMLELEMENT'                  : 'f',   # oracle
-'XMLFOREST'                   : 'f',   # oracle
-'XMLFORMAT'                   : 'f',   # oracle
+# XML... oracle
+'XMLELEMENT'                  : 'f',
+'XMLFOREST'                   : 'f',
+'XMLFORMAT'                   : 'f',
 'XMLTYPE'                     : 'f',
 'XOR'                         : 'o',
 'XP_EXECRESULTSET'            : 'k',
@@ -474,212 +539,221 @@ keywords = dict({
 'YEARWEEK'                    : 'f',
 'YEAR_MONTH'                  : 'k',
 'ZEROFILL'                    : 'k'
-})
-
-mapping = ['', '(', ')', ',', '1', ';', 'c', 'f', 'k', 'n', 'o', 's', 'v']
+}
 
 
-        # special in that single char is a valid operator
-        # special case in that '<=' might also be '<=>'
-        # ":" isn't an operator in mysql, but other dialects
-        #   use it.
+# special in that single char is a valid operator
+# special case in that '<=' might also be '<=>'
+# ":" isn't an operator in mysql, but other dialects
+#   use it.
 double_char_operators = (
-                '!=',   # oracle
-                '||',
-                '&&',
-                '>=',
-                '>>',
-                '<=',
-                '<>',
-                ':=',
-                '<<',
-                '!<', # http://msdn.microsoft.com/en-us/library/ms188074.aspx
-                '!>', # http://msdn.microsoft.com/en-us/library/ms188074.aspx
-                '+=',
-                '-=',
-                '*=',
-                '/=',
-                '%=',
-                '|=',
-                '&=',
-                '^=',
-                '|/', # http://www.postgresql.org/docs/9.1/static/functions-math.html
-                '!!', # http://www.postgresql.org/docs/9.1/static/functions-math.html
-                '~*', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
-                '!~', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
-                '@>',
-                '<@'
-                # '!~*'
-                )
+    '!=',   # oracle
+    '||',
+    '&&',
+    '>=',
+    '>>',
+    '<=',
+    '<>',
+    ':=',
+    '<<',
+    '!<', # http://msdn.microsoft.com/en-us/library/ms188074.aspx
+    '!>', # http://msdn.microsoft.com/en-us/library/ms188074.aspx
+    '+=',
+    '-=',
+    '*=',
+    '/=',
+    '%=',
+    '|=',
+    '&=',
+    '^=',
+    '|/', # http://www.postgresql.org/docs/9.1/static/functions-math.html
+    '!!', # http://www.postgresql.org/docs/9.1/static/functions-math.html
+    '~*', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
+    '!~', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
+    '@>',
+    '<@'
+    # '!~*'
+    )
 
 charmap = [
-            'CHAR_WHITE', # 0
-            'CHAR_WHITE', # 1
-            'CHAR_WHITE', # 2
-            'CHAR_WHITE', # 3
-            'CHAR_WHITE', # 4
-            'CHAR_WHITE', # 5
-            'CHAR_WHITE', # 6
-            'CHAR_WHITE', # 7
-            'CHAR_WHITE', # 8
-            'CHAR_WHITE', # 9
-            'CHAR_WHITE', # 10
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE', # 20
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_WHITE', #30
-            'CHAR_WHITE',
-            'CHAR_WHITE',
-            'CHAR_OP2',   # 33 !
-            'CHAR_STR',   # 34 "
-            'CHAR_COM1',  # 35 "#"
-            'CHAR_WHITE',  # 36 $ -- ignore optional currency symbol for TSQL money types
-            'CHAR_OP1',   # 37 %
-            'CHAR_OP2',   # 38 &
-            'CHAR_STR',   # 39 '
-            'CHAR_CHAR',  # 40 (
-            'CHAR_CHAR',  # 41 )
-            'CHAR_OP2',   # 42 *
-            'CHAR_OP1',   # 43 +
-            'CHAR_CHAR',  # 44 ,
-            'CHAR_DASH',  # 45 -
-            'CHAR_NUM',   # 46 .
-            'CHAR_SLASH', # 47 /
-            'CHAR_NUM',   # 48 0
-            'CHAR_NUM',   # 49 1
-            'CHAR_NUM',   # 50 2
-            'CHAR_NUM',   # 51 3
-            'CHAR_NUM',   # 52 4
-            'CHAR_NUM',   # 53 5
-            'CHAR_NUM',   # 54 6
-            'CHAR_NUM',   # 55 7
-            'CHAR_NUM',   # 56 8
-            'CHAR_NUM',   # 57 9
-            'CHAR_CHAR',  # 58 : colon
-            'CHAR_CHAR',  # 59 ; semiclon
-            'CHAR_OP2',   # 60 <
-            'CHAR_OP2',   # 61 =
-            'CHAR_OP2',   # 62 >
-            'CHAR_OTHER', # 63 ?   BEEP BEEP
-            'CHAR_VAR',   # 64 @
-            'CHAR_WORD',  # 65 A
-            'CHAR_WORD',  # 66 B
-            'CHAR_WORD',  # @
-            'CHAR_WORD',  # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # Z
-            'CHAR_OTHER',           # [
-            'CHAR_BACK',            # \\
-            'CHAR_OTHER',           # ]
-            'CHAR_OP1',             # ^
-            'CHAR_WORD',            # _
-            'CHAR_WORD',            # backtick
-            'CHAR_WORD',            # A
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # @
-            'CHAR_WORD',            # z
-            'CHAR_OTHER',            # 123 { left brace
-            'CHAR_OP2',             # 124 | pipe
-            'CHAR_OTHER',            # 125 } right brace
-            'CHAR_OP1',             # 126  ~
-            'CHAR_WHITE'
+    'CHAR_WHITE', # 0
+    'CHAR_WHITE', # 1
+    'CHAR_WHITE', # 2
+    'CHAR_WHITE', # 3
+    'CHAR_WHITE', # 4
+    'CHAR_WHITE', # 5
+    'CHAR_WHITE', # 6
+    'CHAR_WHITE', # 7
+    'CHAR_WHITE', # 8
+    'CHAR_WHITE', # 9
+    'CHAR_WHITE', # 10
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE', # 20
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_WHITE', #30
+    'CHAR_WHITE',
+    'CHAR_WHITE',
+    'CHAR_OP2',   # 33 !
+    'CHAR_STR',   # 34 "
+    'CHAR_COM1',  # 35 "#"
+    'CHAR_WHITE',  # 36 $ -- ignore optional currency symbol for TSQL money types
+    'CHAR_OP1',   # 37 %
+    'CHAR_OP2',   # 38 &
+    'CHAR_STR',   # 39 '
+    'CHAR_CHAR',  # 40 (
+    'CHAR_CHAR',  # 41 )
+    'CHAR_OP2',   # 42 *
+    'CHAR_OP1',   # 43 +
+    'CHAR_CHAR',  # 44 ,
+    'CHAR_DASH',  # 45 -
+    'CHAR_NUM',   # 46 .
+    'CHAR_SLASH', # 47 /
+    'CHAR_NUM',   # 48 0
+    'CHAR_NUM',   # 49 1
+    'CHAR_NUM',   # 50 2
+    'CHAR_NUM',   # 51 3
+    'CHAR_NUM',   # 52 4
+    'CHAR_NUM',   # 53 5
+    'CHAR_NUM',   # 54 6
+    'CHAR_NUM',   # 55 7
+    'CHAR_NUM',   # 56 8
+    'CHAR_NUM',   # 57 9
+    'CHAR_CHAR',  # 58 : colon
+    'CHAR_CHAR',  # 59 ; semiclon
+    'CHAR_OP2',   # 60 <
+    'CHAR_OP2',   # 61 =
+    'CHAR_OP2',   # 62 >
+    'CHAR_OTHER', # 63 ?   BEEP BEEP
+    'CHAR_VAR',   # 64 @
+    'CHAR_WORD',  # 65 A
+    'CHAR_WORD',  # 66 B
+    'CHAR_WORD',  # @
+    'CHAR_WORD',  # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # Z
+    'CHAR_OTHER',           # [
+    'CHAR_BACK',            # \\
+        'CHAR_OTHER',           # ]
+    'CHAR_OP1',             # ^
+    'CHAR_WORD',            # _
+    'CHAR_WORD',            # backtick
+    'CHAR_WORD',            # A
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # @
+    'CHAR_WORD',            # z
+    'CHAR_OTHER',            # 123 { left brace
+    'CHAR_OP2',             # 124 | pipe
+    'CHAR_OTHER',            # 125 } right brace
+    'CHAR_OP1',             # 126  ~
+    'CHAR_WHITE'
 ]
 
-phrases = dict({
-'IN BOOLEAN': 'n',
-'IN BOOLEAN MODE': 'k',
-'CROSS JOIN': 'k',
-'ALTER DOMAIN': 'k',
-'ALTER TABLE': 'k',
-'GROUP BY': 'B',
-'ORDER BY': 'B',
-'OWN3D BY': 'B',
-'SELECT ALL': 'k',
-'READ WRITE': 'k',
-'LOCK TABLE': 'k',   # PGSQL/ORACLE http://www.postgresql.org/docs/current/static/sql-lock.html
-'LOCK TABLES': 'k',  # MYSQL http://dev.mysql.com/doc/refman/4.1/en/lock-tables.html
-'LEFT OUTER': 'k',
-'LEFT JOIN': 'k',
-'RIGHT OUTER': 'k',
-'RIGHT JOIN': 'k',
-'FULL OUTER': 'k',
-'NATURAL JOIN': 'k',
-'NATURAL INNER': 'k',
-'NATURAL OUTER': 'k',
-'NATURAL LEFT': 'k',
-'NATURAL RIGHT': 'k',
-'NATURAL FULL': 'k',
-'SOUNDS LIKE': 'o',
-'IS NOT': 'o',
-'NOT LIKE': 'o',
-'NOT BETWEEN': 'o',
-'NOT SIMILAR': 'o',
-'NOT RLIKE': 'o',
-'NOT REGEXP': 'o',
-'NOT IN': 'o',
-'SIMILAR TO' : 'o',
-'NOT SIMILAR TO': 'o',
-'UNION ALL': 'U',
-'INTERSECT ALL': 'o'   # ORACLE
-})
+phrases = {
+    'IN BOOLEAN'        : 'n',
+    'IN BOOLEAN MODE'   : 'k',
+    'CROSS JOIN'        : 'k',
+    'ALTER DOMAIN'      : 'k',
+    'ALTER TABLE'       : 'k',
+    'GROUP BY'          : 'B',
+    'ORDER BY'          : 'B',
+    'OWN3D BY'          : 'B',
+    'SELECT ALL'        : 'k',
+    'READ WRITE'        : 'k',
+
+    # 'LOCAL TABLE' pgsql/oracle
+    # http://www.postgresql.org/docs/current/static/sql-lock.html
+    'LOCK TABLE'        : 'k',
+
+    # 'LOCK TABLES' MYSQL
+    #  http://dev.mysql.com/doc/refman/4.1/en/lock-tables.html
+    'LOCK TABLES'       : 'k',
+    'LEFT OUTER'        : 'k',
+    'LEFT JOIN'         : 'k',
+    'RIGHT OUTER'       : 'k',
+    'RIGHT JOIN'        : 'k',
+    'FULL OUTER'        : 'k',
+    'NATURAL JOIN'      : 'k',
+    'NATURAL INNER'     : 'k',
+    'NATURAL OUTER'     : 'k',
+    'NATURAL LEFT'      : 'k',
+    'NATURAL RIGHT'     : 'k',
+    'NATURAL FULL'      : 'k',
+    'SOUNDS LIKE'       : 'o',
+    'IS NOT'            : 'o',
+    'NOT LIKE'          : 'o',
+    'NOT BETWEEN'       : 'o',
+    'NOT SIMILAR'       : 'o',
+
+    # 'NOT RLIKE' -- MySQL
+    'NOT RLIKE'         : 'o',
+
+    'NOT REGEXP'        : 'o',
+    'NOT IN'            : 'o',
+    'SIMILAR TO'        : 'o',
+    'NOT SIMILAR TO'    : 'o',
+    'UNION ALL'         : 'U',
+
+    # 'INTERSECT ALL' -- ORACLE
+    'INTERSECT ALL'     : 'o'
+    }
 
 if __name__ == '__main__':
     import json
