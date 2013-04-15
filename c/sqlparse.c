@@ -285,6 +285,7 @@ size_t parse_slash(sfilter * sf)
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
+    size_t cur = cs + pos;
 
     size_t pos1 = pos + 1;
     if (pos1 == slen || cs[pos1] != '*') {
@@ -296,7 +297,7 @@ size_t parse_slash(sfilter * sf)
 
         // skip over initial '/*'
         const char *ptr =
-            (const char *) memmem(cs + pos + 2, slen - (pos + 2), "*/", 2);
+            (const char *) memmem(cur + 2, slen - (pos + 2), "*/", 2);
         if (ptr == NULL) {
             // unterminated comment
             st_assign_cstr(current, 'c', cs + pos);
@@ -307,8 +308,8 @@ size_t parse_slash(sfilter * sf)
             // if we find a '/*' inside the coment, then
             // make a new token.
             char ctype = 'c';
-            const size_t clen = (ptr + 2) - (cs + pos);
-            if (memmem(cs + pos + 2, ptr - (cs + pos + 2), "/*", 2) !=
+            const size_t clen = (ptr + 2) - (cur);
+            if (memmem(cur + 2, ptr - (cur + 2), "/*", 2) !=
                 NULL) {
                 ctype = 'X';
             }
