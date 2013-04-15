@@ -102,12 +102,5 @@ int main(int argc, const char *argv[])
     fprintf(stderr, "SAFE  : %d\n", g_test_fail);
     fprintf(stderr, "TOTAL : %d\n", g_test_ok + g_test_fail);
 
-    // error codes aren't > 127, else it wraps around
-    if (flag_invert) {
-        // e.g. NOT sqli
-        return (g_test_ok > 127) ? 127 : g_test_ok;
-    } else {
-        // SQLI
-        return (g_test_fail > 127) ? 127 : g_test_fail;
-    }
+    return 0;
 }
