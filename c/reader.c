@@ -11,7 +11,7 @@
 static int g_test_ok = 0;
 static int g_test_fail = 0;
 
-void test_positive(FILE * fd, const char *fname)
+void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_xml)
 {
     char linebuf[8192];
     int linenum = 0;
@@ -36,36 +36,66 @@ void test_positive(FILE * fd, const char *fname)
 
         modp_toprint(linebuf, len);
 
-        fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
-                fname, linenum,
-                (issqli ? "True" : "False"), sf.pat, sf.reason, linebuf);
+        if (output_xml) {
+            if (!issqli && !flag_invert) {
+            // false negative
+            // did NOT detect a SQLI
+            fprintf(stdout,
+                    "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
+                    fname, linenum, "notsqli", "error", linebuf);
+            } else if (output_xml && issqli && flag_invert) {
+                // false positive
+                // incorrect marked a benign input as SQLi
+                fprintf(stdout,
+                        "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
+                        fname, linenum, "sqli", "error", linebuf);
+            }
+        } else {
+            fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
+                    fname, linenum,
+                    (issqli ? "True" : "False"), sf.pat, sf.reason, linebuf);
+        }
     }
 }
 
 int main(int argc, const char *argv[])
 {
-    bool invert = false;
-    if (argc == 1) {
-        test_positive(stdin, "stdin");
-    } else if (argc == 2 && (strcmp(argv[1], "-i") == 0)) {
-        invert = true;
-        test_positive(stdin, "stdin");
-    } else {
-        int i;
-        int offset = 1;
+    bool flag_invert = false;
+    bool flag_xml = false;
+    int i;
+    int offset = 1;
 
-        if (strcmp(argv[1], "-i") == 0) {
-            offset = 2;
-            invert = true;
+    while (offset < argc) {
+        if (strcmp(argv[offset], "-i") == 0) {
+            offset += 1;
+            flag_invert = true;
+        } else if (strcmp(argv[offset], "-x") == 0) {
+            offset += 1;
+            flag_xml = true;
+        } else {
+            break;
         }
+    }
 
+    if (flag_xml) {
+        fprintf(stdout, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        fprintf(stdout, "<results>\n");
+    }
+
+    if (offset == argc) {
+        test_positive(stdin, "stdin", flag_invert, flag_xml);
+    } else {
         for (i = offset; i < argc; ++i) {
             FILE* fd = fopen(argv[i], "r");
             if (fd) {
-                test_positive(fd, argv[i]);
+                test_positive(fd, argv[i], flag_invert, flag_xml);
                 fclose(fd);
             }
         }
+    }
+
+    if (flag_xml) {
+        fprintf(stdout, "</results>\n");
     }
 
     fprintf(stderr, "SQLI  : %d\n", g_test_ok);
@@ -73,7 +103,7 @@ int main(int argc, const char *argv[])
     fprintf(stderr, "TOTAL : %d\n", g_test_ok + g_test_fail);
 
     // error codes aren't > 127, else it wraps around
-    if (invert) {
+    if (flag_invert) {
         // e.g. NOT sqli
         return (g_test_ok > 127) ? 127 : g_test_ok;
     } else {
