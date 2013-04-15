@@ -39,9 +39,10 @@ def toc(obj):
     #
     # compound keywords
     #
+    phrases = obj['phrases']
     multikeywords_start = set()
-    for k, v in obj['phrases'].iteritems():
-        parts = k.split(' ')
+    for words in phrases.iterkeys():
+        parts = words.split(' ')
         plen = len(parts)
         multikeywords_start.add(parts[0])
         if plen == 3:
@@ -56,10 +57,10 @@ def toc(obj):
     print "static const size_t multikeywords_start_sz = %d;" % (dlen,)
 
     print "static const keyword_t multikeywords[] = {"
-    for k in sorted(obj['phrases'].keys()):
+    for k in sorted(phrases.keys()):
         print "    {\"%s\", '%s'}," % (k, phrases[k])
     print "};"
-    print "static const size_t multikeywords_sz = %d;" % (len(obj['phrases']), )
+    print "static const size_t multikeywords_sz = %d;" % (len(phrases), )
 
     #
     # Mapping of character to function
@@ -83,16 +84,16 @@ def toc(obj):
     print "typedef size_t (*pt2Function)(sfilter *sf);"
     print "static const pt2Function char_parse_map[] = {"
     pos = 0
-    for c in obj['charmap']:
-        print "   &%s, /* %d */" % (fnmap[c], pos)
+    for character in obj['charmap']:
+        print "   &%s, /* %d */" % (fnmap[character], pos)
         pos += 1
     print "};"
     print
     print "#endif"
-
+    return 0
 
 if __name__ == '__main__':
     import sys
     import json
-    data = json.load(sys.stdin)
-    toc(data)
+    sys.exit(toc(json.load(sys.stdin)))
+
