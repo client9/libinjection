@@ -483,7 +483,7 @@ mapping = ['', '(', ')', ',', '1', ';', 'c', 'f', 'k', 'n', 'o', 's', 'v']
         # special case in that '<=' might also be '<=>'
         # ":" isn't an operator in mysql, but other dialects
         #   use it.
-double_char_operators = frozenset( (
+double_char_operators = (
                 '!=',   # oracle
                 '||',
                 '&&',
@@ -510,7 +510,7 @@ double_char_operators = frozenset( (
                 '@>',
                 '<@'
                 # '!~*'
-                ) )
+                )
 
 CHAR_WORD = 0
 CHAR_NONE = 1
@@ -695,3 +695,16 @@ phrases = dict({
 'UNION ALL': 'U',
 'INTERSECT ALL': 'o'   # ORACLE
 })
+
+if __name__ == '__main__':
+    import json
+
+    objs = {
+        'keywords': keywords,
+        'charmap': charmap,
+        'double_char_operatators': double_char_operators,
+        'phrases': phrases
+        }
+
+    print json.dumps(objs, sort_keys=True, indent=4)
+
