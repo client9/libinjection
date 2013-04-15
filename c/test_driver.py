@@ -22,9 +22,11 @@ def run(args):
         return subprocess.check_output(args)
     else:
         # not 2.7
-        p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        (stdoutdata, stderrdata) = p.communicate()
-        if p.returncode != 0:
+        aprocess = subprocess.Popen(args,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        (stdoutdata, stderrdata) = aprocess.communicate()
+        if aprocess.returncode != 0:
             raise Exception("Test died!: " + stderrdata)
         return stdoutdata
 
