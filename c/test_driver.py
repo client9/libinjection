@@ -1,8 +1,15 @@
 #!/usr/bin/env python
-
+"""
+Test driver
+Runs off plain text files similar to how PHP's test harness works
+"""
 import subprocess
 
 def run(args):
+    """
+    Runs a command and returns stdout output, throws exception on failed run.
+    Uses python's 2.7 check_output if available otherwise uses something else
+    """
 
     try:
         getattr(subprocess, 'check_output')
@@ -22,6 +29,10 @@ def run(args):
         return stdoutdata
 
 def run_test(name, data, valgrind=False):
+    """
+    runs a test
+    """
+
     if valgrind:
         args = ['valgrind', '--gen-suppressions=no', '--read-var-info=yes',
                 '--leak-check=full', '--error-exitcode=1',
@@ -38,6 +49,10 @@ def run_test(name, data, valgrind=False):
         print "ok: " + name
 
 def read_test(arg):
+    """
+    Read a test file and split into components
+    """
+
     fd = open(arg, 'r')
     state = None
     info = {
@@ -65,14 +80,14 @@ if __name__ == '__main__':
     # if argv1 had 'valgrind'
 
     i = 1
-    valgrind = False
+    FLAG_VALGRIND = False
     if 'valgrind' in sys.argv[1]:
         i = 2
-        valgrind = True
+        FLAG_VALGRIND = True
 
     for name in sys.argv[i:]:
         print name
         testdata = read_test(name)
-        run_test(name, testdata, valgrind)
+        run_test(name, testdata, FLAG_VALGRIND)
         print '----------------'
 
