@@ -9,8 +9,6 @@
 Converts a libinjection JSON data file to a C header (.h) file
 """
 
-from sqlparse_map import *
-
 def toc(obj):
     """ main routine """
 
@@ -96,5 +94,5 @@ def toc(obj):
 if __name__ == '__main__':
     import sys
     import json
-    obj = json.load(sys.stdin)
-    toc(obj)
+    data = json.load(sys.stdin)
+    toc(data)
