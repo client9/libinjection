@@ -1,19 +1,32 @@
 #!/usr/bin/env python
 
-from subprocess import check_output
+import subprocess
+
+def run(args):
+    if getattr(subprocess, 'check_output'):
+        # 2.7
+        return subprocess.check_output(args)
+    else:
+        # not 2.7
+        p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (stdoutdata, stderrdata) = p.communicate()
+        if p.returncode != 0:
+            raise Exception("Test died!: " + stderrdata)
+        return stdoutdata
 
 def run_test(name, data, valgrind=False):
     if valgrind:
-        actual = check_output(['valgrind', '--gen-suppressions=no', '--read-var-info=yes', '--leak-check=full', '--error-exitcode=1', '--track-origins=yes', './sqli', data[1]])
+        args = ['valgrind', '--gen-suppressions=no', '--read-var-info=yes',
+                '--leak-check=full', '--error-exitcode=1',
+                '--track-origins=yes', './sqli', data[1]]
+        actual = run(args)
     else:
-        actual = check_output(['./sqli', data[1]])
+        actual = run(['./sqli', data[1]])
 
     if actual.strip() != data[2].strip():
         print "not ok: " + name
         print "EXPECTED: \n" + data[2]
         print "GOT: \n" + actual
-
-
     else:
         print "ok: " + name
 
