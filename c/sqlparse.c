@@ -148,18 +148,6 @@ bool st_is_multiword_start(const stoken_t * st)
                         multikeywords_start_sz) != NULL;
 }
 
-bool st_is_english_op(const stoken_t * st)
-{
-    return (st->type == 'o' && !(strcmp(st->val, "AND") &&
-                                 strcmp(st->val, "&") &&
-                                 strcmp(st->val, "NOT") &&
-                                 strcmp(st->val, "UNION") &&
-                                 strcmp(st->val, "CASE") &&
-                                 strcmp(st->val, "LIKE") &&
-                                 strcmp(st->val, "IS") &&
-                                 strcmp(st->val, "MOD")));
-}
-
 bool st_is_unary_op(const stoken_t * st)
 {
     return (st->type == 'o' && !(strcmp(st->val, "+") &&
@@ -867,7 +855,7 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     }
 
     bool patmatch = fn(sql_state->pat);
-    //bool patmatch = false;
+
     if (!patmatch) {
         sql_state->reason = __LINE__;
         return false;
@@ -902,49 +890,10 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                 sql_state->reason = __LINE__;
                 return false;
             }
-        } else {
-                return true;
-        }
         break;
-    }
-    case 5:{
-            if (sql_state->pat[1] == 'o' && sql_state->pat[3] == 'o') {
-
-                if (sql_state->pat[2] == 'v') {
-                    return true;
-                } else if (streq(sql_state->pat, "sono1") &&
-                           st_equals_cstr(&sql_state->tokenvec[1], 'o',
-                                          "&")
-                           && st_equals_cstr(&sql_state->tokenvec[3], 'o',
-                                             "=")) {
-                    // query string fragment ...foo"&page=2
-                    sql_state->reason = __LINE__;
-                    return true;
-                } else if (sql_state->delim == CHAR_NULL &&
-                           streq(sql_state->pat, "sosos")) {
-                    // "foo" and "bar" and "dingbat"
-                    //   likely search term
-                    //sql_state->reason = __LINE__;
-                    return true;
-                } else if (!st_is_arith_op(&sql_state->tokenvec[3]) &&
-                           strcmp(sql_state->tokenvec[1].val,
-                                  sql_state->tokenvec[3].val)) {
-                    return true;
-                } else if (streq(sql_state->tokenvec[1].val,
-                                 sql_state->tokenvec[3].val)) {
-                    //sql_state->reason = __LINE__;
-                    //return true;
-                } else {
-                    // vvv aparently does nothing... TBD
-                    //sql_state->reason = __LINE__;
-                    //return false;
-                }
-            }
         }
-        break;
-
-    }                           /* end switch */
-
+    }   /* case 3 */
+    }   /* end switch */
     return true;
 }
 
