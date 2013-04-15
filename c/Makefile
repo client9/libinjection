@@ -35,8 +35,8 @@ help:
 
 allbin: reader extractor is_sqli sqli
 
-reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_xml.c sqli_normalize.c sqli_fingerprints.h
-	${CC}  ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_ascii.c modp_burl.c modp_xml.c sqli_normalize.c sqli_fingerprints.h
+	${CC}  ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_burl.c modp_ascii.c modp_xml.c
 
 extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_normalize.h sqli_normalize.c sqlparse_data.h modp_xml.c sqli_fingerprints.h sqlparse_data.h
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
@@ -44,7 +44,7 @@ extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_normalize.h sqli_no
 is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_normalize.c  sqli_fingerprints.h sqlparse_data.h
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h  sqli_fingerprints.h
+sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h modp_ascii.c
 	${CC} ${CFLAGS} -o sqli sqli_cli.c sqlparse.c modp_ascii.c
 
 
