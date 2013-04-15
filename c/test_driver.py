@@ -3,7 +3,14 @@
 import subprocess
 
 def run(args):
-    if getattr(subprocess, 'check_output'):
+
+    try:
+        getattr(subprocess, 'check_output')
+        has_check_output = True
+    except AttributeError:
+        has_check_output = False
+
+    if has_check_output:
         # 2.7
         return subprocess.check_output(args)
     else:
