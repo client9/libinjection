@@ -44,9 +44,28 @@ size_t strlenspn(const char *s, size_t len, const char *accept)
     return len;
 }
 
+/*
+ * ASCII case insenstive compare only!
+ */
+int cstrcasecmp(const char *a, const char *b)
+{
+    int ca, cb;
+
+    do {
+        ca = *a++ & 0xff;
+        cb = *b++ & 0xff;
+        if (ca >= 'a' && ca <= 'z')
+            ca -= 0x20;
+        if (cb >= 'a' && cb <= 'z')
+            cb -= 0x20;
+    } while (ca == cb && ca != '\0');
+
+    return ca - cb;
+}
+
 bool streq(const char *a, const char *b)
 {
-    return strcmp(a, b) == 0;
+    return cstrcasecmp(a, b) == 0;
 }
 
 void st_clear(stoken_t * st)
@@ -88,12 +107,31 @@ void st_assign_cstr(stoken_t * st, const char stype, const char *value)
 bool st_equals_cstr(const stoken_t * st, const char stype,
                     const char *value)
 {
-    return st->type == stype && !strcmp(value, st->val);
+    return st->type == stype && !cstrcasecmp(value, st->val);
 }
 
 void st_copy(stoken_t * dest, const stoken_t * src)
 {
     memcpy(dest, src, sizeof(stoken_t));
+}
+
+const char *bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
+{
+    int left = 0;
+    int right = (int) nmemb - 1;
+
+    while (left <= right) {
+        int pos = (left + right) / 2;
+        int cmp = cstrcasecmp(base[pos], key);
+        if (cmp == 0) {
+            return base[pos];
+        } else if (cmp < 0) {
+            left = pos + 1;
+        } else {
+            right = pos - 1;
+        }
+    }
+    return NULL;
 }
 
 const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
@@ -123,7 +161,7 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
 
     while (left <= right) {
         int pos = (left + right) / 2;
-        int cmp = strcmp(keywords[pos].word, key);
+        int cmp = cstrcasecmp(keywords[pos].word, key);
         if (cmp == 0) {
             return keywords[pos].type;
         } else if (cmp < 0) {
@@ -132,18 +170,17 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
             right = pos - 1;
         }
     }
-
     return CHAR_NULL;
 }
 
 bool is_operator2(const char *key)
 {
-    return bsearch_cstr(key, operators2, operators2_sz) != NULL;
+    return bsearch_cstrcase(key, operators2, operators2_sz) != NULL;
 }
 
 bool st_is_multiword_start(const stoken_t * st)
 {
-    return bsearch_cstr(st->val,
+    return bsearch_cstrcase(st->val,
                         multikeywords_start,
                         multikeywords_start_sz) != NULL;
 }
@@ -154,7 +191,7 @@ bool st_is_unary_op(const stoken_t * st)
                                  strcmp(st->val, "-") &&
                                  strcmp(st->val, "!") &&
                                  strcmp(st->val, "!!") &&
-                                 strcmp(st->val, "NOT") &&
+                                 cstrcasecmp(st->val, "NOT") &&
                                  strcmp(st->val, "~")));
 }
 
@@ -169,8 +206,8 @@ bool st_is_arith_op(const stoken_t * st)
                                  strcmp(st->val, "*") &&
                                  strcmp(st->val, "|") &&
                                  strcmp(st->val, "&") &&
-                                 strcmp(st->val, "MOD") &&
-                                 strcmp(st->val, "DIV")));
+                                 cstrcasecmp(st->val, "MOD") &&
+                                 cstrcasecmp(st->val, "DIV")));
 }
 
 size_t parse_white(sfilter * sf)
@@ -440,7 +477,7 @@ size_t parse_word(sfilter * sf)
 
     size_t slen =
         strlenspn(cs + pos, sf->slen - pos,
-                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+                  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
 
     st_assign(current, 'n', cs + pos, slen);
     if (slen < ST_MAX_SIZE) {
@@ -470,7 +507,7 @@ size_t parse_var(sfilter * sf)
 
     size_t xlen =
         strlenspn(cs + pos1, slen - pos1,
-                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+                  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
         st_assign(current, 'v', cs + pos, (pos1 - pos));
         return pos1;
@@ -487,10 +524,10 @@ size_t parse_number(sfilter * sf)
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
 
-    if (pos + 1 < slen && cs[pos] == '0' && cs[pos + 1] == 'X') {
+    if (pos + 1 < slen && cs[pos] == '0' && (cs[pos + 1] == 'X' || cs[pos + 1] == 'x')) {
         // TBD compare if isxdigit
         size_t xlen =
-            strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEF");
+            strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEFabcdef");
         if (xlen == 0) {
             st_assign_cstr(current, 'n', "0X");
             return pos + 2;
@@ -515,7 +552,7 @@ size_t parse_number(sfilter * sf)
         }
     }
 
-    if (cs[pos] == 'E') {
+    if (cs[pos] == 'E' || cs[pos] == 'e') {
         pos += 1;
         if (pos < slen && (cs[pos] == '+' || cs[pos] == '-')) {
             pos += 1;
@@ -700,7 +737,7 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
             // fix up for ambigous "IN"
             // handle case where IN is typically a function
             // but used in compound "IN BOOLEAN MODE" jive
-            if (last->type == 'n' && !strcmp(last->val, "IN")) {
+            if (last->type == 'n' && !cstrcasecmp(last->val, "IN")) {
                 st_copy(last, current);
                 st_assign_cstr(sout, 'f', "IN");
                 return true;

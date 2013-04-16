@@ -35,8 +35,8 @@ help:
 
 allbin: reader extractor is_sqli sqli
 
-reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_ascii.c modp_burl.c modp_xml.c sqli_normalize.c sqli_fingerprints.h
-	${CC}  ${CFLAGS} -o reader sqlparse.c reader.c sqli_normalize.c modp_burl.c modp_ascii.c modp_xml.c
+reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_burl.c sqli_fingerprints.h modp_ascii.c
+	${CC}  ${CFLAGS} -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
 
 extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_normalize.h sqli_normalize.c sqlparse_data.h modp_xml.c sqli_fingerprints.h sqlparse_data.h
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c

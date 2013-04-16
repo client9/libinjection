@@ -2,11 +2,12 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "modp_burl.h"
 #include "modp_ascii.h"
 
 #include "sqlparse.h"
-#include "sqli_normalize.h"
 #include "sqli_fingerprints.h"
+
 
 static int g_test_ok = 0;
 static int g_test_fail = 0;
@@ -26,7 +27,8 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
         if (linebuf[0] == '#') {
             continue;
         }
-        len = sqli_qs_normalize(linebuf, len);
+
+        len =  modp_burl_decode(linebuf, linebuf, len);
         bool issqli = is_sqli(&sf, linebuf, len, is_sqli_pattern);
         if (issqli) {
             g_test_ok += 1;
