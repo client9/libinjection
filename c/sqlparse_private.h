@@ -24,7 +24,7 @@
  */
 size_t strlenspn(const char *s, size_t len, const char *accept);
 
-bool streq(const char *a, const char *b);
+int streq(const char *a, const char *b);
 
 void st_clear(stoken_t * st);
 void st_assign_char(stoken_t * st, const char stype, const char value);
@@ -34,15 +34,15 @@ void st_assign(stoken_t * st, const char stype, const char *value,
 void st_assign_cstr(stoken_t * st, const char stype, const char *value);
 void st_copy(stoken_t * dest, const stoken_t * src);
 
-bool st_equals_cstr(const stoken_t * src, const char stype,
+int st_equals_cstr(const stoken_t * src, const char stype,
                     const char *value);
 
-bool st_is_empty(const stoken_t * st);
-bool st_is_arith_op(const stoken_t * st);
-bool st_is_unary_op(const stoken_t * st);
-bool st_is_english_op(const stoken_t * st);
-bool st_is_logical_op(const stoken_t * st);
-bool st_is_multiword_start(const stoken_t * st);
+int st_is_empty(const stoken_t * st);
+int st_is_arith_op(const stoken_t * st);
+int st_is_unary_op(const stoken_t * st);
+int st_is_english_op(const stoken_t * st);
+int st_is_logical_op(const stoken_t * st);
+int st_is_multiword_start(const stoken_t * st);
 
 const char *bsearch_cstr(const char *key, const char *base[],
                          size_t nmemb);
@@ -55,9 +55,9 @@ typedef struct {
 char bsearch_keyword_type(const char *key, const keyword_t keywords[],
                           size_t len);
 
-bool is_operator2(const char *key);
+int is_operator2(const char *key);
 
-bool is_sqli_pattern(const char *key);
+int is_sqli_pattern(const char *key);
 
 size_t parse_none(sfilter * sf);
 size_t parse_other(sfilter * sf);
@@ -78,13 +78,13 @@ size_t parse_var(sfilter * sf);
 
 size_t parse_number(sfilter * sf);
 
-bool parse_token(sfilter * sf);
+int parse_token(sfilter * sf);
 
 /**
  * Looks at syntax_last and syntax_current to see
  * if they can be merged into a multi-keyword
  */
-bool syntax_merge_words(stoken_t * a, stoken_t * b);
+int syntax_merge_words(stoken_t * a, stoken_t * b);
 
 void sfilter_reset(sfilter * sf, const char *s, size_t slen);
 
@@ -95,11 +95,11 @@ void sfilter_reset(sfilter * sf, const char *s, size_t slen);
  * * Merge multi-word keywords and operators into one
  *   e.g. "UNION", "ALL" --> "UNION ALL"
  */
-bool sqli_tokenize(sfilter * sf, stoken_t * sout);
+int sqli_tokenize(sfilter * sf, stoken_t * sout);
 
-bool filter_fold(sfilter * sf, stoken_t * sout);
+int filter_fold(sfilter * sf, stoken_t * sout);
 
-bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
+int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     const char delim,
                     ptr_fingerprints_fn fn);
 

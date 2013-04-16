@@ -27,7 +27,7 @@ print
 
 print """
 /* Simple binary search */
-bool is_sqli_pattern(const char *key)
+int is_sqli_pattern(const char *key)
 {
     int left = 0;
     int right = (int)patmap_sz - 1;
@@ -36,14 +36,14 @@ bool is_sqli_pattern(const char *key)
         int pos = (left + right) / 2;
         int cmp = strcmp(patmap[pos], key);
         if (cmp == 0) {
-            return true;
+            return 1; /* TRUE */
         } else if (cmp < 0) {
             left = pos + 1;
         } else {
             right = pos - 1;
         }
     }
-    return false;
+    return 0; /* FALSE */
 }
 """
 

@@ -20,6 +20,13 @@
 #include <ctype.h>
 #include <assert.h>
 
+#ifndef TRUE
+#define TRUE 1
+#endif
+#ifndef FALSE
+#define FALSE 0
+#endif
+
 #if 0
 #define FOLD_DEBUG printf("%d: Fold state = %d, current=%c, last=%c\n", __LINE__, sf->fold_state, current->type, last->type == CHAR_NULL ? '~': last->type)
 #else
@@ -63,7 +70,7 @@ int cstrcasecmp(const char *a, const char *b)
     return ca - cb;
 }
 
-bool streq(const char *a, const char *b)
+int streq(const char *a, const char *b)
 {
     return cstrcasecmp(a, b) == 0;
 }
@@ -76,7 +83,7 @@ void st_clear(stoken_t * st)
     st->val[0] = CHAR_NULL;
 }
 
-bool st_is_empty(const stoken_t * st)
+int st_is_empty(const stoken_t * st)
 {
     return st->type == CHAR_NULL;
 }
@@ -104,7 +111,7 @@ void st_assign_cstr(stoken_t * st, const char stype, const char *value)
     st->val[ST_MAX_SIZE - 1] = CHAR_NULL;
 }
 
-bool st_equals_cstr(const stoken_t * st, const char stype,
+int st_equals_cstr(const stoken_t * st, const char stype,
                     const char *value)
 {
     return st->type == stype && !cstrcasecmp(value, st->val);
@@ -173,19 +180,19 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
     return CHAR_NULL;
 }
 
-bool is_operator2(const char *key)
+int is_operator2(const char *key)
 {
     return bsearch_cstrcase(key, operators2, operators2_sz) != NULL;
 }
 
-bool st_is_multiword_start(const stoken_t * st)
+int st_is_multiword_start(const stoken_t * st)
 {
     return bsearch_cstrcase(st->val,
                         multikeywords_start,
                         multikeywords_start_sz) != NULL;
 }
 
-bool st_is_unary_op(const stoken_t * st)
+int st_is_unary_op(const stoken_t * st)
 {
     return (st->type == 'o' && !(strcmp(st->val, "+") &&
                                  strcmp(st->val, "-") &&
@@ -195,7 +202,7 @@ bool st_is_unary_op(const stoken_t * st)
                                  strcmp(st->val, "~")));
 }
 
-bool st_is_arith_op(const stoken_t * st)
+int st_is_arith_op(const stoken_t * st)
 {
     return (st->type == 'o' && !(strcmp(st->val, "-") &&
                                  strcmp(st->val, "+") &&
@@ -356,7 +363,7 @@ size_t parse_slash(sfilter * sf)
         }
     } else {
         // MySQL Comment
-        sf->in_comment = true;
+        sf->in_comment = TRUE;
         st_clear(current);
         return pos + inc;
     }
@@ -394,7 +401,7 @@ size_t parse_operator2(sfilter * sf)
     // /*! FOO */  into FOO by rewriting the string, we
     // turn it into FOO */ and ignore the ending comment
     if (sf->in_comment && op2[0] == '*' && op2[1] == '/') {
-        sf->in_comment = false;
+        sf->in_comment = FALSE;
         st_clear(current);
         return pos + 2;
     } else if (pos + 2 < slen && op2[0] == '<' && op2[1] == '='
@@ -434,7 +441,7 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
         st->str_open = CHAR_NULL;
     }
 
-    while (true) {
+    while (TRUE) {
         if (qpos == NULL) {
             // string ended with no trailing quote
             // assign what we have
@@ -573,7 +580,7 @@ size_t parse_number(sfilter * sf)
     return pos;
 }
 
-bool parse_token(sfilter * sf)
+int parse_token(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;
     const char *s = sf->s;
@@ -584,7 +591,7 @@ bool parse_token(sfilter * sf)
 
     if (*pos == 0 && sf->delim != CHAR_NULL) {
         *pos = parse_string_core(s, slen, 0, current, sf->delim, 0);
-        return true;
+        return TRUE;
     }
 
     while (*pos < slen) {
@@ -596,10 +603,10 @@ bool parse_token(sfilter * sf)
         pt2Function fnptr = char_parse_map[ch];
         *pos = (*fnptr) (sf);
         if (current->type != CHAR_NULL) {
-            return true;
+            return TRUE;
         }
     }
-    return false;
+    return FALSE;
 }
 
 void sfilter_reset(sfilter * sf, const char *s, size_t len)
@@ -609,19 +616,19 @@ void sfilter_reset(sfilter * sf, const char *s, size_t len)
     sf->slen = len;
 }
 
-bool syntax_merge_words(stoken_t * a, stoken_t * b)
+int syntax_merge_words(stoken_t * a, stoken_t * b)
 {
     if (!
         (a->type == 'k' || a->type == 'n' || a->type == 'o'
          || a->type == 'U')) {
-        return false;
+        return FALSE;
     }
 
     size_t sz1 = strlen(a->val);
     size_t sz2 = strlen(b->val);
     size_t sz3 = sz1 + sz2 + 1;
     if (sz3 >= ST_MAX_SIZE) {
-        return false;
+        return FALSE;
     }
     // oddly annoying  last.val + ' ' + current.val
     char tmp[ST_MAX_SIZE];
@@ -634,13 +641,13 @@ bool syntax_merge_words(stoken_t * a, stoken_t * b)
     if (ch != CHAR_NULL) {
         // -1, don't copy the null byte
         st_assign(a, ch, tmp, sz3);
-        return true;
+        return TRUE;
     } else {
-        return false;
+        return FALSE;
     }
 }
 
-bool sqli_tokenize(sfilter * sf, stoken_t * sout)
+int sqli_tokenize(sfilter * sf, stoken_t * sout)
 {
     stoken_t *last = &sf->syntax_last;
     stoken_t *current = &sf->syntax_current;
@@ -678,12 +685,12 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
                 } else {
                     // copy to out
                     st_copy(sout, current);
-                    return true;
+                    return TRUE;
                 }
             default:
                 // copy to out
                 st_copy(sout, current);
-                return true;
+                return TRUE;
             }
         }
         //
@@ -698,7 +705,7 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
             } else {
                 st_copy(sout, last);
                 st_copy(last, current);
-                return true;
+                return TRUE;
             }
             break;
 
@@ -717,7 +724,7 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
                 // no match
                 st_copy(sout, last);
                 st_copy(last, current);
-                return true;
+                return TRUE;
             }
             break;
 
@@ -729,7 +736,7 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
                 // total no match
                 st_copy(sout, last);
                 st_copy(last, current);
-                return true;
+                return TRUE;
             }
             break;
 
@@ -740,12 +747,12 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
             if (last->type == 'n' && !cstrcasecmp(last->val, "IN")) {
                 st_copy(last, current);
                 st_assign_cstr(sout, 'f', "IN");
-                return true;
+                return TRUE;
             } else {
                 // no match at all
                 st_copy(sout, last);
                 st_copy(last, current);
-                return true;
+                return TRUE;
             }
             break;
         }
@@ -755,17 +762,17 @@ bool sqli_tokenize(sfilter * sf, stoken_t * sout)
     if (last->type) {
         st_copy(sout, last);
         st_clear(last);
-        return true;
+        return TRUE;
     } else if (sf->syntax_comment.type) {
         st_copy(sout, &sf->syntax_comment);
         st_clear(&sf->syntax_comment);
-        return true;
+        return TRUE;
     } else {
-        return false;
+        return FALSE;
     }
 }
 
-bool filter_fold(sfilter * sf, stoken_t * sout)
+int filter_fold(sfilter * sf, stoken_t * sout)
 {
     stoken_t *last = &sf->fold_last;
     stoken_t *current = &sf->fold_current;
@@ -774,7 +781,7 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
         st_copy(sout, last);
         sf->fold_state = 2;
         st_clear(last);
-        return true;
+        return TRUE;
     }
 
     while (sqli_tokenize(sf, current)) {
@@ -798,7 +805,7 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
                 st_copy(last, current);
             }
             st_copy(sout, current);
-            return true;
+            return TRUE;
         } else if (last->type == '(' && st_is_unary_op(current)) {
             // similar to beginning of statement
             // an opening '(' resets state, and we should skip all
@@ -808,7 +815,7 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
             // if we get another '(' after another
             // emit 1, but keep state
             st_copy(sout, current);
-            return true;
+            return TRUE;
         } else if ((last->type == '1' || last->type == 'n')
                    && st_is_arith_op(current)) {
             FOLD_DEBUG;
@@ -830,7 +837,7 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
                     st_copy(sout, current);
                     st_clear(last);
                 }
-                return true;
+                return TRUE;
             } else {
                 if (last->type == 'o') {
                     st_copy(sout, last);
@@ -841,7 +848,7 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
                     st_copy(sout, current);
                     st_clear(last);
                 }
-                return true;
+                return TRUE;
             }
         }
     }
@@ -850,22 +857,22 @@ bool filter_fold(sfilter * sf, stoken_t * sout)
         if (st_is_arith_op(last)) {
             st_copy(sout, last);
             st_clear(last);
-            return true;
+            return TRUE;
         } else {
             st_clear(last);
         }
     }
 
-    return false;
+    return FALSE;
 }
 
-bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
+int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     const char delim, ptr_fingerprints_fn fn)
 {
     sfilter_reset(sql_state, s, slen);
     sql_state->delim = delim;
 
-    bool all_done = false;
+    int all_done = 0;
     int tlen = 0;
     while (tlen < MAX_TOKENS) {
         all_done = filter_fold(sql_state, &(sql_state->tokenvec[tlen]));
@@ -889,7 +896,7 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         all_done = filter_fold(sql_state, &tmp);
         if (!all_done && tmp.type != '(') {
             sql_state->reason = __LINE__;
-            return false;
+            return FALSE;
         }
     }
     // check for 'X' in pattern
@@ -898,28 +905,28 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     // or other syntax that isn't consistent
     // should be very rare false positive
     if (strchr(sql_state->pat, 'X')) {
-        return true;
+        return TRUE;
     }
 
-    bool patmatch = fn(sql_state->pat);
+    int patmatch = fn(sql_state->pat);
 
     if (!patmatch) {
         sql_state->reason = __LINE__;
-        return false;
+        return FALSE;
     }
     switch (tlen) {
     case 2:{
             // if 'comment' is '#' ignore.. too many FP
             if (sql_state->tokenvec[1].val[0] == '#') {
                 sql_state->reason = __LINE__;
-                return false;
+                return FALSE;
             }
             // detect obvious sqli scans.. many people put '--' in plain text
             // so only detect if input ends with '--', e.g. 1-- but not 1-- foo
             if ((strlen(sql_state->tokenvec[1].val) > 2)
                 && sql_state->tokenvec[1].val[0] == '-') {
                 sql_state->reason = __LINE__;
-                return false;
+                return FALSE;
             }
             break;
         }
@@ -933,38 +940,38 @@ bool is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     && (sql_state->tokenvec[2].str_close == CHAR_NULL)) {
 
                     // if ....foo" + "bar....
-                    return true;
+                    return TRUE;
                 } else {
                     // not sqli
                     sql_state->reason = __LINE__;
-                    return false;
+                    return FALSE;
                 }
                 break;
             }
         }                       /* case 3 */
     }                           /* end switch */
-    return true;
+    return TRUE;
 }
 
-bool is_sqli(sfilter * sql_state, const char *s, size_t slen,
-             ptr_fingerprints_fn fn)
+int is_sqli(sfilter * sql_state, const char *s, size_t slen,
+            ptr_fingerprints_fn fn)
 {
 
     if (is_string_sqli(sql_state, s, slen, CHAR_NULL, fn)) {
-        return true;
+        return TRUE;
     }
 
     if (memchr(s, CHAR_SINGLE, slen)
         && is_string_sqli(sql_state, s, slen, CHAR_SINGLE, fn)) {
-        return true;
+        return TRUE;
     }
 
     if (memchr(s, CHAR_DOUBLE, slen)
         && is_string_sqli(sql_state, s, slen, CHAR_DOUBLE, fn)) {
-        return true;
+        return TRUE;
     }
 
-    return false;
+    return FALSE;
 }
 
 /*
