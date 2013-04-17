@@ -17,8 +17,8 @@ def main():
     print "#define _SQLPARSE_FINGERPRINTS_H"
     print
 
-    with open('fingerprints.txt', 'r') as fd:
-        sqlipat = [ line.strip() for line in fd ]
+    with open('fingerprints.txt', 'r') as lines:
+        sqlipat = [ line.strip() for line in lines ]
 
     print 'static const char* patmap[] = {'
     for k in sorted(sqlipat):
