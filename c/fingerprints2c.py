@@ -9,6 +9,10 @@ Turns a fingerprints.txt into a C header (.h) file
 """
 
 def main():
+    """
+    main routine, prints to stdout
+    """
+
     print "#ifndef _SQLPARSE_FINGERPRINTS_H"
     print "#define _SQLPARSE_FINGERPRINTS_H"
     print
