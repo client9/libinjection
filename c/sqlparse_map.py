@@ -11,7 +11,7 @@ which are exported to JSON.  This is done so comments can be
 added to the data directly (JSON doesn't support comments).
 """
 
-keywords = {
+KEYWORDS = {
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',
 
 # http://blog.red-database-security.com/2009/01/17/tutorial-oracle-sql-injection-in-webapps-part-i/print/
@@ -546,7 +546,7 @@ keywords = {
 # special case in that '<=' might also be '<=>'
 # ":" isn't an operator in mysql, but other dialects
 #   use it.
-double_char_operators = (
+CHAROPS = (
     '!=',   # oracle
     '||',
     '&&',
@@ -575,7 +575,7 @@ double_char_operators = (
     # '!~*'
     )
 
-charmap = [
+CHARMAP = [
     'CHAR_WHITE', # 0
     'CHAR_WHITE', # 1
     'CHAR_WHITE', # 2
@@ -706,7 +706,7 @@ charmap = [
     'CHAR_WHITE'
 ]
 
-phrases = {
+PHRASES = {
     'IN BOOLEAN'        : 'n',
     'IN BOOLEAN MODE'   : 'k',
     'CROSS JOIN'        : 'k',
@@ -755,15 +755,20 @@ phrases = {
     'INTERSECT ALL'     : 'o'
     }
 
-if __name__ == '__main__':
-    import json
+import json
+def dump():
+    """
+    generates a JSON file, sorted keys
+    """
 
     objs = {
-        'keywords': keywords,
-        'charmap': charmap,
-        'double_char_operators': double_char_operators,
-        'phrases': phrases
+        'keywords': KEYWORDS,
+        'charmap': CHARMAP,
+        'double_char_operators': CHAROPS,
+        'phrases': PHRASES
         }
+    return json.dumps(objs, sort_keys=True, indent=4)
 
-    print json.dumps(objs, sort_keys=True, indent=4)
+if __name__ == '__main__':
+    print dump()
 
