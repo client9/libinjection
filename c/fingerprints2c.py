@@ -8,24 +8,22 @@
 Turns a fingerprints.txt into a C header (.h) file
 """
 
+def main():
+    print "#ifndef _SQLPARSE_FINGERPRINTS_H"
+    print "#define _SQLPARSE_FINGERPRINTS_H"
+    print
 
-print """
-#ifndef _SQLPARSE_FINGERPRINTS_H
-#define _SQLPARSE_FINGERPRINTS_H
+    with open('fingerprints.txt', 'r') as fd:
+        sqlipat = [ line.strip() for line in fd ]
 
-"""
+    print 'static const char* patmap[] = {'
+    for k in sorted(sqlipat):
+        print '    "%s",' % (k,)
+    print '};'
+    print 'static const size_t patmap_sz = %d;' % (len(sqlipat))
+    print
 
-with open('fingerprints.txt', 'r') as fd:
-    sqlipat = [ line.strip() for line in fd ]
-
-print 'static const char* patmap[] = {'
-for k in sorted(sqlipat):
-    print '    "%s",' % (k,)
-print '};'
-print 'static const size_t patmap_sz = %d;' % (len(sqlipat))
-print
-
-print """
+    print """
 /* Simple binary search */
 int is_sqli_pattern(const char *key)
 {
@@ -47,4 +45,7 @@ int is_sqli_pattern(const char *key)
 }
 """
 
-print "#endif"
+    print "#endif"
+
+if __name__ == '__main__':
+    main()
