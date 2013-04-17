@@ -957,6 +957,10 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
             ptr_fingerprints_fn fn)
 {
 
+    if (slen == 0) {
+        return FALSE;
+    }
+
     if (is_string_sqli(sql_state, s, slen, CHAR_NULL, fn)) {
         return TRUE;
     }
