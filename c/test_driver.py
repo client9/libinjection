@@ -55,7 +55,6 @@ def read_test(arg):
     Read a test file and split into components
     """
 
-    fd = open(arg, 'r')
     state = None
     info = {
         '--TEST--': '',
@@ -63,7 +62,7 @@ def read_test(arg):
         '--EXPECTED--': ''
         }
 
-    for line in fd:
+    for line in open(arg, 'r'):
         line = line.rstrip()
         if line in ('--TEST--', '--INPUT--', '--EXPECTED--'):
             state = line
