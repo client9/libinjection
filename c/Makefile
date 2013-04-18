@@ -75,6 +75,11 @@ test_positive: reader
 test_negative: reader
 	./reader -i ../data/false_*.txt
 
+reader-gprof:
+	make clean
+	${CC} -g -pg  -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
+	./reader ../data/sqli-*.txt ../data/false_*.txt
+
 .PHONY: test_positive test_negative test test_unit test_speed
 
 sqli_fingerprints.h: fingerprints.txt fingerprints2c.py
@@ -100,6 +105,7 @@ clean:
 	rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
 	rm -rf lcov-html
 	rm -rf core* a.out
+	rm -rf gmon.out
 	rm -f reader extractor is_sqli lcov-reader sqli
 
 sqli-gcov: sqli_fingerprints.h
