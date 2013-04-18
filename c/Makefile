@@ -75,10 +75,10 @@ test_positive: reader
 test_negative: reader
 	./reader -i ../data/false_*.txt
 
-reader-gprof:
+reader-gprof: sqli_fingerprints.h
 	make clean
 	${CC} -g -pg  -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
-	./reader ../data/sqli-*.txt ../data/false_*.txt
+	./reader ../data/sqli-*.txt ../data/false_*.txt > /dev/null
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
