@@ -144,3 +144,6 @@ X' != 'Y' = 0 = 1
 X' = 'X' = 0 = 1
 X' = 'X' = 'X' = 0 = '1
 X' - 'Y' - 0 = '1
+
+# part of parameter pollution
+1) FROM USERS WHERE USERNAME=
