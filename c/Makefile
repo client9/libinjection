@@ -77,7 +77,7 @@ test_negative: reader
 
 reader-gprof: sqli_fingerprints.h
 	make clean
-	${CC} -g -O3 -pg -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
+	${CC} -g -O2 -pg -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
