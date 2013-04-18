@@ -77,7 +77,7 @@ test_negative: reader
 
 reader-gprof: sqli_fingerprints.h
 	make clean
-	${CC} -g -O3 -pg  -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
+	${CC} -g -O3 -pg -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
@@ -104,7 +104,7 @@ clean:
 	rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
 	rm -rf lcov-html
 	rm -rf core* a.out
-	rm -rf gmon.out
+	rm -f gmon.out
 	rm -f reader extractor is_sqli lcov-reader sqli
 
 sqli-gcov: sqli_fingerprints.h
