@@ -12,7 +12,7 @@
 static int g_test_ok = 0;
 static int g_test_fail = 0;
 
-void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_xml)
+void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_xml, bool flag_quiet)
 {
     char linebuf[8192];
     int linenum = 0;
@@ -36,6 +36,9 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
             g_test_fail += 1;
         }
 
+        if (flag_quiet) {
+            return;
+        }
         modp_toprint(linebuf, len);
 
         if (output_xml) {
@@ -64,6 +67,8 @@ int main(int argc, const char *argv[])
 {
     bool flag_invert = false;
     bool flag_xml = false;
+    bool flag_quiet = false;
+
     int i;
     int offset = 1;
 
@@ -74,6 +79,9 @@ int main(int argc, const char *argv[])
         } else if (strcmp(argv[offset], "-x") == 0) {
             offset += 1;
             flag_xml = true;
+        } else if (strcmp(argv[offset], "-q") == 0) {
+            offset += 1;
+            flag_quiet = true;
         } else {
             break;
         }
@@ -85,12 +93,12 @@ int main(int argc, const char *argv[])
     }
 
     if (offset == argc) {
-        test_positive(stdin, "stdin", flag_invert, flag_xml);
+        test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet);
     } else {
         for (i = offset; i < argc; ++i) {
             FILE* fd = fopen(argv[i], "r");
             if (fd) {
-                test_positive(fd, argv[i], flag_invert, flag_xml);
+                test_positive(fd, argv[i], flag_invert, flag_xml, flag_quiet);
                 fclose(fd);
             }
         }
