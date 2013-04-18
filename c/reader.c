@@ -86,7 +86,7 @@ int main(int argc, const char *argv[])
             flag_quiet = true;
         } else if (strcmp(argv[offset], "-s") == 0) {
             offset += 1;
-            flag_show = slow_max = 100;
+            flag_slow = 100;
         } else {
             break;
         }
@@ -100,7 +100,7 @@ int main(int argc, const char *argv[])
     if (offset == argc) {
         test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet);
     } else {
-        for (j = 0; j <= flag_slow) {
+        for (j = 0; j <= flag_slow; ++j) {
             for (i = offset; i < argc; ++i) {
                 FILE* fd = fopen(argv[i], "r");
                 if (fd) {
