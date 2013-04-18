@@ -69,8 +69,9 @@ int main(int argc, const char *argv[])
     bool flag_invert = false;
     bool flag_xml = false;
     bool flag_quiet = false;
+    int flag_slow = 1;
 
-    int i;
+    int i, j;
     int offset = 1;
 
     while (offset < argc) {
@@ -83,6 +84,9 @@ int main(int argc, const char *argv[])
         } else if (strcmp(argv[offset], "-q") == 0) {
             offset += 1;
             flag_quiet = true;
+        } else if (strcmp(argv[offset], "-s") == 0) {
+            offset += 1;
+            flag_show = slow_max = 100;
         } else {
             break;
         }
@@ -96,11 +100,13 @@ int main(int argc, const char *argv[])
     if (offset == argc) {
         test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet);
     } else {
-        for (i = offset; i < argc; ++i) {
-            FILE* fd = fopen(argv[i], "r");
-            if (fd) {
-                test_positive(fd, argv[i], flag_invert, flag_xml, flag_quiet);
-                fclose(fd);
+        for (j = 0; j <= flag_slow) {
+            for (i = offset; i < argc; ++i) {
+                FILE* fd = fopen(argv[i], "r");
+                if (fd) {
+                    test_positive(fd, argv[i], flag_invert, flag_xml, flag_quiet);
+                    fclose(fd);
+                }
             }
         }
     }
