@@ -79,6 +79,10 @@ reader-gprof: sqli_fingerprints.h
 	make clean
 	${CC} -g -pg  -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
 	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
+	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
+	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
+	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
+	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
