@@ -88,7 +88,7 @@ int main(int argc, const char *argv[])
         }
     }
 
-    if (flag_xml) {
+    if (flag_xml && ! flag_quiet) {
         fprintf(stdout, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         fprintf(stdout, "<results>\n");
     }
@@ -105,13 +105,15 @@ int main(int argc, const char *argv[])
         }
     }
 
-    if (flag_xml) {
+    if (flag_xml && ! flag_quiet) {
         fprintf(stdout, "</results>\n");
     }
 
-    fprintf(stderr, "SQLI  : %d\n", g_test_ok);
-    fprintf(stderr, "SAFE  : %d\n", g_test_fail);
-    fprintf(stderr, "TOTAL : %d\n", g_test_ok + g_test_fail);
+    if (! flag_quiet) {
+        fprintf(stderr, "SQLI  : %d\n", g_test_ok);
+        fprintf(stderr, "SAFE  : %d\n", g_test_fail);
+        fprintf(stderr, "TOTAL : %d\n", g_test_ok + g_test_fail);
+    }
 
     return 0;
 }
