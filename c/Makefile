@@ -83,6 +83,21 @@ reader-gprof: sqli_fingerprints.h
 	./reader -q ../data/sqli-*.txt ../data/false-*.txt
 	./reader -q ../data/sqli-*.txt ../data/false-*.txt
 	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
 
 
 .PHONY: test_positive test_negative test test_unit test_speed
