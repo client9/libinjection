@@ -78,11 +78,12 @@ test_negative: reader
 reader-gprof: sqli_fingerprints.h
 	make clean
 	${CC} -g -pg  -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c
-	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
-	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
-	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
-	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
-	./reader -q ../data/sqli-*.txt ../data/false_*.txt > /dev/null
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+	./reader -q ../data/sqli-*.txt ../data/false-*.txt
+
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
@@ -142,7 +143,6 @@ lcov: sqli-gcov
 	mkdir lcov-html
 	genhtml -o lcov-html libinjection.info
 .PHONY: lcov
-
 
 lcov-reader: Makefile sqlparse_data.h sqlparse.h sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c

@@ -37,8 +37,9 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
         }
 
         if (flag_quiet) {
-            return;
+            continue;
         }
+
         modp_toprint(linebuf, len);
 
         if (output_xml) {
