@@ -44,14 +44,18 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
 
         if (output_xml) {
             if (!issqli && !flag_invert) {
-            // false negative
-            // did NOT detect a SQLI
+                /*
+                 * false negative
+                 * did NOT detect a SQLI
+                 */
             fprintf(stdout,
                     "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
                     fname, linenum, "notsqli", "error", linebuf);
             } else if (output_xml && issqli && flag_invert) {
-                // false positive
-                // incorrect marked a benign input as SQLi
+                /*
+                 * false positive
+                 * incorrect marked a benign input as SQLi
+                 */
                 fprintf(stdout,
                         "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
                         fname, linenum, "sqli", "error", linebuf);
@@ -100,7 +104,7 @@ int main(int argc, const char *argv[])
     if (offset == argc) {
         test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet);
     } else {
-        for (j = 0; j <= flag_slow; ++j) {
+        for (j = 0; j < flag_slow; ++j) {
             for (i = offset; i < argc; ++i) {
                 FILE* fd = fopen(argv[i], "r");
                 if (fd) {
