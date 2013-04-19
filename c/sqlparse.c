@@ -28,16 +28,16 @@
 #define FOLD_DEBUG
 #endif
 
-// order is important here
+/* order is important here */
 #include "sqlparse_private.h"
 #include "sqlparse_data.h"
 
-// memmem is a linux function
-//  may not exist in Windows, and doesn't exist
-//  in Mac OS X < 10.8 and FreeBSD < 6.0
-// Define our own.   Modified to use 'const char*'
-// instead of (void *)
-//
+/* memmem is a linux function
+ *  may not exist in Windows, and doesn't exist
+ *  in Mac OS X < 10.8 and FreeBSD < 6.0
+ * Define our own.   Modified to use 'const char*'
+ * instead of (void *)
+ */
 
 /*-
  * Copyright (c) 2005 Pascal Gloor <pascal.gloor@spale.com>
@@ -166,12 +166,6 @@ void st_assign_cstr(stoken_t * st, const char stype, const char *value)
     st->type = stype;
     strncpy(st->val, value, ST_MAX_SIZE - 1);
     st->val[ST_MAX_SIZE - 1] = CHAR_NULL;
-}
-
-int st_equals_cstr(const stoken_t * st, const char stype,
-                    const char *value)
-{
-    return st->type == stype && !cstrcasecmp(value, st->val);
 }
 
 void st_copy(stoken_t * dest, const stoken_t * src)
@@ -354,8 +348,10 @@ size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
     if (cs[pos + 2] != '!') {
         return 0;
     }
-    // this is a mysql comment
-    // got "/*!"
+    /*
+     * this is a mysql comment
+     *  got "/x!"
+     */
     if (pos + 3 >= len) {
         return 3;
     }
@@ -363,7 +359,9 @@ size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
     if (!isdigit(cs[pos + 3])) {
         return 3;
     }
-    // handle odd case of /*!0SELECT
+    /*
+     * handle odd case of /x!0SELECT
+     */
     if (!isdigit(cs[pos + 4])) {
         return 4;
     }
@@ -396,18 +394,24 @@ size_t parse_slash(sfilter * sf)
     size_t inc = is_mysql_comment(cs, slen, pos);
     if (inc == 0) {
 
-        // skip over initial '/*'
+        /*
+         * skip over initial '/x'
+         */
         const char *ptr =
             (const char *) my_memmem(cur + 2, slen - (pos + 2), "*/", 2);
         if (ptr == NULL) {
-            // unterminated comment
+            /*
+             * unterminated comment
+             */
             st_assign_cstr(current, 'c', cs + pos);
             return slen;
         } else {
-            // postgresql allows nested comments which makes
-            // this is incompatible with parsing so
-            // if we find a '/*' inside the coment, then
-            // make a new token.
+            /*
+             * postgresql allows nested comments which makes
+             * this is incompatible with parsing so
+             * if we find a '/x' inside the coment, then
+             * make a new token.
+             */
             char ctype = 'c';
             const size_t clen = (ptr + 2) - (cur);
             if (my_memmem(cur + 2, ptr - (cur + 2), "/*", 2) !=
@@ -419,7 +423,9 @@ size_t parse_slash(sfilter * sf)
             return pos + clen;
         }
     } else {
-        // MySQL Comment
+        /*
+         * MySQL Comment
+         */
         sf->in_comment = TRUE;
         st_clear(current);
         return pos + inc;
@@ -453,30 +459,37 @@ size_t parse_operator2(sfilter * sf)
     }
     char op2[3] = { cs[pos], cs[pos + 1], CHAR_NULL };
 
-    // Special Hack for MYSQL style comments
-    // instead of turning:
-    // /*! FOO */  into FOO by rewriting the string, we
-    // turn it into FOO */ and ignore the ending comment
+    /*
+     * Special Hack for MYSQL style comments
+     *  instead of turning:
+     * /x! FOO x/  into FOO by rewriting the string, we
+     * turn it into FOO x/ and ignore the ending comment
+     */
     if (sf->in_comment && op2[0] == '*' && op2[1] == '/') {
         sf->in_comment = FALSE;
         st_clear(current);
         return pos + 2;
     } else if (pos + 2 < slen && op2[0] == '<' && op2[1] == '='
                && cs[pos + 2] == '>') {
-        // special 3-char operator
-
+        /*
+         * special 3-char operator
+         */
         st_assign_cstr(current, 'o', "<=>");
         return pos + 3;
     } else if (is_operator2(op2)) {
         if (streq(op2, "&&") || streq(op2, "||")) {
             st_assign_cstr(current, '&', op2);
         } else {
-            // normal 2 char operator
+            /*
+             * normal 2 char operator
+             */
             st_assign_cstr(current, 'o', op2);
         }
         return pos + 2;
     } else {
-        // must be a single char operator
+        /*
+         * must be a single char operator
+         */
         return parse_operator1(sf);
     }
 }
@@ -484,29 +497,41 @@ size_t parse_operator2(sfilter * sf)
 size_t parse_string_core(const char *cs, const size_t len, size_t pos,
                          stoken_t * st, char delim, size_t offset)
 {
-    // offset is to skip the perhaps first quote char
+    /*
+     * offset is to skip the perhaps first quote char
+     */
     const char *qpos =
         (const char *) memchr((const void *) (cs + pos + offset), delim,
                               len - pos - offset);
 
-    // then keep string open/close info
+    /*
+     * then keep string open/close info
+     */
     if (offset == 1) {
-        // this is real quote
+        /*
+         * this is real quote
+         */
         st->str_open = delim;
     } else {
-        // this was a simulated quote
+        /*
+         * this was a simulated quote
+         */
         st->str_open = CHAR_NULL;
     }
 
     while (TRUE) {
         if (qpos == NULL) {
-            // string ended with no trailing quote
-            // assign what we have
+            /*
+             * string ended with no trailing quote
+             * assign what we have
+             */
             st_assign_cstr(st, 's', cs + pos + offset);
             st->str_close = CHAR_NULL;
             return len;
         } else if (*(qpos - 1) != '\\') {
-            // ending quote is not escaped.. copy and end
+            /*
+             * ending quote is not escaped.. copy and end
+             */
             st_assign(st, 's', cs + pos + offset,
                       qpos - (cs + pos + offset));
             st->str_close = delim;
@@ -529,7 +554,9 @@ size_t parse_string(sfilter * sf)
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
 
-    // assert cs[pos] == single or double quote
+    /*
+     * assert cs[pos] == single or double quote
+     */
     return parse_string_core(cs, slen, pos, current, cs[pos], 1);
 }
 
@@ -538,14 +565,40 @@ size_t parse_word(sfilter * sf)
     stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     size_t pos = sf->pos;
+    char *dot;
+    char ch;
 
     size_t slen =
         strlenspn(cs + pos, sf->slen - pos,
-                  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+                  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$.");
 
     st_assign(current, 'n', cs + pos, slen);
+
+    dot = strchr(current->val, '.');
+    if (dot != NULL) {
+        *dot = '\0';
+
+        ch = bsearch_keyword_type(current->val, sql_keywords,
+                                  sql_keywords_sz);
+        if (ch == 'k' || ch == 'o') {
+            /*
+             * we got something like "SELECT.1"
+             */
+            current->type = ch;
+            return pos + strlen(current->val);
+        } else {
+            /*
+             * something else, put back dot
+             */
+            *dot = '.';
+        }
+    }
+
+    /*
+     * do normal lookup with word including '.'
+     */
     if (slen < ST_MAX_SIZE) {
-        char ch = bsearch_keyword_type(current->val, sql_keywords,
+        ch = bsearch_keyword_type(current->val, sql_keywords,
                                        sql_keywords_sz);
         if (ch == CHAR_NULL) {
             ch = 'n';
@@ -564,7 +617,9 @@ size_t parse_var(sfilter * sf)
 
     size_t pos1 = pos + 1;
 
-    // move past optional other '@'
+    /*
+     * move past optional other '@'
+     */
     if (pos1 < slen && cs[pos1] == '@') {
         pos1 += 1;
     }
@@ -589,7 +644,9 @@ size_t parse_number(sfilter * sf)
     size_t pos = sf->pos;
 
     if (pos + 1 < slen && cs[pos] == '0' && (cs[pos + 1] == 'X' || cs[pos + 1] == 'x')) {
-        // TBD compare if isxdigit
+        /*
+         * TBD compare if isxdigit
+         */
         size_t xlen =
             strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEFabcdef");
         if (xlen == 0) {
@@ -625,10 +682,12 @@ size_t parse_number(sfilter * sf)
             pos += 1;
         }
     } else if (isalpha(cs[pos])) {
-        // oh no, we have something like '6FOO'
-        // use microsoft style parsing and take just
-        // the number part and leave the rest to be
-        // parsed later
+        /*
+         * oh no, we have something like '6FOO'
+         * use microsoft style parsing and take just
+         * the number part and leave the rest to be
+         * parsed later
+         */
         st_assign(current, '1', cs + start, pos - start);
         return pos;
     }
@@ -687,7 +746,9 @@ int syntax_merge_words(stoken_t * a, stoken_t * b)
     if (sz3 >= ST_MAX_SIZE) {
         return FALSE;
     }
-    // oddly annoying  last.val + ' ' + current.val
+    /*
+     * oddly annoying  last.val + ' ' + current.val
+     */
     char tmp[ST_MAX_SIZE];
     memcpy(tmp, a->val, sz1);
     tmp[sz1] = ' ';
@@ -696,7 +757,9 @@ int syntax_merge_words(stoken_t * a, stoken_t * b)
 
     char ch = bsearch_keyword_type(tmp, multikeywords, multikeywords_sz);
     if (ch != CHAR_NULL) {
-        // -1, don't copy the null byte
+        /*
+         * -1, don't copy the null byte
+         */
         st_assign(a, ch, tmp, sz3);
         return TRUE;
     } else {
@@ -717,13 +780,15 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
         }
         st_clear(&sf->syntax_comment);
 
-        //
-        // If we don't have a saved token
-        //
+        /*
+         * If we don't have a saved token
+         */
         if (last->type == CHAR_NULL) {
             switch (ttype) {
 
-                // items that have special needs
+                /*
+                 * items that have special needs
+                 */
             case 's':
                 st_copy(last, current);
                 continue;
@@ -736,28 +801,34 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
                     st_copy(last, current);
                     continue;
                 } else if (current->type == 'o' || current->type == '&') {
-                    //} else if (st_is_unary_op(current)) {
+                    /* } else if (st_is_unary_op(current)) { */
                     st_copy(last, current);
                     continue;
                 } else {
-                    // copy to out
+                    /*
+                     * copy to out
+                     */
                     st_copy(sout, current);
                     return TRUE;
                 }
             default:
-                // copy to out
+                /*
+                 * copy to out
+                 */
                 st_copy(sout, current);
                 return TRUE;
             }
         }
-        //
-        // We have a saved token
-        //
+        /*
+         * We have a saved token
+         */
 
         switch (ttype) {
         case 's':
             if (last->type == 's') {
-                // "FOO" "BAR" == "FOO" (skip second string)
+                /*
+                 * "FOO" "BAR" == "FOO" (skip second string)
+                 */
                 continue;
             } else {
                 st_copy(sout, last);
@@ -767,18 +838,24 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
             break;
 
         case 'o':
-            // first case to handle "IS" + "NOT"
+            /*
+             * first case to handle "IS" + "NOT"
+             */
             if (syntax_merge_words(last, current)) {
                 continue;
             } else if (st_is_unary_op(current)
                        && (last->type == 'o' || last->type == '&'
                            || last->type == 'U')) {
-                // if an operator is followed by a unary operator, skip it.
-                // 1, + ==> "+" is not unary, it's arithmetic
-                // AND, + ==> "+" is unary
+                /*
+                 * if an operator is followed by a unary operator, skip it.
+                 * 1, + ==> "+" is not unary, it's arithmetic
+                 * AND, + ==> "+" is unary
+                 */
                 continue;
             } else {
-                // no match
+                /*
+                 * no match
+                 */
                 st_copy(sout, last);
                 st_copy(last, current);
                 return TRUE;
@@ -790,7 +867,9 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
             if (syntax_merge_words(last, current)) {
                 continue;
             } else {
-                // total no match
+                /*
+                 * total no match
+                 */
                 st_copy(sout, last);
                 st_copy(last, current);
                 return TRUE;
@@ -798,15 +877,19 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
             break;
 
         default:
-            // fix up for ambigous "IN"
-            // handle case where IN is typically a function
-            // but used in compound "IN BOOLEAN MODE" jive
+            /*
+             * fix up for ambigous "IN"
+             * handle case where IN is typically a function
+             * but used in compound "IN BOOLEAN MODE" jive
+             */
             if (last->type == 'n' && !cstrcasecmp(last->val, "IN")) {
                 st_copy(last, current);
                 st_assign_cstr(sout, 'f', "IN");
                 return TRUE;
             } else {
-                // no match at all
+                /*
+                 * no match at all
+                 */
                 st_copy(sout, last);
                 st_copy(last, current);
                 return TRUE;
@@ -815,7 +898,9 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
         }
     }
 
-    // final cleanup
+    /*
+     * final cleanup
+     */
     if (last->type) {
         st_copy(sout, last);
         st_clear(last);
@@ -842,8 +927,10 @@ int filter_fold(sfilter * sf, stoken_t * sout)
     }
 
     while (sqli_tokenize(sf, current)) {
-        // 0 = start of statement
-        // skip ( and unary ops
+        /*
+         * 0 = start of statement
+         * skip ( and unary ops
+         */
         if (sf->fold_state == 0) {
             if (current->type == '(') {
                 continue;
@@ -864,13 +951,16 @@ int filter_fold(sfilter * sf, stoken_t * sout)
             st_copy(sout, current);
             return TRUE;
         } else if (last->type == '(' && st_is_unary_op(current)) {
-            // similar to beginning of statement
-            // an opening '(' resets state, and we should skip all
-            // unary operators
+            /*
+             * similar to beginning of statement
+             * an opening '(' resets state, and we should skip all
+             * unary operators
+             */
             continue;
         } else if (last->type == '(' && current->type == '(') {
-            // if we get another '(' after another
-            // emit 1, but keep state
+            /* if we get another '(' after another
+             * emit 1, but keep state
+             */
             st_copy(sout, current);
             return TRUE;
         } else if ((last->type == '1' || last->type == 'n')
@@ -942,9 +1032,11 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     }
     sql_state->pat[tlen] = CHAR_NULL;
 
-    // if token 5 (last) looks like a functino word (such as ABS or ASCII)
-    // then check token 6 to see if it's a "(".
-    // if NOT then, it's not a function.
+    /*
+     * if token 5 (last) looks like a functino word (such as ABS or ASCII)
+     * then check token 6 to see if it's a "(".
+     * if NOT then, it's not a function.
+     */
 
     if (tlen == MAX_TOKENS && !all_done
         && sql_state->pat[MAX_TOKENS - 1] == 'f') {
@@ -956,11 +1048,13 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
             return FALSE;
         }
     }
-    // check for 'X' in pattern
-    // this means parsing could not be done
-    // accurately due to pgsql's double comments
-    // or other syntax that isn't consistent
-    // should be very rare false positive
+    /*
+     * check for 'X' in pattern
+     * this means parsing could not be done
+     * accurately due to pgsql's double comments
+     * or other syntax that isn't consistent
+     * should be very rare false positive
+     */
     if (strchr(sql_state->pat, 'X')) {
         return TRUE;
     }
@@ -973,13 +1067,17 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     }
     switch (tlen) {
     case 2:{
-            // if 'comment' is '#' ignore.. too many FP
+        /*
+         * if 'comment' is '#' ignore.. too many FP
+         */
             if (sql_state->tokenvec[1].val[0] == '#') {
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
-            // detect obvious sqli scans.. many people put '--' in plain text
-            // so only detect if input ends with '--', e.g. 1-- but not 1-- foo
+            /*
+             * detect obvious sqli scans.. many people put '--' in plain text
+             * so only detect if input ends with '--', e.g. 1-- but not 1-- foo
+             */
             if ((strlen(sql_state->tokenvec[1].val) > 2)
                 && sql_state->tokenvec[1].val[0] == '-') {
                 sql_state->reason = __LINE__;
@@ -988,18 +1086,24 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
             break;
         }
     case 3:{
-            // ...foo' + 'bar...
-            // no opening quote, no closing quote
-            // and each string has data
+        /*
+         * ...foo' + 'bar...
+         * no opening quote, no closing quote
+         * and each string has data
+         */
             if (streq(sql_state->pat, "sos")
                 || streq(sql_state->pat, "s&s")) {
                 if ((sql_state->tokenvec[0].str_open == CHAR_NULL)
                     && (sql_state->tokenvec[2].str_close == CHAR_NULL)) {
 
-                    // if ....foo" + "bar....
+                    /*
+                     * if ....foo" + "bar....
+                     */
                     return TRUE;
                 } else {
-                    // not sqli
+                    /*
+                     * not sqli
+                     */
                     sql_state->reason = __LINE__;
                     return FALSE;
                 }
@@ -1034,29 +1138,3 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
 
     return FALSE;
 }
-
-/*
- not used yet
-
-// [('o', 228), ('k', 220), ('1', 217), (')', 157), ('(', 156), ('s', 154), ('n', 77), ('f', 73), (';', 59), (',', 35), ('v', 17), ('c', 15),
-int char2int(char c)
-{
-    const char *map = "ok1()snf;,";
-    const char *pos = strchr(map, c);
-    if (pos == NULL) {
-        return 15;
-    } else {
-        return (int) (pos - map) + 1;
-    }
-}
-
-unsigned long long pat2int(const char *pat)
-{
-    unsigned long long val = 0;
-    while (*pat) {
-        val = (val << 4) + char2int(*pat);
-        pat += 1;
-    }
-    return val;
-}
-*/
