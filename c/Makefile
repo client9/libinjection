@@ -31,6 +31,8 @@ help:
 	@echo "make lcov -- lcov"
 	@echo "make reader -- line by line analyzer"
 	@echo "make http -- runs mini-http server, handy for viewing lcov"
+	@echo "make sqli -- a CLI tokenizier (need renaming)"
+	@echo "make fptool -- a fingerprinting tool"
 	@echo ""
 
 allbin: reader extractor is_sqli sqli
@@ -47,6 +49,8 @@ is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml
 sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h modp_ascii.c
 	${CC} ${CFLAGS} -o sqli sqli_cli.c sqlparse.c modp_ascii.c
 
+fptool: Makefile fptool.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
+	${CC} ${CFLAGS} -o fptool fptool.c sqlparse.c
 
 test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.c
 	${CC} ${CFLAGS} -o test_speed sqlparse.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
