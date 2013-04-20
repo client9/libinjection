@@ -1091,11 +1091,10 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
          * no opening quote, no closing quote
          * and each string has data
          */
-            if (streq(sql_state->pat, "sos")
-                || streq(sql_state->pat, "s&s")) {
+        if (streq(sql_state->pat, "sos")
+            || streq(sql_state->pat, "s&s")) {
                 if ((sql_state->tokenvec[0].str_open == CHAR_NULL)
                     && (sql_state->tokenvec[2].str_close == CHAR_NULL)) {
-
                     /*
                      * if ....foo" + "bar....
                      */
@@ -1108,9 +1107,26 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     return FALSE;
                 }
                 break;
+        }
+    }                       /* case 3 */
+    case 5: {
+        if (streq(sql_state->pat, "sosos")) {
+            if (sql_state->tokenvec[0].str_open == CHAR_NULL) {
+                /*
+                 * if ....foo" + "bar....
+                 */
+                return TRUE;
+            } else {
+                /*
+                 * not sqli
+                 */
+                sql_state->reason = __LINE__;
+                return FALSE;
             }
-        }                       /* case 3 */
-    }                           /* end switch */
+            break;
+        }
+    } /* case 5 */
+    } /* end switch */
     return TRUE;
 }
 
