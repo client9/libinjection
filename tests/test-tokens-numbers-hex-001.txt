@@ -4,5 +4,5 @@ smoke
 SELECT 0xFF;
 --EXPECTED--
 k SELECT
-1 0XFF
+1 0xFF
 ; ;

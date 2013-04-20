@@ -4,4 +4,4 @@ smoke
 SELECT binary_float_nan
 --EXPECTED--
 k SELECT
-1 BINARY_FLOAT_NAN
+1 binary_float_nan

@@ -4,4 +4,4 @@ smoke
 SELECT binary_double_infinity
 --EXPECTED--
 k SELECT
-1 BINARY_DOUBLE_INFINITY
+1 binary_double_infinity

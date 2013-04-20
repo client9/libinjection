@@ -4,4 +4,4 @@ smoke
 SELECT binary_float_infinity
 --EXPECTED--
 k SELECT
-1 BINARY_FLOAT_INFINITY
+1 binary_float_infinity

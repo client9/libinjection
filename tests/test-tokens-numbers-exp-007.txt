@@ -4,5 +4,5 @@ floating point parsing
 SELECT .123e+1;
 --EXPECTED--
 k SELECT
-1 .123E+1
+1 .123e+1
 ; ;
