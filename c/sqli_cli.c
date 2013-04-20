@@ -33,11 +33,8 @@ int main(int argc, const char* argv[])
     }
 
     size_t slen = strlen(argv[offset]);
-    char* copy = (char*) malloc(slen + 1);
-    if (copy == NULL) {
-        return 1;
-    }
-
+    const char* copy = argv[offset];
+  
     sfilter_reset(&sf, copy, slen);
 
     if (fold == 1) {
@@ -62,6 +59,5 @@ int main(int argc, const char* argv[])
         }
     }
 
-    free(copy);
     return 0;
 }
