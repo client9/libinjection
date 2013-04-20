@@ -4,6 +4,7 @@
 
 #include "modp_burl.h"
 #include "modp_ascii.h"
+#include "modp_xml.h"
 
 #include "sqlparse.h"
 #include "sqli_fingerprints.h"
@@ -15,6 +16,7 @@ static int g_test_fail = 0;
 void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_xml, bool flag_quiet)
 {
     char linebuf[8192];
+    char linecopy[8192];
     int linenum = 0;
     sfilter sf;
 
@@ -40,17 +42,20 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
             continue;
         }
 
-        modp_toprint(linebuf, len);
 
         if (output_xml) {
+            modp_toprint(linebuf, len);
+            modp_xml_encode(linecopy, linebuf, len);
+
             if (!issqli && !flag_invert) {
                 /*
                  * false negative
                  * did NOT detect a SQLI
                  */
-            fprintf(stdout,
-                    "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
-                    fname, linenum, "notsqli", "error", linebuf);
+
+                fprintf(stdout,
+                        "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
+                        fname, linenum, "notsqli", "error", linecopy);
             } else if (output_xml && issqli && flag_invert) {
                 /*
                  * false positive
@@ -61,6 +66,8 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
                         fname, linenum, "sqli", "error", linebuf);
             }
         } else {
+            modp_toprint(linebuf, len);
+
             fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
                     fname, linenum,
                     (issqli ? "True" : "False"), sf.pat, sf.reason, linebuf);
