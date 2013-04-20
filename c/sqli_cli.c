@@ -37,7 +37,6 @@ int main(int argc, const char* argv[])
     if (copy == NULL) {
         return 1;
     }
-    modp_toupper_copy(copy, argv[offset], slen);
 
     sfilter_reset(&sf, copy, slen);
 
