@@ -639,6 +639,24 @@ size_t parse_var(sfilter * sf)
     }
 }
 
+size_t parse_money(sfilter *sf)
+{
+    stoken_t *current = &sf->syntax_current;
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+    size_t xlen;
+
+    xlen = strlenspn(cs + pos + 1, slen - pos - 1, "0123456789.,");
+    if (xlen == 0) {
+        st_assign_cstr(current, 'n', "?");
+        return pos + 1;
+    } else {
+        st_assign(current, '1', cs + pos, 1 + xlen);
+        return pos + 1 + xlen;
+    }
+}
+
 size_t parse_number(sfilter * sf)
 {
     stoken_t *current = &sf->syntax_current;

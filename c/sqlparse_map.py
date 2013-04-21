@@ -612,7 +612,7 @@ CHARMAP = [
     'CHAR_OP2',   # 33 !
     'CHAR_STR',   # 34 "
     'CHAR_COM1',  # 35 "#"
-    'CHAR_WHITE',  # 36 $ -- ignore optional currency symbol for TSQL money types
+    'CHAR_MONEY',  # 36 $ -- ignore optional currency symbol for TSQL money types
     'CHAR_OP1',   # 37 %
     'CHAR_OP2',   # 38 &
     'CHAR_STR',   # 39 '

@@ -78,7 +78,8 @@ def toc(obj):
         'CHAR_SLASH': 'parse_slash',
         'CHAR_CHAR': 'parse_char',
         'CHAR_VAR': 'parse_var',
-        'CHAR_OTHER': 'parse_other'
+        'CHAR_OTHER': 'parse_other',
+        'CHAR_MONEY': 'parse_money'
         }
     print
     print "typedef size_t (*pt2Function)(sfilter *sf);"
