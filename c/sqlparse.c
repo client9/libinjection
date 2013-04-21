@@ -404,7 +404,7 @@ size_t parse_slash(sfilter * sf)
             /*
              * unterminated comment
              */
-            st_assign_cstr(current, 'c', cs + pos);
+            st_assign(current, 'c', cs + pos, slen - pos);
             return slen;
         } else {
             /*
