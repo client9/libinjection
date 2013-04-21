@@ -71,9 +71,10 @@ def runtest(testname, valgrind=False):
         actual = run(['./sqli', data[1]])
 
     if actual.strip() != data[2].strip():
-            print "EXPECTED: \n" + data[2]
-            print "GOT: \n" + actual
-            assert False
+        print "INPUT: \n" + data[1]
+        print "EXPECTED: \n" + data[2]
+        print "GOT: \n" + actual
+        assert False
 
 def test_unit():
     for testname in glob.glob('../tests/test-*.txt'):
