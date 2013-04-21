@@ -61,7 +61,7 @@ test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.c
 	./test_speed
 
 test_unit: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
-	nosetests test_driver.py
+	nosetests --with-xunit test_driver.py
 
 valgrind: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
 	./test_driver.py --valgrind ../tests/test-*.txt
@@ -111,7 +111,7 @@ clean:
 	rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
 	rm -rf lcov-html
 	rm -rf core* a.out
-	rm -f gmon.out
+	rm -f gmon.out nosetests.xml
 	rm -f reader extractor is_sqli lcov-reader sqli
 
 sqli-gcov: sqli_fingerprints.h
