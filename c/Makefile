@@ -64,6 +64,7 @@ test_unit: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
 	nosetests --with-xunit test_driver.py
 
 valgrind: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
+	rm -f valgrind-*.xml
 	${MAKE} VALGRIND=1 test_unit
 
 cppcheck:
