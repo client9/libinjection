@@ -9,3 +9,6 @@ is_sqli
 *.gcda
 *.gcno
 *.info
+nosetests.xml
+gmon.out
+cobertura-coverage.xml
