@@ -32,9 +32,15 @@ int main(int argc, const char* argv[])
         offset += 1;
     }
 
+     /* ATTENTION: argv is a C-string, null terminated.  We copy this
+      * to it's own location, WITHOUT null byte.  This way, valgrind
+      * can see if we run past the buffer.
+      */
+
     size_t slen = strlen(argv[offset]);
-    const char* copy = argv[offset];
-  
+    char* copy = (char* ) malloc(slen);
+    memcpy(copy, argv[offset], slen);
+
     sfilter_reset(&sf, copy, slen);
 
     if (fold == 1) {
@@ -58,6 +64,8 @@ int main(int argc, const char* argv[])
             }
         }
     }
+
+    free(copy);
 
     return 0;
 }
