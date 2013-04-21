@@ -88,8 +88,11 @@ reader-gprof: sqli_fingerprints.h
 sqli_fingerprints.h: fingerprints.txt fingerprints2c.py
 	./fingerprints2c.py > ./sqli_fingerprints.h
 
-sqlparse_data.h: Makefile sqlparse_map.py sqlparse2c.py
-	./sqlparse_map.py | ./sqlparse2c.py > ./sqlparse_data.h
+sqlparse_data.json: Makefile sqlparse_map.py
+	./sqlparse_map.py > sqlparse_data.json
+
+sqlparse_data.h: Makefile sqlparse_data.json
+	./sqlparse2c.py < sqlparse_data.json > ./sqlparse_data.h
 
 indent: sqlparse.h sqlparse.c
 	${INDENT} -kr -nut sqlparse.h sqlparse.c test_speed.c sqli_normalize.c reader.c
