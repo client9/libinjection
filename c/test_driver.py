@@ -84,6 +84,6 @@ def runtest(testname):
         assert False
 
 def test_unit():
-    for testname in glob.glob('../tests/test-*.txt'):
+    for testname in sorted(glob.glob('../tests/test-*.txt')):
         testname = os.path.basename(testname)
         yield runtest, testname

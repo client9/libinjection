@@ -51,7 +51,7 @@ is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h modp_ascii.c
-	${CC} ${CFLAGS} -o sqli sqli_cli.c sqlparse.c modp_ascii.c
+	${CC} -g -O1 -o sqli sqli_cli.c sqlparse.c modp_ascii.c
 
 fptool: Makefile fptool.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
 	${CC} ${CFLAGS} -o fptool fptool.c sqlparse.c
@@ -112,7 +112,7 @@ clean:
 	rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
 	rm -rf lcov-html
 	rm -rf core* a.out
-	rm -f gmon.out nosetests.xml
+	rm -f gmon.out nosetests.xml valgrind-*.txt
 	rm -f reader extractor is_sqli lcov-reader sqli
 
 sqli-gcov: sqli_fingerprints.h

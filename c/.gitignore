@@ -12,3 +12,4 @@ is_sqli
 nosetests.xml
 gmon.out
 cobertura-coverage.xml
+valgrind-*.xml
