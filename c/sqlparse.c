@@ -155,17 +155,10 @@ void st_assign_char(stoken_t * st, const char stype, const char value)
 void st_assign(stoken_t * st, const char stype, const char *value,
                size_t len)
 {
-    size_t last = len < (ST_MAX_SIZE - 1) ? len : (ST_MAX_SIZE - 1);
+    size_t last = len < ST_MAX_SIZE ? len : (ST_MAX_SIZE - 1);
     st->type = stype;
-    strncpy(st->val, value, last);
+    memcpy(st->val, value, last);
     st->val[last] = CHAR_NULL;
-}
-
-void st_assign_cstr(stoken_t * st, const char stype, const char *value)
-{
-    st->type = stype;
-    strncpy(st->val, value, ST_MAX_SIZE - 1);
-    st->val[ST_MAX_SIZE - 1] = CHAR_NULL;
 }
 
 void st_copy(stoken_t * dest, const stoken_t * src)
@@ -313,7 +306,7 @@ size_t parse_eol_comment(sfilter * sf)
     const char *endpos =
         (const char *) memchr((const void *) (cs + pos), '\n', slen - pos);
     if (endpos == NULL) {
-        st_assign_cstr(current, 'c', cs + pos);
+        st_assign(current, 'c', cs + pos, slen - pos);
         return slen;
     } else {
         st_assign(current, 'c', cs + pos, endpos - cs - pos);
@@ -441,7 +434,7 @@ size_t parse_backslash(sfilter * sf)
     size_t pos = sf->pos;
 
     if (pos + 1 < slen && cs[pos + 1] == 'N') {
-        st_assign_cstr(current, '1', "NULL");
+        st_assign(current, '1', "NULL", 4);
         return pos + 2;
     } else {
         return parse_other(sf);
@@ -479,16 +472,16 @@ size_t parse_operator2(sfilter * sf)
         /*
          * special 3-char operator
          */
-        st_assign_cstr(current, 'o', "<=>");
+        st_assign(current, 'o', "<=>", 3);
         return pos + 3;
     } else if (is_operator2(op2)) {
         if (streq(op2, "&&") || streq(op2, "||")) {
-            st_assign_cstr(current, '&', op2);
+            st_assign(current, '&', op2, 2);
         } else {
             /*
              * normal 2 char operator
              */
-            st_assign_cstr(current, 'o', op2);
+            st_assign(current, 'o', op2, 2);
         }
         return pos + 2;
     } else {
@@ -530,7 +523,7 @@ size_t parse_string_core(const char *cs, const size_t len, size_t pos,
              * string ended with no trailing quote
              * assign what we have
              */
-            st_assign_cstr(st, 's', cs + pos + offset);
+            st_assign(st, 's', cs + pos + offset, len - pos - offset);
             st->str_close = CHAR_NULL;
             return len;
         } else if (*(qpos - 1) != '\\') {
@@ -679,7 +672,7 @@ size_t parse_number(sfilter * sf)
         xlen =
             strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEFabcdef");
         if (xlen == 0) {
-            st_assign_cstr(current, 'n', "0X");
+            st_assign(current, 'n', "0X", 2);
             return pos + 2;
         } else {
             st_assign(current, '1', cs + pos, 2 + xlen);
@@ -919,7 +912,7 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
              */
             if (last->type == 'n' && !cstrcasecmp(last->val, "IN")) {
                 st_copy(last, current);
-                st_assign_cstr(sout, 'f', "IN");
+                st_assign(sout, 'f', "IN", 2);
                 return TRUE;
             } else {
                 /*
