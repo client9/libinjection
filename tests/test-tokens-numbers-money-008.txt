@@ -1,0 +1,7 @@
+--TEST--
+smoke
+--INPUT--
+SELECT $
+--EXPECTED--
+k SELECT
+

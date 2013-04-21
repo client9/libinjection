@@ -647,9 +647,15 @@ size_t parse_money(sfilter *sf)
     size_t pos = sf->pos;
     size_t xlen;
 
+    /*
+     * $1,000.00 or $1.000,00 ok!
+     * This also parses $....,,,111 but that's ok
+     */
     xlen = strlenspn(cs + pos + 1, slen - pos - 1, "0123456789.,");
     if (xlen == 0) {
-        st_assign_cstr(current, 'n', "?");
+        /*
+         * just ignore '$'
+         */
         return pos + 1;
     } else {
         st_assign(current, '1', cs + pos, 1 + xlen);

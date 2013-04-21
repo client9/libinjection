@@ -1,0 +1,7 @@
+--TEST--
+smoke
+--INPUT--
+SELECT $APPLE
+--EXPECTED--
+k SELECT
+n APPLE
