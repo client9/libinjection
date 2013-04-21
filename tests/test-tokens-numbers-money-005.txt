@@ -4,4 +4,4 @@ smoke
 SELECT $.0
 --EXPECTED--
 k SELECT
-1 .0
+1 $.0
