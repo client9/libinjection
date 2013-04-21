@@ -546,7 +546,7 @@ KEYWORDS = {
 # special case in that '<=' might also be '<=>'
 # ":" isn't an operator in mysql, but other dialects
 #   use it.
-CHAROPS = (
+OPERATORS2 = (
     '!=',   # oracle
     '||',
     '&&',
@@ -764,7 +764,7 @@ def dump():
     objs = {
         'keywords': KEYWORDS,
         'charmap': CHARMAP,
-        'double_char_operators': CHAROPS,
+        'operators2': OPERATORS2,
         'phrases': PHRASES
         }
     return json.dumps(objs, sort_keys=True, indent=4)
