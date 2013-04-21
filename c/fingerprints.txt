@@ -1,4 +1,3 @@
-ko(s,
 &1o1U
 &1osU
 &1ovU
@@ -643,6 +642,7 @@ knvvn
 ko(k(
 ko(kf
 ko(n,
+ko(s,
 kok(k
 ks&(k
 ks&(o
