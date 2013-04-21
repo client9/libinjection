@@ -17,6 +17,12 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
 {
     char linebuf[8192];
     char linecopy[8192];
+
+    /**
+     * xml-escaped version of sqlifingerprint
+     */
+    char patxml[128];
+
     int linenum = 0;
     sfilter sf;
 
@@ -46,7 +52,7 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
         if (output_xml) {
             modp_toprint(linebuf, len);
             modp_xml_encode(linecopy, linebuf, len);
-
+            modp_xml_encode(patxml, sf.pat, strlen(sf.pat));
             if (!issqli && !flag_invert) {
                 /*
                  * false negative
@@ -55,7 +61,7 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
 
                 fprintf(stdout,
                         "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
-                        fname, linenum, "notsqli", "error", linecopy);
+                        fname, linenum, patxml, "error", linecopy);
             } else if (output_xml && issqli && flag_invert) {
                 /*
                  * false positive
@@ -63,7 +69,7 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
                  */
                 fprintf(stdout,
                         "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
-                        fname, linenum, sf.pat, "error", linecopy);
+                        fname, linenum, patxml, "error", linecopy);
             }
         } else {
             modp_toprint(linebuf, len);
