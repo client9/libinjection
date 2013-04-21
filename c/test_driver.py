@@ -72,6 +72,7 @@ def runtest(testname, valgrind=False):
 
     if actual.strip() != data[2].strip():
         print "INPUT: \n" + data[1]
+        print
         print "EXPECTED: \n" + data[2]
         print "GOT: \n" + actual
         assert False
