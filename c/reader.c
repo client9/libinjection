@@ -63,7 +63,7 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
                  */
                 fprintf(stdout,
                         "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
-                        fname, linenum, "sqli", "error", linebuf);
+                        fname, linenum, "sqli", "error", linecopy);
             }
         } else {
             modp_toprint(linebuf, len);
