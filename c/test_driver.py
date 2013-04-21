@@ -87,3 +87,8 @@ def test_unit():
     for testname in sorted(glob.glob('../tests/test-*.txt')):
         testname = os.path.basename(testname)
         yield runtest, testname
+
+if __name__ == '__main__':
+    import sys
+    sys.stderr.write("run using nosetests\n")
+    sys.exit(1)
