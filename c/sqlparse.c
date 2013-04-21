@@ -681,10 +681,10 @@ size_t parse_number(sfilter * sf)
     }
 
     start = pos;
-    while (isdigit(cs[pos])) {
+    while (pos < slen && isdigit(cs[pos])) {
         pos += 1;
     }
-    if (cs[pos] == '.') {
+    if (pos < slen && cs[pos] == '.') {
         pos += 1;
         while (pos < slen && isdigit(cs[pos])) {
             pos += 1;
@@ -695,23 +695,25 @@ size_t parse_number(sfilter * sf)
         }
     }
 
-    if (cs[pos] == 'E' || cs[pos] == 'e') {
-        pos += 1;
-        if (pos < slen && (cs[pos] == '+' || cs[pos] == '-')) {
+    if (pos < slen) {
+        if (cs[pos] == 'E' || cs[pos] == 'e') {
             pos += 1;
+            if (pos < slen && (cs[pos] == '+' || cs[pos] == '-')) {
+                pos += 1;
+            }
+            while (pos < slen && isdigit(cs[pos])) {
+                pos += 1;
+            }
+        } else if (isalpha(cs[pos])) {
+            /*
+             * oh no, we have something like '6FOO'
+             * use microsoft style parsing and take just
+             * the number part and leave the rest to be
+             * parsed later
+             */
+            st_assign(current, '1', cs + start, pos - start);
+            return pos;
         }
-        while (isdigit(cs[pos])) {
-            pos += 1;
-        }
-    } else if (isalpha(cs[pos])) {
-        /*
-         * oh no, we have something like '6FOO'
-         * use microsoft style parsing and take just
-         * the number part and leave the rest to be
-         * parsed later
-         */
-        st_assign(current, '1', cs + start, pos - start);
-        return pos;
     }
 
     st_assign(current, '1', cs + start, pos - start);
