@@ -56,16 +56,21 @@ def readtestdata(filename):
 
     return (info['--TEST--'], info['--INPUT--'], info['--EXPECTED--'])
 
-def runtest(testname, valgrind=False):
+def runtest(testname):
     """
     runs a test, optionally with valgrind
     """
     data =  readtestdata(os.path.join('../tests', testname))
 
     if os.environ.get('VALGRIND', None):
-        args = ['valgrind', '--gen-suppressions=no', '--read-var-info=yes',
-                '--leak-check=full', '--error-exitcode=1',
-                '--track-origins=yes', './sqli', data[1]]
+        args = ['valgrind',
+                '--gen-suppressions=no',
+                '--read-var-info=yes',
+                '--leak-check=full',
+                '--error-exitcode=1',
+                '--track-origins=yes',
+                '--xml-file=valgrind-'+ testname.replace('.txt', '.xml'),
+                './sqli', data[1]]
         actual = run(args)
     else:
         actual = run(['./sqli', data[1]])
