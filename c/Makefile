@@ -122,7 +122,7 @@ sqli-gcov: sqli_fingerprints.h
 # for jenkins
 gcovr-unittest-xml: sqli-gcov
 	gcovr --version
-	./test_driver.py ../tests/test-*.txt
+	nosetests ./test_driver.py
 	gcovr -d -o libinjection-unittest-gcov.xml --gcov-exclude='.*modp_.*'  --gcov-exclude='reader*' --xml -r `pwd`
 
 # for jenkins
