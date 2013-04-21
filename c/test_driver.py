@@ -69,6 +69,7 @@ def runtest(testname):
                 '--leak-check=full',
                 '--error-exitcode=1',
                 '--track-origins=yes',
+                '--xml=yes',
                 '--xml-file=valgrind-'+ testname.replace('.txt', '.xml'),
                 './sqli', data[1]]
         actual = run(args)
