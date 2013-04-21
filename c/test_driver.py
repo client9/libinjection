@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 """
 Test driver
-Runs off plain text files similar to how PHP's test harness works
+Runs off plain text files, similar to how PHP's test harness works
 """
 import subprocess
+import os
+import glob
 
 def run(args):
     """
@@ -30,27 +32,7 @@ def run(args):
             raise Exception("Test died!: " + stderrdata)
         return stdoutdata
 
-def run_test(test_name, data, valgrind=False):
-    """
-    runs a test
-    """
-
-    if valgrind:
-        args = ['valgrind', '--gen-suppressions=no', '--read-var-info=yes',
-                '--leak-check=full', '--error-exitcode=1',
-                '--track-origins=yes', './sqli', data[1]]
-        actual = run(args)
-    else:
-        actual = run(['./sqli', data[1]])
-
-    if actual.strip() != data[2].strip():
-        print "not ok: " + test_name
-        print "EXPECTED: \n" + data[2]
-        print "GOT: \n" + actual
-    else:
-        print "ok: " + test_name
-
-def read_test(arg):
+def readtestdata(filename):
     """
     Read a test file and split into components
     """
@@ -62,7 +44,7 @@ def read_test(arg):
         '--EXPECTED--': ''
         }
 
-    for line in open(arg, 'r'):
+    for line in open(filename, 'r'):
         line = line.rstrip()
         if line in ('--TEST--', '--INPUT--', '--EXPECTED--'):
             state = line
@@ -74,21 +56,26 @@ def read_test(arg):
 
     return (info['--TEST--'], info['--INPUT--'], info['--EXPECTED--'])
 
-if __name__ == '__main__':
-    import sys
+def runtest(testname, valgrind=False):
+    """
+    runs a test, optionally with valgrind
+    """
+    data =  readtestdata(os.path.join('../tests', testname))
 
-    # hack for command line switch
-    # if argv1 had 'valgrind'
+    if valgrind:
+        args = ['valgrind', '--gen-suppressions=no', '--read-var-info=yes',
+                '--leak-check=full', '--error-exitcode=1',
+                '--track-origins=yes', './sqli', data[1]]
+        actual = run(args)
+    else:
+        actual = run(['./sqli', data[1]])
 
-    i = 1
-    FLAG_VALGRIND = False
-    if 'valgrind' in sys.argv[1]:
-        i = 2
-        FLAG_VALGRIND = True
+    if actual.strip() != data[2].strip():
+            print "EXPECTED: \n" + data[2]
+            print "GOT: \n" + actual
+            assert False
 
-    for name in sys.argv[i:]:
-        print name
-        testdata = read_test(name)
-        run_test(name, testdata, FLAG_VALGRIND)
-        print '----------------'
-
+def test_unit():
+    for testname in glob.glob('../tests/test-*.txt'):
+        testname = os.path.basename(testname)
+        yield runtest, testname

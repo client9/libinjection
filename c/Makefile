@@ -61,7 +61,7 @@ test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.c
 	./test_speed
 
 test_unit: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
-	./test_driver.py ../tests/test-*.txt
+	nosetests test_driver.py
 
 valgrind: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
 	./test_driver.py --valgrind ../tests/test-*.txt
