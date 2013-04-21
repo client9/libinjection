@@ -62,7 +62,7 @@ def runtest(testname, valgrind=False):
     """
     data =  readtestdata(os.path.join('../tests', testname))
 
-    if valgrind:
+    if os.environ.get('VALGRIND', None):
         args = ['valgrind', '--gen-suppressions=no', '--read-var-info=yes',
                 '--leak-check=full', '--error-exitcode=1',
                 '--track-origins=yes', './sqli', data[1]]
