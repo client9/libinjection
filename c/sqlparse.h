@@ -7,11 +7,15 @@
  * HOW TO USE:
  *
  *   // Normalize query or postvar value
- *   // ATTENTION: this modifies user_string... make copy if that is not ok
- *   size_t new_len = qs_normalize(user_string, user_string_len);
+ *   // If it comes in urlencoded, then it's up to you
+ *   // to urldecode it.  If it's in correct form already
+ *   // then nothing to do!
  *
  *   sfilter s;
- *   bool sqli = is_sqli(&s, user_string, new_len);
+ *   int sqli = is_sqli(&s, user_string, new_len);
+ *
+ *   // 0 = not sqli
+ *   // 1 = is sqli
  *
  *   // That's it!  sfilter s has some data on how it matched or not
  *   // details to come!
@@ -61,7 +65,7 @@ typedef struct {
     /* final sqli data */
     stoken_t tokenvec[MAX_TOKENS];
 
-    /*  +1 for possible ending null */
+    /*  +1 for ending null */
     char pat[MAX_TOKENS + 1];
     char delim;
     int reason;
@@ -73,8 +77,8 @@ typedef struct {
 typedef int (*ptr_fingerprints_fn)(const char*);
 
 /**
- * Main function
- * Tests three possible contexts, no quotes, single quote and double quote
+ * Main API: tests for SQLi in three possible contexts, no quotes,
+ * single quote and double quote
  *
  * \return 1 (true) if SQLi, 0 (false) if benign
  */
@@ -82,7 +86,8 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
             ptr_fingerprints_fn fn);
 
 /**
- * This detects SQLi in a single context, mostly  useful for custom logic and debugging.
+ * This detects SQLi in a single context, mostly useful for custom
+ * logic and debugging.
  *
  * \param delim must be "NULL" (no context), single quote or double quote.
  *        Other values will likely be ignored.
