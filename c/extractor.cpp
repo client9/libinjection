@@ -12,7 +12,6 @@
 #include "modp_ascii.h"
 #include "modp_qsiter.h"
 
-#include "sqli_normalize.h"
 #include "sqli_fingerprints.h"
 #include "sqlparse.h"
 
@@ -20,8 +19,8 @@ using namespace std;
 
 static bool is_special(std::string& str) {
     string nval(str);
-    size_t len = sqli_qs_normalize(const_cast<char*>(nval.data()), nval.size());
-    nval.erase(len, std::string::npos);
+    //size_t len = sqli_qs_normalize(const_cast<char*>(nval.data()), nval.size());
+    //nval.erase(len, std::string::npos);
     //  / *
     if (string::npos == nval.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ _-+")) {
         // all alpha, a few symbols can't be string

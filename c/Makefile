@@ -35,7 +35,7 @@ help:
 	@echo "make fptool -- a fingerprinting tool"
 	@echo ""
 
-allbin: reader extractor is_sqli sqli
+allbin: reader sqli fptool
 
 reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_burl.c sqli_fingerprints.h modp_ascii.c modp_xml.c
 	${CC}  ${CFLAGS} -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c modp_xml.c
@@ -44,11 +44,11 @@ reader-gprof: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_burl.
 	make clean
 	${CC} -g -O2 -pg -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c modp_xml.c
 
-extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqli_normalize.h sqli_normalize.c sqlparse_data.h modp_xml.c sqli_fingerprints.h sqlparse_data.h
-	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_fingerprints.h sqlparse_data.h
+	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_normalize.c  sqli_fingerprints.h sqlparse_data.h
-	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c sqli_normalize.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_fingerprints.h sqlparse_data.h
+	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h modp_ascii.c
 	${CC} -g -O1 -o sqli sqli_cli.c sqlparse.c modp_ascii.c
@@ -96,7 +96,7 @@ sqlparse_data.h: Makefile sqlparse_data.json
 	./sqlparse2c.py < sqlparse_data.json > ./sqlparse_data.h
 
 indent: sqlparse.h sqlparse.c
-	${INDENT} -kr -nut sqlparse.h sqlparse.c test_speed.c sqli_normalize.c reader.c
+	${INDENT} -kr -nut sqlparse.h sqlparse.c test_speed.c reader.c
 .PHONY: indent
 
 sort:
@@ -127,7 +127,7 @@ gcovr-unittest-xml: sqli-gcov
 # for jenkins
 gcovr-samples-xml:
 	rm -f reader libinjection-samples-gcov.xml
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader sqlparse.c reader.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./reader ../data/*.txt > /dev/null
 	gcovr --version
 	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='.*modp_.*' --gcov-exclude='reader.*' --xml -r `pwd`
@@ -144,8 +144,8 @@ lcov: sqli-gcov
 	genhtml -o lcov-html libinjection.info
 .PHONY: lcov
 
-lcov-reader: Makefile sqlparse_data.h sqlparse.h sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader sqlparse.c reader.c sqli_normalize.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+lcov-reader: Makefile sqlparse_data.h sqlparse.h sqlparse.c reader.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader sqlparse.c reader.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	lcov -b . --directory . --zerocounters
 	-./reader ../data/*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
