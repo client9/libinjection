@@ -28,6 +28,10 @@ extern "C" {
 #define ST_MAX_SIZE 32
 #define MAX_TOKENS 5
 
+#define CHAR_NULL '\0'
+#define CHAR_SINGLE '\''
+#define CHAR_DOUBLE '"'
+
 typedef struct {
     char type;
     char str_open;
@@ -69,12 +73,27 @@ typedef struct {
 typedef int (*ptr_fingerprints_fn)(const char*);
 
 /**
+ * Main function
+ * Tests three possible contexts, no quotes, single quote and double quote
  *
- *
- * \return TRUE if SQLi, FALSE is benign
+ * \return 1 (true) if SQLi, 0 (false) if benign
  */
 int is_sqli(sfilter * sql_state, const char *s, size_t slen,
-             ptr_fingerprints_fn fn);
+            ptr_fingerprints_fn fn);
+
+/**
+ * This detects SQLi in a single context, mostly  useful for custom logic and debugging.
+ *
+ * \param delim must be "NULL" (no context), single quote or double quote.
+ *        Other values will likely be ignored.
+ *
+ * \return 1 (true) if SQLi, 0 (false) if not SQLi **in this context**
+ *
+ */
+int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
+                   const char delim,
+                   ptr_fingerprints_fn fn);
+
 
 #ifdef __cplusplus
 }

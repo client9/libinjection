@@ -12,9 +12,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "sqlparse_private.h"
+#include "sqlparse.h"
 #include "sqli_fingerprints.h"
-
 
 int main(int argc, const char* argv[])
 {
@@ -28,8 +27,6 @@ int main(int argc, const char* argv[])
     }
 
     size_t slen = strlen(argv[offset]);
-
-    sfilter_reset(&sf, argv[offset], slen);
 
     if (slen == 0) {
         return 1;
