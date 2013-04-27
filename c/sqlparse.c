@@ -408,7 +408,7 @@ size_t parse_slash(sfilter * sf)
              */
             char ctype = 'c';
             const size_t clen = (ptr + 2) - (cur);
-            if (my_memmem(cur + 2, ptr - (cur + 2), "/*", 2) !=
+            if (my_memmem(cur + 2, ptr - (cur + 1), "/*", 2) !=
                 NULL) {
                 ctype = 'X';
             }
