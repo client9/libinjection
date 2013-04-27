@@ -1,7 +1,7 @@
 --TEST--
 Comments, C-style. Nested
 --INPUT--
-SELECT /* FOO /*/ BAR */ JUNK */
+SELECT /* FOO /*/ BAR */
 --EXPECTED--
 k SELECT
 X /* FOO /*/
