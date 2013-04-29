@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "modp_ascii.h"
 #include "sqlparse_private.h"
 
 
