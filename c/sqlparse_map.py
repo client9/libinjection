@@ -27,6 +27,7 @@ KEYWORDS = {
 'AES_DECRYPT'                 : 'f',
 'AES_ENCRYPT'                 : 'f',
 'AGAINST'                     : 'k',
+'AGE'                         : 'f',
 'ALTER'                       : 'k',
 
 # 'ALL_USERS' - oracle
@@ -81,6 +82,7 @@ KEYWORDS = {
 'CHAR_LENGTH'                 : 'f',
 'CHECK'                       : 'k',
 'CHR'                         : 'f',
+'CLOCK_TIMESTAMP'             : 'f',
 'COALESCE'                    : 'k',
 'COERCIBILITY'                : 'f',
 'COLLATE'                     : 'k',
@@ -113,9 +115,21 @@ KEYWORDS = {
 'DATABASES'                   : 'k',
 'DATE'                        : 'f',
 'DATEDIFF'                    : 'f',
+# sqlserver
+'DATENAME'                    : 'f',
+#sqlserver
+'DATEPART'                    : 'f',
+'DATEADD'                     : 'f',
+'DATEFROMPARTS'               : 'f',
+'DATETIME2FROMPARTS'          : 'f',
+'DATETIMEFROMPARTS'           : 'f',
+# sqlserver
+'DATETIMEOFFSETFROMPARTS'     : 'f',
 'DATE_ADD'                    : 'f',
 'DATE_FORMAT'                 : 'f',
+'DATE_PART'                   : 'f',
 'DATE_SUB'                    : 'f',
+'DATE_TRUNC'                  : 'f',
 'DAY'                         : 'f',
 'DAYNAME'                     : 'f',
 'DAYOFMONTH'                  : 'f',
@@ -151,6 +165,10 @@ KEYWORDS = {
 'ENCLOSED'                    : 'k',
 'ENCODE'                      : 'f',
 'ENCRYPT'                     : 'f',
+#
+# sqlserver
+'EOMONTH'                     : 'f',
+
 'ESCAPED'                     : 'k',
 
 # TBD
@@ -183,6 +201,10 @@ KEYWORDS = {
 'FROM_UNIXTIME'               : 'f',
 'FULLTEXT'                    : 'k',
 'GENERATE_SERIES'             : 'f',
+# sqlserver
+'GETDATE'                     : 'f',
+# sqlserver
+'GETUTCDATE'                  : 'f',
 'GET_FORMAT'                  : 'f',
 'GET_LOCK'                    : 'f',
 'GOTO'                        : 'k',
@@ -236,6 +258,10 @@ KEYWORDS = {
 'INTERVAL'                    : 'k',
 'INTO'                        : 'k',
 'IS'                          : 'o',
+ #sqlserver
+'ISDATE'                      : 'f',
+# pgsql
+'ISFINITE'                    : 'f',
 'ISNULL'                      : 'f',
 'IS_FREE_LOCK'                : 'f',
 #
@@ -247,6 +273,10 @@ KEYWORDS = {
 'IS_USED_LOCK'                : 'f',
 'ITERATE'                     : 'k',
 'JOIN'                        : 'k',
+# pgsql
+'JUSTIFY_DAYS'                : 'f',
+'JUSTIFY_HOURS'               : 'f',
+'JUSTIFY_INTERVAL'            : 'f',
 'KEYS'                        : 'k',
 'KILL'                        : 'k',
 'LAST_INSERT_ID'              : 'f',
@@ -339,6 +369,8 @@ KEYWORDS = {
 'ORDER'                       : 'n',
 'OUT'                         : 'k',
 'OUTFILE'                     : 'k',
+# unusual PGSQL operator that looks like a function
+'OVERLAPS'                    : 'f',
 'PARTITION'                   : 'k',
 
 # keyword "SET PASSWORD", and a function
@@ -371,6 +403,11 @@ KEYWORDS = {
 'REAL'                        : 'n',
 'REFERENCES'                  : 'k',
 'REGEXP'                      : 'o',
+# pgsql
+'REGEXP_REPLACE'              : 'f',
+'REGEXP_MATCHES'              : 'f',
+'REGEXP_SPLIT_TO_TABLE'       : 'f',
+'REGEXP_SPLIT_TO_ARRAY'       : 'f',
 'RELEASE'                     : 'k',
 'RELEASE_LOCK'                : 'f',
 'RENAME'                      : 'k',
@@ -408,6 +445,9 @@ KEYWORDS = {
 'SIMILAR'                     : 'k',
 'SIN'                         : 'f',
 'SLEEP'                       : 'f',
+#
+# sqlserver
+'SMALLDATETIMEFROMPARTS'      : 'f',
 'SMALLINT'                    : 'k',
 'SOUNDEX'                     : 'f',
 'SOUNDS'                      : 'o',
@@ -424,6 +464,8 @@ KEYWORDS = {
 'SQRT'                        : 'f',
 'SSL'                         : 'k',
 'STARTING'                    : 'k',
+#pgsql
+'STATEMENT_TIMESTAMP'         : 'f',
 'STDDEV'                      : 'f',
 'STDDEV_POP'                  : 'f',
 'STDDEV_SAMP'                 : 'f',
@@ -437,9 +479,12 @@ KEYWORDS = {
 'SUBTIME'                     : 'f',
 'SUM'                         : 'f',
 'SYSDATE'                     : 'f',
-
+# sql server
+'SYSDATETIME'                 : 'f',
+# sql server
+'SYSDATETIMEOFFSET'           : 'f',
 # 'SYSCOLUMNS'
-# http://msdn.microsoft.com/en-us/library/aa260398(v=sql.80).aspx
+# http://msdn.microsoft.com/en-us/library/aa26039s8(v=sql.80).aspx
 'SYSCOLUMNS'                  : 'k',
 
 # 'SYSOBJECTS'
@@ -448,6 +493,8 @@ KEYWORDS = {
 
 # 'SYSUSERS' - MSSQL
 'SYSUSERS'                    : 'k',
+# sqlserver
+'SYSUTCDATETME'               : 'f',
 'SYSTEM_USER'                 : 'f',
 
 # 'TABLE'
@@ -458,6 +505,9 @@ KEYWORDS = {
 'THEN'                        : 'k',
 'TIME'                        : 'k',
 'TIMEDIFF'                    : 'f',
+'TIMEFROMPARTS'               : 'f',
+# pgsql
+'TIMEOFDAY'                   : 'f',
 'TIMESTAMP'                   : 'f',
 'TIMESTAMPADD'                : 'f',
 'TIME_FORMAT'                 : 'f',
@@ -466,15 +516,23 @@ KEYWORDS = {
 'TINYINT'                     : 'k',
 'TINYTEXT'                    : 'k',
 #
-# 'TO_CHAR' -- oracle
+# sqlserver
+'TODATETIMEOFFSET'            : 'f',
+#
+# 'TO_CHAR' -- oracle, pgsql
 'TO_CHAR'                     : 'f',
 'TO_DAYS'                     : 'f',
+'TO_DATE'                     : 'f',
+'TO_NUMBER'                   : 'f',
 'TO_SECONDS'                  : 'f',
+'TO_TIMESTAMP'                : 'f',
 'TOP'                         : 'k',
 
 # 'TRAILING' -- only used in TRIM(TRAILING
 # http://www.w3resource.com/sql/character-functions/trim.php
 'TRAILING'                    : 'n',
+# pgsql
+'TRANSACTION_TIMESTAMP'       : 'f',
 'TRIGGER'                     : 'k',
 'TRIM'                        : 'f',
 'TRUE'                        : '1',
