@@ -107,6 +107,7 @@ sort:
 
 clean:
 	rm -f *~ *.pyc
+	rm -f fptool
 	rm -f test_tokens test_speed
 	rm -rf *.dSYM
 	rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
