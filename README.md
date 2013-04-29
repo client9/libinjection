@@ -15,17 +15,37 @@ look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
     // state data structure
     sfilter sf;
 
-    // clean up input... always makes input smaller.
-    len = sqli_qs_normalize(linebuf, len);
+    // if you need to, normalize input.
+    // in the case of a raw query string, you would url-decode the
+    len = modp_urldecode(linebuf, len);
 
     // test it.  1 = is isql, 0 = benign
+    // input is const (not changed or written to)
     bool issqli = is_sqli(&sf, linebuf, len);
 
     // sfilter now also has interesting details
     //   the fingerprint
     //   tokens
     //   etc
-    // details to come
+
+
+VERSION INFORMATION
+===================
+
+Version are listed as "major.minor.point"
+
+Major are significant changes to the API and/or fingerprint format.
+Applications will need recompiling and/or refactoring.
+
+Minor are C code changes.  These may include
+ * logical change to detect or suppress
+ * optimization changes
+ * code refactoring
+
+Point releases are purely data changes.  These may be safely applied.
+
+LICENSE
+=============
 
 Copyright (c) 2012,2013 Nick Galbreath
 
