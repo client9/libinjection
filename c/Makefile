@@ -50,8 +50,8 @@ extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml
 is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_fingerprints.h sqlparse_data.h
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h modp_ascii.c
-	${CC} -g -O1 -o sqli sqli_cli.c sqlparse.c modp_ascii.c
+sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
+	${CC} -g -O1 -o sqli sqli_cli.c sqlparse.c
 
 fptool: Makefile fptool.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
 	${CC} ${CFLAGS} -o fptool fptool.c sqlparse.c
