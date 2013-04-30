@@ -35,6 +35,18 @@ KEYWORDS = {
 
 'ANALYZE'                     : 'k',
 'AND'                         : '&',
+# array_... pgsql
+'ARRAY_AGG'                   : 'f',
+'ARRAY_CAT'                   : 'f',
+'ARRAY_NDIMS'                 : 'f',
+'ARRAY_DIM'                   : 'f',
+'ARRAY_FILL'                  : 'f',
+'ARRAY_LENGTH'                : 'f',
+'ARRAY_LOWER'                 : 'f',
+'ARRAY_UPPER'                 : 'f',
+'ARRAY_PREPEND'               : 'f',
+'ARRAY_TO_STRING'             : 'f',
+'ARRAY_TO_JSON'               : 'f',
 'AS'                          : 'k',
 'ASC'                         : 'k',
 'ASCII'                       : 'f',
@@ -61,13 +73,21 @@ KEYWORDS = {
 'BIT_OR'                      : 'f',
 'BIT_XOR'                     : 'f',
 'BLOB'                        : 'k',
+# pgsql
+'BOOL_AND'                    : 'f',
+# pgsql
+'BOOL_OR'                     : 'f',
 'BOOLEAN'                     : 'k',
 'BOTH'                        : 'k',
+# pgsql
+'BTRIM'                       : 'f',
 'BY'                          : 'n',
 'CALL'                        : 'k',
 'CASCADE'                     : 'k',
 'CASE'                        : 'o',
 'CAST'                        : 'f',
+# pgsql 'cube root' lol
+'CBRT'                        : 'f',
 'CEIL'                        : 'f',
 'CEILING'                     : 'f',
 'CHANGE'                      : 'k',
@@ -97,18 +117,30 @@ KEYWORDS = {
 'CONTINUE'                    : 'k',
 'CONV'                        : 'f',
 'CONVERT'                     : 'f',
+# pgsql
+'CONVERT_FROM'                : 'f',
+# pgsql
+'CONVERT_TO'                  : 'f',
 'CONVERT_TZ'                  : 'f',
 'COS'                         : 'f',
 'COT'                         : 'f',
 'COUNT'                       : 'f',
 'CRC32'                       : 'f',
 'CREATE'                      : 'k',
+'CUME_DIST'                   : 'f',
 'CURDATE'                     : 'f',
 'CURRENT_DATE'                : 'k',
+'CURRENT_DATABASE'            : 'f',
 'CURRENT_DATECURRENT_TIME'    : 'f',
 'CURRENT_TIME'                : 'k',
 'CURRENT_TIMESTAMP'           : 'k',
+'CURRENT_QUERY'               : 'f',
+'CURRENT_SCHEMA'              : 'f',
+'CURRENT_SCHEMAS'             : 'f',
+'CURRENT_SETTING'             : 'p',
 'CURRENT_USER'                : 'k',
+# pgsql
+'CURRVAL'                     : 'f',
 'CURSOR'                      : 'k',
 'CURTIME'                     : 'f',
 'DATABASE'                    : 'k',
@@ -148,6 +180,7 @@ KEYWORDS = {
 'DELAY'                       : 'k',
 'DELAYED'                     : 'k',
 'DELETE'                      : 'k',
+'DENSE_RANK'                  : 'f',
 'DESC'                        : 'k',
 'DESCRIBE'                    : 'k',
 'DES_DECRYPT'                 : 'f',
@@ -168,6 +201,11 @@ KEYWORDS = {
 #
 # sqlserver
 'EOMONTH'                     : 'f',
+
+# pgsql
+'ENUM_FIRST'                  : 'f',
+'ENUM_LAST'                   : 'f',
+'ENUM_RANGE'                  : 'f',
 
 'ESCAPED'                     : 'k',
 
@@ -190,6 +228,7 @@ KEYWORDS = {
 'FETCH'                       : 'k',
 'FIELD'                       : 'f',
 'FIND_IN_SET'                 : 'f',
+'FIRST_VALUE'                 : 'f',
 'FLOOR'                       : 'f',
 'FORCE'                       : 'k',
 'FOREIGN'                     : 'k',
@@ -200,11 +239,18 @@ KEYWORDS = {
 'FROM_DAYS'                   : 'f',
 'FROM_UNIXTIME'               : 'f',
 'FULLTEXT'                    : 'k',
+# pgsql
 'GENERATE_SERIES'             : 'f',
+# pgsql
+'GENERATE_SUBSCRIPTS'         : 'f',
 # sqlserver
 'GETDATE'                     : 'f',
 # sqlserver
 'GETUTCDATE'                  : 'f',
+# pgsql
+'GET_BIT'                     : 'f',
+# pgsql
+'GET_BYTE'                    : 'f',
 'GET_FORMAT'                  : 'f',
 'GET_LOCK'                    : 'f',
 'GOTO'                        : 'k',
@@ -243,6 +289,8 @@ KEYWORDS = {
 'INET_ATON'                   : 'f',
 'INET_NTOA'                   : 'f',
 'INFILE'                      : 'k',
+# pgsql
+'INITCAP'                     : 'f',
 'INNER'                       : 'k',
 'INOUT'                       : 'k',
 'INSENSITIVE'                 : 'k',
@@ -260,6 +308,7 @@ KEYWORDS = {
 'IS'                          : 'o',
  #sqlserver
 'ISDATE'                      : 'f',
+'ISEMPTY'                     : 'f',
 # pgsql
 'ISFINITE'                    : 'f',
 'ISNULL'                      : 'f',
@@ -280,6 +329,8 @@ KEYWORDS = {
 'KEYS'                        : 'k',
 'KILL'                        : 'k',
 'LAST_INSERT_ID'              : 'f',
+'LAST_VALUE'                  : 'f',
+'LASTVAL'                     : 'f',
 'LCASE'                       : 'f',
 'LEADING'                     : 'k',
 'LEAST'                       : 'f',
@@ -304,11 +355,14 @@ KEYWORDS = {
 'LONGTEXT'                    : 'k',
 'LOOP'                        : 'k',
 'LOWER'                       : 'f',
+'LOWER_INC'                   : 'f',
+'LOWER_INF'                   : 'f',
 'LOW_PRIORITY'                : 'k',
 'LPAD'                        : 'f',
 'LTRIM'                       : 'f',
 'MAKEDATE'                    : 'f',
 'MAKE_SET'                    : 'f',
+'MASKLEN'                     : 'f',
 'MASTER_BIND'                 : 'k',
 'MASTER_POS_WAIT'             : 'f',
 'MASTER_SSL_VERIFY_SERVER_CERT': 'k',
@@ -333,9 +387,13 @@ KEYWORDS = {
 'MONTH'                       : 'f',
 'MONTHNAME'                   : 'f',
 'NAME_CONST'                  : 'f',
+'NETMASK'                     : 'f',
+'NEXTVAL'                     : 'f',
 'NOT'                         : 'o',
 'NOW'                         : 'f',
 'NO_WRITE_TO_BINLOG'          : 'k',
+'NTH_VALUE'                   : 'f',
+'NTILE'                       : 'f',
 'NULL'                        : '1',
 'NULLIF'                      : 'f',
 'NUMERIC'                     : 'k',
@@ -371,14 +429,39 @@ KEYWORDS = {
 'OUTFILE'                     : 'k',
 # unusual PGSQL operator that looks like a function
 'OVERLAPS'                    : 'f',
+# pgsql
+'OVERLAY'                     : 'f',
 'PARTITION'                   : 'k',
 
 # keyword "SET PASSWORD", and a function
 'PASSWORD'                    : 'k',
+'PERCENT_RANK'                : 'f',
 'PERIOD_ADD'                  : 'f',
 'PERIOID_DIFF'                : 'f',
 'PG_ADVISORY_LOCK'            : 'f',
+'PG_BACKEND_PID'              : 'f',
+'PG_CANCEL_BACKEND'           : 'f',
+'PG_CREATE_RESTORE_POINT'     : 'f',
+'PG_RELOAD_CONF'              : 'f',
+'PG_CLIENT_ENCODING'          : 'f',
+'PG_CONF_LOAD_TIME'           : 'f',
+'PG_LISTENING_CHANNELS'       : 'f',
+'PG_HAS_ROLE'                 : 'f',
+'PG_IS_IN_RECOVERY'           : 'f',
+'PG_IS_OTHER_TEMP_SCHEMA'     : 'f',
+'PG_LS_DIR'                   : 'f',
+'PG_MY_TEMP_SCHEMA'           : 'f',
+'PG_POSTMASTER_START_TIME'    : 'f',
+'PG_READ_FILE'                : 'f',
+'PG_READ_BINARY_FILE'         : 'f',
+'PG_ROTATE_LOGFILE'           : 'f',
+'PG_STAT_FILE'                : 'f',
 'PG_SLEEP'                    : 'f',
+'PG_START_BACKUP'             : 'f',
+'PG_STOP_BACKUP'              : 'f',
+'PG_SWITCH_XLOG'              : 'f',
+'PG_TERMINATE_BACKEND'        : 'f',
+'PG_TRIGGER_DEPTH'            : 'f',
 'PI'                          : 'f',
 'POSITION'                    : 'f',
 'POW'                         : 'f',
@@ -389,12 +472,20 @@ KEYWORDS = {
 'PURGE'                       : 'k',
 'QUARTER'                     : 'f',
 'QUOTE'                       : 'f',
+# pgsql
+'QUOTE_IDENT'                 : 'f',
+# pgsql
+'QUOTE_LITERAL'               : 'f',
+# pgsql
+'QUOTE_NULLABLE'              : 'f',
 'RADIANS'                     : 'f',
 'RAND'                        : 'f',
+'RANDOM'                      : 'f',
 
 # 'RANDOMBLOB' - sqlite3
 'RANDOMBLOB'                  : 'f',
 'RANGE'                       : 'k',
+'RANK'                        : 'f',
 'READ'                        : 'k',
 'READS'                       : 'k',
 'READ_WRITE'                  : 'k',
@@ -419,11 +510,16 @@ KEYWORDS = {
 'RETURN'                      : 'k',
 'REVERSE'                     : 'f',
 'REVOKE'                      : 'k',
+# RIGHT JOIN vs. RIGHT()
+# tricky since it's a function in pgsql
+# needs review
 'RIGHT'                       : 'n',
 'RLIKE'                       : 'o',
 'ROUND'                       : 'f',
 'ROW'                         : 'f',
 'ROW_COUNT'                   : 'f',
+'ROW_NUMBER'                  : 'f',
+'ROW_TO_JSON'                 : 'f',
 'RPAD'                        : 'f',
 'RTRIM'                       : 'f',
 'SCHEMA'                      : 'k',
@@ -435,6 +531,12 @@ KEYWORDS = {
 'SEPARATOR'                   : 'k',
 'SESSION_USER'                : 'f',
 'SET'                         : 'k',
+'SETSEED'                     : 'f',
+'SETVAL'                      : 'f',
+'SET_BIT'                     : 'f',
+'SET_BYTE'                    : 'f',
+'SET_CONFIG'                  : 'f',
+'SET_MASKLEN'                 : 'f',
 'SHA'                         : 'f',
 'SHA1'                        : 'f',
 'SHA2'                        : 'f',
@@ -454,6 +556,7 @@ KEYWORDS = {
 'SPACE'                       : 'f',
 'SPATIAL'                     : 'k',
 'SPECIFIC'                    : 'k',
+'SPLIT_PART'                  : 'f',
 'SQL'                         : 'k',
 'SQLEXCEPTION'                : 'k',
 'SQLSTATE'                    : 'k',
@@ -471,6 +574,10 @@ KEYWORDS = {
 'STDDEV_SAMP'                 : 'f',
 'STRAIGHT_JOIN'               : 'k',
 'STRCMP'                      : 'f',
+# pgsql
+'STRING_AGG'                  : 'f',
+'STRING_TO_ARRAY'             : 'f',
+'STRPOS'                      : 'f',
 'STR_TO_DATE'                 : 'f',
 'SUBDATE'                     : 'f',
 'SUBSTR'                      : 'f',
@@ -518,9 +625,13 @@ KEYWORDS = {
 #
 # sqlserver
 'TODATETIMEOFFSET'            : 'f',
+# pgsql
+'TO_ASCII'                    : 'f',
 #
 # 'TO_CHAR' -- oracle, pgsql
 'TO_CHAR'                     : 'f',
+# pgsql
+'TO_HEX'                      : 'f',
 'TO_DAYS'                     : 'f',
 'TO_DATE'                     : 'f',
 'TO_NUMBER'                   : 'f',
@@ -533,9 +644,11 @@ KEYWORDS = {
 'TRAILING'                    : 'n',
 # pgsql
 'TRANSACTION_TIMESTAMP'       : 'f',
+'TRANSLATE'                   : 'f',
 'TRIGGER'                     : 'k',
 'TRIM'                        : 'f',
 'TRUE'                        : '1',
+'TRUNC'                       : 'f',
 'TRUNCATE'                    : 'f',
 'UCASE'                       : 'f',
 'UNCOMPRESS'                  : 'f',
@@ -553,10 +666,15 @@ KEYWORDS = {
 
 'UNIX_TIMESTAMP'              : 'f',
 'UNLOCK'                      : 'k',
+# pgsql
+'UNKNOWN'                     : 'k',
+'UNNEST'                      : 'f',
 'UNSIGNED'                    : 'k',
 'UPDATE'                      : 'k',
 'UPDATEXML'                   : 'f',
 'UPPER'                       : 'f',
+'UPPER_INC'                   : 'f',
+'UPPER_INF'                   : 'f',
 'USAGE'                       : 'k',
 'USE'                         : 'k',
 
@@ -585,12 +703,23 @@ KEYWORDS = {
 'WHEN'                        : 'k',
 'WHERE'                       : 'k',
 'WHILE'                       : 'k',
+# pgsql
+'WIDTH_BUCKET'                : 'f',
 'WITH'                        : 'k',
-# XML... oracle
+# XML... oracle, pgsql
+'XMLAGG'                      : 'f',
 'XMLELEMENT'                  : 'f',
+'XMLCOMMENT'                  : 'f',
+'XMLCONCAT'                   : 'f',
 'XMLFOREST'                   : 'f',
 'XMLFORMAT'                   : 'f',
 'XMLTYPE'                     : 'f',
+'XMLPI'                       : 'f',
+'XMLROOT'                     : 'f',
+'XMLEXISTS'                   : 'f',
+'XML_IS_WELL_FORMED'          : 'f',
+'XPATH'                       : 'f',
+'XPATH_EXISTS'                : 'f',
 'XOR'                         : 'o',
 'XP_EXECRESULTSET'            : 'k',
 'YEAR'                        : 'f',
@@ -765,8 +894,15 @@ CHARMAP = [
 ]
 
 PHRASES = {
+    # pgsql "AT TIME ZONE"
+    'AT TIME'           : 'n',
+    'AT TIME ZONE'      : 'k',
     'IN BOOLEAN'        : 'n',
     'IN BOOLEAN MODE'   : 'k',
+    'IS DISTINCT FROM'  : 'k',
+    'IS DISTINCT'       : 'n',
+    'IS NOT DISTINCT FROM' : 'k',
+    'IS NOT DISTINCT':     'n',
     'CROSS JOIN'        : 'k',
     'ALTER DOMAIN'      : 'k',
     'ALTER TABLE'       : 'k',
