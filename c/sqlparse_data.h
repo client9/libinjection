@@ -381,7 +381,7 @@ static const keyword_t sql_keywords[] = {
     {"PASSWORD", 'k'},
     {"PERCENT_RANK", 'f'},
     {"PERIOD_ADD", 'f'},
-    {"PERIOID_DIFF", 'f'},
+    {"PERIOD_DIFF", 'f'},
     {"PG_ADVISORY_LOCK", 'f'},
     {"PG_BACKEND_PID", 'f'},
     {"PG_CANCEL_BACKEND", 'f'},
