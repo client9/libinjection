@@ -786,7 +786,11 @@ KEYWORDS = {
 'UPPER_INF'                   : 'f',
 'USAGE'                       : 'k',
 'USE'                         : 'k',
-'USER_ID'                     : 'f',
+
+# transact-sql function
+# however treating as a 'none' type
+# since 'user_id' is such a common column name
+'USER_ID'                     : 'n',
 'USER_NAME'                   : 'f',
 # 'USER' -- a MySQL function?
 #'USER'                       : 'k',

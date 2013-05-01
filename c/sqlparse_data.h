@@ -685,7 +685,7 @@ static const keyword_t sql_keywords[] = {
     {"UPPER_INF", 'f'},
     {"USAGE", 'k'},
     {"USE", 'k'},
-    {"USER_ID", 'f'},
+    {"USER_ID", 'n'},
     {"USER_NAME", 'f'},
     {"USING", 'f'},
     {"UTC_DATE", 'k'},
