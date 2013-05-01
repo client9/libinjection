@@ -1046,6 +1046,8 @@ PHRASES = {
     'NATURAL FULL'      : 'k',
     'SOUNDS LIKE'       : 'o',
     'IS NOT'            : 'o',
+    'NEXT VALUE'        : 'n',
+    'NEXT VALUE FOR'    : 'k',
     'NOT LIKE'          : 'o',
     'NOT BETWEEN'       : 'o',
     'NOT SIMILAR'       : 'o',

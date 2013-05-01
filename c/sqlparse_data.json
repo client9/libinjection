@@ -887,6 +887,8 @@
         "NATURAL LEFT": "k", 
         "NATURAL OUTER": "k", 
         "NATURAL RIGHT": "k", 
+        "NEXT VALUE": "n", 
+        "NEXT VALUE FOR": "k", 
         "NOT BETWEEN": "o", 
         "NOT IN": "o", 
         "NOT LIKE": "o", 

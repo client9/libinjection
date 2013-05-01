@@ -753,6 +753,8 @@ static const char* multikeywords_start[] = {
     "LEFT",
     "LOCK",
     "NATURAL",
+    "NEXT",
+    "NEXT VALUE",
     "NOT",
     "NOT SIMILAR",
     "ORDER",
@@ -764,7 +766,7 @@ static const char* multikeywords_start[] = {
     "SOUNDS",
     "UNION",
 };
-static const size_t multikeywords_start_sz = 25;
+static const size_t multikeywords_start_sz = 27;
 static const keyword_t multikeywords[] = {
     {"ALTER DOMAIN", 'k'},
     {"ALTER TABLE", 'k'},
@@ -791,6 +793,8 @@ static const keyword_t multikeywords[] = {
     {"NATURAL LEFT", 'k'},
     {"NATURAL OUTER", 'k'},
     {"NATURAL RIGHT", 'k'},
+    {"NEXT VALUE", 'n'},
+    {"NEXT VALUE FOR", 'k'},
     {"NOT BETWEEN", 'o'},
     {"NOT IN", 'o'},
     {"NOT LIKE", 'o'},
@@ -808,7 +812,7 @@ static const keyword_t multikeywords[] = {
     {"SOUNDS LIKE", 'o'},
     {"UNION ALL", 'U'},
 };
-static const size_t multikeywords_sz = 41;
+static const size_t multikeywords_sz = 43;
 
 typedef size_t (*pt2Function)(sfilter *sf);
 static const pt2Function char_parse_map[] = {
