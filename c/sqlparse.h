@@ -29,6 +29,13 @@
 extern "C" {
 #endif
 
+/*
+ * Version info.
+ * See python's normalized version
+ * http://www.python.org/dev/peps/pep-0386/#normalizedversion
+ */
+#define LIBINJECTION_VERSION "1.1.0-dev1"
+
 #define ST_MAX_SIZE 32
 #define MAX_TOKENS 5
 
@@ -98,7 +105,6 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
 int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                    const char delim,
                    ptr_fingerprints_fn fn);
-
 
 #ifdef __cplusplus
 }
