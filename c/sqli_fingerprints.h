@@ -614,6 +614,7 @@ static const char* patmap[] = {
     "kk1nk",
     "kk1sk",
     "kk1sn",
+    "kk1vf",
     "kk1vk",
     "kksf(",
     "kksfn",
@@ -2156,7 +2157,7 @@ static const char* patmap[] = {
     "vovso",
     "vovvo",
 };
-static const size_t patmap_sz = 2153;
+static const size_t patmap_sz = 2154;
 
 
 /* Simple binary search */
