@@ -545,6 +545,7 @@ f(f(s
 f(f(v
 f(k()
 f(k,(
+f(k,f
 f(k,n
 f(n()
 f(s)&
@@ -610,7 +611,6 @@ kk1nk
 kk1sk
 kk1sn
 kk1vk
-kk1vn
 kksf(
 kksfn
 kkskk
