@@ -104,6 +104,7 @@ sort:
 	LC_ALL=C sort -u fingerprints.txt > /tmp/junk
 	mv /tmp/junk fingerprints.txt
 	wc -l fingerprints.txt
+	./fingerprints2c.py > ./sqli_fingerprints.h
 
 clean:
 	rm -f *~ *.pyc
@@ -162,3 +163,6 @@ http:
 	python -m  SimpleHTTPServer
 .PHONY: http
 
+python: sqli_fingerprints.h sqlparse_data.h
+	sudo python setup.py --verbose build --force
+	sudo python setup.py --verbose install
