@@ -152,7 +152,6 @@ KEYWORDS = {
 'CURDATE'                     : 'f',
 'CURRENT_DATE'                : 'k',
 'CURRENT_DATABASE'            : 'f',
-'CURRENT_DATECURRENT_TIME'    : 'f',
 'CURRENT_TIME'                : 'k',
 'CURRENT_TIMESTAMP'           : 'k',
 'CURRENT_QUERY'               : 'f',

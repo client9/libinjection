@@ -248,7 +248,6 @@
         "CURDATE": "f", 
         "CURRENT_DATABASE": "f", 
         "CURRENT_DATE": "k", 
-        "CURRENT_DATECURRENT_TIME": "f", 
         "CURRENT_QUERY": "f", 
         "CURRENT_SCHEMA": "f", 
         "CURRENT_SCHEMAS": "f", 

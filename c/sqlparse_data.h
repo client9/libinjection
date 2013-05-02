@@ -150,7 +150,6 @@ static const keyword_t sql_keywords[] = {
     {"CURDATE", 'f'},
     {"CURRENT_DATABASE", 'f'},
     {"CURRENT_DATE", 'k'},
-    {"CURRENT_DATECURRENT_TIME", 'f'},
     {"CURRENT_QUERY", 'f'},
     {"CURRENT_SCHEMA", 'f'},
     {"CURRENT_SCHEMAS", 'f'},
@@ -736,7 +735,7 @@ static const keyword_t sql_keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROFILL", 'k'},
 };
-static const size_t sql_keywords_sz = 703;
+static const size_t sql_keywords_sz = 702;
 static const char* multikeywords_start[] = {
     "ALTER",
     "AT",
