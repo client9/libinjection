@@ -5,33 +5,10 @@
 #
 
 import sys
-import json
 import logging
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
-import tornado.database
-import random
-import hashlib
-
-def hack(id, query):
-    global fd
-    isint = False
-    try:
-        float(id)
-        isint= True
-    except ValueError:
-        pass
-    if not isint and id != 'foo':
-        token = ''
-        fd.write(id + "\n")
-        fd.flush()
-
-    sql = query % (id)
-    try:
-        return db.get(sql)
-    except:
-        return None
 
 class ShutdownHandler(tornado.web.RequestHandler):
     def get(self):
@@ -39,47 +16,11 @@ class ShutdownHandler(tornado.web.RequestHandler):
         fd.close()
         sys.exit(0)
 
-class Type1(tornado.web.RequestHandler):
-    def get(self):
-
-        id = self.get_argument("id")
-        sql = "SELECT * FROM junkusers WHERE id = %s"
-        row = hack(id, sql)
-
-        if row:
-            self.write("<html><head><title>ok</title></head><body>%s</body></html>" % (row['name'],))
-        else:
-            self.write("<html><head><title>ok</title></head><body>%s</body></html>" % ('ooops',))
-
-class Type2(tornado.web.RequestHandler):
-    def get(self):
-        id = self.get_argument("id")
-        sql = "SELECT * FROM junkusers WHERE id = '%s'"
-        row = hack(id, sql)
-        if row:
-            self.write("<html><head><title>ok</title></head><body>%s</body></html>" % (row['name'],))
-        else:
-            self.write("<html><head><title>ok</title></head><body>%s</body></html>" % ('ooops',))
-
-class Type3(tornado.web.RequestHandler):
-    def get(self):
-        id = self.get_argument("id")
-        sql = "SELECT * FROM junkusers WHERE id = \"%s\""
-        row = hack(id, sql)
-        if row:
-            self.write("<html><head><title>ok</title></head><body>%s</body></html>" % (row['name'],))
-        else:
-            self.write("<html><head><title>ok</title></head><body>%s</body></html>" % ('ooops',))
-
-
-
 class NullHandler(tornado.web.RequestHandler):
 
     def get(self):
         global fd
         param = self.request.query[3:]
-        m = hashlib.md5()
-        m.update(param)
 
         isint = False
         try:
@@ -105,9 +46,6 @@ settings = {
 
 application = tornado.web.Application([
     (r"/null", NullHandler),
-    (r"/type1", Type1),
-    (r"/type2", Type2),
-    (r"/type3", Type3),
     (r"/shutdown", ShutdownHandler),
     ], **settings)
 
@@ -115,9 +53,6 @@ application = tornado.web.Application([
 if __name__ == "__main__":
     global fd
     fd = open('/tmp/urls.txt', 'w')
-
-    global db
-    db = tornado.database.Connection("127.0.0.1", "junk", user='root')
 
     import tornado.options
     #tornado.options.parse_config_file("/etc/server.conf")

@@ -6,13 +6,13 @@
 
 ./nullserver.py &
 
-if [ -d "sqlmap-dev" ]; then
-    svn checkout https://svn.sqlmap.org/sqlmap/trunk/sqlmap sqlmap-dev
+if [ ! -d "sqlmap" ]; then
+    git clone https://github.com/sqlmapproject/sqlmap.git
 else
-    (cd sqlmap-dev; svn up)
+    (cd sqlmap; git pull)
 fi
 
-SQLMAP=./sqlmap-dev/sqlmap.py
+SQLMAP=./sqlmap/sqlmap.py
 URL=http://127.0.0.1:8888
 ${SQLMAP} -v 0 -p id --level=5 --risk=3 --url=${URL}/null?id=1
 ${SQLMAP} -v 0 -p id --level=5 --risk=3 --url=${URL}/null?id=1234.5
