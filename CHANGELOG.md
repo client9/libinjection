@@ -7,6 +7,8 @@
   Thanks to @Kanatoko for the report.
 * Numerous additions to SQL functions lists (in particular pgsql and transact-sql functions)
   Thanks to Christoffer Sawicki "qerub" for report on cut-n-paste error.
+* Adding of fingerprints to detect HPP attacks.  This may need
+  fine tuning to reduce false positives later.
 
 ## other
 
