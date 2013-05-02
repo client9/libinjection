@@ -21,14 +21,21 @@ libinjection_detectsqli(PyObject *self, PyObject *args)
     int sqli;
     sfilter sf;
 
-    if (!PyArg_ParseTuple(args, "s#|O!", &userinput, &len, &PyDict_Type, &dict))
+    if (!PyArg_ParseTuple(args, "s#|O!", &userinput, &len, &PyDict_Type, &dict)) {
         return NULL;
+    }
 
     sqli = is_sqli(&sf, userinput, len, is_sqli_pattern);
 
     if (dict) {
         value = Py_BuildValue("s", sf.pat);
-        PyDict_SetItemString(dict, "fingerprint", value);
+        if (value == NULL) {
+            return NULL;
+        }
+        if (PyDict_SetItemString(dict, "fingerprint", value) == -1) {
+            Py_DECREF(value);
+            return NULL;
+        }
     }
 
     if (sqli) {
