@@ -3,8 +3,10 @@
 
 ## security
 
-* Fix for nested c-style comments used by postgresql and transact-sql.  Thanks
+* Fix for nested c-style comments used by postgresql and transact-sql.
+  Thanks to @Kanatoko for the report.
 * Numerous additions to SQL functions lists (in particular pgsql and transact-sql functions)
+  Thanks to Christoffer Sawicki "qerub" for report on cut-n-paste error.
 
 ## other
 
