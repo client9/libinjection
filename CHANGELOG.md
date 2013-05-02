@@ -9,6 +9,8 @@
   Thanks to Christoffer Sawicki "qerub" for report on cut-n-paste error.
 * Adding of fingerprints to detect HPP attacks.  This may need
   fine tuning to reduce false positives later.
+* Algorihmically added new fingerprints to detect new _future_ sqli attacks.  All of these
+  new fingerprints have no been seen 'in the wild' yet.
 
 ## other
 
