@@ -47,5 +47,18 @@ static PyMethodDef libinjectionMethods[] = {
 PyMODINIT_FUNC
 initlibinjection(void)
 {
-    (void) Py_InitModule("libinjection", libinjectionMethods);
+    PyObject* version;
+    PyObject* m = Py_InitModule("libinjection", libinjectionMethods);
+    if (m == NULL) {
+        return;
+    }
+
+    /* PEP 396 - __version__
+     * http://www.python.org/dev/peps/pep-0396/
+     */
+    version = Py_BuildValue("s", LIBINJECTION_VERSION);
+    if (version == NULL) {
+        return;
+    }
+    PyModule_AddObject(m, "__version__", version);
 }
