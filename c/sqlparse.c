@@ -1073,6 +1073,14 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     switch (tlen) {
     case 2:{
         /*
+         * if 'comment' is '#' ignore.. too many FP
+         */
+        if (sql_state->tokenvec[1].val[0] == '#') {
+            sql_state->reason = __LINE__;
+            return FALSE;
+        }
+
+        /*
          * for fingerprint like 'nc', only comments of /x are treated
          * as SQL... ending comments of "--" and "#" are not sqli
          */
@@ -1083,24 +1091,29 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                 return FALSE;
         }
         /*
-         * if 'comment' is '#' ignore.. too many FP
+         * detect obvious sqli scans.. many people put '--' in plain text
+         * so only detect if input ends with '--', e.g. 1-- but not 1-- foo
          */
-            if (sql_state->tokenvec[1].val[0] == '#') {
-                sql_state->reason = __LINE__;
-                return FALSE;
-            }
-            /*
-             * detect obvious sqli scans.. many people put '--' in plain text
-             * so only detect if input ends with '--', e.g. 1-- but not 1-- foo
-             */
 
-            if ((strlen(sql_state->tokenvec[1].val) > 2)
-                && sql_state->tokenvec[1].val[0] == '-') {
-                sql_state->reason = __LINE__;
-                return FALSE;
-            }
+        if ((strlen(sql_state->tokenvec[1].val) > 2)
+            && sql_state->tokenvec[1].val[0] == '-') {
+            sql_state->reason = __LINE__;
+            return FALSE;
+        }
 
-            break;
+        /**
+         * there are some odd base64-looking query string values
+         * 1234-ABCDEFEhfhihwuefi--
+         * which evaluate to "1c"... these are not SQLi
+         * but 1234-- probably is.
+         * Make sure the "1" in "1c" is actually a true decimal number
+         */
+        if (sql_state->tokenvec[0].type == '1'&& sql_state->tokenvec[1].type == 'c' &&
+            strlen(sql_state->tokenvec[0].val) != strcspn(sql_state->tokenvec[0].val, "0123456789")) {
+            sql_state->reason = __LINE__;
+            return FALSE;
+        }
+        break;
         }
     case 3:{
         /*
