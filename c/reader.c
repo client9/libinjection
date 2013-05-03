@@ -13,7 +13,7 @@
 static int g_test_ok = 0;
 static int g_test_fail = 0;
 
-void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_xml, bool flag_quiet)
+void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_xml, bool flag_quiet, bool flag_true)
 {
     char linebuf[8192];
     char linecopy[8192];
@@ -72,20 +72,39 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
                         fname, linenum, patxml, "error", linecopy);
             }
         } else {
-            modp_toprint(linebuf, len);
+            if ((issqli && flag_true) ||
+                (!issqli && flag_true && flag_invert) ||
+                !flag_true) {
+                modp_toprint(linebuf, len);
 
-            fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
-                    fname, linenum,
-                    (issqli ? "True" : "False"), sf.pat, sf.reason, linebuf);
+                fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
+                        fname, linenum,
+                        (issqli ? "True" : "False"), sf.pat, sf.reason, linebuf);
+            }
         }
     }
 }
 
 int main(int argc, const char *argv[])
 {
+    /*
+     * invert output, by
+     */
     bool flag_invert = false;
+    /*
+     * xml output for jenkins, etc
+     */
     bool flag_xml = false;
+    /*
+     * only print results
+     */
     bool flag_quiet = false;
+    /*
+     * only print postive results
+     * with invert, only print negative results
+     */
+    bool flag_true = false;
+
     int flag_slow = 1;
 
     int i, j;
@@ -101,6 +120,9 @@ int main(int argc, const char *argv[])
         } else if (strcmp(argv[offset], "-q") == 0) {
             offset += 1;
             flag_quiet = true;
+        } else if (strcmp(argv[offset], "-t") == 0) {
+            offset += 1;
+            flag_true = true;
         } else if (strcmp(argv[offset], "-s") == 0) {
             offset += 1;
             flag_slow = 100;
@@ -115,13 +137,13 @@ int main(int argc, const char *argv[])
     }
 
     if (offset == argc) {
-        test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet);
+        test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet, flag_true);
     } else {
         for (j = 0; j < flag_slow; ++j) {
             for (i = offset; i < argc; ++i) {
                 FILE* fd = fopen(argv[i], "r");
                 if (fd) {
-                    test_positive(fd, argv[i], flag_invert, flag_xml, flag_quiet);
+                    test_positive(fd, argv[i], flag_invert, flag_xml, flag_quiet, flag_true);
                     fclose(fd);
                 }
             }
