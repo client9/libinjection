@@ -90,6 +90,36 @@ KEYWORDS = {
 # pgsql
 'BTRIM'                       : 'f',
 'BY'                          : 'n',
+
+# MS ACCESS
+#
+#
+'CBOOL'                       : 'f',
+'CBYTE'                       : 'f',
+'CCUR'                        : 'f',
+'CDATE'                       : 'f',
+'CDBL'                        : 'f',
+'CINT'                        : 'f',
+'CLNG'                        : 'f',
+'CSNG'                        : 'f',
+'CVAR'                        : 'f',
+'CHDIR'                       : 'f',
+'CHDRIVE'                     : 'f',
+'CURDIR'                      : 'f',
+'FILEDATETIME'                : 'f',
+'FILELEN'                     : 'f',
+'GETATTR'                     : 'f',
+'MKDIR'                       : 'f',
+'SETATTR'                     : 'f',
+'DAVG'                        : 'f',
+'DCOUNT'                      : 'f',
+'DFIRST'                      : 'f',
+'DLAST'                       : 'f',
+'DLOOKUP'                     : 'f',
+'DMAX'                        : 'f',
+'DMIN'                        : 'f',
+'DSUM'                        : 'f',
+
 'CALL'                        : 'k',
 'CASCADE'                     : 'k',
 'CASE'                        : 'o',
@@ -159,6 +189,7 @@ KEYWORDS = {
 'CURRENT_SCHEMAS'             : 'f',
 'CURRENT_SETTING'             : 'p',
 'CURRENT_USER'                : 'k',
+'CURRENTUSER'                 : 'f',
 # pgsql
 'CURRVAL'                     : 'f',
 'CURSOR'                      : 'k',
@@ -176,6 +207,8 @@ KEYWORDS = {
 #sqlserver
 'DATEPART'                    : 'f',
 'DATEADD'                     : 'f',
+'DATESERIAL'                  : 'f',
+'DATEVALUE'                   : 'f',
 'DATEFROMPARTS'               : 'f',
 'DATETIME2FROMPARTS'          : 'f',
 'DATETIMEFROMPARTS'           : 'f',
@@ -356,6 +389,7 @@ KEYWORDS = {
 'INSENSITIVE'                 : 'k',
 'INSERT'                      : 'k',
 'INSTR'                       : 'f',
+'INSTRREV'                    : 'f',
 'INT'                         : 'k',
 'INT1'                        : 'k',
 'INT2'                        : 'k',
@@ -372,6 +406,7 @@ KEYWORDS = {
 # pgsql
 'ISFINITE'                    : 'f',
 'ISNULL'                      : 'f',
+'ISNUMERIC'                   : 'f',
 'IS_FREE_LOCK'                : 'f',
 #
 # 'IS_MEMBER' - MSSQL
@@ -462,6 +497,8 @@ KEYWORDS = {
 'NULL'                        : '1',
 'NULLIF'                      : 'f',
 'NUMERIC'                     : 'k',
+# MSACCESS
+'NZ'                          : 'f',
 'OBJECT_DEFINITION'           : 'f',
 'OBJECT_ID'                   : 'f',
 'OBJECT_NAME'                 : 'f',
@@ -666,6 +703,7 @@ KEYWORDS = {
 'STDDEV_SAMP'                 : 'f',
 'STRAIGHT_JOIN'               : 'k',
 'STRCMP'                      : 'f',
+'STRCONV'                     : 'f',
 # pgsql
 'STRING_AGG'                  : 'f',
 'STRING_TO_ARRAY'             : 'f',
@@ -716,6 +754,9 @@ KEYWORDS = {
 'TIMEFROMPARTS'               : 'f',
 # pgsql
 'TIMEOFDAY'                   : 'f',
+# ms access
+'TIMESERIAL'                  : 'f',
+'TIMEVALUE'                   : 'f',
 'TIMESTAMP'                   : 'f',
 'TIMESTAMPADD'                : 'f',
 'TIME_FORMAT'                 : 'f',
@@ -816,6 +857,7 @@ KEYWORDS = {
 'WAITFOR'                     : 'k',
 'WEEK'                        : 'f',
 'WEEKDAY'                     : 'f',
+'WEEKDAYNAME'                 : 'f',
 'WEEKOFYEAR'                  : 'f',
 'WHEN'                        : 'k',
 'WHERE'                       : 'k',

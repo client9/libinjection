@@ -5,8 +5,10 @@
 
 * Fix for nested c-style comments used by postgresql and transact-sql.
   Thanks to @Kanatoko for the report.
-* Numerous additions to SQL functions lists (in particular pgsql and transact-sql functions)
+* Numerous additions to SQL functions lists (in particular pgsql, transact-sql
+  and ms-access functions)
   Thanks to Christoffer Sawicki "qerub" for report on cut-n-paste error.
+  Thanks to @ryancbarnett for reminder that MS-ACCESS exists ;-)
 * Adding of fingerprints to detect HPP attacks.  This may need
   fine tuning to reduce false positives later.
 * Algorihmically added new fingerprints to detect new _future_ sqli attacks.  All of these
