@@ -74,7 +74,7 @@ settings = {
 }
 
 application = tornado.wsgi.WSGIApplication([
-    (r"/null", NullHandler),
+    (r"/diagnostics", NullHandler),
     ], **settings)
 
 
