@@ -1073,6 +1073,16 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     switch (tlen) {
     case 2:{
         /*
+         * for fingerprint like 'nc', only comments of /x are treated
+         * as SQL... ending comments of "--" and "#" are not sqli
+         */
+        if (sql_state->tokenvec[0].type == 'n' &&
+            sql_state->tokenvec[1].type == 'c' &&
+            sql_state->tokenvec[1].val[0] != '/') {
+                sql_state->reason = __LINE__;
+                return FALSE;
+        }
+        /*
          * if 'comment' is '#' ignore.. too many FP
          */
             if (sql_state->tokenvec[1].val[0] == '#') {
@@ -1083,11 +1093,13 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
              * detect obvious sqli scans.. many people put '--' in plain text
              * so only detect if input ends with '--', e.g. 1-- but not 1-- foo
              */
+
             if ((strlen(sql_state->tokenvec[1].val) > 2)
                 && sql_state->tokenvec[1].val[0] == '-') {
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
+
             break;
         }
     case 3:{
