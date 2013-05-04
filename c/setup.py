@@ -10,22 +10,34 @@
 
 from distutils.core import setup, Extension
 
-module1 = Extension('libinjection',
-                    define_macros = [('MAJOR_VERSION', '1'),
-                                     ('MINOR_VERSION', '0')],
-                    include_dirs = ['/usr/local/include'],
-                    libraries = [],
-                    library_dirs = [],
-                    sources = ['libinjection_module.c', 'sqlparse.c']
-                    )
+module1 = Extension(
+    'libinjection',
+    define_macros = [],
+    include_dirs = [],
+    libraries = [],
+    library_dirs = [],
+    sources = ['libinjection_module.c', 'sqlparse.c']
+    )
 
-setup (name = 'libinjection',
-       version = '1.0',
-       description = 'Wrapper around libinjection c-code to detect sqli',
-       author = 'Nick Galbreath',
-       author_email = 'nickg@client9.com',
-       url = 'http://client9.com/libinjection',
-       long_description = '''
+setup (
+    name             = 'libinjection',
+    version          = '1.1.0',
+    description      = 'Wrapper around libinjection c-code to detect sqli',
+    author           = 'Nick Galbreath',
+    author_email     = 'nickg@client9.com',
+    url              = 'http://client9.com/libinjection',
+    ext_modules      = [module1],
+    long_description = '''
 wrapper around libinjection
 ''',
-       ext_modules = [module1])
+       classifiers   = [
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Topic :: Database',
+        'Topic :: Security',
+        'Operating System :: OS Independent',
+        'Development Status :: 3 - Alpha',
+        'Topic :: Internet :: Log Analysis',
+        'Topic :: Internet :: WWW/HTTP'
+        ]
+    )
