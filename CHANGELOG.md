@@ -1,5 +1,5 @@
 
-# next
+# v1.1.0 2013-05-04
 
 ## security
 
@@ -7,10 +7,9 @@
   Thanks to @Kanatoko for the report.
 * Numerous additions to SQL functions lists (in particular pgsql, transact-sql
   and ms-access functions)
-  Thanks to Christoffer Sawicki "qerub" for report on cut-n-paste error.
+  Thanks to Christoffer Sawicki (GitHub "qerub") for report on cut-n-paste error.
   Thanks to @ryancbarnett for reminder that MS-ACCESS exists ;-)
-* Adding of fingerprints to detect HPP attacks.  This may need
-  fine tuning to reduce false positives later.
+* Adding of fingerprints to detect HPP attacks.
 * Algorihmically added new fingerprints to detect new _future_ sqli attacks.  All of these
   new fingerprints have no been seen 'in the wild' yet.
 
