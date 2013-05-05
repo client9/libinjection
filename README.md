@@ -10,16 +10,21 @@ for details and presentations.
 To use:
 look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
 
-    #include "sqlparse.h"
+
+
+```c
+#include "sqlparse.h"
+
+void doit() {
 
     // state data structure
     sfilter sf;
 
     // if you need to, normalize input.
-    // in the case of a raw query string, you would url-decode the
+    // in the case of a raw query string, url-decode the input
     len = modp_urldecode(linebuf, len);
 
-    // test it.  1 = is isql, 0 = benign
+    // test it.  1 = is sqli, 0 = benign
     // input is const (not changed or written to)
     bool issqli = is_sqli(&sf, linebuf, len);
 
@@ -27,12 +32,15 @@ look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
     //   the fingerprint
     //   tokens
     //   etc
-
+}
+```
 
 VERSION INFORMATION
 ===================
 
-Version are listed as "major.minor.point"
+Current version is 1.1.0.  See [CHANGELOG](/CHANGELOG.md) for details.
+
+Versions are listed as "major.minor.point"
 
 Major are significant changes to the API and/or fingerprint format.
 Applications will need recompiling and/or refactoring.
@@ -49,9 +57,9 @@ LICENSE
 
 Copyright (c) 2012,2013 Nick Galbreath
 
-Licensed under the standard BSD open source license.
+Licensed under the standard BSD open source license.  See [COPYING.txt](/COPYING.txt) for details.
 
-See /COPYING.txt -- commercial and support licenses available.
+Commercial and support licenses available.
 
 Send requests to nickg@client9.com
 
