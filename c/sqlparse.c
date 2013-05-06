@@ -68,7 +68,15 @@ memchr2(const char *haystack, size_t haystack_len, char c0, char c1)
     return NULL;
 }
 
-
+/** Find largest string containing certain characters.
+ *
+ * C Standard library 'strspn' only works for 'c-strings' (null terminated)
+ * This works on arbitrary length.
+ *
+ * Porting notes:
+ *   if accept is 'ABC', then this function would be similar to
+ *   a_regexp.match(a_str, '[ABC]*'),
+ */
 size_t strlenspn(const char *s, size_t len, const char *accept)
 {
     size_t i;
@@ -81,6 +89,15 @@ size_t strlenspn(const char *s, size_t len, const char *accept)
         }
     }
     return len;
+}
+
+/**
+ * Case insentive string compare.
+ *  Here only to make code more readable
+ */
+int streq(const char *a, const char *b)
+{
+    return cstrcasecmp(a, b) == 0;
 }
 
 /*
@@ -102,10 +119,85 @@ int cstrcasecmp(const char *a, const char *b)
     return ca - cb;
 }
 
-int streq(const char *a, const char *b)
+/*
+ * Case-sensitive binary search
+ */
+const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
 {
-    return cstrcasecmp(a, b) == 0;
+    int left = 0;
+    int right = (int) nmemb - 1;
+
+    while (left <= right) {
+        int pos = (left + right) / 2;
+        int cmp = strcmp(base[pos], key);
+        if (cmp == 0) {
+            return base[pos];
+        } else if (cmp < 0) {
+            left = pos + 1;
+        } else {
+            right = pos - 1;
+        }
+    }
+    return NULL;
 }
+
+/*
+ * Case-insensitive binary search
+ */
+const char *bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
+{
+    int left = 0;
+    int right = (int) nmemb - 1;
+
+    while (left <= right) {
+        int pos = (left + right) / 2;
+        int cmp = cstrcasecmp(base[pos], key);
+        if (cmp == 0) {
+            return base[pos];
+        } else if (cmp < 0) {
+            left = pos + 1;
+        } else {
+            right = pos - 1;
+        }
+    }
+    return NULL;
+}
+
+/**
+ *
+ *
+ *
+ * Porting Notes:
+ *  given a mapping/hash of string to char
+ *  this is just
+ *     mapping[key.upper()]
+ */
+char bsearch_keyword_type(const char *key, const keyword_t * keywords,
+                          size_t numb)
+{
+    int left = 0;
+    int right = (int) numb - 1;
+
+    while (left <= right) {
+        int pos = (left + right) / 2;
+        int cmp = cstrcasecmp(keywords[pos].word, key);
+        if (cmp == 0) {
+            return keywords[pos].type;
+        } else if (cmp < 0) {
+            left = pos + 1;
+        } else {
+            right = pos - 1;
+        }
+    }
+    return CHAR_NULL;
+}
+
+/* st_token methods
+ *
+ * The folow just manipulates the stoken_t type
+ *
+ *
+ */
 
 void st_clear(stoken_t * st)
 {
@@ -141,69 +233,6 @@ void st_copy(stoken_t * dest, const stoken_t * src)
     memcpy(dest, src, sizeof(stoken_t));
 }
 
-const char *bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
-{
-    int left = 0;
-    int right = (int) nmemb - 1;
-
-    while (left <= right) {
-        int pos = (left + right) / 2;
-        int cmp = cstrcasecmp(base[pos], key);
-        if (cmp == 0) {
-            return base[pos];
-        } else if (cmp < 0) {
-            left = pos + 1;
-        } else {
-            right = pos - 1;
-        }
-    }
-    return NULL;
-}
-
-const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
-{
-    int left = 0;
-    int right = (int) nmemb - 1;
-
-    while (left <= right) {
-        int pos = (left + right) / 2;
-        int cmp = strcmp(base[pos], key);
-        if (cmp == 0) {
-            return base[pos];
-        } else if (cmp < 0) {
-            left = pos + 1;
-        } else {
-            right = pos - 1;
-        }
-    }
-    return NULL;
-}
-
-char bsearch_keyword_type(const char *key, const keyword_t * keywords,
-                          size_t numb)
-{
-    int left = 0;
-    int right = (int) numb - 1;
-
-    while (left <= right) {
-        int pos = (left + right) / 2;
-        int cmp = cstrcasecmp(keywords[pos].word, key);
-        if (cmp == 0) {
-            return keywords[pos].type;
-        } else if (cmp < 0) {
-            left = pos + 1;
-        } else {
-            right = pos - 1;
-        }
-    }
-    return CHAR_NULL;
-}
-
-int is_operator2(const char *key)
-{
-    return bsearch_cstrcase(key, operators2, operators2_sz) != NULL;
-}
-
 int st_is_multiword_start(const stoken_t * st)
 {
     return bsearch_cstrcase(st->val,
@@ -235,6 +264,12 @@ int st_is_arith_op(const stoken_t * st)
                                  cstrcasecmp(st->val, "MOD") &&
                                  cstrcasecmp(st->val, "DIV")));
 }
+
+/* Parsers
+ *
+ *
+ */
+
 
 size_t parse_white(sfilter * sf)
 {
@@ -406,12 +441,23 @@ size_t parse_backslash(sfilter * sf)
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
 
+    /*
+     * Weird MySQL alias for NULL, "\N" (capital N only)
+     */
     if (pos + 1 < slen && cs[pos + 1] == 'N') {
         st_assign(current, '1', "NULL", 4);
         return pos + 2;
     } else {
         return parse_other(sf);
     }
+}
+
+/** Is input a 2-char operator?
+ *
+ */
+int is_operator2(const char *key)
+{
+    return bsearch_cstrcase(key, operators2, operators2_sz) != NULL;
 }
 
 size_t parse_operator2(sfilter * sf)
@@ -703,19 +749,44 @@ int parse_token(sfilter * sf)
 
     st_clear(current);
 
+    /*
+     * if we are at beginning of string
+     *  and in single-quote or double quote mode
+     *  then pretend the input starts with a quote
+     */
     if (*pos == 0 && sf->delim != CHAR_NULL) {
         *pos = parse_string_core(s, slen, 0, current, sf->delim, 0);
         return TRUE;
     }
 
     while (*pos < slen) {
+        /*
+         * get current character
+         */
         const int ch = (int) (s[*pos]);
+
+        /*
+         * if not ascii, then continue...
+         *   actually probably need to just assuming
+         *   it's a string
+         */
         if (ch < 0 || ch > 127) {
             *pos += 1;
             continue;
         }
+
+        /*
+         * look up the parser, and call it
+         *
+         * Porting Note: this is mapping of char to function
+         *   charparsers[ch]()
+         */
         fnptr = char_parse_map[ch];
         *pos = (*fnptr) (sf);
+
+        /*
+         *
+         */
         if (current->type != CHAR_NULL) {
             return TRUE;
         }
@@ -1035,9 +1106,14 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         sql_state->pat[tlen] = sql_state->tokenvec[tlen].type;
         tlen += 1;
     }
-    sql_state->pat[tlen] = CHAR_NULL;
 
     /*
+     * make the fingerprint pattern a c-string (null delimited)
+     */
+    sql_state->pat[tlen] = CHAR_NULL;
+
+    /* NOTE: not sure this is needed any more.
+     *
      * if token 5 (last) looks like a functino word (such as ABS or ASCII)
      * then check token 6 to see if it's a "(".
      * if NOT then, it's not a function.
@@ -1053,6 +1129,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
             return FALSE;
         }
     }
+
     /*
      * check for 'X' in pattern
      * this means parsing could not be done
@@ -1066,10 +1143,22 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
 
     patmatch = fn(sql_state->pat);
 
+    /*
+     * No match.
+     *
+     * Set sql_state->reason to current line number
+     * only for debugging purposes.
+     *
     if (!patmatch) {
         sql_state->reason = __LINE__;
         return FALSE;
     }
+
+    /*
+     * We got a SQLi match
+     * This next part just helps reduce false positives.
+     *
+     */
     switch (tlen) {
     case 2:{
         /*
@@ -1138,7 +1227,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                 }
                 break;
         }
-    }                       /* case 3 */
+    }  /* case 3 */
     case 5: {
         if (streq(sql_state->pat, "sosos")) {
             if (sql_state->tokenvec[0].str_open == CHAR_NULL) {
@@ -1157,30 +1246,56 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         }
     } /* case 5 */
     } /* end switch */
+
     return TRUE;
 }
 
+/**  Main API
+ *
+ *
+ */
 int is_sqli(sfilter * sql_state, const char *s, size_t slen,
             ptr_fingerprints_fn fn)
 {
 
+    /*
+     * no input? not sqli
+     */
     if (slen == 0) {
         return FALSE;
     }
 
+    /*
+     * test input "as-is"
+     */
     if (is_string_sqli(sql_state, s, slen, CHAR_NULL, fn)) {
         return TRUE;
     }
 
+    /*
+     * if input has a single_quote, then
+     * test as if input was actually '
+     * example: if input if "1' = 1", then pretend it's
+     *   "'1' = 1"
+     * Porting Notes: example the same as doing
+     *   is_string_sqli(sql_state, "'" + s, slen+1, NULL, fn)
+     *
+     */
     if (memchr(s, CHAR_SINGLE, slen)
         && is_string_sqli(sql_state, s, slen, CHAR_SINGLE, fn)) {
         return TRUE;
     }
 
+    /*
+     * same as above but with a double-quote "
+     */
     if (memchr(s, CHAR_DOUBLE, slen)
         && is_string_sqli(sql_state, s, slen, CHAR_DOUBLE, fn)) {
         return TRUE;
     }
 
+    /*
+     * Hurray, input is not SQLi
+     */
     return FALSE;
 }

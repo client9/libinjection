@@ -96,7 +96,5 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout);
 
 int filter_fold(sfilter * sf, stoken_t * sout);
 
-int char2int(char c);
-unsigned long long pat2int(const char *pat);
 
 #endif /* _SQLPARSE_PRIVATE_H */
