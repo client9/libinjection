@@ -1148,7 +1148,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
      *
      * Set sql_state->reason to current line number
      * only for debugging purposes.
-     *
+     */
     if (!patmatch) {
         sql_state->reason = __LINE__;
         return FALSE;
