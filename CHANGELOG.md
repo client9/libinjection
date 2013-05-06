@@ -1,3 +1,10 @@
+# v1.2.0 2013-05-06
+
+## security
+* fix regression in detecting SQLi of type '1c'
+
+##
+* improved documentation, comments, edits.
 
 # v1.1.0 2013-05-04
 
