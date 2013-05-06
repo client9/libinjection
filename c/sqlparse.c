@@ -842,6 +842,10 @@ int syntax_merge_words(stoken_t * a, stoken_t * b)
     }
 }
 
+/* This does some simple syntax cleanup based on the token
+ *
+ *
+ */
 int sqli_tokenize(sfilter * sf, stoken_t * sout)
 {
     stoken_t *last = &sf->syntax_last;
@@ -849,6 +853,10 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
 
     while (parse_token(sf)) {
         char ttype = current->type;
+
+        /*
+         * TBD: hmm forgot logic here.
+         */
         if (ttype == 'c') {
             st_copy(&sf->syntax_comment, current);
             continue;
@@ -856,7 +864,13 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
         st_clear(&sf->syntax_comment);
 
         /*
-         * If we don't have a saved token
+         * If we don't have a saved token, and we have
+         * a string: save it.  if the next token is also a string
+         *   then merge them.  e.g. "A" "B" in SQL is actually "AB"
+         * a n/k/U/o type: save since next token my be merged together
+         *   for example: "LEFT" + "JOIN" = "LEFT JOIN"
+         * a o/& type: TBD need to review.
+         *
          */
         if (last->type == CHAR_NULL) {
             switch (ttype) {
@@ -981,6 +995,9 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
         st_clear(last);
         return TRUE;
     } else if (sf->syntax_comment.type) {
+        /*
+         * TBD
+         */
         st_copy(sout, &sf->syntax_comment);
         st_clear(&sf->syntax_comment);
         return TRUE;
@@ -989,6 +1006,9 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
     }
 }
 
+/*
+ * My apologies, this code is a mess
+ */
 int filter_fold(sfilter * sf, stoken_t * sout)
 {
     stoken_t *last = &sf->fold_last;
@@ -1088,6 +1108,16 @@ int filter_fold(sfilter * sf, stoken_t * sout)
     return FALSE;
 }
 
+/* secondary api: detects SQLi in a string, GIVEN a context.
+ *
+ * A context can be:
+ *   *  CHAR_NULL (\0), process as is
+ *   *  CHAR_SINGLE ('), process pretending input started with a
+ *          single quote.
+ *   *  CHAR_DOUBLE ("), process pretending input started with a
+ *          double quote.
+ *
+ */
 int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     const char delim, ptr_fingerprints_fn fn)
 {
@@ -1251,7 +1281,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     return TRUE;
 }
 
-/**  Main API
+/**  Main API, detects SQLi in an input.
  *
  *
  */
