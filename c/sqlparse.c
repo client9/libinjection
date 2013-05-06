@@ -195,7 +195,7 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
 
 /* st_token methods
  *
- * The folow just manipulates the stoken_t type
+ * The following functions manipulates the stoken_t type
  *
  *
  */
