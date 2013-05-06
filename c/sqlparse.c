@@ -132,14 +132,14 @@ int bsearch_cstr(const char *key, const char *base[], size_t nmemb)
         int pos = (left + right) / 2;
         int cmp = strcmp(base[pos], key);
         if (cmp == 0) {
-            return FALSE;
+            return TRUE;
         } else if (cmp < 0) {
             left = pos + 1;
         } else {
             right = pos - 1;
         }
     }
-    return TRUE;
+    return FALSE;
 }
 
 /*
