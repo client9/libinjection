@@ -120,9 +120,10 @@ int streq(const char *a, const char *b)
 }
 
 /*
- * Case-sensitive binary search
+ * Case-sensitive binary search.
+ *
  */
-const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
+int bsearch_cstr(const char *key, const char *base[], size_t nmemb)
 {
     int left = 0;
     int right = (int) nmemb - 1;
@@ -131,20 +132,20 @@ const char *bsearch_cstr(const char *key, const char *base[], size_t nmemb)
         int pos = (left + right) / 2;
         int cmp = strcmp(base[pos], key);
         if (cmp == 0) {
-            return base[pos];
+            return FALSE;
         } else if (cmp < 0) {
             left = pos + 1;
         } else {
             right = pos - 1;
         }
     }
-    return NULL;
+    return TRUE;
 }
 
 /*
  * Case-insensitive binary search
  */
-const char *bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
+int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
 {
     int left = 0;
     int right = (int) nmemb - 1;
@@ -153,14 +154,14 @@ const char *bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
         int pos = (left + right) / 2;
         int cmp = cstrcasecmp(base[pos], key);
         if (cmp == 0) {
-            return base[pos];
+            return TRUE;
         } else if (cmp < 0) {
             left = pos + 1;
         } else {
             right = pos - 1;
         }
     }
-    return NULL;
+    return FALSE;
 }
 
 /**
@@ -236,8 +237,8 @@ void st_copy(stoken_t * dest, const stoken_t * src)
 int st_is_multiword_start(const stoken_t * st)
 {
     return bsearch_cstrcase(st->val,
-                        multikeywords_start,
-                        multikeywords_start_sz) != NULL;
+                            multikeywords_start,
+                            multikeywords_start_sz);
 }
 
 int st_is_unary_op(const stoken_t * st)
@@ -457,7 +458,7 @@ size_t parse_backslash(sfilter * sf)
  */
 int is_operator2(const char *key)
 {
-    return bsearch_cstrcase(key, operators2, operators2_sz) != NULL;
+    return bsearch_cstr(key, operators2, operators2_sz);
 }
 
 size_t parse_operator2(sfilter * sf)
