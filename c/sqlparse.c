@@ -1212,9 +1212,12 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
          * which evaluate to "1c"... these are not SQLi
          * but 1234-- probably is.
          * Make sure the "1" in "1c" is actually a true decimal number
+         *
+         * Need to check -original- string since the folding step
+         * may have merged tokens, e.g. "1+FOO" is folded into "1"
          */
         if (sql_state->tokenvec[0].type == '1'&& sql_state->tokenvec[1].type == 'c' &&
-            strlen(sql_state->tokenvec[0].val) != strspn(sql_state->tokenvec[0].val, "0123456789")) {
+            strlen(sql_state->tokenvec[0].val) != strlenspn(sql_state->s, sql_state->slen, "0123456789")) {
             sql_state->reason = __LINE__;
             return FALSE;
         }
