@@ -1214,7 +1214,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
          * Make sure the "1" in "1c" is actually a true decimal number
          */
         if (sql_state->tokenvec[0].type == '1'&& sql_state->tokenvec[1].type == 'c' &&
-            strlen(sql_state->tokenvec[0].val) != strcspn(sql_state->tokenvec[0].val, "0123456789")) {
+            strlen(sql_state->tokenvec[0].val) != strspn(sql_state->tokenvec[0].val, "0123456789")) {
             sql_state->reason = __LINE__;
             return FALSE;
         }
