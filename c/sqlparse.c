@@ -1018,7 +1018,7 @@ int filter_fold(sfilter * sf, stoken_t * sout)
         st_copy(sout, last);
         sf->fold_state = 2;
         st_clear(last);
-        return TRUE;
+        return FALSE;
     }
 
     while (sqli_tokenize(sf, current)) {
@@ -1044,7 +1044,7 @@ int filter_fold(sfilter * sf, stoken_t * sout)
                 st_copy(last, current);
             }
             st_copy(sout, current);
-            return TRUE;
+            return FALSE;
         } else if (last->type == '(' && st_is_unary_op(current)) {
             /*
              * similar to beginning of statement
@@ -1057,7 +1057,7 @@ int filter_fold(sfilter * sf, stoken_t * sout)
              * emit 1, but keep state
              */
             st_copy(sout, current);
-            return TRUE;
+            return FALSE;
         } else if ((last->type == '1' || last->type == 'n')
                    && st_is_arith_op(current)) {
             FOLD_DEBUG;
@@ -1079,7 +1079,7 @@ int filter_fold(sfilter * sf, stoken_t * sout)
                     st_copy(sout, current);
                     st_clear(last);
                 }
-                return TRUE;
+                return FALSE;
             } else {
                 if (last->type == 'o') {
                     st_copy(sout, last);
@@ -1090,7 +1090,7 @@ int filter_fold(sfilter * sf, stoken_t * sout)
                     st_copy(sout, current);
                     st_clear(last);
                 }
-                return TRUE;
+                return FALSE;
             }
         }
     }
@@ -1099,13 +1099,16 @@ int filter_fold(sfilter * sf, stoken_t * sout)
         if (st_is_arith_op(last)) {
             st_copy(sout, last);
             st_clear(last);
-            return TRUE;
+            return FALSE;
         } else {
             st_clear(last);
         }
     }
 
-    return FALSE;
+    /*
+     * all done: nothing more to parse
+     */
+    return TRUE;
 }
 
 /* secondary api: detects SQLi in a string, GIVEN a context.
@@ -1121,16 +1124,16 @@ int filter_fold(sfilter * sf, stoken_t * sout)
 int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     const char delim, ptr_fingerprints_fn fn)
 {
-    int all_done = 0;
     int tlen = 0;
     int patmatch;
+    int all_done;
 
     sfilter_reset(sql_state, s, slen);
     sql_state->delim = delim;
 
     while (tlen < MAX_TOKENS) {
         all_done = filter_fold(sql_state, &(sql_state->tokenvec[tlen]));
-        if (!all_done) {
+        if (all_done) {
             break;
         }
 
