@@ -1197,6 +1197,15 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                 return FALSE;
         }
 
+        /*
+         * if '1c' ends with '/x' then it's sqli
+         */
+        if (sql_state->tokenvec[0].type == '1' &&
+            sql_state->tokenvec[1].type == 'c' &&
+            sql_state->tokenvec[1].val[0] == '/') {
+            return TRUE;
+        }
+
         /**
          * there are some odd base64-looking query string values
          * 1234-ABCDEFEhfhihwuefi--
@@ -1206,6 +1215,8 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
          *
          * Need to check -original- string since the folding step
          * may have merged tokens, e.g. "1+FOO" is folded into "1"
+         *
+         * Note: evasion: 1*1--
          */
         if (sql_state->tokenvec[0].type == '1'&& sql_state->tokenvec[1].type == 'c') {
             /*
