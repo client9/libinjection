@@ -1146,24 +1146,6 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
      */
     sql_state->pat[tlen] = CHAR_NULL;
 
-    /* NOTE: not sure this is needed any more.
-     *
-     * if token 5 (last) looks like a functino word (such as ABS or ASCII)
-     * then check token 6 to see if it's a "(".
-     * if NOT then, it's not a function.
-     */
-
-    if (tlen == MAX_TOKENS && !all_done
-        && sql_state->pat[MAX_TOKENS - 1] == 'f') {
-
-        stoken_t tmp;
-        all_done = filter_fold(sql_state, &tmp);
-        if (!all_done && tmp.type != '(') {
-            sql_state->reason = __LINE__;
-            return FALSE;
-        }
-    }
-
     /*
      * check for 'X' in pattern
      * this means parsing could not be done
