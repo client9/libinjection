@@ -40,9 +40,6 @@ int st_is_english_op(const stoken_t * st);
 int st_is_logical_op(const stoken_t * st);
 int st_is_multiword_start(const stoken_t * st);
 
-const char *bsearch_cstr(const char *key, const char *base[],
-                         size_t nmemb);
-
 typedef struct {
     const char *word;
     char type;
