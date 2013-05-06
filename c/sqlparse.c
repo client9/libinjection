@@ -91,15 +91,6 @@ size_t strlenspn(const char *s, size_t len, const char *accept)
     return len;
 }
 
-/**
- * Case insentive string compare.
- *  Here only to make code more readable
- */
-int streq(const char *a, const char *b)
-{
-    return cstrcasecmp(a, b) == 0;
-}
-
 /*
  * ASCII case insenstive compare only!
  */
@@ -117,6 +108,15 @@ int cstrcasecmp(const char *a, const char *b)
     } while (ca == cb && ca != '\0');
 
     return ca - cb;
+}
+
+/**
+ * Case insentive string compare.
+ *  Here only to make code more readable
+ */
+int streq(const char *a, const char *b)
+{
+    return cstrcasecmp(a, b) == 0;
 }
 
 /*
