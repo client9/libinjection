@@ -45,7 +45,9 @@ void doit() {
 VERSION INFORMATION
 ===================
 
-Current version is 1.1.0.  See [CHANGELOG](/CHANGELOG.md) for details.
+Current version is 1.2.0 released on 2013-05-06.
+
+See [CHANGELOG](/CHANGELOG.md) for details.
 
 Versions are listed as "major.minor.point"
 
