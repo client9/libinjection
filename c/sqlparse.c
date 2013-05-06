@@ -1125,6 +1125,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                     const char delim, ptr_fingerprints_fn fn)
 {
     int tlen = 0;
+    char ch;
     int patmatch;
     int all_done;
 
@@ -1195,16 +1196,6 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                 sql_state->reason = __LINE__;
                 return FALSE;
         }
-        /*
-         * detect obvious sqli scans.. many people put '--' in plain text
-         * so only detect if input ends with '--', e.g. 1-- but not 1-- foo
-         */
-
-        if ((strlen(sql_state->tokenvec[1].val) > 2)
-            && sql_state->tokenvec[1].val[0] == '-') {
-            sql_state->reason = __LINE__;
-            return FALSE;
-        }
 
         /**
          * there are some odd base64-looking query string values
@@ -1216,13 +1207,42 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
          * Need to check -original- string since the folding step
          * may have merged tokens, e.g. "1+FOO" is folded into "1"
          */
-        if (sql_state->tokenvec[0].type == '1'&& sql_state->tokenvec[1].type == 'c' &&
-            strlen(sql_state->tokenvec[0].val) != strlenspn(sql_state->s, sql_state->slen, "0123456789")) {
+        if (sql_state->tokenvec[0].type == '1'&& sql_state->tokenvec[1].type == 'c') {
+            /*
+             * we check that next character after the number is either whitespace,
+             * or '/' or a '-' ==> sqli.
+             */
+            ch = sql_state->s[strlen(sql_state->tokenvec[0].val)];
+            if ( ch <= 32 ) {
+                /* next char was whitespace,e.g. "1234 --"
+                 * this isn't exactly correct.. ideally we should skip over all whitespace
+                 * but this seems to be ok for now
+                 */
+                return TRUE;
+            }
+            if (ch == '/' && sql_state->s[strlen(sql_state->tokenvec[0].val) + 1] == '*') {
+                return TRUE;
+            }
+            if (ch == '-' && sql_state->s[strlen(sql_state->tokenvec[0].val) + 1] == '-') {
+                return TRUE;
+            }
+
             sql_state->reason = __LINE__;
             return FALSE;
         }
-        break;
+
+        /*
+         * detect obvious sqli scans.. many people put '--' in plain text
+         * so only detect if input ends with '--', e.g. 1-- but not 1-- foo
+         */
+        if ((strlen(sql_state->tokenvec[1].val) > 2)
+            && sql_state->tokenvec[1].val[0] == '-') {
+            sql_state->reason = __LINE__;
+            return FALSE;
         }
+
+        break;
+    } /* case 2 */
     case 3:{
         /*
          * ...foo' + 'bar...
