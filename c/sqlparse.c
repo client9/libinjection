@@ -795,6 +795,10 @@ int parse_token(sfilter * sf)
     return FALSE;
 }
 
+/**
+ * Initializes parsing state
+ *  TBD: explicity add parsing content (NULL, SINGLE, DOUBLE)
+ */
 void sfilter_reset(sfilter * sf, const char *s, size_t len)
 {
     memset(sf, 0, sizeof(sfilter));
@@ -802,6 +806,22 @@ void sfilter_reset(sfilter * sf, const char *s, size_t len)
     sf->slen = len;
 }
 
+/** See if two tokens can be merged since they are compound SQL phrases.
+ *
+ * This takes two tokens, and, if they are the right type,
+ * merges their values together.  Then checks to see if the
+ * new value is special using the PHRASES mapping.
+ *
+ * Example: "UNION" + "ALL" ==> "UNION ALL"
+ *
+ * C Security Notes: this is safe to use C-strings (null-terminated)
+ *  since the types involved by definition do not have embedded nulls
+ *  (e.g. there is no keyword with embedded null)
+ *
+ * Porting Notes: since this is C, it's oddly complicated.
+ *  This is just:  multikeywords[token.value + ' ' + token2.value]
+ *
+ */
 int syntax_merge_words(stoken_t * a, stoken_t * b)
 {
     size_t sz1;
@@ -818,8 +838,8 @@ int syntax_merge_words(stoken_t * a, stoken_t * b)
 
     sz1 = strlen(a->val);
     sz2 = strlen(b->val);
-    sz3 = sz1 + sz2 + 1;
-    if (sz3 >= ST_MAX_SIZE) {
+    sz3 = sz1 + sz2 + 1; /* +1 for space in the middle */
+    if (sz3 >= ST_MAX_SIZE) { /* make sure there is room for ending null */
         return FALSE;
     }
     /*
@@ -832,9 +852,6 @@ int syntax_merge_words(stoken_t * a, stoken_t * b)
 
     ch = bsearch_keyword_type(tmp, multikeywords, multikeywords_sz);
     if (ch != CHAR_NULL) {
-        /*
-         * -1, don't copy the null byte
-         */
         st_assign(a, ch, tmp, sz3);
         return TRUE;
     } else {
