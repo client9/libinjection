@@ -93,6 +93,9 @@ size_t strlenspn(const char *s, size_t len, const char *accept)
 
 /*
  * ASCII case insenstive compare only!
+ *
+ * Required since libc version use the current locale
+ * and is much slower.
  */
 int cstrcasecmp(const char *a, const char *b)
 {
@@ -1196,6 +1199,11 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
     switch (tlen) {
     case 2:{
         /*
+         * case 2 are "very small SQLi" which make them
+         * hard to tell from normal input...
+         */
+
+        /*
          * if 'comment' is '#' ignore.. too many FP
          */
         if (sql_state->tokenvec[1].val[0] == '#') {
@@ -1221,6 +1229,19 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
             sql_state->tokenvec[1].type == 'c' &&
             sql_state->tokenvec[1].val[0] == '/') {
             return TRUE;
+        }
+
+        /*
+         * if 'oc' then input must be 'CASE/x'
+         * used in HPP attack
+         */
+        if (sql_state->tokenvec[0].type == 'o' &&
+            sql_state->tokenvec[1].type == 'c' &&
+            sql_state->tokenvec[1].val[0] == '/' &&
+            cstrcasecmp(sql_state->tokenvec[0].val, "CASE") != 0)
+        {
+            sql_state->reason = __LINE__;
+            return FALSE;
         }
 
         /**
