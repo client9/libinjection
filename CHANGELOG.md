@@ -1,3 +1,11 @@
+# vNext
+
+## security
+* Fix Issue30: detection of more small sqli forms with fingerprint "1c".
+* Fix Issue32: false positive of '*/*' of type 'oc'  Thanks to @brianrectanus
+
+## other
+
 # v1.2.0 2013-05-06
 
 ## security
