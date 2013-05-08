@@ -354,3 +354,5 @@ zzh7W_krs4jSNwVV2TssQsSbOj--
 
 Mosaic "Table top"
 
+# Used in HTTP headers, e.g. Accept: */*
+*/*
