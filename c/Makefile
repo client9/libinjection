@@ -1,18 +1,10 @@
 
-CC=gcc
-CXX=g++
-CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Werror
-INDENT=indent
-# Apple over-rides
-#   Trying to avoid using libtool
 #
-APPLE=$(shell uname -a | grep -c Darwin)
-ifeq ($(APPLE),1)
-	SONAME=dylib
-	RT=
-	INDENT=gnuindent
-	SHARED=-dynamiclib -flat_namespace
-endif
+# -Wcase-align works with gcc, but not clang on
+#  some of the modp_* files.  Remove for now.
+#
+
+CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Werror
 
 help:
 	@echo ""
@@ -94,10 +86,6 @@ sqlparse_data.json: Makefile sqlparse_map.py
 
 sqlparse_data.h: Makefile sqlparse_data.json
 	./sqlparse2c.py < sqlparse_data.json > ./sqlparse_data.h
-
-indent: sqlparse.h sqlparse.c
-	${INDENT} -kr -nut sqlparse.h sqlparse.c test_speed.c reader.c
-.PHONY: indent
 
 sort:
 	wc -l fingerprints.txt
