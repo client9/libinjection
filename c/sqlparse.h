@@ -12,7 +12,7 @@
  *   // then nothing to do!
  *
  *   sfilter s;
- *   int sqli = is_sqli(&s, user_string, new_len);
+ *   int sqli = is_sqli(&s, user_string, new_len, NULL);
  *
  *   // 0 = not sqli
  *   // 1 = is sqli
@@ -87,6 +87,14 @@ typedef int (*ptr_fingerprints_fn)(const char*);
  * Main API: tests for SQLi in three possible contexts, no quotes,
  * single quote and double quote
  *
+ * \param sql_state
+ * \param s
+ * \param slen
+ * \param fn a pointer to a function that determines if a fingerprint
+ *        is a match or not.  If NULL, then a hardwired list is
+ *        used. Useful for loading fingerprints data from custom
+ *        sources.
+ *
  * \return 1 (true) if SQLi, 0 (false) if benign
  */
 int is_sqli(sfilter * sql_state, const char *s, size_t slen,
@@ -96,10 +104,19 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
  * This detects SQLi in a single context, mostly useful for custom
  * logic and debugging.
  *
- * \param delim must be "NULL" (no context), single quote or double quote.
+ * \param sql_state
+ * \param s
+ * \param slen
+ * \param delim must be char of
+ *        CHAR_NULL (\0), raw context
+ *        CHAR_SINGLE ('), single quote context
+ *        CHAR_DOUBLE ("), double quote context
  *        Other values will likely be ignored.
+ * \param ptr_fingerprints_fn is a pointer to a function
+ *        that determines if a fingerprint is a match or not.
  *
- * \return 1 (true) if SQLi, 0 (false) if not SQLi **in this context**
+ *
+ * \return 1 (true) if SQLi or 0 (false) if not SQLi **in this context**
  *
  */
 int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
