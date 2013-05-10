@@ -169,6 +169,14 @@ int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
 
 /**
  *
+ */
+int is_sqli_pattern(const char* key)
+{
+    return bsearch_cstr(key, sql_fingerprints, sqli_fingerprints_sz);
+}
+
+/**
+ *
  *
  *
  * Porting Notes:
@@ -1351,6 +1359,10 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
      */
     if (slen == 0) {
         return FALSE;
+    }
+
+    if (fn == NULL) {
+        fn = is_sqli_pattern;
     }
 
     /*

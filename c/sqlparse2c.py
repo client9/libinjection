@@ -14,7 +14,7 @@ def toc(obj):
 
     print "#ifndef _SQLPARSE_DATA_H"
     print "#define _SQLPARSE_DATA_H"
-    print "#include \"sqlparse.h\""
+
     print
 
     print 'static const char* operators2[] = {'
@@ -90,6 +90,18 @@ def toc(obj):
         pos += 1
     print "};"
     print
+
+    #
+    # fingerprint data
+    #
+    print 'static const char* sql_fingerprints[] = {'
+    for  k in sorted(list(obj[u'fingerprints'])):
+        print '    "%s",' % (k,)
+    print '};'
+    dlen = len(obj['fingerprints'])
+    print 'static const size_t sqli_fingerprints_sz = %d;' % (dlen,)
+    print
+
     print "#endif"
     return 0
 

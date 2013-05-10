@@ -1,11 +1,27 @@
 # vNext
 
 ## security
+
 * Fix Issue30: detection of more small sqli forms with fingerprint "1c".
 * Fix Issue32: false positive of '*/*' of type 'oc'  Thanks to @brianrectanus
 
+## API Changes
+
+Should be fully backwards compatible.
+
+* If arg4 in is_sqli is NULL, then  built-in fingerprint data will be
+  used.  This makes it easier to use in most cases.
+* sqlmap_data.json now includes fingerprint information, so people making ports
+  only need to parse one file.
+* sqli_fingerprints.h is now deprecated, this functionality is now included
+  in sqlparse_data.h.  Now most users will now only need to include sqlparse.h,
+  instead of two files.
+
 ## other
-* Allow clang compiler (also in Jenkins build with clang and make-scan)
+
+* Allow clang compiler (also in Jenkins, a build with clang and
+  make-scan is done)
+
 
 # v1.2.0 2013-05-06
 

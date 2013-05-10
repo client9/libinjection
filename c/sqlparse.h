@@ -6,6 +6,8 @@
  *
  * HOW TO USE:
  *
+ *   #include "sqlparse.h"
+ *
  *   // Normalize query or postvar value
  *   // If it comes in urlencoded, then it's up to you
  *   // to urldecode it.  If it's in correct form already
@@ -122,6 +124,16 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
 int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                    const char delim,
                    ptr_fingerprints_fn fn);
+
+/**
+ * DEPRECATED -- HERE FOR BACKWARDS COMPATIBILITY
+ * This is the default lookup of a fingerprint
+ *
+ * /param key c-string of fingerprint
+ * /return 1 (TRUE) if a match, 0 (FALSE) if not
+ *
+ */
+int is_sqli_pattern(const char *key);
 
 #ifdef __cplusplus
 }

@@ -7,8 +7,6 @@
 #include "modp_xml.h"
 
 #include "sqlparse.h"
-#include "sqli_fingerprints.h"
-
 
 static int g_test_ok = 0;
 static int g_test_fail = 0;
@@ -37,7 +35,7 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
         }
 
         len =  modp_burl_decode(linebuf, linebuf, len);
-        bool issqli = is_sqli(&sf, linebuf, len, is_sqli_pattern);
+        bool issqli = is_sqli(&sf, linebuf, len, NULL);
         if (issqli) {
             g_test_ok += 1;
         } else {

@@ -1111,6 +1111,18 @@ PHRASES = {
     }
 
 import json
+
+def get_fingerprints():
+    """
+    fingerprints are stored in plain text file, one fingerprint per file
+    the result is sorted
+    """
+
+    with open('fingerprints.txt', 'r') as lines:
+        sqlipat = [ line.strip() for line in lines ]
+
+    return sorted(sqlipat)
+
 def dump():
     """
     generates a JSON file, sorted keys
@@ -1120,7 +1132,8 @@ def dump():
         'keywords': KEYWORDS,
         'charmap': CHARMAP,
         'operators2': OPERATORS2,
-        'phrases': PHRASES
+        'phrases': PHRASES,
+        'fingerprints': get_fingerprints()
         }
     return json.dumps(objs, sort_keys=True, indent=4)
 

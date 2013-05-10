@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 #include "sqlparse_private.h"
-#include "sqli_fingerprints.h"
 
 
 void testParseToken(void)
@@ -82,7 +81,7 @@ void testIsSQL(void)
     sfilter sf;
     clock_t t0 = clock();
     for (i = imax; i != 0; --i) {
-        is_sqli(&sf, s, slen, is_sqli_pattern);
+        is_sqli(&sf, s, slen, NULL);
     }
     clock_t t1 = clock();
     double total = (double) (t1 - t0) / (double) CLOCKS_PER_SEC;

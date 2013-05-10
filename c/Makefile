@@ -29,23 +29,23 @@ help:
 
 allbin: reader sqli fptool
 
-reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_burl.c sqli_fingerprints.h modp_ascii.c modp_xml.c
+reader: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
 	${CC}  ${CFLAGS} -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c modp_xml.c
 
-reader-gprof: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_burl.c sqli_fingerprints.h modp_ascii.c modp_xml.c
+reader-gprof: Makefile reader.c sqlparse_data.h sqlparse.h sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
 	make clean
 	${CC} -g -O2 -pg -o reader sqlparse.c reader.c modp_burl.c modp_ascii.c modp_xml.c
 
-extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_fingerprints.h sqlparse_data.h
+extractor: Makefile extractor.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqlparse_data.h
 	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqli_fingerprints.h sqlparse_data.h
+is_sqli: Makefile is_sqli_cli.cpp sqlparse.c sqlparse.h sqlparse_data.h modp_xml.c sqlparse_data.h
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp sqlparse.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
-sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
+sqli: Makefile sqli_cli.c sqlparse.c sqlparse.h sqlparse_data.h
 	${CC} -g -O1 -o sqli sqli_cli.c sqlparse.c
 
-fptool: Makefile fptool.c sqlparse.c sqlparse.h sqlparse_data.h sqli_fingerprints.h
+fptool: Makefile fptool.c sqlparse.c sqlparse.h sqlparse_data.h
 	${CC} ${CFLAGS} -o fptool fptool.c sqlparse.c
 
 test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.c
@@ -78,13 +78,10 @@ test_negative: reader
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
-sqli_fingerprints.h: fingerprints.txt fingerprints2c.py
-	./fingerprints2c.py > ./sqli_fingerprints.h
-
 sqlparse_data.json: Makefile sqlparse_map.py
 	./sqlparse_map.py > sqlparse_data.json
 
-sqlparse_data.h: Makefile sqlparse_data.json
+sqlparse_data.h: Makefile sqlparse2c.py sqlparse_data.json
 	./sqlparse2c.py < sqlparse_data.json > ./sqlparse_data.h
 
 sort:
@@ -92,7 +89,7 @@ sort:
 	LC_ALL=C sort -u fingerprints.txt > /tmp/junk
 	mv /tmp/junk fingerprints.txt
 	wc -l fingerprints.txt
-	./fingerprints2c.py > ./sqli_fingerprints.h
+	${MAKE} sqlparse_data.h
 
 clean:
 	rm -f *~ *.pyc
@@ -105,7 +102,7 @@ clean:
 	rm -f gmon.out nosetests.xml valgrind-*.txt
 	rm -f reader extractor is_sqli lcov-reader sqli
 
-sqli-gcov: sqli_fingerprints.h
+sqli-gcov:
 	rm -f sqli
 	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c sqlparse.c modp_burl.c modp_ascii.c modp_xml.c
 
@@ -151,6 +148,6 @@ http:
 	python -m  SimpleHTTPServer
 .PHONY: http
 
-python: sqli_fingerprints.h sqlparse_data.h
+python: sqlparse.c sqlparse.h sqlparse_private.h sqlparse_data.h
 	sudo python setup.py --verbose build --force
 	sudo python setup.py --verbose install

@@ -23,8 +23,6 @@ char bsearch_keyword_type(const char *key, const keyword_t keywords[],
 
 int is_operator2(const char *key);
 
-int is_sqli_pattern(const char *key);
-
 size_t parse_none(sfilter * sf);
 size_t parse_money(sfilter * sf);
 size_t parse_other(sfilter * sf);

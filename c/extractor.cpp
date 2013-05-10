@@ -129,7 +129,7 @@ public:
                     string val(qsi.val, qsi.vallen);
                     string tmp(val);
                     tmp.erase(sqli_qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
-                    issqli = is_sqli(&sf, tmp.data(), tmp.size(), is_sqli_pattern);
+                    issqli = is_sqli(&sf, tmp.data(), tmp.size(), NULL);
                 }
                 if (issqli) {
                     cout << orig << "\n";
@@ -143,7 +143,7 @@ public:
                         //
                     } else {
                         tmp.erase(sqli_qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
-                        issqli = is_sqli(&sf, tmp.data(), tmp.size(), is_sqli_pattern);
+                        issqli = is_sqli(&sf, tmp.data(), tmp.size(), NULL);
                         //cout << tmp << "    |    " << orig << endl;
                         //cout << orig << endl;
                     }

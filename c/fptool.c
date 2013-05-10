@@ -13,7 +13,6 @@
 #include <stdio.h>
 
 #include "sqlparse.h"
-#include "sqli_fingerprints.h"
 
 int main(int argc, const char* argv[])
 {
@@ -35,19 +34,19 @@ int main(int argc, const char* argv[])
     /*
      * "plain" context.. test string "as-is"
      */
-    ok = is_string_sqli(&sf, argv[offset], slen, CHAR_NULL, is_sqli_pattern);
+    ok = is_string_sqli(&sf, argv[offset], slen, CHAR_NULL, NULL);
     if (strlen(sf.pat) > 1) {
         fprintf(stdout, "plain\t%s\t%s\n", sf.pat, ok ? "true": "false");
     }
     if (memchr(argv[offset], CHAR_SINGLE, slen)) {
-        ok = is_string_sqli(&sf, argv[offset], slen, CHAR_SINGLE, is_sqli_pattern);
+        ok = is_string_sqli(&sf, argv[offset], slen, CHAR_SINGLE, NULL);
         if (strlen(sf.pat) > 1 && strcmp(sf.pat, "sns") != 0) {
             fprintf(stdout, "single\t%s\t%s\n", sf.pat, ok ? "true": "false");
         }
     }
 
     if (memchr(argv[offset], CHAR_DOUBLE, slen)) {
-        ok = is_string_sqli(&sf, argv[offset], slen, CHAR_DOUBLE, is_sqli_pattern);
+        ok = is_string_sqli(&sf, argv[offset], slen, CHAR_DOUBLE, NULL);
         if (strlen(sf.pat) > 1 &&  strcmp(sf.pat, "sns") != 0) {
             fprintf(stdout, "double\t%s\t%s\n", sf.pat, ok ? "true": "false");
         }

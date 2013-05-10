@@ -18,7 +18,6 @@ using namespace std;
 
 #include "sqlparse.h"
 #include "sqli_normalize.h"
-#include "sqli_fingerprints.h"
 
 int main(int argc, const char* argv[])
 {
@@ -60,7 +59,7 @@ int main(int argc, const char* argv[])
             string val(qsi.val, qsi.vallen);
             string tmp(val);
             tmp.erase(sqli_qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
-            if (is_sqli(&sf, tmp.data(), tmp.size(), is_sqli_pattern)) {
+            if (is_sqli(&sf, tmp.data(), tmp.size(), NULL)) {
                 cout << sf.pat << "\t" << key << "\t" << modp::toprint(tmp) << "\n";
                 return 0;
             }
@@ -69,7 +68,7 @@ int main(int argc, const char* argv[])
     case 2:
         string tmp(argv[offset]);
         tmp.erase(sqli_qs_normalize(const_cast<char*>(tmp.data()), tmp.size()), std::string::npos);
-        bool issqli = is_sqli(&sf, tmp.data(), tmp.size(), is_sqli_pattern);
+        bool issqli = is_sqli(&sf, tmp.data(), tmp.size(), NULL);
         if (issqli) {
             cout << sf.pat << "\t" << "\t" << modp::toprint(tmp) << "\n";
         }
