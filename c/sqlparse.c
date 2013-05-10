@@ -155,7 +155,8 @@ int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
 
     while (left <= right) {
         int pos = (left + right) / 2;
-        int cmp = cstrcasecmp(base[pos], key);
+        /* arg0 = mixed case, arg1 = upper case only */
+        int cmp = cstrcasecmp(key, base[pos]);
         if (cmp == 0) {
             return TRUE;
         } else if (cmp < 0) {
@@ -192,7 +193,9 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
 
     while (left <= right) {
         int pos = (left + right) / 2;
-        int cmp = cstrcasecmp(keywords[pos].word, key);
+
+        /* arg0 = mixed case, arg1 = upper case only */
+        int cmp = cstrcasecmp(key, keywords[pos].word);
         if (cmp == 0) {
             return keywords[pos].type;
         } else if (cmp < 0) {
@@ -258,6 +261,7 @@ int st_is_unary_op(const stoken_t * st)
                                  strcmp(st->val, "-") &&
                                  strcmp(st->val, "!") &&
                                  strcmp(st->val, "!!") &&
+                                 /* arg0 = mixed case, arg1 = upper case only */
                                  cstrcasecmp(st->val, "NOT") &&
                                  strcmp(st->val, "~")));
 }
@@ -273,6 +277,7 @@ int st_is_arith_op(const stoken_t * st)
                                  strcmp(st->val, "*") &&
                                  strcmp(st->val, "|") &&
                                  strcmp(st->val, "&") &&
+                                 /* arg0 = mixed case, arg1 = upper case only */
                                  cstrcasecmp(st->val, "MOD") &&
                                  cstrcasecmp(st->val, "DIV")));
 }
@@ -998,6 +1003,8 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
              * fix up for ambigous "IN"
              * handle case where IN is typically a function
              * but used in compound "IN BOOLEAN MODE" jive
+             *
+             * warning on cstrcasecmp arg0=mixed case, arg1=upper case only
              */
             if (last->type == 'n' && !cstrcasecmp(last->val, "IN")) {
                 st_copy(last, current);
