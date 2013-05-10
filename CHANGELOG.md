@@ -5,6 +5,7 @@
 * Fix Issue32: false positive of '*/*' of type 'oc'  Thanks to @brianrectanus
 
 ## other
+* Allow clang compiler (also in Jenkins build with clang and make-scan)
 
 # v1.2.0 2013-05-06
 
