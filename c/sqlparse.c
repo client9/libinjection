@@ -156,7 +156,7 @@ int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
     while (left <= right) {
         int pos = (left + right) / 2;
         /* arg0 = mixed case, arg1 = upper case only */
-        int cmp = cstrcasecmp(key, base[pos]);
+        int cmp = cstrcasecmp(base[pos], key);
         if (cmp == 0) {
             return TRUE;
         } else if (cmp < 0) {
@@ -195,7 +195,7 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
         int pos = (left + right) / 2;
 
         /* arg0 = mixed case, arg1 = upper case only */
-        int cmp = cstrcasecmp(key, keywords[pos].word);
+        int cmp = cstrcasecmp(keywords[pos].word, key);
         if (cmp == 0) {
             return keywords[pos].type;
         } else if (cmp < 0) {
