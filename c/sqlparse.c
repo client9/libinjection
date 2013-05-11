@@ -123,26 +123,32 @@ int streq(const char *a, const char *b)
 }
 
 /*
- * Case-sensitive binary search.
- *
+ * Case-sensitive binary search with "deferred detection of equality"
+ * We assume in most cases the key will NOT be found.  This makes
+ * the main loop only have one comparison branch.
  */
 int bsearch_cstr(const char *key, const char *base[], size_t nmemb)
 {
-    int left = 0;
-    int right = (int) nmemb - 1;
+    size_t pos;
+    size_t left = 0;
+    size_t right = nmemb - 1;
 
-    while (left <= right) {
-        int pos = (left + right) / 2;
-        int cmp = strcmp(base[pos], key);
-        if (cmp == 0) {
-            return TRUE;
-        } else if (cmp < 0) {
+    /* assert(nmemb > 0); */
+
+    while (left < right) {
+        pos = (left + right) >> 1;
+        /* assert(pos < right); */
+        if (strcmp(base[pos], key) < 0) {
             left = pos + 1;
         } else {
-            right = pos - 1;
+            right = pos;
         }
     }
-    return FALSE;
+    if ((left == right) && strcmp(base[left], key) == 0) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 /*
