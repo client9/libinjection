@@ -199,28 +199,30 @@ int is_sqli_pattern(const char* key)
  * Porting Notes:
  *  given a mapping/hash of string to char
  *  this is just
- *     mapping[key.upper()]
+ *    typecode = mapping[key.upper()]
  */
 char bsearch_keyword_type(const char *key, const keyword_t * keywords,
                           size_t numb)
 {
-    int left = 0;
-    int right = (int) numb - 1;
+    size_t pos;
+    size_t left = 0;
+    size_t right = numb - 1;
 
-    while (left <= right) {
-        int pos = (left + right) / 2;
+    while (left < right) {
+        pos = (left + right) >> 1;
 
         /* arg0 = upper case only, arg1 = mixed case */
-        int cmp = cstrcasecmp(keywords[pos].word, key);
-        if (cmp == 0) {
-            return keywords[pos].type;
-        } else if (cmp < 0) {
+        if (cstrcasecmp(keywords[pos].word, key) < 0) {
             left = pos + 1;
         } else {
-            right = pos - 1;
+            right = pos;
         }
     }
-    return CHAR_NULL;
+    if ((left == right) && cstrcasecmp(keywords[left].word, key) == 0) {
+        return keywords[left].type;
+    } else {
+        return CHAR_NULL;
+    }
 }
 
 /* st_token methods
