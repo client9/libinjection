@@ -94,10 +94,10 @@ size_t strlenspn(const char *s, size_t len, const char *accept)
 /*
  * ASCII case insenstive compare only!
  *
- * Required since libc version use the current locale
+ * Required since libc version uses the current locale
  * and is much slower.
  */
-int cstrcasecmp(const char *a, const char *b)
+static int cstrcasecmp(const char *a, const char *b)
 {
     int ca, cb;
 
@@ -124,8 +124,15 @@ static int streq(const char *a, const char *b)
 
 /*
  * Case-sensitive binary search with "deferred detection of equality"
- * We assume in most cases the key will NOT be found.  This makes
- * the main loop only have one comparison branch.
+ * We assume in most cases the key will NOT be found.  This makes the
+ * main loop only have one comparison branch, which should optimize
+ * better in CPU.  See #Deferred_detection_of_equality in
+ * http://en.wikipedia.org/wiki/Binary_search_algorithm
+ *
+ * This is used for fingerprint lookups, and a few other places.
+ * Note in normal operation this maybe takes 1% of total run time, so
+ * replacing this with another datastructure probably isn't worth
+ * the effort.
  */
 int bsearch_cstr(const char *key, const char *base[], size_t nmemb)
 {
@@ -153,25 +160,28 @@ int bsearch_cstr(const char *key, const char *base[], size_t nmemb)
 
 /*
  * Case-insensitive binary search
+ *
  */
 int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
 {
-    int left = 0;
-    int right = (int) nmemb - 1;
+    size_t pos;
+    size_t left = 0;
+    size_t right = nmemb - 1;
 
-    while (left <= right) {
-        int pos = (left + right) / 2;
-        /* arg0 = mixed case, arg1 = upper case only */
-        int cmp = cstrcasecmp(base[pos], key);
-        if (cmp == 0) {
-            return TRUE;
-        } else if (cmp < 0) {
+    while (left < right) {
+        pos = (left + right) >> 1;
+        /* arg0 = upper case only, arg1 = mixed case */
+        if (cstrcasecmp(base[pos], key) < 0) {
             left = pos + 1;
         } else {
-            right = pos - 1;
+            right = pos;
         }
     }
-    return FALSE;
+    if ((left == right) && cstrcasecmp(base[left], key) == 0) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 /**
@@ -200,7 +210,7 @@ char bsearch_keyword_type(const char *key, const keyword_t * keywords,
     while (left <= right) {
         int pos = (left + right) / 2;
 
-        /* arg0 = mixed case, arg1 = upper case only */
+        /* arg0 = upper case only, arg1 = mixed case */
         int cmp = cstrcasecmp(keywords[pos].word, key);
         if (cmp == 0) {
             return keywords[pos].type;
@@ -267,8 +277,8 @@ int st_is_unary_op(const stoken_t * st)
                                  strcmp(st->val, "-") &&
                                  strcmp(st->val, "!") &&
                                  strcmp(st->val, "!!") &&
-                                 /* arg0 = mixed case, arg1 = upper case only */
-                                 cstrcasecmp(st->val, "NOT") &&
+                                 /* arg0 = upper case only, arg1 = mixed case */
+                                 cstrcasecmp("NOT", st->val) &&
                                  strcmp(st->val, "~")));
 }
 
@@ -283,9 +293,9 @@ int st_is_arith_op(const stoken_t * st)
                                  strcmp(st->val, "*") &&
                                  strcmp(st->val, "|") &&
                                  strcmp(st->val, "&") &&
-                                 /* arg0 = mixed case, arg1 = upper case only */
-                                 cstrcasecmp(st->val, "MOD") &&
-                                 cstrcasecmp(st->val, "DIV")));
+                                 /* arg1 = upper case only, arg1 = mixed case */
+                                 cstrcasecmp("MOD", st->val) &&
+                                 cstrcasecmp("DIV", st->val)));
 }
 
 /* Parsers
@@ -1010,7 +1020,7 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
              * handle case where IN is typically a function
              * but used in compound "IN BOOLEAN MODE" jive
              *
-             * warning on cstrcasecmp arg0=mixed case, arg1=upper case only
+             * warning on cstrcasecmp arg0=upper case only, arg1 = mixed
              */
             if (last->type == 'n' && !cstrcasecmp(last->val, "IN")) {
                 st_copy(last, current);
