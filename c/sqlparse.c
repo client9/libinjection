@@ -114,12 +114,12 @@ int cstrcasecmp(const char *a, const char *b)
 }
 
 /**
- * Case insentive string compare.
+ * Case sensitive string compare.
  *  Here only to make code more readable
  */
-int streq(const char *a, const char *b)
+static int streq(const char *a, const char *b)
 {
-    return cstrcasecmp(a, b) == 0;
+    return strcmp(a, b) == 0;
 }
 
 /*
