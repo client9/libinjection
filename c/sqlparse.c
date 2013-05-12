@@ -92,20 +92,22 @@ size_t strlenspn(const char *s, size_t len, const char *accept)
 }
 
 /*
- * ASCII case insenstive compare only!
+ * ASCII half-case-insenstive compare!
+ *
+ * DANGER: this assume arg0 is *always upper case*
+ *  and arg1 is mixed case!!
  *
  * Required since libc version uses the current locale
  * and is much slower.
  */
 static int cstrcasecmp(const char *a, const char *b)
 {
-    int ca, cb;
+    char ca, cb;
 
     do {
-        ca = *a++ & 0xff;
-        cb = *b++ & 0xff;
-        if (ca >= 'a' && ca <= 'z')
-            ca -= 0x20;
+        ca = *a++;
+        cb = *b++;
+        assert(ca < 'a' || ca > 'z');
         if (cb >= 'a' && cb <= 'z')
             cb -= 0x20;
     } while (ca == cb && ca != '\0');
@@ -1024,7 +1026,7 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout)
              *
              * warning on cstrcasecmp arg0=upper case only, arg1 = mixed
              */
-            if (last->type == 'n' && !cstrcasecmp(last->val, "IN")) {
+            if (last->type == 'n' && !cstrcasecmp("IN", last->val)) {
                 st_copy(last, current);
                 st_assign(sout, 'f', "IN", 2);
                 return TRUE;
@@ -1271,7 +1273,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         if (sql_state->tokenvec[0].type == 'o' &&
             sql_state->tokenvec[1].type == 'c' &&
             sql_state->tokenvec[1].val[0] == '/' &&
-            cstrcasecmp(sql_state->tokenvec[0].val, "CASE") != 0)
+            cstrcasecmp("CASE", sql_state->tokenvec[0].val) != 0)
         {
             sql_state->reason = __LINE__;
             return FALSE;
