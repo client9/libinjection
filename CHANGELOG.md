@@ -21,7 +21,7 @@ Should be fully backwards compatible.
 
 * Allow clang compiler (also in Jenkins, a build with clang and
   make-scan is done)
-
+* Optimizations should result in > 10% performance for normal workloads
 
 # v1.2.0 2013-05-06
 
