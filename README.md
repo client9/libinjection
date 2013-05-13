@@ -29,11 +29,10 @@ void doit() {
     // test it.  1 = is sqli, 0 = benign
     // input is const (not changed or written to)
     //
-    // 'is_sqli_pattern' is just a function that does a binary
-    // search on a hardwired set of fingerprints.  One can
-    // over-ride this function to read the fingerprints from a
-    // file, or a hash table or from a scripting langauge.
-    bool issqli = is_sqli(&sf, linebuf, len, is_sqli_pattern);
+    // The last arg control how fingerprints are matched
+    // with SQLi.  NULL means use the default built-in
+    // list.
+    bool issqli = is_sqli(&sf, linebuf, len, NULL);
 
     // sfilter now also has interesting details
     //   the fingerprint
@@ -60,6 +59,26 @@ Minor are C code changes.  These may include
  * code refactoring
 
 Point releases are purely data changes.  These may be safely applied.
+
+QUALITY AND DIAGNOSITICS
+========================
+
+Use the diagnostic test page at
+
+http://libinjection.client9.com/diagnostics
+
+For quick experiments, cracking and breaking, and other ad-hoc tests.
+
+At https://libinjection.client9.com/jenkins/view/libinjection/ is
+a [Jenkin](http://jenkins-ci.org/) server showing automated testing:
+
+* build and unit-tests under GCC latest
+* build, unit-tests and static analysis using clang
+* results from cppcheck (static analysis on C code)
+* results from pylint and pyflake (static analysis on python helper scripts)
+* results from valgrind (memory errors)
+* performance tests using grof
+* false negatives and positives reports
 
 LICENSE
 =============
