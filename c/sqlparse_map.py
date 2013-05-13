@@ -698,7 +698,6 @@ KEYWORDS = {
 'STATEMENT_TIMESTAMP'         : 'f',
 'STATS_DATE'                  : 'f',
 'STDDEV'                      : 'f',
-'STDDEV'                      : 'p',
 'STDDEV_POP'                  : 'f',
 'STDDEV_SAMP'                 : 'f',
 'STRAIGHT_JOIN'               : 'k',
@@ -952,13 +951,13 @@ CHARMAP = [
     'CHAR_WHITE',
     'CHAR_WHITE',
     'CHAR_WHITE',
-    'CHAR_WHITE', #30
-    'CHAR_WHITE',
-    'CHAR_WHITE',
+    'CHAR_WHITE', # 30
+    'CHAR_WHITE', # 31
+    'CHAR_WHITE', # 32
     'CHAR_OP2',   # 33 !
     'CHAR_STR',   # 34 "
     'CHAR_COM1',  # 35 "#"
-    'CHAR_MONEY',  # 36 $ -- ignore optional currency symbol for TSQL money types
+    'CHAR_MONEY', # 36 $
     'CHAR_OP1',   # 37 %
     'CHAR_OP2',   # 38 &
     'CHAR_STR',   # 39 '
