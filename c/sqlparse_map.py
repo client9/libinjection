@@ -14,7 +14,9 @@ added to the data directly (JSON doesn't support comments).
 KEYWORDS = {
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',
 
-# http://blog.red-database-security.com/2009/01/17/tutorial-oracle-sql-injection-in-webapps-part-i/print/
+# ORACLE
+# http://blog.red-database-security.com/
+#  /2009/01/17/tutorial-oracle-sql-injection-in-webapps-part-i/print/
 'DBMS_PIPE.RECEIVE_MESSAGE':   'f',
 'CTXSYS.DRITHSX.SN': 'f',
 'SYS.STRAGG': 'f',
