@@ -11,12 +11,6 @@
 
 int parse_token(sfilter * sf);
 
-/**
- * Looks at syntax_last and syntax_current to see
- * if they can be merged into a multi-keyword
- */
-int syntax_merge_words(stoken_t * a, stoken_t * b);
-
 void sfilter_reset(sfilter * sf, const char *s, size_t slen);
 
 /**

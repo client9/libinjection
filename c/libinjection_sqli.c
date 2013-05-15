@@ -865,7 +865,7 @@ void sfilter_reset(sfilter * sf, const char *s, size_t len)
  *  This is just:  multikeywords[token.value + ' ' + token2.value]
  *
  */
-int syntax_merge_words(stoken_t * a, stoken_t * b)
+static int syntax_merge_words(stoken_t * a, stoken_t * b)
 {
     size_t sz1;
     size_t sz2;
