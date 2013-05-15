@@ -90,3 +90,9 @@ Commercial and support licenses available.
 
 Send requests to nickg@client9.com
 
+
+EMBEDDING
+=============
+
+The 'c' directory is a mess, but you only need to
+copy c/libinjection* (4 files)and COPYING into your source tree.
