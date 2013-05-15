@@ -1,5 +1,5 @@
 /**
- * Copyright 2012, Nick Galbreath
+ * Copyright 2012, 2013 Nick Galbreath
  * nickg@client9.com
  * BSD License - see COPYING.txt for details
  *
@@ -8,8 +8,8 @@
  *     c-basic-offset 4)
  *  indent -kr -nut
  */
-#ifndef _SQLPARSE_PRIVATE_H
-#define _SQLPARSE_PRIVATE_H
+#ifndef _LIBINJECTION_PRIVATE_H
+#define _LIBINJECTION_PRIVATE_H
 
 #include "libinjection.h"
 
@@ -65,4 +65,4 @@ int sqli_tokenize(sfilter * sf, stoken_t * sout);
 int filter_fold(sfilter * sf, stoken_t * sout);
 
 
-#endif /* _SQLPARSE_PRIVATE_H */
+#endif /* _LIBINJECTION_PRIVATE_H */
