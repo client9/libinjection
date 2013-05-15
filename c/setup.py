@@ -13,7 +13,7 @@ MODULE = Extension(
     include_dirs = [],
     libraries = [],
     library_dirs = [],
-    sources = ['libinjection_module.c', 'sqlparse.c']
+    sources = ['libinjection_module.c', 'libinjection.c']
     )
 
 setup (
