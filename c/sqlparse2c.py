@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-#  Copyright 2012, Nick Galbreath
+#  Copyright 2012, 2013 Nick Galbreath
 #  nickg@client9.com
 #  BSD License -- see COPYING.txt for details
 #
@@ -12,10 +12,33 @@ Converts a libinjection JSON data file to a C header (.h) file
 def toc(obj):
     """ main routine """
 
-    print "#ifndef _LIBINJECTION_SQLI_DATA_H"
-    print "#define _LIBINJECTION_SQLI_DATA_H"
+    print """
+#ifndef _LIBINJECTION_SQLI_DATA_H
+#define _LIBINJECTION_SQLI_DATA_H
 
-    print
+#include "libinjection.h"
+
+typedef struct {
+    const char *word;
+    char type;
+} keyword_t;
+
+static size_t parse_money(sfilter * sf);
+static size_t parse_other(sfilter * sf);
+static size_t parse_white(sfilter * sf);
+static size_t parse_operator1(sfilter *sf);
+static size_t parse_char(sfilter *sf);
+static size_t parse_eol_comment(sfilter *sf);
+static size_t parse_dash(sfilter *sf);
+static size_t parse_slash(sfilter *sf);
+static size_t parse_backslash(sfilter * sf);
+static size_t parse_operator2(sfilter *sf);
+static size_t parse_string(sfilter *sf);
+static size_t parse_word(sfilter * sf);
+static size_t parse_var(sfilter * sf);
+static size_t parse_number(sfilter * sf);
+
+"""
 
     print 'static const char* operators2[] = {'
     for  k in sorted(list(obj[u'operators2'])):

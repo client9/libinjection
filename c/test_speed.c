@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "sqlparse_private.h"
+#include "libinjection_private.h"
 
 
 void testParseToken(void)
@@ -81,7 +81,7 @@ void testIsSQL(void)
     sfilter sf;
     clock_t t0 = clock();
     for (i = imax; i != 0; --i) {
-        is_sqli(&sf, s, slen, NULL);
+        libinjection_is_sqli(&sf, s, slen, NULL, NULL);
     }
     clock_t t1 = clock();
     double total = (double) (t1 - t0) / (double) CLOCKS_PER_SEC;

@@ -9,26 +9,6 @@
 
 #include "libinjection.h"
 
-typedef struct {
-    const char *word;
-    char type;
-} keyword_t;
-
-static size_t parse_money(sfilter * sf);
-static size_t parse_other(sfilter * sf);
-static size_t parse_white(sfilter * sf);
-static size_t parse_operator1(sfilter *sf);
-static size_t parse_char(sfilter *sf);
-static size_t parse_eol_comment(sfilter *sf);
-static size_t parse_dash(sfilter *sf);
-static size_t parse_slash(sfilter *sf);
-static size_t parse_backslash(sfilter * sf);
-static size_t parse_operator2(sfilter *sf);
-static size_t parse_string(sfilter *sf);
-static size_t parse_word(sfilter * sf);
-static size_t parse_var(sfilter * sf);
-static size_t parse_number(sfilter * sf);
-
 int parse_token(sfilter * sf);
 
 /**
