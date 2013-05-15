@@ -29,7 +29,6 @@
 #endif
 
 /* order is important here */
-#include "libinjection_private.h"
 #include "libinjection_sqli_data.h"
 
 /* memchr2 finds a string of 2 characters inside another string
