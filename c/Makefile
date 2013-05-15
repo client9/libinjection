@@ -149,6 +149,6 @@ http:
 	python -m  SimpleHTTPServer
 .PHONY: http
 
-python: libinjection_sqli.c libinjection.h libinjection_private.h libinjection_sqli_data.h python_libinjection_module.c
+python: libinjection_sqli.c libinjection.h libinjection_sqli_data.h python_libinjection_module.c
 	sudo python setup.py --verbose build --force
 	sudo python setup.py --verbose install
