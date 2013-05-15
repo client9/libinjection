@@ -6,7 +6,7 @@
  *
  * HOW TO USE:
  *
- *   #include "sqlparse.h"
+ *   #include "libinjection.h"
  *
  *   // Normalize query or postvar value
  *   // If it comes in urlencoded, then it's up to you
@@ -14,7 +14,8 @@
  *   // then nothing to do!
  *
  *   sfilter s;
- *   int sqli = is_sqli(&s, user_string, new_len, NULL);
+ *   int sqli = libinjection_is_sqli(&s, user_string, new_len,
+ *                                   NULL, NULL);
  *
  *   // 0 = not sqli
  *   // 1 = is sqli
@@ -81,9 +82,9 @@ typedef struct {
 } sfilter;
 
 /**
- * Pointer to function, takes cstr input, return true/false
+ * Pointer to function, takes cstr input, returns 1 for true, 0 for false
  */
-typedef int (*ptr_fingerprints_fn)(const char*);
+typedef int (*ptr_fingerprints_fn)(const char*, void* callbackarg);
 
 /**
  * Main API: tests for SQLi in three possible contexts, no quotes,
@@ -96,11 +97,13 @@ typedef int (*ptr_fingerprints_fn)(const char*);
  *        is a match or not.  If NULL, then a hardwired list is
  *        used. Useful for loading fingerprints data from custom
  *        sources.
+ * \param callbackarg. For default case, use NULL
  *
  * \return 1 (true) if SQLi, 0 (false) if benign
  */
-int is_sqli(sfilter * sql_state, const char *s, size_t slen,
-            ptr_fingerprints_fn fn);
+int libinjection_is_sqli(sfilter * sql_state,
+                         const char *s, size_t slen,
+                         ptr_fingerprints_fn fn, void* callbackarg);
 
 /**
  * This detects SQLi in a single context, mostly useful for custom
@@ -116,24 +119,16 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
  *        Other values will likely be ignored.
  * \param ptr_fingerprints_fn is a pointer to a function
  *        that determines if a fingerprint is a match or not.
+ * \param callbackarg passed to function above
  *
  *
  * \return 1 (true) if SQLi or 0 (false) if not SQLi **in this context**
  *
  */
-int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
-                   const char delim,
-                   ptr_fingerprints_fn fn);
-
-/**
- * DEPRECATED -- HERE FOR BACKWARDS COMPATIBILITY
- * This is the default lookup of a fingerprint
- *
- * /param key c-string of fingerprint
- * /return 1 (TRUE) if a match, 0 (FALSE) if not
- *
- */
-int is_sqli_pattern(const char *key);
+int libinjection_is_string_sqli(sfilter * sql_state,
+                                const char *s, size_t slen,
+                                const char delim,
+                                ptr_fingerprints_fn fn, void* callbackarg);
 
 #ifdef __cplusplus
 }

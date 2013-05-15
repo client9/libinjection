@@ -11,7 +11,8 @@
 static int g_test_ok = 0;
 static int g_test_fail = 0;
 
-void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_xml, bool flag_quiet, bool flag_true)
+void test_positive(FILE * fd, const char *fname,
+                   bool flag_invert, bool output_xml, bool flag_quiet, bool flag_true)
 {
     char linebuf[8192];
     char linecopy[8192];
@@ -35,7 +36,7 @@ void test_positive(FILE * fd, const char *fname, bool flag_invert, bool output_x
         }
 
         len =  modp_burl_decode(linebuf, linebuf, len);
-        bool issqli = is_sqli(&sf, linebuf, len, NULL);
+        bool issqli = libinjection_is_sqli(&sf, linebuf, len, NULL, NULL);
         if (issqli) {
             g_test_ok += 1;
         } else {

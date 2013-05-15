@@ -73,6 +73,9 @@ memchr2(const char *haystack, size_t haystack_len, char c0, char c1)
  * C Standard library 'strspn' only works for 'c-strings' (null terminated)
  * This works on arbitrary length.
  *
+ * Performance notes:
+ *   not critical
+ *
  * Porting notes:
  *   if accept is 'ABC', then this function would be similar to
  *   a_regexp.match(a_str, '[ABC]*'),
@@ -189,8 +192,11 @@ int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
 /**
  *
  */
-int is_sqli_pattern(const char* key)
+#define UNUSED(x) (void)(x)
+
+static int is_sqli_pattern(const char* key, void* callbackarg)
 {
+    UNUSED(callbackarg);
     return bsearch_cstr(key, sql_fingerprints, sqli_fingerprints_sz);
 }
 
@@ -1176,8 +1182,10 @@ int filter_fold(sfilter * sf, stoken_t * sout)
  *          double quote.
  *
  */
-int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
-                    const char delim, ptr_fingerprints_fn fn)
+int libinjection_is_string_sqli(sfilter * sql_state,
+                                const char *s, size_t slen,
+                                const char delim,
+                                ptr_fingerprints_fn fn, void* callbackarg)
 {
     int tlen = 0;
     char ch;
@@ -1213,7 +1221,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         return TRUE;
     }
 
-    patmatch = fn(sql_state->pat);
+    patmatch = fn(sql_state->pat, callbackarg);
 
     /*
      * No match.
@@ -1377,8 +1385,8 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
  *
  *
  */
-int is_sqli(sfilter * sql_state, const char *s, size_t slen,
-            ptr_fingerprints_fn fn)
+int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
+                         ptr_fingerprints_fn fn, void* callbackarg)
 {
 
     /*
@@ -1395,7 +1403,8 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
     /*
      * test input "as-is"
      */
-    if (is_string_sqli(sql_state, s, slen, CHAR_NULL, fn)) {
+    if (libinjection_is_string_sqli(sql_state, s, slen, CHAR_NULL,
+                                    fn, callbackarg)) {
         return TRUE;
     }
 
@@ -1405,11 +1414,12 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
      * example: if input if "1' = 1", then pretend it's
      *   "'1' = 1"
      * Porting Notes: example the same as doing
-     *   is_string_sqli(sql_state, "'" + s, slen+1, NULL, fn)
+     *   is_string_sqli(sql_state, "'" + s, slen+1, NULL, fn, arg)
      *
      */
     if (memchr(s, CHAR_SINGLE, slen)
-        && is_string_sqli(sql_state, s, slen, CHAR_SINGLE, fn)) {
+        && libinjection_is_string_sqli(sql_state, s, slen, CHAR_SINGLE,
+                                       fn, callbackarg)) {
         return TRUE;
     }
 
@@ -1417,7 +1427,8 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
      * same as above but with a double-quote "
      */
     if (memchr(s, CHAR_DOUBLE, slen)
-        && is_string_sqli(sql_state, s, slen, CHAR_DOUBLE, fn)) {
+        && libinjection_is_string_sqli(sql_state, s, slen, CHAR_DOUBLE,
+                                       fn, callbackarg)) {
         return TRUE;
     }
 

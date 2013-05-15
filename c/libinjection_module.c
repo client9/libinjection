@@ -9,7 +9,6 @@
  */
 #include <Python.h>
 #include "sqlparse.h"
-#include "sqli_fingerprints.h"
 
 static PyObject *
 libinjection_detectsqli(PyObject *self, PyObject *args)
@@ -25,7 +24,7 @@ libinjection_detectsqli(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    sqli = is_sqli(&sf, userinput, len, is_sqli_pattern);
+    sqli = is_sqli(&sf, userinput, len, NULL, NULL);
 
     if (dict) {
         value = Py_BuildValue("s", sf.pat);

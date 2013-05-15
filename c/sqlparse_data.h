@@ -618,7 +618,7 @@ static const keyword_t sql_keywords[] = {
     {"STARTING", 'k'},
     {"STATEMENT_TIMESTAMP", 'f'},
     {"STATS_DATE", 'f'},
-    {"STDDEV", 'p'},
+    {"STDDEV", 'f'},
     {"STDDEV_POP", 'f'},
     {"STDDEV_SAMP", 'f'},
     {"STRAIGHT_JOIN", 'k'},
