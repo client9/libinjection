@@ -1166,6 +1166,13 @@ int filter_fold(sfilter * sf, stoken_t * sout)
     return TRUE;
 }
 
+/** Trampoline to convert one argument function to two argument function.
+ */
+static int one_two_trampoline(const char *s, void *cbdata)
+{
+    return ((ptr_fingerprints_fn)cbdata)(s);
+}
+
 /* secondary api: detects SQLi in a string, GIVEN a context.
  *
  * A context can be:
@@ -1177,7 +1184,17 @@ int filter_fold(sfilter * sf, stoken_t * sout)
  *
  */
 int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
-                    const char delim, ptr_fingerprints_fn fn)
+                const char delim, ptr_fingerprints_fn fn)
+{
+    return is_string_sqli2(
+        sql_state, s, slen,
+        delim,
+        &one_two_trampoline, fn
+    );
+}
+
+int is_string_sqli2(sfilter * sql_state, const char *s, size_t slen,
+                    const char delim, ptr_fingerprints2_fn fn, void *cbdata)
 {
     int tlen = 0;
     char ch;
@@ -1213,7 +1230,7 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
         return TRUE;
     }
 
-    patmatch = fn(sql_state->pat);
+    patmatch = fn(sql_state->pat, cbdata);
 
     /*
      * No match.
@@ -1380,7 +1397,16 @@ int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
 int is_sqli(sfilter * sql_state, const char *s, size_t slen,
             ptr_fingerprints_fn fn)
 {
+    if (fn == NULL) {
+        fn = is_sqli_pattern;
+    }
 
+    return is_sqli2(sql_state, s, slen, &one_two_trampoline, fn);
+}
+
+int is_sqli2(sfilter * sql_state, const char *s, size_t slen,
+             ptr_fingerprints2_fn fn, void *cbdata)
+{
     /*
      * no input? not sqli
      */
@@ -1389,13 +1415,14 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
     }
 
     if (fn == NULL) {
-        fn = is_sqli_pattern;
+        fn = &one_two_trampoline;
+        cbdata = is_sqli_pattern;
     }
 
     /*
      * test input "as-is"
      */
-    if (is_string_sqli(sql_state, s, slen, CHAR_NULL, fn)) {
+    if (is_string_sqli2(sql_state, s, slen, CHAR_NULL, fn, cbdata)) {
         return TRUE;
     }
 
@@ -1409,7 +1436,7 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
      *
      */
     if (memchr(s, CHAR_SINGLE, slen)
-        && is_string_sqli(sql_state, s, slen, CHAR_SINGLE, fn)) {
+        && is_string_sqli2(sql_state, s, slen, CHAR_SINGLE, fn, cbdata)) {
         return TRUE;
     }
 
@@ -1417,7 +1444,7 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
      * same as above but with a double-quote "
      */
     if (memchr(s, CHAR_DOUBLE, slen)
-        && is_string_sqli(sql_state, s, slen, CHAR_DOUBLE, fn)) {
+        && is_string_sqli2(sql_state, s, slen, CHAR_DOUBLE, fn, cbdata)) {
         return TRUE;
     }
 
