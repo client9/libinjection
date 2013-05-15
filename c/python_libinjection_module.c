@@ -8,7 +8,7 @@
  *
  */
 #include <Python.h>
-#include "sqlparse.h"
+#include "libinjection.h"
 
 static PyObject *
 libinjection_detectsqli(PyObject *self, PyObject *args)
@@ -24,7 +24,7 @@ libinjection_detectsqli(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    sqli = is_sqli(&sf, userinput, len, NULL, NULL);
+    sqli = libinjection_is_sqli(&sf, userinput, len, NULL, NULL);
 
     if (dict) {
         value = Py_BuildValue("s", sf.pat);
