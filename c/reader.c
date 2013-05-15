@@ -6,7 +6,7 @@
 #include "modp_ascii.h"
 #include "modp_xml.h"
 
-#include "sqlparse.h"
+#include "libinjection.h"
 
 static int g_test_ok = 0;
 static int g_test_fail = 0;

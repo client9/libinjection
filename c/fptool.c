@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "sqlparse.h"
+#include "libinjection.h"
 
 int main(int argc, const char* argv[])
 {

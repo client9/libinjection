@@ -11,7 +11,7 @@
 #ifndef _SQLPARSE_PRIVATE_H
 #define _SQLPARSE_PRIVATE_H
 
-#include "sqlparse.h"
+#include "libinjection.h"
 
 typedef struct {
     const char *word;
