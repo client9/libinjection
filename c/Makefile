@@ -5,6 +5,7 @@
 #
 
 CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Werror
+# -DNDEBUG
 
 help:
 	@echo ""
@@ -49,7 +50,7 @@ fptool: Makefile fptool.c sqlparse.c sqlparse.h sqlparse_data.h
 	${CC} ${CFLAGS} -o fptool fptool.c sqlparse.c
 
 test_speed: sqlparse_data.h sqlparse.c sqlparse.h test_speed.c
-	${CC} ${CFLAGS} -o test_speed sqlparse.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	${CC} ${CFLAGS} -DNDEDBUG -o test_speed sqlparse.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 	./test_speed
 
 test_unit: test_driver.py sqli sqlparse_data.h sqlparse.c sqlparse.h
