@@ -7,15 +7,25 @@
 
 ## API Changes
 
-Should be fully backwards compatible.
+BIG CHANGES
 
-* If arg4 in is_sqli is NULL, then  built-in fingerprint data will be
-  used.  This makes it easier to use in most cases.
-* sqlmap_data.json now includes fingerprint information, so people making ports
-  only need to parse one file.
+* File name changes.  These are the relevant files now:
+   * libinjection.h
+   * libinjection_sqli_.c
+   * libinjection_sqli_data.h
+   * libinjection_private.h
+* Just need to include 'libinjection.h' and link with 'libinjection_sqli_.c'
 * sqli_fingerprints.h is now deprecated, this functionality is now included
   in sqlparse_data.h.  Now most users will now only need to include sqlparse.h,
   instead of two files.
+* API name changes is_sqli and is_string_sqli are now 'libinjection_is_sqli' and
+  'libinjection_is_sqli' and 'libinjection_is_string_sqli'
+* API change, libinjection_is_sqli now takes 5th arg for callback data
+* API change, libinjection_is_sqli accepts NULL for arg4 and arg5
+  in which case, a default lookup of fingerprints is used.
+* really, it just easier to read sqlparse.h for the changes.. it's simple.
+* sqlmap_data.json now includes fingerprint information, so people making ports
+  only need to parse one file.
 
 ## other
 
