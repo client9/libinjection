@@ -21,8 +21,6 @@ typedef struct {
 char bsearch_keyword_type(const char *key, const keyword_t keywords[],
                           size_t len);
 
-int is_operator2(const char *key);
-
 size_t parse_none(sfilter * sf);
 size_t parse_money(sfilter * sf);
 size_t parse_other(sfilter * sf);
@@ -31,16 +29,12 @@ size_t parse_operator1(sfilter *sf);
 size_t parse_char(sfilter *sf);
 size_t parse_eol_comment(sfilter *sf);
 size_t parse_dash(sfilter *sf);
-size_t is_mysql_comment(const char *cs, const size_t len, size_t pos);
 size_t parse_slash(sfilter *sf);
 size_t parse_backslash(sfilter * sf);
 size_t parse_operator2(sfilter *sf);
-size_t parse_string_core(const char *cs, const size_t len, size_t pos,
-                         stoken_t * st, char delim, size_t offset);
 size_t parse_string(sfilter *sf);
 size_t parse_word(sfilter * sf);
 size_t parse_var(sfilter * sf);
-
 size_t parse_number(sfilter * sf);
 
 int parse_token(sfilter * sf);

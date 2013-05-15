@@ -384,7 +384,7 @@ size_t parse_dash(sfilter * sf)
     }
 }
 
-size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
+static size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
 {
     size_t i;
 
@@ -498,7 +498,7 @@ size_t parse_backslash(sfilter * sf)
 /** Is input a 2-char operator?
  *
  */
-int is_operator2(const char *key)
+static int is_operator2(const char *key)
 {
     return bsearch_cstr(key, operators2, operators2_sz);
 }
@@ -554,8 +554,8 @@ size_t parse_operator2(sfilter * sf)
     }
 }
 
-size_t parse_string_core(const char *cs, const size_t len, size_t pos,
-                         stoken_t * st, char delim, size_t offset)
+static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
+                                stoken_t * st, char delim, size_t offset)
 {
     /*
      * offset is to skip the perhaps first quote char
