@@ -10,8 +10,6 @@ for details and presentations.
 To use:
 look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
 
-
-
 ```c
 #include "libinjection.h"
 
@@ -94,5 +92,11 @@ Send requests to nickg@client9.com
 EMBEDDING
 =============
 
-The 'c' directory is a mess, but you only need to
-copy c/libinjection* (4 files)and COPYING into your source tree.
+The 'c' directory is a mess, but you only need to copy the following
+into your source tree:
+
+* c/libinjection.h
+* c/libinjection_sqli.c
+* c/libinjection_sqli_data.h
+* COPYING
+
