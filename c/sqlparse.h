@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef _SQLPARSE_H
-#define _SQLPARSE_H
+#ifndef _LIBINJECTION_H
+#define _LIBINJECTION_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -134,4 +134,4 @@ int libinjection_is_string_sqli(sfilter * sql_state,
 }
 #endif
 
-#endif /* _SQLPARSE_H */
+#endif /* _LIBINJECTION_H */
