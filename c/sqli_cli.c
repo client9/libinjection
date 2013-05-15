@@ -12,7 +12,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "libinjection_private.h"
+/*
+ * yeah we are including the whole file
+ * we are doing this since some of the functions are 'private'
+ * and this way we get access to them
+ */
+#include "libinjection_sqli.c"
 
 
 int main(int argc, const char* argv[])

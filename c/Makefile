@@ -44,7 +44,7 @@ is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjectio
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
 
 sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
-	${CC} -g -O1 -o sqli sqli_cli.c libinjection_sqli.c
+	${CC} -g -O1 -o sqli sqli_cli.c
 
 fptool: Makefile fptool.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
 	${CC} ${CFLAGS} -o fptool fptool.c libinjection_sqli.c
