@@ -86,6 +86,11 @@ typedef struct {
 typedef int (*ptr_fingerprints_fn)(const char*);
 
 /**
+ * Pointer to function, takes cstr input and callback data, return true/false
+ */
+typedef int (*ptr_fingerprints2_fn)(const char*, void *);
+
+/**
  * Main API: tests for SQLi in three possible contexts, no quotes,
  * single quote and double quote
  *
@@ -101,6 +106,12 @@ typedef int (*ptr_fingerprints_fn)(const char*);
  */
 int is_sqli(sfilter * sql_state, const char *s, size_t slen,
             ptr_fingerprints_fn fn);
+
+/**
+ * As is_sqli() but for two argument callback function.
+ **/
+int is_sqli2(sfilter * sql_state, const char *s, size_t slen,
+             ptr_fingerprints2_fn fn, void *cbdata);
 
 /**
  * This detects SQLi in a single context, mostly useful for custom
@@ -124,6 +135,13 @@ int is_sqli(sfilter * sql_state, const char *s, size_t slen,
 int is_string_sqli(sfilter * sql_state, const char *s, size_t slen,
                    const char delim,
                    ptr_fingerprints_fn fn);
+
+/**
+ * As is_string_sqli2() but for two argument callback function.
+ **/
+int is_string_sqli2(sfilter * sql_state, const char *s, size_t slen,
+                    const char delim,
+                    ptr_fingerprints2_fn fn, void *cbdata);
 
 /**
  * DEPRECATED -- HERE FOR BACKWARDS COMPATIBILITY
