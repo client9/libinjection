@@ -30,7 +30,7 @@
 
 /* order is important here */
 #include "sqlparse_private.h"
-#include "sqlparse_data.h"
+#include "libinjection_sqli_data.h"
 
 /* memchr2 finds a string of 2 characters inside another string
  * This a specialized version of "memmem" or "memchr".

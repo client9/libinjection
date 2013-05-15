@@ -12,8 +12,8 @@ Converts a libinjection JSON data file to a C header (.h) file
 def toc(obj):
     """ main routine """
 
-    print "#ifndef _SQLPARSE_DATA_H"
-    print "#define _SQLPARSE_DATA_H"
+    print "#ifndef _LIBINJECTION_SQLI_DATA_H"
+    print "#define _LIBINJECTION_SQLI_DATA_H"
 
     print
 

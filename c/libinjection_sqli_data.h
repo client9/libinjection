@@ -1,5 +1,5 @@
-#ifndef _SQLPARSE_DATA_H
-#define _SQLPARSE_DATA_H
+#ifndef _LIBINJECTION_SQLI_DATA_H
+#define _LIBINJECTION_SQLI_DATA_H
 
 static const char* operators2[] = {
     "!!",
