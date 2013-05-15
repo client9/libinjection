@@ -209,8 +209,8 @@ static int is_sqli_pattern(const char* key, void* callbackarg)
  *  this is just
  *    typecode = mapping[key.upper()]
  */
-char bsearch_keyword_type(const char *key, const keyword_t * keywords,
-                          size_t numb)
+static char bsearch_keyword_type(const char *key, const keyword_t * keywords,
+                                 size_t numb)
 {
     size_t pos;
     size_t left = 0;

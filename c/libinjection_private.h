@@ -3,10 +3,6 @@
  * nickg@client9.com
  * BSD License - see COPYING.txt for details
  *
- * (setq-default indent-tabs-mode nil)
- * (setq c-default-style "k&r"
- *     c-basic-offset 4)
- *  indent -kr -nut
  */
 #ifndef _LIBINJECTION_PRIVATE_H
 #define _LIBINJECTION_PRIVATE_H
@@ -17,9 +13,6 @@ typedef struct {
     const char *word;
     char type;
 } keyword_t;
-
-char bsearch_keyword_type(const char *key, const keyword_t keywords[],
-                          size_t len);
 
 size_t parse_none(sfilter * sf);
 size_t parse_money(sfilter * sf);
