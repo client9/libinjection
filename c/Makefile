@@ -105,7 +105,7 @@ clean:
 
 sqli-gcov:
 	rm -f sqli
-	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c libinjection_sqli.c modp_burl.c modp_ascii.c modp_xml.c
+	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c modp_burl.c modp_ascii.c modp_xml.c
 
 # for jenkins
 gcovr-unittest-xml: sqli-gcov
