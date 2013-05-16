@@ -115,7 +115,7 @@ gcovr-unittest-xml: sqli-gcov
 # for jenkins
 gcovr-samples-xml:
 	rm -f reader libinjection-samples-gcov.xml
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c modp_burl.c
 	./reader ../data/*.txt > /dev/null
 	gcovr --version
 	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='.*modp_.*' --gcov-exclude='reader.*' --xml -r `pwd`
@@ -132,8 +132,8 @@ lcov: sqli-gcov
 	genhtml -o lcov-html libinjection.info
 .PHONY: lcov
 
-lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c
+lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c modp_burl.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c modp_burl.c
 	lcov -b . --directory . --zerocounters
 	-./reader ../data/*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
