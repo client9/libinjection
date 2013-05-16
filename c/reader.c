@@ -2,13 +2,70 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "modp_burl.h"
-
 #include "libinjection.h"
 
 static int g_test_ok = 0;
 static int g_test_fail = 0;
 
+int urlcharmap(char ch) {
+    switch (ch) {
+    case '0': return 0;
+    case '1': return 1;
+    case '2': return 2;
+    case '3': return 3;
+    case '4': return 4;
+    case '5': return 5;
+    case '6': return 6;
+    case '7': return 7;
+    case '8': return 8;
+    case '9': return 9;
+    case 'a': case 'A': return 10;
+    case 'b': case 'B': return 11;
+    case 'c': case 'C': return 12;
+    case 'd': case 'D': return 13;
+    case 'e': case 'E': return 14;
+    case 'f': case 'F': return 15;
+    default:
+        return 256;
+    }
+}
+
+size_t modp_url_decode(char* dest, const char* s, size_t len)
+{
+    const char* deststart = dest;
+
+    size_t i = 0;
+    int d = 0;
+    while (i < len) {
+        switch (s[i]) {
+        case '+':
+            *dest++ = ' ';
+            i += 1;
+            break;
+        case '%':
+            if (i+2 < len) {
+                d = (urlcharmap(s[i+1]) << 4) | urlcharmap(s[i+2]);
+                if ( d < 256) {
+                    *dest = (char) d;
+                    dest++;
+                    i += 3; /* loop will increment one time */
+                } else {
+                    *dest++ = '%';
+                    i += 1;
+                }
+            } else {
+                *dest++ = '%';
+                i += 1;
+            }
+            break;
+        default:
+            *dest++ = s[i];
+            i += 1;
+        }
+    }
+    *dest = '\0';
+    return (size_t)(dest - deststart); // compute "strlen" of dest.
+}
 void modp_toprint(char* str, size_t len)
 {
     size_t i;
@@ -112,7 +169,7 @@ void test_positive(FILE * fd, const char *fname,
             continue;
         }
 
-        len =  modp_burl_decode(linebuf, linebuf, len);
+        len =  modp_url_decode(linebuf, linebuf, len);
         bool issqli = libinjection_is_sqli(&sf, linebuf, len, NULL, NULL);
         if (issqli) {
             g_test_ok += 1;
