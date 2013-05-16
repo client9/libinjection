@@ -3,7 +3,6 @@
 #include <stdbool.h>
 
 #include "modp_burl.h"
-#include "modp_xml.h"
 
 #include "libinjection.h"
 
@@ -31,6 +30,62 @@ size_t modp_rtrim(char* str, size_t len)
         }
     }
     return len;
+}
+size_t modp_xml_encode(char* dest, const char* src, size_t len)
+{
+    size_t count = 0;
+    const char* srcend = src + len;
+    char ch;
+    while (src < srcend) {
+        ch = *src++;
+        switch (ch) {
+        case '&':
+            *dest++ = '&';
+            *dest++ = 'a';
+            *dest++ = 'm';
+            *dest++ = 'p';
+            *dest++ = ';';
+            count += 5; /* &amp; */
+            break;
+        case '<':
+            *dest++ = '&';
+            *dest++ = 'l';
+            *dest++ = 't';
+            *dest++ = ';';
+            count += 4; /* &lt; */
+            break;
+        case '>':
+            *dest++ = '&';
+            *dest++ = 'g';
+            *dest++ = 't';
+            *dest++ = ';';
+            count += 4; /* &gt; */
+            break;
+        case '\'':
+            *dest++ = '&';
+            *dest++ = 'q';
+            *dest++ = 'u';
+            *dest++ = 'o';
+            *dest++ = 't';
+            *dest++ = ';';
+            count += 6; /* &quot; */
+            break;
+        case '\"':
+            *dest++ = '&';
+            *dest++ = 'a';
+            *dest++ = 'p';
+            *dest++ = 'o';
+            *dest++ = 's';
+            *dest++ = ';';
+            count += 6; /* &apos; */
+            break;
+        default:
+            *dest++ = ch;
+            count += 1;
+        }
+    }
+    *dest = '\0';
+    return count;
 }
 
 void test_positive(FILE * fd, const char *fname,

@@ -30,18 +30,18 @@ help:
 
 allbin: reader sqli fptool
 
-reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c modp_burl.c modp_xml.c
-	${CC}  ${CFLAGS} -o reader libinjection_sqli.c reader.c modp_burl.c modp_xml.c
+reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c modp_burl.c
+	${CC}  ${CFLAGS} -o reader libinjection_sqli.c reader.c modp_burl.c
 
-reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c modp_burl.c modp_xml.c
+reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c modp_burl.c
 	make clean
-	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c modp_burl.c modp_xml.c
+	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c modp_burl.c
 
-extractor: Makefile extractor.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h modp_xml.c libinjection_sqli_data.h
-	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp libinjection_sqli.c modp_burl.c modp_xml.c
+extractor: Makefile extractor.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h libinjection_sqli_data.h
+	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp libinjection_sqli.c modp_burl.c
 
-is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h modp_xml.c libinjection_sqli_data.h
-	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c modp_burl.c modp_xml.c
+is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h libinjection_sqli_data.h
+	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c modp_burl.c
 
 sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
 	${CC} -g -O1 -o sqli sqli_cli.c
@@ -105,7 +105,7 @@ clean:
 
 sqli-gcov:
 	rm -f sqli
-	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c modp_burl.c modp_xml.c
+	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c modp_burl.c
 
 # for jenkins
 gcovr-unittest-xml: sqli-gcov
@@ -115,7 +115,7 @@ gcovr-unittest-xml: sqli-gcov
 # for jenkins
 gcovr-samples-xml:
 	rm -f reader libinjection-samples-gcov.xml
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c
 	./reader ../data/*.txt > /dev/null
 	gcovr --version
 	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='.*modp_.*' --gcov-exclude='reader.*' --xml -r `pwd`
@@ -132,8 +132,8 @@ lcov: sqli-gcov
 	genhtml -o lcov-html libinjection.info
 .PHONY: lcov
 
-lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c modp_qsiter.c modp_burl.c
 	lcov -b . --directory . --zerocounters
 	-./reader ../data/*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
