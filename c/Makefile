@@ -38,10 +38,10 @@ reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjec
 	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c modp_burl.c modp_ascii.c modp_xml.c
 
 extractor: Makefile extractor.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h modp_xml.c libinjection_sqli_data.h
-	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp libinjection_sqli.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp libinjection_sqli.c modp_burl.c modp_ascii.c modp_xml.c
 
 is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h modp_xml.c libinjection_sqli_data.h
-	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c modp_burl.c modp_ascii.c modp_xml.c
 
 sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
 	${CC} -g -O1 -o sqli sqli_cli.c
@@ -50,7 +50,7 @@ fptool: Makefile fptool.c libinjection_sqli.c libinjection.h libinjection_sqli_d
 	${CC} ${CFLAGS} -o fptool fptool.c libinjection_sqli.c
 
 test_speed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_speed.c
-	${CC} ${CFLAGS} -DNDEDBUG -o test_speed libinjection_sqli.c test_speed.c  modp_qsiter.c modp_burl.c modp_ascii.c modp_xml.c
+	${CC} ${CFLAGS} -DNDEDBUG -o test_speed libinjection_sqli.c test_speed.c
 	./test_speed
 
 test_unit: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
