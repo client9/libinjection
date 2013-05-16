@@ -3,13 +3,35 @@
 #include <stdbool.h>
 
 #include "modp_burl.h"
-#include "modp_ascii.h"
 #include "modp_xml.h"
 
 #include "libinjection.h"
 
 static int g_test_ok = 0;
 static int g_test_fail = 0;
+
+void modp_toprint(char* str, size_t len)
+{
+    size_t i;
+    for (i = 0; i < len; ++i) {
+        if (str[i] < 32 || str[i] > 126) {
+            str[i] = '?';
+        }
+    }
+}
+size_t modp_rtrim(char* str, size_t len)
+{
+    while (len) {
+        char c = str[len -1];
+        if (c == ' ' || c == '\n' || c == '\t' || c == '\r') {
+            str[len -1] = '\0';
+            len -= 1;
+        } else {
+            break;
+        }
+    }
+    return len;
+}
 
 void test_positive(FILE * fd, const char *fname,
                    bool flag_invert, bool output_xml, bool flag_quiet, bool flag_true)

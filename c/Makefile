@@ -30,18 +30,18 @@ help:
 
 allbin: reader sqli fptool
 
-reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c modp_burl.c modp_ascii.c modp_xml.c
-	${CC}  ${CFLAGS} -o reader libinjection_sqli.c reader.c modp_burl.c modp_ascii.c modp_xml.c
+reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c modp_burl.c modp_xml.c
+	${CC}  ${CFLAGS} -o reader libinjection_sqli.c reader.c modp_burl.c modp_xml.c
 
-reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c modp_burl.c modp_ascii.c modp_xml.c
+reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c modp_burl.c modp_xml.c
 	make clean
-	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c modp_burl.c modp_ascii.c modp_xml.c
+	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c modp_burl.c modp_xml.c
 
 extractor: Makefile extractor.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h modp_xml.c libinjection_sqli_data.h
-	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp libinjection_sqli.c modp_burl.c modp_ascii.c modp_xml.c
+	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp libinjection_sqli.c modp_burl.c modp_xml.c
 
 is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h modp_xml.c libinjection_sqli_data.h
-	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c modp_burl.c modp_ascii.c modp_xml.c
+	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c modp_burl.c modp_xml.c
 
 sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
 	${CC} -g -O1 -o sqli sqli_cli.c
@@ -105,7 +105,7 @@ clean:
 
 sqli-gcov:
 	rm -f sqli
-	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c modp_burl.c modp_ascii.c modp_xml.c
+	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c modp_burl.c modp_xml.c
 
 # for jenkins
 gcovr-unittest-xml: sqli-gcov
