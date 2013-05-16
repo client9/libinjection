@@ -208,6 +208,7 @@ static int is_sqli_pattern(const char* key, void* callbackarg)
  *  this is just
  *    typecode = mapping[key.upper()]
  */
+
 static char bsearch_keyword_type(const char *key, const keyword_t * keywords,
                                  size_t numb)
 {
@@ -230,6 +231,11 @@ static char bsearch_keyword_type(const char *key, const keyword_t * keywords,
     } else {
         return CHAR_NULL;
     }
+}
+
+static char is_keyword(const char* key)
+{
+    return bsearch_keyword_type(key, sql_keywords, sql_keywords_sz);
 }
 
 /* st_token methods
@@ -636,8 +642,8 @@ static size_t parse_word(sfilter * sf)
     if (dot != NULL) {
         *dot = '\0';
 
-        ch = bsearch_keyword_type(current->val, sql_keywords,
-                                  sql_keywords_sz);
+        ch = is_keyword(current->val);
+
         if (ch == 'k' || ch == 'o') {
             /*
              * we got something like "SELECT.1"
@@ -656,8 +662,9 @@ static size_t parse_word(sfilter * sf)
      * do normal lookup with word including '.'
      */
     if (slen < ST_MAX_SIZE) {
-        ch = bsearch_keyword_type(current->val, sql_keywords,
-                                       sql_keywords_sz);
+
+        ch = is_keyword(current->val);
+
         if (ch == CHAR_NULL) {
             ch = 'n';
         }
