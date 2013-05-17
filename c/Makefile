@@ -94,6 +94,7 @@ sort:
 
 clean:
 	rm -f *~ *.pyc
+	rm -rf build
 	rm -f fptool
 	rm -f test_tokens test_speed
 	rm -rf *.dSYM
@@ -150,5 +151,5 @@ http:
 .PHONY: http
 
 python: libinjection_sqli.c libinjection.h libinjection_sqli_data.h python_libinjection_module.c
-	sudo python setup.py --verbose build --force
+	python setup.py --verbose build --force
 	sudo python setup.py --verbose install
