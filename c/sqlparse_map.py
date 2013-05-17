@@ -23,6 +23,7 @@ KEYWORDS = {
 'SYS.FN_BUILTIN_PERMISSIONS'  : 'f',
 'SYS.FN_GET_AUDIT_FILE'       : 'f',
 'SYS.FN_MY_PERMISSIONS'       : 'f',
+'ABORT'                       : 'k',
 'ABS'                         : 'f',
 'ACCESSIBLE'                  : 'k',
 'ACOS'                        : 'f',
@@ -105,6 +106,8 @@ KEYWORDS = {
 'CLNG'                        : 'f',
 'CSNG'                        : 'f',
 'CVAR'                        : 'f',
+# CHANGES: sqlite3
+'CHANGES'                     : 'f',
 'CHDIR'                       : 'f',
 'CHDRIVE'                     : 'f',
 'CURDIR'                      : 'f',
@@ -430,6 +433,7 @@ KEYWORDS = {
 'KILL'                        : 'k',
 'LAG'                         : 'f',
 'LAST_INSERT_ID'              : 'f',
+'LAST_INSERT_ROWID'           : 'f',
 'LAST_VALUE'                  : 'f',
 'LASTVAL'                     : 'f',
 'LCASE'                       : 'f',
@@ -445,6 +449,7 @@ KEYWORDS = {
 'LINES'                       : 'k',
 'LN'                          : 'f',
 'LOAD'                        : 'k',
+'LOAD_EXTENSION'              : 'f',
 'LOAD_FILE'                   : 'f',
 'LOCALTIME'                   : 'k',
 'LOCALTIMESTAMP'              : 'k',
@@ -780,6 +785,8 @@ KEYWORDS = {
 'TO_NUMBER'                   : 'f',
 'TO_SECONDS'                  : 'f',
 'TO_TIMESTAMP'                : 'f',
+# sqlite3
+'TOTAL_CHANGES'               : 'f',
 'TOP'                         : 'k',
 
 # 'TRAILING' -- only used in TRIM(TRAILING
@@ -805,6 +812,7 @@ KEYWORDS = {
 'UNCOMPRESS_LENGTH'           : 'f',
 'UNDO'                        : 'k',
 'UNHEX'                       : 'f',
+'UNICODE'                     : 'f',
 'UNION'                       : 'U',
 
 # 'UNI_ON' -- odd variation that comes up
@@ -885,6 +893,7 @@ KEYWORDS = {
 'YEAR'                        : 'f',
 'YEARWEEK'                    : 'f',
 'YEAR_MONTH'                  : 'k',
+'ZEROBLOB'                    : 'f',
 'ZEROFILL'                    : 'k'
 }
 

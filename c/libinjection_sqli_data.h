@@ -55,6 +55,7 @@ static const char* operators2[] = {
 static const size_t operators2_sz = 25;
 
 static const keyword_t sql_keywords[] = {
+    {"ABORT", 'k'},
     {"ABS", 'f'},
     {"ACCESSIBLE", 'k'},
     {"ACOS", 'f'},
@@ -134,6 +135,7 @@ static const keyword_t sql_keywords[] = {
     {"CERT_ID", 'f'},
     {"CERT_PROPERTY", 'f'},
     {"CHANGE", 'k'},
+    {"CHANGES", 'f'},
     {"CHAR", 'f'},
     {"CHARACTER", 'k'},
     {"CHARACTER_LENGTH", 'f'},
@@ -401,6 +403,7 @@ static const keyword_t sql_keywords[] = {
     {"LAG", 'f'},
     {"LASTVAL", 'f'},
     {"LAST_INSERT_ID", 'f'},
+    {"LAST_INSERT_ROWID", 'f'},
     {"LAST_VALUE", 'f'},
     {"LCASE", 'f'},
     {"LEAD", 'f'},
@@ -415,6 +418,7 @@ static const keyword_t sql_keywords[] = {
     {"LINES", 'k'},
     {"LN", 'f'},
     {"LOAD", 'k'},
+    {"LOAD_EXTENSION", 'f'},
     {"LOAD_FILE", 'f'},
     {"LOCALTIME", 'k'},
     {"LOCALTIMESTAMP", 'k'},
@@ -698,6 +702,7 @@ static const keyword_t sql_keywords[] = {
     {"TINYTEXT", 'k'},
     {"TODATETIMEOFFSET", 'f'},
     {"TOP", 'k'},
+    {"TOTAL_CHANGES", 'f'},
     {"TO_ASCII", 'f'},
     {"TO_CHAR", 'f'},
     {"TO_DATE", 'f'},
@@ -726,6 +731,7 @@ static const keyword_t sql_keywords[] = {
     {"UNCOMPRESS_LENGTH", 'f'},
     {"UNDO", 'k'},
     {"UNHEX", 'f'},
+    {"UNICODE", 'f'},
     {"UNION", 'U'},
     {"UNIQUE", 'n'},
     {"UNIX_TIMESTAMP", 'f'},
@@ -791,9 +797,10 @@ static const keyword_t sql_keywords[] = {
     {"YEAR", 'f'},
     {"YEARWEEK", 'f'},
     {"YEAR_MONTH", 'k'},
+    {"ZEROBLOB", 'f'},
     {"ZEROFILL", 'k'},
 };
-static const size_t sql_keywords_sz = 737;
+static const size_t sql_keywords_sz = 744;
 static const char* multikeywords_start[] = {
     "ALTER",
     "AT",
