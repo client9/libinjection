@@ -22,7 +22,7 @@ BIG CHANGES
    * `COPYING`
 * Just need to include `libinjection.h` and link with `libinjection_sqli_.c`
 * `sqlparse_private.h` and `sqli_fingerprints.h` are deprecated.
-   One only `#include "libinjection.h"`
+   Only use `#include "libinjection.h"`
 * API name changes `is_sqli` and `is_string_sqli` are now
   `libinjection_is_sqli` and `libinjection_is_string_sqli`
 * API change, `libinjection_is_sqli` now takes a 5th arg for callback data
