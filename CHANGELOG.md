@@ -1,6 +1,6 @@
 # vNext
 
-# v2.0.0 2013-05-15
+# v2.0.0 2013-05-17
 
 Version 2 is more a software engineering release than SQLi.
 The API, the code, and filenames are improved for embedded
@@ -16,28 +16,28 @@ use.  Please see the README.md file for details on use.
 BIG CHANGES
 
 * File name changes.  These are the only relevant files:
-
-   * libinjection.h
-   * libinjection_sqli.c
-   * libinjection_sqli_data.h
-
-* Just need to include 'libinjection.h' and link with 'libinjection_sqli_.c'
-* sqlparse_private.h and sqli_fingerprints.h are deprecated.  One only needs
-  to include 'libinjection.h'
-* API name changes is_sqli and is_string_sqli are now 'libinjection_is_sqli' and
-  'libinjection_is_sqli' and 'libinjection_is_string_sqli'
-* API change, libinjection_is_sqli now takes a 5th arg for callback data
-* API change, libinjection_is_sqli accepts NULL for arg4 and arg5
+   * `c/libinjection.h`
+   * `c/libinjection_sqli.c`
+   * `c/libinjection_sqli_data.h`
+   * `COPYING`
+* Just need to include `libinjection.h` and link with `libinjection_sqli_.c`
+* `sqlparse_private.h` and `sqli_fingerprints.h` are deprecated.
+   One only `#include "libinjection.h"`
+* API name changes `is_sqli` and `is_string_sqli` are now
+  `libinjection_is_sqli` and `libinjection_is_string_sqli`
+* API change, `libinjection_is_sqli` now takes a 5th arg for callback data
+* API change, `libinjection_is_sqli` accepts `NULL` for arg4 and arg5
   in which case, a default lookup of fingerprints is used.
-* sqlmap_data.json now includes fingerprint information, so people making ports
-  only need to parse one file.
+* `sqlmap_data.json` now includes fingerprint information, so people making
+  ports only need to parse one file.
 
 ## other
 
-* Allow clang compiler (also in Jenkins, a build with clang and
+* Allow `clang` compiler (also in Jenkins, a build with clang and
   make-scan is done)
-* Optimizations should result in > 10% performance for normal workloads
-* Add Sqlite3 special functions and keywords (since why not)
+* Optimizations should result in > 10% performance improvement
+  for normal workloads
+* Add `sqlite3` special functions and keywords (since why not)
 
 # v1.2.0 2013-05-06
 
