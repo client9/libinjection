@@ -12,6 +12,7 @@ added to the data directly (JSON doesn't support comments).
 """
 
 KEYWORDS = {
+'AUTOINCREMENT'              : 'k',
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',
 
 # ORACLE
@@ -183,6 +184,7 @@ KEYWORDS = {
 'COUNT_BIG'                   : 'k',
 'CRC32'                       : 'f',
 'CREATE'                      : 'k',
+'CROSS'                       : 'n',
 'CUME_DIST'                   : 'f',
 'CURDATE'                     : 'f',
 'CURRENT_DATE'                : 'k',
@@ -423,6 +425,7 @@ KEYWORDS = {
 'IS_USED_LOCK'                : 'f',
 'ITERATE'                     : 'k',
 'JOIN'                        : 'k',
+'JULIANDAY'                   : 'f',
 # pgsql
 'JUSTIFY_DAYS'                : 'f',
 'JUSTIFY_HOURS'               : 'f',
@@ -494,9 +497,11 @@ KEYWORDS = {
 'MONTH'                       : 'f',
 'MONTHNAME'                   : 'f',
 'NAME_CONST'                  : 'f',
+'NATURAL'                     : 'n',
 'NETMASK'                     : 'f',
 'NEXTVAL'                     : 'f',
 'NOT'                         : 'o',
+'NOTNULL'                     : 'k',
 'NOW'                         : 'f',
 'NO_WRITE_TO_BINLOG'          : 'k',
 'NTH_VALUE'                   : 'f',
@@ -542,6 +547,7 @@ KEYWORDS = {
 'ORIGINAL_DB_NAME'            : 'f',
 'ORIGINAL_LOGIN'              : 'f',
 'OUT'                         : 'k',
+'OUTER'                       : 'n',
 'OUTFILE'                     : 'k',
 # unusual PGSQL operator that looks like a function
 'OVERLAPS'                    : 'f',
@@ -630,6 +636,8 @@ KEYWORDS = {
 'RELEASE_LOCK'                : 'f',
 'RENAME'                      : 'k',
 'REPEAT'                      : 'k',
+
+# keyword and function
 'REPLACE'                     : 'k',
 'REPLICATE'                   : 'f',
 'REQUIRE'                     : 'k',
@@ -786,6 +794,7 @@ KEYWORDS = {
 'TO_SECONDS'                  : 'f',
 'TO_TIMESTAMP'                : 'f',
 # sqlite3
+'TOTAL'                       : 'f',
 'TOTAL_CHANGES'               : 'f',
 'TOP'                         : 'k',
 
@@ -806,6 +815,7 @@ KEYWORDS = {
 'TRY_PARSE'                   : 'f',
 'TYPE_ID'                     : 'f',
 'TYPE_NAME'                   : 'f',
+'TYPEOF'                      : 'f',
 'TYPEPROPERTY'                : 'f',
 'UCASE'                       : 'f',
 'UNCOMPRESS'                  : 'f',
