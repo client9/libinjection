@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}libinjection: advanced sqli detection{% end %}
+{% block body %}
+<h1>libinjection</h1>
+
+Libinjection: advanced sqli detection.  Try it now on the <a href="/diagnostics">diagnositcs</a> page.
+
+<h2>About</h2>
+<ul>
+<li>Open source, code is at <a href="https://github.com/client9/libinjection/">github</a></li>
+<li><a href="https://github.com/client9/libinjection/blob/master/COPYING.txt">BSD License</a></li>
+<li>Standard C code, compiles on linux/unix/bsd, mac and windows</li>
+<li>Over 500k inspections per second on commodity hardware</li>
+<li>No threads and no memory allocation - only 500 bytes on stack is used</li>
+<li>Small, under 1000 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
+<li>No external library dependencies</li>
+</ul>
+
+<h2>Quality, Accuracy, Precision</h2>
+
+<p>
+Continuous integration using Jenkins is publically accessible at
+<a href="https://libinjection.client9.com/jenkins/view/libinjection/">https://libinjection.client9.com/jenkins/view/libinjection/</a>.
+</p>
+<p>
+Tests include:
+</p>
+
+<ul>
+<li> built and tested using gcc and clang (windows tested via modsecurity)</li>
+<li> static analysis using cppcheck and clang's static analyzer</li>
+<li> tested against <a href="https://libinjection.client9.com/jenkins/job/libinjection-samples-positive/">50,000 sqli samples</a></li>
+<li> tested against previous and current <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-samples-negative/">false positives</a></li>
+<li> over 100+ <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, run under <a href="https://libinjection.client9.com/jenkins/job/libinjection-valgrind/valgrindResult">valgrind</a> for memory problems</li>
+<li> code coverages from <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-unittest/">unit tests</a> and <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-samples/">sqli samples</a></li>
+</ul>
+
+<h2>Presentations</h2>
+<ul>
+<li>Black Hat USA 2012-07-24: <a href="http://www.client9.com/2012/07/25/libinjection/">libinjection: a C library for SQLi detection and generation through lexical analysis of real world attacks.</a></li>
+<li>DEFCON 2012: <a href="http://www.client9.com/2012/07/27/new-techniques-in-sql-obfuscation/">New Techniques in SQLi Obfuscation: SQL never before used in SQLi</a></li>
+<li>iSEC Partners Open Forum 2012-09-12: <a href="http://www.client9.com/2012/09/06/libinjection-new-techniques-in-detecting-sqli-attacks/">libinjection: New Techniques in Detecting SQLi Attacks</a>
+<li>OWASP NYC 2012-09-27: libinjection and SQLi Obfuscation</a>
+<li>RSA USA: 2013-02-27: <a href="http://www.client9.com/2013/02/27/sql-risc-new-directions-in-sqli-prevention/">SQL-RISC New Directions in SQLi Prevention</a>
+</ul>
+
+<h2>Third-Part Ports</h3>
+<p>
+
+</p>
+<ul>
+<li> <a href="https://github.com/Kanatoko/libinjection-Java">java</a></l1>
+<li> python </li>
+<li> I'm told a .NET port is in progress </li>
+</ul>
+
+<h2>Applications</h2>
+
+<ul>
+<li><a href="http://www.modsecurity.org">ModSecurity</a> - pending 2.7.4 release</li>
+<li><a href="https://www.ironbee.com">IronBee</a> - on trunk</li>
+<li>honeypot (coming soon)</li>
+</ul>
+
+<h2>Other</h2>
+<ul>
+<li>a mention on <a href="http://www.reddit.com/r/netsec/comments/x5pmr/libinjection_c_library_to_detect_sqli_attacks/">Reddit</a></li>
+</ul>
+
+{% end %}

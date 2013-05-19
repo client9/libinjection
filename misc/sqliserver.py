@@ -14,23 +14,14 @@ import tornado.web
 import tornado.wsgi
 import wsgiref.simple_server
 
-def boring(arg):
-    if arg == '':
-        return True
-
-    if arg == 'foo':
-        return True
-
-    if arg == 'NULL':
-        return True
-
-    try:
-        float(arg)
-        return True
-    except ValueError:
-        pass
-
-    return False;
+class PageHandler(tornado.web.RequestHandler):
+    def get(self, pagename):
+        if pagename == '':
+            pagename = 'home'
+        try:
+            self.render(pagename + ".html")
+        except IOError:
+            self.set_status(404)
 
 class NullHandler(tornado.web.RequestHandler):
 
@@ -59,6 +50,7 @@ class NullHandler(tornado.web.RequestHandler):
                 args.append([name, val, issqli, extra['fingerprint']])
 
         self.render("form.html",
+                    title='libjection sqli diagnositc',
                     version = libinjection.__version__,
                     is_sqli=qssqli,
                     args=args,
@@ -75,6 +67,7 @@ settings = {
 
 application = tornado.wsgi.WSGIApplication([
     (r"/diagnostics", NullHandler),
+    (r"/([a-z]*)", PageHandler)
     ], **settings)
 
 
