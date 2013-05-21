@@ -1,5 +1,14 @@
 # vNext
 
+
+# v2.0.2 2013-05-21
+
+## security
+* Added fingerprint 'nU(kn' and variations, thanks to
+  discussion with @ModSecurity .
+
+# v2.0.1 2013-05-21
+
 ## security
 * Added fingerprint knknk, thanks @d0znpp
 

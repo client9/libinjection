@@ -177,3 +177,24 @@ X' - 'Y' - 0 = '1
 (select id-0 from users limit 1,1)
 # known bypass.. for now!
 (select id,id,id,id from users limit 1,1)
+
+# some variations
+'1' union (select id from users limit 1,1)
+1 union (select id from users limit 1,1)
+xxx union (select id from users limit 1,1)
+@version union (select id from users limit 1,1)
+
+'1' union (select 1 from users limit 1,1)
+1 union (select 1 from users limit 1,1)
+xxx union (select 1 from users limit 1,1)
+@version union (select 1 from users limit 1,1)
+
+'1' union (select xxx from users limit 1,1)
+1 union (select xxx from users limit 1,1)
+xxx union (select xxx from users limit 1,1)
+@version union (select xxx from users limit 1,1)
+
+'1' union (select 's' from users limit 1,1)
+1 union (select 's' from users limit 1,1)
+xxx union (select 's' from users limit 1,1)
+@version union (select 's' from users limit 1,1)

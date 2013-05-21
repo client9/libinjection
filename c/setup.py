@@ -19,7 +19,7 @@ MODULE = Extension(
 
 setup (
     name             = 'libinjection',
-    version          = '2.0.1',
+    version          = '2.0.2',
     description      = 'Wrapper around libinjection c-code to detect sqli',
     author           = 'Nick Galbreath',
     author_email     = 'nickg@client9.com',
