@@ -171,3 +171,9 @@ X' - 'Y' - 0 = '1
 @version --
 @version /*
 @version/*
+
+# thanks @d0znpp
+(select id from users limit 1,1)
+(select id-0 from users limit 1,1)
+# known bypass.. for now!
+(select id,id,id,id from users limit 1,1)

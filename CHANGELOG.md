@@ -1,5 +1,8 @@
 # vNext
 
+## security
+* Added fingerprint knknk, thanks @d0znpp
+
 # v2.0.0 2013-05-17
 
 Version 2 is more a software engineering release than SQLi.
