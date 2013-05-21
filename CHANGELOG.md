@@ -1,5 +1,9 @@
 # vNext
 
+## security
+* Add variations on '1U(((', thanks @LightOS
+* Add automatically all varations on other cases of
+  'parens padding' and 'operator insertion'
 
 # v2.0.2 2013-05-21
 

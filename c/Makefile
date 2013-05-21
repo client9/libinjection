@@ -85,9 +85,11 @@ sqlparse_data.json: Makefile sqlparse_map.py fingerprints.txt
 libinjection_sqli_data.h: Makefile sqlparse2c.py sqlparse_data.json
 	./sqlparse2c.py < sqlparse_data.json > ./libinjection_sqli_data.h
 
+# yeah we do 'make_parens.py twice
+#
 sort:
 	wc -l fingerprints.txt
-	LC_ALL=C sort -u fingerprints.txt > /tmp/junk
+	cat fingerprints.txt | ./make_parens.py | ./make_parens.py | LC_ALL=C sort -u > /tmp/junk
 	mv /tmp/junk fingerprints.txt
 	wc -l fingerprints.txt
 	${MAKE} libinjection_sqli_data.h
