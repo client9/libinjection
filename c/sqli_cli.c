@@ -29,6 +29,7 @@ int main(int argc, const char* argv[])
     sfilter sf;
     stoken_t current;
     if (argc < 2) {
+        fprintf(stderr, "need more args\n");
         return 1;
     }
     if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
@@ -48,8 +49,20 @@ int main(int argc, const char* argv[])
     sfilter_reset(&sf, copy, slen);
 
     if (fold == 1) {
-        while (filter_fold(&sf, &current)) {
-            printf("%c %s\n", current.type, current.val);
+        while (filter_fold(&sf, &current) == 0) {
+            if (current.type == 's') {
+                printf("%c ", current.type);
+                if (current.str_open != CHAR_NULL) {
+                    printf("%c", current.str_open);
+                }
+                printf("%s", current.val);
+                if (current.str_close != CHAR_NULL) {
+                    printf("%c", current.str_open);
+                }
+                printf("%s", "\n");
+            } else {
+                printf("%c %s\n", current.type, current.val);
+            }
         }
     } else {
         while (sqli_tokenize(&sf, &current)) {
