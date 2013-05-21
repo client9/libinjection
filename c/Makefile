@@ -90,7 +90,7 @@ sort:
 	LC_ALL=C sort -u fingerprints.txt > /tmp/junk
 	mv /tmp/junk fingerprints.txt
 	wc -l fingerprints.txt
-	${MAKE} sqlparse_data.h
+	${MAKE} libinjection_sqli_data.h
 
 clean:
 	rm -f *~ *.pyc
