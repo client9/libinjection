@@ -1546,6 +1546,8 @@ static const char* sql_fingerprints[] = {
     "1o1oo",
     "1o1os",
     "1o1ov",
+    "1oU((",
+    "1oU(k",
     "1of((",
     "1of()",
     "1of(1",
@@ -1595,6 +1597,7 @@ static const char* sql_fingerprints[] = {
     "1ov)U",
     "1ov)o",
     "1ovBf",
+    "1ovU(",
     "1ovUk",
     "1ovf(",
     "1ovkf",
@@ -2782,6 +2785,7 @@ static const char* sql_fingerprints[] = {
     "so1)&",
     "so1)o",
     "so1Bf",
+    "so1U(",
     "so1Uk",
     "so1c",
     "so1f(",
@@ -2850,6 +2854,7 @@ static const char* sql_fingerprints[] = {
     "sos)o",
     "sos:o",
     "sosBf",
+    "sosU(",
     "sosUk",
     "sosc",
     "sosf(",
@@ -2872,6 +2877,7 @@ static const char* sql_fingerprints[] = {
     "sov)o",
     "sov:o",
     "sovBf",
+    "sovU(",
     "sovUk",
     "sovc",
     "sovf(",
@@ -3516,6 +3522,7 @@ static const char* sql_fingerprints[] = {
     "vo1)&",
     "vo1)o",
     "vo1Bf",
+    "vo1U(",
     "vo1Uk",
     "vo1c",
     "vo1f(",
@@ -3611,6 +3618,7 @@ static const char* sql_fingerprints[] = {
     "vov)o",
     "vov:o",
     "vovBf",
+    "vovU(",
     "vovUk",
     "vovc",
     "vovf(",
@@ -3625,6 +3633,6 @@ static const char* sql_fingerprints[] = {
     "vovso",
     "vovvo",
 };
-static const size_t sqli_fingerprints_sz = 2604;
+static const size_t sqli_fingerprints_sz = 2612;
 
 #endif

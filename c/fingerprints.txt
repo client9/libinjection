@@ -524,6 +524,8 @@
 1o1oo
 1o1os
 1o1ov
+1oU((
+1oU(k
 1of((
 1of()
 1of(1
@@ -573,6 +575,7 @@
 1ov)U
 1ov)o
 1ovBf
+1ovU(
 1ovUk
 1ovf(
 1ovkf
@@ -1760,6 +1763,7 @@ so1&v
 so1)&
 so1)o
 so1Bf
+so1U(
 so1Uk
 so1c
 so1f(
@@ -1828,6 +1832,7 @@ sos)&
 sos)o
 sos:o
 sosBf
+sosU(
 sosUk
 sosc
 sosf(
@@ -1850,6 +1855,7 @@ sov)&
 sov)o
 sov:o
 sovBf
+sovU(
 sovUk
 sovc
 sovf(
@@ -2494,6 +2500,7 @@ vo1&v
 vo1)&
 vo1)o
 vo1Bf
+vo1U(
 vo1Uk
 vo1c
 vo1f(
@@ -2589,6 +2596,7 @@ vov)U
 vov)o
 vov:o
 vovBf
+vovU(
 vovUk
 vovc
 vovf(
