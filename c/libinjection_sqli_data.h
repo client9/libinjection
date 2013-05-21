@@ -1482,9 +1482,11 @@ static const char* sql_fingerprints[] = {
     "1kf(v",
     "1kk((",
     "1kk(1",
+    "1kk(f",
     "1kk(o",
     "1kk(s",
     "1kk(v",
+    "1kkf(",
     "1kksc",
     "1kkvc",
     "1knkn",
@@ -2707,9 +2709,11 @@ static const char* sql_fingerprints[] = {
     "skf(v",
     "skk((",
     "skk(1",
+    "skk(f",
     "skk(o",
     "skk(s",
     "skk(v",
+    "skkf(",
     "skks",
     "skksc",
     "skkv",
@@ -3440,9 +3444,11 @@ static const char* sql_fingerprints[] = {
     "vkf(v",
     "vkk((",
     "vkk(1",
+    "vkk(f",
     "vkk(o",
     "vkk(s",
     "vkk(v",
+    "vkkf(",
     "vkks",
     "vkksc",
     "vkkv",
@@ -3635,6 +3641,6 @@ static const char* sql_fingerprints[] = {
     "vovso",
     "vovvo",
 };
-static const size_t sqli_fingerprints_sz = 2614;
+static const size_t sqli_fingerprints_sz = 2620;
 
 #endif

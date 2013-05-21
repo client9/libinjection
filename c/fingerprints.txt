@@ -460,9 +460,11 @@
 1kf(v
 1kk((
 1kk(1
+1kk(f
 1kk(o
 1kk(s
 1kk(v
+1kkf(
 1kksc
 1kkvc
 1knkn
@@ -1685,9 +1687,11 @@ skf(s
 skf(v
 skk((
 skk(1
+skk(f
 skk(o
 skk(s
 skk(v
+skkf(
 skks
 skksc
 skkv
@@ -2418,9 +2422,11 @@ vkf(s
 vkf(v
 vkk((
 vkk(1
+vkk(f
 vkk(o
 vkk(s
 vkk(v
+vkkf(
 vkks
 vkksc
 vkkv
