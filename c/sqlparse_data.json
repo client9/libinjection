@@ -3065,6 +3065,7 @@
         "TAN": "f", 
         "TERMINATED": "k", 
         "TERTIARY_WEIGHTS": "f", 
+        "TEXTPOS": "f", 
         "TEXTPTR": "f", 
         "TEXTVALID": "f", 
         "THEN": "k", 

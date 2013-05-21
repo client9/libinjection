@@ -760,6 +760,10 @@ KEYWORDS = {
 'TAN'                         : 'f',
 'TERMINATED'                  : 'k',
 'TERTIARY_WEIGHTS'            : 'f',
+# TEXTPOS PGSQL 6.0
+# remnamed to strpos in 7.0
+# http://www.postgresql.org/message-id/20000601091055.A20245@rice.edu
+'TEXTPOS'                     : 'f',
 'TEXTPTR'                     : 'f',
 'TEXTVALID'                   : 'f',
 'THEN'                        : 'k',

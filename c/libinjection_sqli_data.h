@@ -690,6 +690,7 @@ static const keyword_t sql_keywords[] = {
     {"TAN", 'f'},
     {"TERMINATED", 'k'},
     {"TERTIARY_WEIGHTS", 'f'},
+    {"TEXTPOS", 'f'},
     {"TEXTPTR", 'f'},
     {"TEXTVALID", 'f'},
     {"THEN", 'k'},
@@ -808,7 +809,7 @@ static const keyword_t sql_keywords[] = {
     {"ZEROBLOB", 'f'},
     {"ZEROFILL", 'k'},
 };
-static const size_t sql_keywords_sz = 752;
+static const size_t sql_keywords_sz = 753;
 static const char* multikeywords_start[] = {
     "ALTER",
     "AT",
