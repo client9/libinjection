@@ -204,3 +204,16 @@ xxx union (select 's' from users limit 1,1)
 '1' union(((select table_name from information_schema.tables limit 1,1)))
 @foo union(((select table_name from information_schema.tables limit 1,1)))
 id union(((select table_name from information_schema.tables limit 1,1)))
+
+# and again @LightOS
+test'-1/1/**/union(select table)
+test'-1 union(select table)
+test'-@version union (select table)
+test'-'xyz' union (select table)
+1- @version union(select table_name from information_schema.tables limit 1,1)
+1- 'xxx' union(select table_name from information_schema.tables limit 1,1)
+1- union(select table_name from information_schema.tables limit 1,1)
+@version - @version union(select table_name from information_schema.tables limit 1,1)
+@version- 'xxx' union(select table_name from information_schema.tables limit 1,1)
+@version - 5 union(select table_name from information_schema.tables limit 1,1)
+
