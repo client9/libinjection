@@ -79,7 +79,7 @@ test_negative: reader
 
 .PHONY: test_positive test_negative test test_unit test_speed
 
-sqlparse_data.json: Makefile sqlparse_map.py
+sqlparse_data.json: Makefile sqlparse_map.py fingerprints.txt
 	./sqlparse_map.py > sqlparse_data.json
 
 libinjection_sqli_data.h: Makefile sqlparse2c.py sqlparse_data.json
