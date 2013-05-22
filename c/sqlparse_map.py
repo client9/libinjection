@@ -1039,7 +1039,7 @@ CHARMAP = [
     'CHAR_WORD',            # Z
     'CHAR_OTHER',           # [
     'CHAR_BACK',            # \\
-        'CHAR_OTHER',           # ]
+    'CHAR_OTHER',           # ]
     'CHAR_OP1',             # ^
     'CHAR_WORD',            # _
     'CHAR_WORD',            # backtick
