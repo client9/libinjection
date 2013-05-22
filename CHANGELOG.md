@@ -1,5 +1,8 @@
 # vNext
 
+* more fingerprints, more tests
+* Issue 34: fix infinite loop
+
 # v2.0.3 2013-05-21
 
 ## security
