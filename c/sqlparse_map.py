@@ -1013,10 +1013,10 @@ CHARMAP = [
     'CHAR_VAR',   # 64 @
     'CHAR_WORD',  # 65 A
     'CHAR_WORD',  # 66 B
-    'CHAR_WORD',  # @
-    'CHAR_WORD',  # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
+    'CHAR_WORD',  # 67 C
+    'CHAR_WORD',  # 68 D
+    'CHAR_WORD',  # 69 E
+    'CHAR_WORD',  # 70 F
     'CHAR_WORD',            # @
     'CHAR_WORD',            # @
     'CHAR_WORD',            # @
@@ -1042,8 +1042,11 @@ CHARMAP = [
     'CHAR_OTHER',           # ]
     'CHAR_OP1',             # ^
     'CHAR_WORD',            # _
-    'CHAR_WORD',            # backtick
-    'CHAR_WORD',            # A
+    'CHAR_TICK',            # 96  backtick `
+    'CHAR_WORD',            # 97  a
+    'CHAR_WORD',            # 98  b
+    'CHAR_WORD',            # 99  c
+    'CHAR_WORD',            # 100 d
     'CHAR_WORD',            # @
     'CHAR_WORD',            # @
     'CHAR_WORD',            # @
@@ -1065,14 +1068,11 @@ CHARMAP = [
     'CHAR_WORD',            # @
     'CHAR_WORD',            # @
     'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # z
-    'CHAR_OTHER',            # 123 { left brace
-    'CHAR_OP2',             # 124 | pipe
-    'CHAR_OTHER',            # 125 } right brace
-    'CHAR_OP1',             # 126  ~
+    'CHAR_WORD',    # 122 z
+    'CHAR_OTHER',   # 123 { left brace
+    'CHAR_OP2',     # 124 | pipe
+    'CHAR_OTHER',   # 125 } right brace
+    'CHAR_OP1',     # 126 ~
     'CHAR_WHITE'
 ]
 

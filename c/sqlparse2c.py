@@ -37,6 +37,7 @@ static size_t parse_string(sfilter *sf);
 static size_t parse_word(sfilter * sf);
 static size_t parse_var(sfilter * sf);
 static size_t parse_number(sfilter * sf);
+static size_t parse_tick(sfilter * sf);
 
 """
 
@@ -89,20 +90,21 @@ static size_t parse_number(sfilter * sf);
     # Mapping of character to function
     #
     fnmap = {
-        'CHAR_WORD': 'parse_word',
+        'CHAR_WORD' : 'parse_word',
         'CHAR_WHITE': 'parse_white',
-        'CHAR_OP1': 'parse_operator1',
-        'CHAR_OP2': 'parse_operator2',
-        'CHAR_BACK': 'parse_backslash',
-        'CHAR_DASH': 'parse_dash',
-        'CHAR_STR': 'parse_string',
-        'CHAR_COM1': 'parse_eol_comment',
-        'CHAR_NUM': 'parse_number',
+        'CHAR_OP1'  : 'parse_operator1',
+        'CHAR_OP2'  : 'parse_operator2',
+        'CHAR_BACK' : 'parse_backslash',
+        'CHAR_DASH' : 'parse_dash',
+        'CHAR_STR'  : 'parse_string',
+        'CHAR_COM1' : 'parse_eol_comment',
+        'CHAR_NUM'  : 'parse_number',
         'CHAR_SLASH': 'parse_slash',
-        'CHAR_CHAR': 'parse_char',
-        'CHAR_VAR': 'parse_var',
+        'CHAR_CHAR' : 'parse_char',
+        'CHAR_VAR'  : 'parse_var',
         'CHAR_OTHER': 'parse_other',
-        'CHAR_MONEY': 'parse_money'
+        'CHAR_MONEY': 'parse_money',
+        'CHAR_TICK' : 'parse_tick'
         }
     print
     print "typedef size_t (*pt2Function)(sfilter *sf);"

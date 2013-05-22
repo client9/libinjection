@@ -638,7 +638,7 @@ static size_t parse_word(sfilter * sf)
 
     st_assign(current, 'n', cs + pos, slen);
 
-    dot = strchr(current->val, '.');
+     dot = strchr(current->val, '.');
     if (dot != NULL) {
         *dot = '\0';
 
@@ -671,6 +671,39 @@ static size_t parse_word(sfilter * sf)
         current->type = ch;
     }
     return pos + slen;
+}
+
+/* MySQL backticks are a cross between string and
+ * and a bare word.
+ *
+ */
+static size_t parse_tick(sfilter* sf)
+{
+    stoken_t *current = &sf->syntax_current;
+    /* first we pretend we are looking for a string */
+    size_t slen = parse_string(sf);
+
+    /* we could check to see if start and end of
+     * of string are both "`", i.e. make sure we have
+     * matching set.  `foo` vs. `foo
+     * but I don't think it matters much
+     */
+
+
+    /* check value of string to see if it's a keyword,
+     * function, operator, etc
+     */
+    char ch = is_keyword(current->val);
+    if (ch == 'f') {
+        /* if it's a function, then convert token */
+        current->type = 'f';
+    } else {
+        /* otherwise it's a 'n' type -- mysql treats
+         * everything as a bare word
+         */
+        current->type = 'n';
+    }
+    return slen;
 }
 
 static size_t parse_var(sfilter * sf)

@@ -23,6 +23,7 @@ static size_t parse_string(sfilter *sf);
 static size_t parse_word(sfilter * sf);
 static size_t parse_var(sfilter * sf);
 static size_t parse_number(sfilter * sf);
+static size_t parse_tick(sfilter * sf);
 
 
 static const char* operators2[] = {
@@ -985,7 +986,7 @@ static const pt2Function char_parse_map[] = {
    &parse_other, /* 93 */
    &parse_operator1, /* 94 */
    &parse_word, /* 95 */
-   &parse_word, /* 96 */
+   &parse_tick, /* 96 */
    &parse_word, /* 97 */
    &parse_word, /* 98 */
    &parse_word, /* 99 */
