@@ -634,7 +634,7 @@ static size_t parse_word(sfilter * sf)
     char ch;
     size_t slen =
         strlenspn(cs + pos, sf->slen - pos,
-                  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$.");
+                  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$.`");
 
     st_assign(current, 'n', cs + pos, slen);
 
