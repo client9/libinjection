@@ -23,7 +23,7 @@
 #endif
 
 #if 0
-#define FOLD_DEBUG printf("%d: Fold state = %d, current=%c, last=%c\n", __LINE__, sf->fold_state, current->type, last->type == CHAR_NULL ? '~': last->type)
+#define FOLD_DEBUG printf("%d \t more=%d  pos=%d left=%d\n", __LINE__, more, (int)pos, (int)left);
 #else
 #define FOLD_DEBUG
 #endif
@@ -253,11 +253,6 @@ static void st_clear(stoken_t * st)
     st->val[0] = CHAR_NULL;
 }
 
-static int st_is_empty(const stoken_t * st)
-{
-    return st->type == CHAR_NULL;
-}
-
 static void st_assign_char(stoken_t * st, const char stype, const char value)
 {
     st->type = stype;
@@ -318,7 +313,6 @@ static int st_is_arith_op(const stoken_t * st)
  *
  */
 
-
 static size_t parse_white(sfilter * sf)
 {
     return sf->pos + 1;
@@ -326,37 +320,33 @@ static size_t parse_white(sfilter * sf)
 
 static size_t parse_operator1(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     size_t pos = sf->pos;
 
-    st_assign_char(current, 'o', cs[pos]);
+    st_assign_char(sf->current, 'o', cs[pos]);
     return pos + 1;
 }
 
 static size_t parse_other(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     size_t pos = sf->pos;
 
-    st_assign_char(current, '?', cs[pos]);
+    st_assign_char(sf->current, '?', cs[pos]);
     return pos + 1;
 }
 
 static size_t parse_char(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     size_t pos = sf->pos;
 
-    st_assign_char(current, cs[pos], cs[pos]);
+    st_assign_char(sf->current, cs[pos], cs[pos]);
     return pos + 1;
 }
 
 static size_t parse_eol_comment(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -364,17 +354,16 @@ static size_t parse_eol_comment(sfilter * sf)
     const char *endpos =
         (const char *) memchr((const void *) (cs + pos), '\n', slen - pos);
     if (endpos == NULL) {
-        st_assign(current, 'c', cs + pos, slen - pos);
+        st_assign(sf->current, 'c', cs + pos, slen - pos);
         return slen;
     } else {
-        st_assign(current, 'c', cs + pos, endpos - cs - pos);
+        st_assign(sf->current, 'c', cs + pos, endpos - cs - pos);
         return (endpos - cs) + 1;
     }
 }
 
 static size_t parse_dash(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -384,7 +373,7 @@ static size_t parse_dash(sfilter * sf)
     if (pos1 < slen && cs[pos1] == '-') {
         return parse_eol_comment(sf);
     } else {
-        st_assign_char(current, 'o', '-');
+        st_assign_char(sf->current, 'o', '-');
         return pos1;
     }
 }
@@ -431,7 +420,6 @@ static size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
 
 static size_t parse_slash(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -454,7 +442,7 @@ static size_t parse_slash(sfilter * sf)
             /*
              * unterminated comment
              */
-            st_assign(current, 'c', cs + pos, slen - pos);
+            st_assign(sf->current, 'c', cs + pos, slen - pos);
             return slen;
         } else {
             /*
@@ -468,7 +456,7 @@ static size_t parse_slash(sfilter * sf)
             if (memchr2(cur + 2, ptr - (cur + 1), '/', '*') !=  NULL) {
                 ctype = 'X';
             }
-            st_assign(current, ctype, cs + pos, clen);
+            st_assign(sf->current, ctype, cs + pos, clen);
 
             return pos + clen;
         }
@@ -477,14 +465,13 @@ static size_t parse_slash(sfilter * sf)
          * MySQL Comment
          */
         sf->in_comment = TRUE;
-        st_clear(current);
+        st_clear(sf->current);
         return pos + inc;
     }
 }
 
 static size_t parse_backslash(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -493,7 +480,7 @@ static size_t parse_backslash(sfilter * sf)
      * Weird MySQL alias for NULL, "\N" (capital N only)
      */
     if (pos + 1 < slen && cs[pos + 1] == 'N') {
-        st_assign(current, '1', "NULL", 4);
+        st_assign(sf->current, '1', "NULL", 4);
         return pos + 2;
     } else {
         return parse_other(sf);
@@ -510,7 +497,6 @@ static int is_operator2(const char *key)
 
 static size_t parse_operator2(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -532,23 +518,23 @@ static size_t parse_operator2(sfilter * sf)
      */
     if (sf->in_comment && op2[0] == '*' && op2[1] == '/') {
         sf->in_comment = FALSE;
-        st_clear(current);
+        st_clear(sf->current);
         return pos + 2;
     } else if (pos + 2 < slen && op2[0] == '<' && op2[1] == '='
                && cs[pos + 2] == '>') {
         /*
          * special 3-char operator
          */
-        st_assign(current, 'o', "<=>", 3);
+        st_assign(sf->current, 'o', "<=>", 3);
         return pos + 3;
     } else if (is_operator2(op2)) {
         if (streq(op2, "&&") || streq(op2, "||")) {
-            st_assign(current, '&', op2, 2);
+            st_assign(sf->current, '&', op2, 2);
         } else {
             /*
              * normal 2 char operator
              */
-            st_assign(current, 'o', op2, 2);
+            st_assign(sf->current, 'o', op2, 2);
         }
         return pos + 2;
     } else {
@@ -614,7 +600,6 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
  */
 static size_t parse_string(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -622,12 +607,11 @@ static size_t parse_string(sfilter * sf)
     /*
      * assert cs[pos] == single or double quote
      */
-    return parse_string_core(cs, slen, pos, current, cs[pos], 1);
+    return parse_string_core(cs, slen, pos, sf->current, cs[pos], 1);
 }
 
 static size_t parse_word(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     size_t pos = sf->pos;
     char *dot;
@@ -636,20 +620,20 @@ static size_t parse_word(sfilter * sf)
         strlenspn(cs + pos, sf->slen - pos,
                   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$.`");
 
-    st_assign(current, 'n', cs + pos, slen);
+    st_assign(sf->current, 'n', cs + pos, slen);
 
-     dot = strchr(current->val, '.');
+     dot = strchr(sf->current->val, '.');
     if (dot != NULL) {
         *dot = '\0';
 
-        ch = is_keyword(current->val);
+        ch = is_keyword(sf->current->val);
 
         if (ch == 'k' || ch == 'o') {
             /*
              * we got something like "SELECT.1"
              */
-            current->type = ch;
-            return pos + strlen(current->val);
+            sf->current->type = ch;
+            return pos + strlen(sf->current->val);
         } else {
             /*
              * something else, put back dot
@@ -663,12 +647,12 @@ static size_t parse_word(sfilter * sf)
      */
     if (slen < ST_MAX_SIZE) {
 
-        ch = is_keyword(current->val);
+        ch = is_keyword(sf->current->val);
 
         if (ch == CHAR_NULL) {
             ch = 'n';
         }
-        current->type = ch;
+        sf->current->type = ch;
     }
     return pos + slen;
 }
@@ -679,7 +663,6 @@ static size_t parse_word(sfilter * sf)
  */
 static size_t parse_tick(sfilter* sf)
 {
-    stoken_t *current = &sf->syntax_current;
     /* first we pretend we are looking for a string */
     size_t slen = parse_string(sf);
 
@@ -693,22 +676,21 @@ static size_t parse_tick(sfilter* sf)
     /* check value of string to see if it's a keyword,
      * function, operator, etc
      */
-    char ch = is_keyword(current->val);
+    char ch = is_keyword(sf->current->val);
     if (ch == 'f') {
         /* if it's a function, then convert token */
-        current->type = 'f';
+        sf->current->type = 'f';
     } else {
         /* otherwise it's a 'n' type -- mysql treats
          * everything as a bare word
          */
-        current->type = 'n';
+        sf->current->type = 'n';
     }
     return slen;
 }
 
 static size_t parse_var(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -725,17 +707,16 @@ static size_t parse_var(sfilter * sf)
     xlen = strlenspn(cs + pos1, slen - pos1,
                      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
-        st_assign(current, 'v', cs + pos, (pos1 - pos));
+        st_assign(sf->current, 'v', cs + pos, (pos1 - pos));
         return pos1;
     } else {
-        st_assign(current, 'v', cs + pos, xlen + (pos1 - pos));
+        st_assign(sf->current, 'v', cs + pos, xlen + (pos1 - pos));
         return pos1 + xlen;
     }
 }
 
 static size_t parse_money(sfilter *sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -752,14 +733,13 @@ static size_t parse_money(sfilter *sf)
          */
         return pos + 1;
     } else {
-        st_assign(current, '1', cs + pos, 1 + xlen);
+        st_assign(sf->current, '1', cs + pos, 1 + xlen);
         return pos + 1 + xlen;
     }
 }
 
 static size_t parse_number(sfilter * sf)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -773,10 +753,10 @@ static size_t parse_number(sfilter * sf)
         xlen =
             strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEFabcdef");
         if (xlen == 0) {
-            st_assign(current, 'n', "0X", 2);
+            st_assign(sf->current, 'n', "0X", 2);
             return pos + 2;
         } else {
-            st_assign(current, '1', cs + pos, 2 + xlen);
+            st_assign(sf->current, '1', cs + pos, 2 + xlen);
             return pos + 2 + xlen;
         }
     }
@@ -791,7 +771,7 @@ static size_t parse_number(sfilter * sf)
             pos += 1;
         }
         if (pos - start == 1) {
-            st_assign_char(current, 'n', '.');
+            st_assign_char(sf->current, 'n', '.');
             return pos;
         }
     }
@@ -812,24 +792,24 @@ static size_t parse_number(sfilter * sf)
              * the number part and leave the rest to be
              * parsed later
              */
-            st_assign(current, '1', cs + start, pos - start);
+            st_assign(sf->current, '1', cs + start, pos - start);
             return pos;
         }
     }
 
-    st_assign(current, '1', cs + start, pos - start);
+    st_assign(sf->current, '1', cs + start, pos - start);
     return pos;
 }
 
-int parse_token(sfilter * sf)
+int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
 {
-    stoken_t *current = &sf->syntax_current;
     const char *s = sf->s;
     const size_t slen = sf->slen;
     size_t *pos = &sf->pos;
     pt2Function fnptr;
 
     st_clear(current);
+    sf->current = current;
 
     /*
      * if we are at beginning of string
@@ -878,13 +858,14 @@ int parse_token(sfilter * sf)
 
 /**
  * Initializes parsing state
- *  TBD: explicity add parsing content (NULL, SINGLE, DOUBLE)
+ *
  */
-void sfilter_reset(sfilter * sf, const char *s, size_t len)
+void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, char delim)
 {
     memset(sf, 0, sizeof(sfilter));
     sf->s = s;
     sf->slen = len;
+    sf->delim = delim;
 }
 
 /** See if two tokens can be merged since they are compound SQL phrases.
@@ -940,275 +921,181 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
     }
 }
 
-/* This does some simple syntax cleanup based on the token
- *
- *
- */
-int sqli_tokenize(sfilter * sf, stoken_t * sout)
-{
-    stoken_t *last = &sf->syntax_last;
-    stoken_t *current = &sf->syntax_current;
-
-    while (parse_token(sf)) {
-        char ttype = current->type;
-
-        /*
-         * TBD: hmm forgot logic here.
-         */
-        if (ttype == 'c') {
-            st_copy(&sf->syntax_comment, current);
-            continue;
-        }
-        st_clear(&sf->syntax_comment);
-
-        /*
-         * If we don't have a saved token, and we have
-         * a string: save it.  if the next token is also a string
-         *   then merge them.  e.g. "A" "B" in SQL is actually "AB"
-         * a n/k/U/o type: save since next token my be merged together
-         *   for example: "LEFT" + "JOIN" = "LEFT JOIN"
-         * a o/& type: TBD need to review.
-         *
-         */
-        if (last->type == CHAR_NULL) {
-            switch (ttype) {
-
-                /*
-                 * items that have special needs
-                 */
-            case 's':
-                st_copy(last, current);
-                continue;
-            case 'n':
-            case 'k':
-            case 'U':
-            case '&':
-            case 'o':
-                if (st_is_multiword_start(current)) {
-                    st_copy(last, current);
-                    continue;
-                } else if (current->type == 'o' || current->type == '&') {
-                    /* } else if (st_is_unary_op(current)) { */
-                    st_copy(last, current);
-                    continue;
-                } else {
-                    /*
-                     * copy to out
-                     */
-                    st_copy(sout, current);
-                    return TRUE;
-                }
-            default:
-                /*
-                 * copy to out
-                 */
-                st_copy(sout, current);
-                return TRUE;
-            }
-        }
-        /*
-         * We have a saved token
-         */
-
-        switch (ttype) {
-        case 's':
-            if (last->type == 's') {
-                /*
-                 * "FOO" "BAR" == "FOO" (skip second string)
-                 */
-                continue;
-            } else {
-                st_copy(sout, last);
-                st_copy(last, current);
-                return TRUE;
-            }
-            break;
-
-        case 'o':
-            /*
-             * first case to handle "IS" + "NOT"
-             */
-            if (syntax_merge_words(last, current)) {
-                continue;
-            } else if (st_is_unary_op(current)
-                       && (last->type == 'o' || last->type == '&'
-                           || last->type == 'U')) {
-                /*
-                 * if an operator is followed by a unary operator, skip it.
-                 * 1, + ==> "+" is not unary, it's arithmetic
-                 * AND, + ==> "+" is unary
-                 */
-                continue;
-            } else {
-                /*
-                 * no match
-                 */
-                st_copy(sout, last);
-                st_copy(last, current);
-                return TRUE;
-            }
-            break;
-
-        case 'n':
-        case 'k':
-            if (syntax_merge_words(last, current)) {
-                continue;
-            } else {
-                /*
-                 * total no match
-                 */
-                st_copy(sout, last);
-                st_copy(last, current);
-                return TRUE;
-            }
-            break;
-
-        default:
-            /*
-             * fix up for ambigous "IN"
-             * handle case where IN is typically a function
-             * but used in compound "IN BOOLEAN MODE" jive
-             *
-             * warning on cstrcasecmp arg0=upper case only, arg1 = mixed
-             */
-            if (last->type == 'n' && !cstrcasecmp("IN", last->val)) {
-                st_copy(last, current);
-                st_assign(sout, 'f', "IN", 2);
-                return TRUE;
-            } else {
-                /*
-                 * no match at all
-                 */
-                st_copy(sout, last);
-                st_copy(last, current);
-                return TRUE;
-            }
-            break;
-        }
-    }
-
-    /*
-     * final cleanup
-     */
-    if (last->type) {
-        st_copy(sout, last);
-        st_clear(last);
-        return TRUE;
-    } else if (sf->syntax_comment.type) {
-        /*
-         * TBD
-         */
-        st_copy(sout, &sf->syntax_comment);
-        st_clear(&sf->syntax_comment);
-        return TRUE;
-    } else {
-        return FALSE;
-    }
-}
 
 /*
  * My apologies, this code is a mess
  */
-int filter_fold(sfilter * sf, stoken_t * sout)
+int filter_fold(sfilter * sf)
 {
-    stoken_t *last = &sf->fold_last;
-    stoken_t *current = &sf->fold_current;
+    stoken_t last_comment;
 
-    if (sf->fold_state == 4 && !st_is_empty(last)) {
-        st_copy(sout, last);
-        sf->fold_state = 2;
-        st_clear(last);
-        return FALSE;
-    }
+    stoken_t * current;
 
-    while (sqli_tokenize(sf, current)) {
-        /*
-         * 0 = start of statement
-         * skip ( and unary ops
-         */
-        if (sf->fold_state == 0) {
-            if (current->type == '(') {
-                continue;
-            }
-            if (st_is_unary_op(current)) {
-                continue;
-            }
-            sf->fold_state = 1;
-        }
+    /* POS is the positive of where the NEXT token goes */
+    size_t pos = 0;
 
-        if (st_is_empty(last)) {
-            FOLD_DEBUG;
-            if (current->type == '1' || current->type == 'n'
-                || current->type == '(') {
-                sf->fold_state = 2;
-                st_copy(last, current);
-            }
-            st_copy(sout, current);
-            return FALSE;
-        } else if (last->type == '(' && st_is_unary_op(current)) {
-            /*
-             * similar to beginning of statement
-             * an opening '(' resets state, and we should skip all
-             * unary operators
-             */
-            continue;
-        } else if (last->type == '(' && current->type == '(') {
-            /* if we get another '(' after another
-             * emit 1, but keep state
-             */
-            st_copy(sout, current);
-            return FALSE;
-        } else if ((last->type == '1' || last->type == 'n')
-                   && st_is_arith_op(current)) {
-            FOLD_DEBUG;
-            st_copy(last, current);
-        } else if (last->type == 'o'
-                   && (current->type == '1' || current->type == 'n')) {
-            FOLD_DEBUG;
-            st_copy(last, current);
-        } else {
-            if (sf->fold_state == 2) {
-                if (last->type != '1' && last->type != '('
-                    && last->type != 'n') {
-                    FOLD_DEBUG;
-                    st_copy(sout, last);
-                    st_copy(last, current);
-                    sf->fold_state = 4;
-                } else {
-                    FOLD_DEBUG;
-                    st_copy(sout, current);
-                    st_clear(last);
-                }
-                return FALSE;
-            } else {
-                if (last->type == 'o') {
-                    st_copy(sout, last);
-                    st_copy(last, current);
-                    sf->fold_state = 4;
-                } else {
-                    sf->fold_state = 2;
-                    st_copy(sout, current);
-                    st_clear(last);
-                }
-                return FALSE;
-            }
-        }
-    }
+    /* LEFT is a count of how many tokens that are already
+       folded or processed (i.e. part of the fingerprint) */
+    size_t left =  0;
 
-    if (!st_is_empty(last)) {
-        if (st_is_arith_op(last)) {
-            st_copy(sout, last);
-            st_clear(last);
-            return FALSE;
-        } else {
-            st_clear(last);
-        }
-    }
+    int more = 1;
 
-    /*
-     * all done: nothing more to parse
+    st_clear(&last_comment);
+
+    /* Skip all initial comments, right-parens ( and unary operators
+     *
      */
-    return TRUE;
+    current = &(sf->tokenvec[0]);
+    while (more) {
+        more = libinjection_sqli_tokenize(sf, current);
+        if ( ! (current->type == 'c' || current->type == '(' || st_is_unary_op(current))) {
+            break;
+        }
+    }
+
+    if (! more) {
+        /* If input was only comments, unary or (, then exit */
+        return 0;
+    } else {
+        /* it's some other token */
+        pos += 1;
+    }
+
+    while (1) {
+        FOLD_DEBUG
+        /* get up to two tokens */
+        while (more && pos <= MAX_TOKENS && (pos - left) < 2) {
+            current = &(sf->tokenvec[pos]);
+            more = libinjection_sqli_tokenize(sf, current);
+            if (more) {
+                if (current->type == 'c') {
+                    st_copy(&last_comment, current);
+                } else {
+                    last_comment.type = CHAR_NULL;
+                    pos += 1;
+                }
+            }
+        }
+        FOLD_DEBUG
+        /* did we get 2 tokens? if not then we are done */
+        if (pos - left != 2) {
+            left = pos;
+            break;
+        }
+
+        /* FOLD: "ss" -> "s"
+         * "foo" "bar" is valid SQL
+         * just ignore second string
+         */
+        if (sf->tokenvec[left].type == 's' && sf->tokenvec[left+1].type == 's') {
+            pos -= 1;
+            continue;
+        } else if (sf->tokenvec[left].type =='o' && st_is_unary_op(&sf->tokenvec[left+1])) {
+            pos -= 1;
+            continue;
+        } else if (syntax_merge_words(&sf->tokenvec[left], &sf->tokenvec[left+1])) {
+            pos -= 1;
+            continue;
+        } else if (sf->tokenvec[left].type == 'n' && cstrcasecmp("IN", sf->tokenvec[left].val) == 0
+                   && sf->tokenvec[left+1].type == '(') {
+            // pos is the same
+            // other conversions need to go here... for instance
+            // password CAN be a function, coalese CAN be a function
+            sf->tokenvec[left].type = 'f';
+            continue;
+        }
+
+        /* all cases of handing 2 tokens is done
+           and nothing matched.  Get one more token
+        */
+        FOLD_DEBUG
+        while (more && pos <= MAX_TOKENS && pos - left < 3) {
+            current = &(sf->tokenvec[pos]);
+            more = libinjection_sqli_tokenize(sf, current);
+            if (more) {
+                if (current->type == 'c') {
+                    st_copy(&last_comment, current);
+                } else {
+                    last_comment.type = CHAR_NULL;
+                    pos += 1;
+                }
+            }
+        }
+
+        /* do we have three tokens? If not then we are done */
+        if (pos -left != 3) {
+            left = pos;
+            break;
+        }
+
+        /*
+         * now look for three token folding
+         */
+
+        /* FOLD "(-(" -> "(("
+         * remove unary operators
+         */
+        if (sf->tokenvec[left].type == '(' &&
+            sf->tokenvec[left+1].type == 'o' &&
+            sf->tokenvec[left+2].type == '(') {
+            st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
+            pos -= 1;
+            continue;
+        } else if (sf->tokenvec[left].type == '1' &&
+                   st_is_arith_op(&sf->tokenvec[left+1]) &&
+                   sf->tokenvec[left+2].type == '1') {
+            pos -= 2;
+            continue;
+        } else if (sf->tokenvec[left].type == 'n' &&
+                   st_is_arith_op(&sf->tokenvec[left+1]) &&
+                   (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
+            pos -= 2;
+            continue;
+
+/* not yet
+   } else if (sf->tokenvec[left].type == 'n' &&
+   sf->tokenvec[left+1].type == ',' &&
+   (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
+   pos -= 1;
+   continue;
+*/
+        } else if (sf->tokenvec[left].type == 'n' &&
+                   sf->tokenvec[left+1].type == '.' &&
+                   sf->tokenvec[left+2].type == 'n') {
+            /* ignore the '.n'
+             * typically is this dabasename.table
+             */
+            pos -= 2;
+            continue;
+        }
+
+
+        /* no folding -- assume left-most token is
+           is good, now use the existing 2 tokens --
+           do not get another
+        */
+
+        left += 1;
+
+    } /* while(1) */
+
+    /* if we have 4 or less tokens, and we had a comment token
+     * at the end, add it back
+     */
+
+    if (left < MAX_TOKENS && last_comment.type == 'c') {
+        st_copy(&sf->tokenvec[left], &last_comment);
+        left += 1;
+    }
+
+    /* sometimes we grab a 6th token to help
+       determine the type of token 5.
+    */
+    if (left > MAX_TOKENS) {
+        left = MAX_TOKENS;
+    }
+
+    return left;
 }
 
 /* secondary api: detects SQLi in a string, GIVEN a context.
@@ -1226,22 +1113,16 @@ int libinjection_is_string_sqli(sfilter * sql_state,
                                 const char delim,
                                 ptr_fingerprints_fn fn, void* callbackarg)
 {
+    int i;
     int tlen = 0;
     char ch;
     int patmatch;
-    int all_done;
 
-    sfilter_reset(sql_state, s, slen);
-    sql_state->delim = delim;
+    libinjection_sqli_init(sql_state, s, slen, delim);
 
-    while (tlen < MAX_TOKENS) {
-        all_done = filter_fold(sql_state, &(sql_state->tokenvec[tlen]));
-        if (all_done) {
-            break;
-        }
-
-        sql_state->pat[tlen] = sql_state->tokenvec[tlen].type;
-        tlen += 1;
+    tlen = filter_fold(sql_state);
+    for (i = 0; i < tlen; ++i) {
+        sql_state->pat[i] = sql_state->tokenvec[i].type;
     }
 
     /*

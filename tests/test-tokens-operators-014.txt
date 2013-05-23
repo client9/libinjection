@@ -6,5 +6,6 @@ SELECT 1 */* FOO */ 2;
 k SELECT
 1 1
 o *
+c /* FOO */
 1 2
 ; ;

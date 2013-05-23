@@ -12,7 +12,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "libinjection.h"
+
+#include "libinjection_sqli.c"
 
 int main(int argc, const char* argv[])
 {
@@ -35,13 +36,13 @@ int main(int argc, const char* argv[])
      * "plain" context.. test string "as-is"
      */
     ok = libinjection_is_string_sqli(&sf, argv[offset], slen, CHAR_NULL,
-                                     NULL, NULL);
+                                     is_sqli_pattern, NULL);
     if (strlen(sf.pat) > 1) {
         fprintf(stdout, "plain\t%s\t%s\n", sf.pat, ok ? "true": "false");
     }
     if (memchr(argv[offset], CHAR_SINGLE, slen)) {
         ok = libinjection_is_string_sqli(&sf, argv[offset], slen, CHAR_SINGLE,
-                                         NULL, NULL);
+                                         is_sqli_pattern, NULL);
         if (strlen(sf.pat) > 1 && strcmp(sf.pat, "sns") != 0) {
             fprintf(stdout, "single\t%s\t%s\n", sf.pat, ok ? "true": "false");
         }
@@ -49,7 +50,7 @@ int main(int argc, const char* argv[])
 
     if (memchr(argv[offset], CHAR_DOUBLE, slen)) {
         ok = libinjection_is_string_sqli(&sf, argv[offset], slen, CHAR_DOUBLE,
-                                         NULL, NULL);
+                                         is_sqli_pattern, NULL);
         if (strlen(sf.pat) > 1 &&  strcmp(sf.pat, "sns") != 0) {
             fprintf(stdout, "double\t%s\t%s\n", sf.pat, ok ? "true": "false");
         }

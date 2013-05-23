@@ -5,4 +5,5 @@ SELECT 'FOO' 'BAR';
 --EXPECTED--
 k SELECT
 s 'FOO'
+s 'BAR'
 ; ;

@@ -46,26 +46,29 @@ int main(int argc, const char* argv[])
     char* copy = (char* ) malloc(slen);
     memcpy(copy, argv[offset], slen);
 
-    sfilter_reset(&sf, copy, slen);
-
+    libinjection_sqli_init(&sf, copy, slen, CHAR_NULL);
+    int count;
     if (fold == 1) {
-        while (filter_fold(&sf, &current) == 0) {
-            if (current.type == 's') {
-                printf("%c ", current.type);
-                if (current.str_open != CHAR_NULL) {
-                    printf("%c", current.str_open);
+        count = filter_fold(&sf);
+        // printf("count = %d\n", count);
+        for (int i = 0; i < count; ++i) {
+            //printf("token: %d :: ", i);
+            if (sf.tokenvec[i].type == 's') {
+                printf("%c ", sf.tokenvec[i].type);
+                if (sf.tokenvec[i].str_open != CHAR_NULL) {
+                    printf("%c", sf.tokenvec[i].str_open);
                 }
-                printf("%s", current.val);
-                if (current.str_close != CHAR_NULL) {
-                    printf("%c", current.str_open);
+                printf("%s", sf.tokenvec[i].val);
+                if (sf.tokenvec[i].str_close != CHAR_NULL) {
+                    printf("%c", sf.tokenvec[i].str_open);
                 }
                 printf("%s", "\n");
             } else {
-                printf("%c %s\n", current.type, current.val);
+                printf("%c %s \n", sf.tokenvec[i].type, sf.tokenvec[i].val);
             }
         }
     } else {
-        while (sqli_tokenize(&sf, &current)) {
+        while (libinjection_sqli_tokenize(&sf, &current)) {
             if (current.type == 's') {
                 printf("%c ", current.type);
                 if (current.str_open != CHAR_NULL) {
@@ -74,7 +77,7 @@ int main(int argc, const char* argv[])
                 printf("%s", current.val);
                 if (current.str_close != CHAR_NULL) {
                     printf("%c", current.str_open);
-                }
+               }
                 printf("%s", "\n");
             } else {
                 printf("%c %s\n", current.type, current.val);

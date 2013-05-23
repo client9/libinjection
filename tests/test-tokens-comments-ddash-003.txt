@@ -6,4 +6,5 @@ SELECT 1 -- ABCD
 --EXPECTED--
 k SELECT
 1 1
+c -- ABCD
 ; ;

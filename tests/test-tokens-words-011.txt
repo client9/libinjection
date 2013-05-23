@@ -5,7 +5,8 @@ SELECT 1 NOT LIKE 2;
 --EXPECTED--
 k SELECT
 1 1
-o NOT LIKE
+o NOT
+o LIKE
 1 2
 ; ;
 

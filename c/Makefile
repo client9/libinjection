@@ -4,7 +4,7 @@
 #  some of the modp_* files.  Remove for now.
 #
 
-CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Werror
+CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual
 # -DNDEBUG
 
 help:
@@ -47,7 +47,7 @@ sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_d
 	${CC} -g -O1 -o sqli sqli_cli.c
 
 fptool: Makefile fptool.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
-	${CC} ${CFLAGS} -o fptool fptool.c libinjection_sqli.c
+	${CC} ${CFLAGS} -o fptool fptool.c 
 
 test_speed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_speed.c
 	${CC} ${CFLAGS} -DNDEDBUG -o test_speed libinjection_sqli.c test_speed.c

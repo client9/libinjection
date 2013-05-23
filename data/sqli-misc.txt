@@ -217,3 +217,23 @@ test'-'xyz' union (select table)
 @version- 'xxx' union(select table_name from information_schema.tables limit 1,1)
 @version - 5 union(select table_name from information_schema.tables limit 1,1)
 
+#
+1 into outfile 'asd'
+1 into outfile 'asd'--
+'1' into outfile 'asd'
+'1' into outfile 'asd' --
+@version into outfile 'asd'
+@version into outfile 'asd' --
+
+1 into outfile ('asd')
+'1' into outfile ('asd')
+@version into outfile ('asd')
+
+1 into outfile substring('asd', 10, 1)
+'1' into outfile substring('asd', 10, 1)
+@version into outfile substring('asd', 10 1)
+
+1 into outfile (substring('asd', 10, 1))
+'1' into outfile (substring('asd', 10, 1))
+@version into outfile (substring('asd', 10 1))
+
