@@ -704,6 +704,16 @@ static size_t parse_var(sfilter * sf)
         pos1 += 1;
     }
 
+    /*
+     * MySQL allows @@`version`
+     */
+    if (pos1 < slen && cs[pos1] == '`') {
+        sf->pos = pos1;
+        pos1 = parse_string(sf);
+        sf->current->type = 'v';
+        return pos1;
+    }
+
     xlen = strlenspn(cs + pos1, slen - pos1,
                      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
