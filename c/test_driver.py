@@ -7,6 +7,16 @@ import subprocess
 import os
 import glob
 
+
+def toascii(data):
+    """
+    Converts a utf-8 string to ascii.   needed since nosetests xunit is not UTF-8 safe
+    https://github.com/nose-devs/nose/issues/649
+    https://github.com/nose-devs/nose/issues/692
+    """
+    udata = data.decode('utf-8')
+    return udata.encode('ascii', 'xmlcharrefreplace')
+
 def run(args):
     """
     Runs a command and returns stdout output, throws exception on failed run.
@@ -54,7 +64,7 @@ def readtestdata(filename):
     # remove last newline from input
     info['--INPUT--'] = info['--INPUT--'][0:-1]
 
-    return (info['--TEST--'], info['--INPUT--'], info['--EXPECTED--'])
+    return (info['--TEST--'], info['--INPUT--'].strip(), info['--EXPECTED--'].strip())
 
 def runtest(testname):
     """
@@ -76,11 +86,14 @@ def runtest(testname):
     else:
         actual = run(['./sqli', data[1]])
 
-    if actual.strip() != data[2].strip():
-        print "INPUT: \n" + data[1]
+    actual = actual.strip()
+
+    if actual != data[2]:
+        print "INPUT: \n" + toascii(data[1])
         print
-        print "EXPECTED: \n" + data[2]
-        print "GOT: \n" + actual
+        print "EXPECTED: \n" + toascii(data[2])
+        print
+        print "GOT: \n" + toascii(actual)
         assert False
 
 def test_unit():
