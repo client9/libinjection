@@ -380,6 +380,7 @@ KEYWORDS = {
 'IIF'                         : 'f',
 
 # IN is a special case.. sometimes a function, sometimes a keyword
+# corrected inside the folding code
 'IN'                          : 'n',
 
 'INDEX'                       : 'k',
