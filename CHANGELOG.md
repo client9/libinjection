@@ -1,5 +1,9 @@
-# vNext
 
+# v2.0.4 2013-05-21 IMPORTANT
+
+All users are advised to upgrade due to risk of DOS
+
+## security
 * more fingerprints, more tests
 * Issue 34: fix infinite loop
 
