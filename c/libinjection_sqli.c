@@ -579,7 +579,16 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             st_assign(st, 's', cs + pos + offset, len - pos - offset);
             st->str_close = CHAR_NULL;
             return len;
-        } else if (*(qpos - 1) != '\\') {
+        } else if (delim == '`' && (qpos == (cs + len) ||
+                                    (qpos < (cs+len) && *(qpos + 1) != '`'))) {
+            /*
+             * ending quote is not escaped.. copy and end
+             */
+            st_assign(st, 's', cs + pos + offset,
+                      qpos - (cs + pos + offset));
+            st->str_close = delim;
+            return qpos - cs + 1;
+        } else if (delim != '`' && *(qpos - 1) != '\\') {
             /*
              * ending quote is not escaped.. copy and end
              */
@@ -608,6 +617,66 @@ static size_t parse_string(sfilter * sf)
      * assert cs[pos] == single or double quote
      */
     return parse_string_core(cs, slen, pos, sf->current, cs[pos], 1);
+}
+
+/** Parse MySQL `backtick` quoted strings
+ *
+ * Unforunately, the escaping rules for `-quoted strings is different
+ * when finding a "`" you need to look at NEXT CHAR to see if it's "`"
+ * If so, you need to jump two characters ahead
+ *
+ * In normal strings, you need to look at PREVIOUS CHAR... and if so
+ * just jump ahead one char.
+ *
+ * Also we don't need to code to fake an opening "`"
+ *
+ * Tried to keep code as similar to parse_string_core.
+ */
+static size_t parse_string_tick(sfilter *sf)
+{
+    const size_t offset = 1;
+    const char delim = '`';
+
+    const char *cs = sf->s;
+    const size_t len = sf->slen;
+    size_t pos = sf->pos;
+    stoken_t *st = sf->current;
+
+    /*
+     * len -pos -1 : offset is to skip the perhaps first quote char
+     */
+    const char *qpos =
+        (const char *) memchr((const void *) (cs + pos + offset), delim,
+                              len - pos - offset);
+
+    st->str_open = delim;
+
+    while (TRUE) {
+        if (qpos == NULL) {
+            /*
+             * string ended with no trailing quote
+             * assign what we have
+             */
+            st_assign(st, 's', cs + pos + offset, len - pos - offset);
+            st->str_close = CHAR_NULL;
+            return len;
+        } else if (qpos == (cs + len) || (qpos < (cs + len) && *(qpos + 1) != delim)) {
+            /*
+             * ending quote is not escaped.. copy and end
+             */
+            st_assign(st, 's', cs + pos + offset,
+                      qpos - (cs + pos + offset));
+            st->str_close = delim;
+            return qpos - cs + 1;
+        } else {
+            /*
+             * we got a `` so advance by 2 chars
+             */
+            qpos =
+                (const char *) memchr((const void *) (qpos + 2), delim,
+                                      (cs + len) - (qpos + 2));
+        }
+    }
 }
 
 static size_t parse_word(sfilter * sf)
@@ -664,7 +733,7 @@ static size_t parse_word(sfilter * sf)
 static size_t parse_tick(sfilter* sf)
 {
     /* first we pretend we are looking for a string */
-    size_t slen = parse_string(sf);
+    size_t slen = parse_string_tick(sf);
 
     /* we could check to see if start and end of
      * of string are both "`", i.e. make sure we have
@@ -709,7 +778,7 @@ static size_t parse_var(sfilter * sf)
      */
     if (pos1 < slen && cs[pos1] == '`') {
         sf->pos = pos1;
-        pos1 = parse_string(sf);
+        pos1 = parse_string_tick(sf);
         sf->current->type = 'v';
         return pos1;
     }
