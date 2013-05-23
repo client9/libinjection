@@ -23,7 +23,8 @@
 int main(int argc, const char* argv[])
 {
     int fold = 0;
-
+    int i;
+    int count;
     int offset = 1;
 
     sfilter sf;
@@ -47,11 +48,10 @@ int main(int argc, const char* argv[])
     memcpy(copy, argv[offset], slen);
 
     libinjection_sqli_init(&sf, copy, slen, CHAR_NULL);
-    int count;
     if (fold == 1) {
         count = filter_fold(&sf);
         // printf("count = %d\n", count);
-        for (int i = 0; i < count; ++i) {
+        for (i = 0; i < count; ++i) {
             //printf("token: %d :: ", i);
             if (sf.tokenvec[i].type == 's') {
                 printf("%c ", sf.tokenvec[i].type);
