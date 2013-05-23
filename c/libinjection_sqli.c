@@ -660,7 +660,7 @@ static size_t parse_string_tick(sfilter *sf)
             st_assign(st, 's', cs + pos + offset, len - pos - offset);
             st->str_close = CHAR_NULL;
             return len;
-        } else if (qpos == (cs + len) || (qpos < (cs + len) && *(qpos + 1) != delim)) {
+        } else if (qpos + 1 == (cs + len) || ((qpos + 1) < (cs + len) && *(qpos + 1) != delim)) {
             /*
              * ending quote is not escaped.. copy and end
              */
