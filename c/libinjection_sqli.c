@@ -977,6 +977,10 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
         return FALSE;
     }
 
+    if (! st_is_multiword_start(a)) {
+        return FALSE;
+    }
+
     sz1 = strlen(a->val);
     sz2 = strlen(b->val);
     sz3 = sz1 + sz2 + 1; /* +1 for space in the middle */
