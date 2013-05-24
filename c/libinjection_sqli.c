@@ -702,7 +702,7 @@ static size_t parse_word(sfilter * sf)
     char ch;
     size_t slen =
         strlencspn(cs + pos, sf->slen - pos,
-                   " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013");
+                   " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013\014");
 
     st_assign(sf->current, 'n', cs + pos, slen);
 
@@ -799,7 +799,7 @@ static size_t parse_var(sfilter * sf)
     }
 
     xlen = strlencspn(cs + pos1, slen - pos1,
-                     " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013");
+                     " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013\014");
 //                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
         st_assign(sf->current, 'v', cs + pos, (pos1 - pos));
