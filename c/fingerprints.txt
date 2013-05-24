@@ -1,6 +1,3 @@
-kos,f
-ko1,f
-kof(s
 &1o1U
 &1osU
 &1ovU
@@ -830,14 +827,17 @@ ko(kf
 ko(n,
 ko(s,
 ko(v,
+ko1,f
 kof((
 kof(1
 kof(n
+kof(s
 kof(v
 kok((
 kok(k
 kok(o
 koknk
+kos,f
 ks&((
 ks&(k
 ks&(o
@@ -881,6 +881,7 @@ kv,s,
 kv,sc
 kv,sk
 kv,v,
+kv,vU
 kv,vc
 kv,vk
 kvf((

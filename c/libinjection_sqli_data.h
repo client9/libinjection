@@ -1904,6 +1904,7 @@ static const char* sql_fingerprints[] = {
     "kv,sc",
     "kv,sk",
     "kv,v,",
+    "kv,vU",
     "kv,vc",
     "kv,vk",
     "kvf((",
@@ -3677,6 +3678,6 @@ static const char* sql_fingerprints[] = {
     "vovso",
     "vovvo",
 };
-static const size_t sqli_fingerprints_sz = 2655;
+static const size_t sqli_fingerprints_sz = 2656;
 
 #endif
