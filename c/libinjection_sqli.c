@@ -1150,14 +1150,13 @@ int filter_fold(sfilter * sf)
                    (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
             pos -= 2;
             continue;
-
-/* not yet
-   } else if (sf->tokenvec[left].type == 'n' &&
-   sf->tokenvec[left+1].type == ',' &&
-   (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
-   pos -= 1;
-   continue;
-*/
+#if 0
+        } else if ((sf->tokenvec[left].type == 'n' || sf->tokenvec[left].type == '1') &&
+                   sf->tokenvec[left+1].type == ',' &&
+                   (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
+            pos -= 2;
+            continue;
+#endif
         } else if (sf->tokenvec[left].type == 'n' &&
                    sf->tokenvec[left+1].type == '.' &&
                    sf->tokenvec[left+2].type == 'n') {
