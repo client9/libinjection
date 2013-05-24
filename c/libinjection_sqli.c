@@ -93,6 +93,21 @@ strlenspn(const char *s, size_t len, const char *accept)
     return len;
 }
 
+static size_t
+strlencspn(const char *s, size_t len, const char *accept)
+{
+    size_t i;
+    for (i = 0; i < len; ++i) {
+        /* likely we can do better by inlining this function
+         * but this works for now
+         */
+        if (strchr(accept, s[i]) != NULL) {
+            return i;
+        }
+    }
+    return len;
+}
+
 /*
  * ASCII half-case-insenstive compare!
  *
@@ -686,8 +701,8 @@ static size_t parse_word(sfilter * sf)
     char *dot;
     char ch;
     size_t slen =
-        strlenspn(cs + pos, sf->slen - pos,
-                  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$.`");
+        strlencspn(cs + pos, sf->slen - pos,
+                   " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013");
 
     st_assign(sf->current, 'n', cs + pos, slen);
 
@@ -783,8 +798,9 @@ static size_t parse_var(sfilter * sf)
         return pos1;
     }
 
-    xlen = strlenspn(cs + pos1, slen - pos1,
-                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+    xlen = strlencspn(cs + pos1, slen - pos1,
+                     " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013");
+//                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
         st_assign(sf->current, 'v', cs + pos, (pos1 - pos));
         return pos1;
@@ -904,17 +920,16 @@ int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
         /*
          * get current character
          */
-        const int ch = (int) (s[*pos]);
+        const unsigned ch = (unsigned int) (s[*pos]);
 
         /*
          * if not ascii, then continue...
          *   actually probably need to just assuming
          *   it's a string
          */
-        if (ch < 0 || ch > 127) {
-            *pos += 1;
-            continue;
-        }
+        if (ch > 127) {
+            fnptr = parse_word;
+        } else {
 
         /*
          * look up the parser, and call it
@@ -923,6 +938,7 @@ int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
          *   charparsers[ch]()
          */
         fnptr = char_parse_map[ch];
+        }
         *pos = (*fnptr) (sf);
 
         /*
@@ -1178,7 +1194,7 @@ int filter_fold(sfilter * sf)
         left = MAX_TOKENS;
     }
 
-    return left;
+    return (int)left;
 }
 
 /* secondary api: detects SQLi in a string, GIVEN a context.
