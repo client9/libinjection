@@ -89,7 +89,7 @@ libinjection_sqli_data.h: Makefile sqlparse2c.py sqlparse_data.json
 #
 sort:
 	wc -l fingerprints.txt
-	cat fingerprints.txt | ./make_parens.py | ./make_parens.py | LC_ALL=C sort -u > /tmp/junk
+	cat fingerprints.txt | ./make_parens.py | ./make_parens.py | grep -v -E '(1ono1)|(1onos)|(sono1)|(1oko1)|(1onc)' | LC_ALL=C sort -u > /tmp/junk
 	mv /tmp/junk fingerprints.txt
 	wc -l fingerprints.txt
 	${MAKE} libinjection_sqli_data.h

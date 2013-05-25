@@ -11,8 +11,16 @@ def main():
     for line in sys.stdin:
         fp = line.strip()
         print fp
-        if fp.startswith('1Uk'):
+
+        if fp.startswith('1'):
             print 'v' + fp[1:]
+            print 's' + fp[1:]
+        if fp.startswith('s'):
+            print 'v' + fp[1:]
+            print '1' + fp[1:]
+        if fp.startswith('v'):
+            print 's' + fp[1:]
+            print '1' + fp[1:]
 
         if '(' in fp:
 
