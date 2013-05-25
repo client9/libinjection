@@ -1095,12 +1095,24 @@ int filter_fold(sfilter * sf)
         } else if (syntax_merge_words(&sf->tokenvec[left], &sf->tokenvec[left+1])) {
             pos -= 1;
             continue;
-        } else if (sf->tokenvec[left].type == 'n' && cstrcasecmp("IN", sf->tokenvec[left].val) == 0
-                   && sf->tokenvec[left+1].type == '(') {
+        } else if (sf->tokenvec[left].type == 'n' &&
+                   sf->tokenvec[left+1].type == '(' && (
+                   cstrcasecmp("IN", sf->tokenvec[left].val) |
+                   cstrcasecmp("DATABASE", sf->tokenvec[left].val) |
+                   cstrcasecmp("USER", sf->tokenvec[left].val) |
+                   cstrcasecmp("PASSWORD", sf->tokenvec[left].val))) {
+
             // pos is the same
             // other conversions need to go here... for instance
             // password CAN be a function, coalese CAN be a function
             sf->tokenvec[left].type = 'f';
+            continue;
+        } else if (sf->tokenvec[left].type == 'k' && cstrcasecmp("IF", sf->tokenvec[left].val) == 0
+                   && sf->tokenvec[left+1].type == '(') {
+            // pos is the same
+            // other conversions need to go here... for instance
+            // password CAN be a function, coalese CAN be a function
+            sf->tokenvec[left].type = 'E';
             continue;
         }
 
@@ -1157,6 +1169,13 @@ int filter_fold(sfilter * sf)
             pos -= 2;
             continue;
 #endif
+        } else if ((sf->tokenvec[left].type == 'k' || sf->tokenvec[left].type == 'E') &&
+                   st_is_unary_op(&sf->tokenvec[left+1]) &&
+                   (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n' || sf->tokenvec[left+2].type == 'v' || sf->tokenvec[left+2].type == 's' || sf->tokenvec[left+2].type == 'f' )) {
+            // remove unary operators
+            // select - 1
+            st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
+            pos -= 1;
         } else if (sf->tokenvec[left].type == 'n' &&
                    sf->tokenvec[left+1].type == '.' &&
                    sf->tokenvec[left+2].type == 'n') {
@@ -1374,8 +1393,11 @@ int libinjection_is_string_sqli(sfilter * sql_state,
                     sql_state->reason = __LINE__;
                     return FALSE;
                 }
-                break;
+        } else if (streq(sql_state->pat, "sks") && cstrcasecmp("INTO OUTFILE", sql_state->tokenvec[1].val)) {
+            sql_state->reason = __LINE__;
+            return FALSE;
         }
+        break;
     }  /* case 3 */
     case 5: {
         if (streq(sql_state->pat, "sosos")) {

@@ -68,7 +68,7 @@ KEYWORDS = {
 'ATAN2'                       : 'f',
 'AVG'                         : 'f',
 'BEFORE'                      : 'k',
-'BEGIN'                       : 'k',
+'BEGIN'                       : 'E',
 'BENCHMARK'                   : 'f',
 'BETWEEN'                     : 'k',
 'BIGINT'                      : 'k',
@@ -128,7 +128,7 @@ KEYWORDS = {
 
 'CALL'                        : 'k',
 'CASCADE'                     : 'k',
-'CASE'                        : 'o',
+'CASE'                        : 'E',
 'CAST'                        : 'f',
 # pgsql 'cube root' lol
 'CBRT'                        : 'f',
@@ -161,7 +161,10 @@ KEYWORDS = {
 'COLLATE'                     : 'k',
 'COLLATION'                   : 'f',
 'COLLATIONPROPERTY'           : 'f',
+
+# TBD
 'COLUMN'                      : 'k',
+
 'COLUMNPROPERTY'              : 'f',
 'COLUMNS_UPDATED'             : 'f',
 'COMPRESS'                    : 'f',
@@ -183,18 +186,23 @@ KEYWORDS = {
 'COUNT'                       : 'f',
 'COUNT_BIG'                   : 'k',
 'CRC32'                       : 'f',
-'CREATE'                      : 'k',
+'CREATE'                      : 'E',
 'CROSS'                       : 'n',
 'CUME_DIST'                   : 'f',
 'CURDATE'                     : 'f',
+
+# TBD
 'CURRENT_DATE'                : 'k',
 'CURRENT_DATABASE'            : 'f',
+# TBD
 'CURRENT_TIME'                : 'k',
+# TBD
 'CURRENT_TIMESTAMP'           : 'k',
 'CURRENT_QUERY'               : 'f',
 'CURRENT_SCHEMA'              : 'f',
 'CURRENT_SCHEMAS'             : 'f',
 'CURRENT_SETTING'             : 'p',
+# TBD
 'CURRENT_USER'                : 'k',
 'CURRENTUSER'                 : 'f',
 # pgsql
@@ -202,7 +210,9 @@ KEYWORDS = {
 'CURSOR'                      : 'k',
 'CURSOR_STATUS'               : 'f',
 'CURTIME'                     : 'f',
-'DATABASE'                    : 'k',
+
+# this might be a function
+'DATABASE'                    : 'n',
 'DATABASE_PRINCIPAL_ID'       : 'f',
 'DATABASEPROPERTYEX'          : 'f',
 'DATABASES'                   : 'k',
@@ -239,7 +249,7 @@ KEYWORDS = {
 'DB_NAME'                     : 'f',
 'DEC'                         : 'k',
 'DECIMAL'                     : 'k',
-'DECLARE'                     : 'k',
+'DECLARE'                     : 'E',
 'DECODE'                      : 'f',
 'DECRYPTBYASMKEY'             : 'f',
 'DECRYPTBYCERT'               : 'f',
@@ -261,7 +271,7 @@ KEYWORDS = {
 'DISTINCROW'                  : 'k',
 'DISTINCT'                    : 'k',
 'DIV'                         : 'o',
-'DROP'                        : 'k',
+'DROP'                        : 'E',
 'DUAL'                        : 'k',
 'EACH'                        : 'k',
 'ELSE'                        : 'k',
@@ -372,7 +382,7 @@ KEYWORDS = {
 
 # 'IF - if is normally a function, except in TSQL
 # http://msdn.microsoft.com/en-us/library/ms182717.aspx
-'IF'                          : 'k',
+'IF'                          : 'E',
 
 'IFF'                         : 'f',
 'IFNULL'                      : 'f',
@@ -395,7 +405,7 @@ KEYWORDS = {
 'INNER'                       : 'k',
 'INOUT'                       : 'k',
 'INSENSITIVE'                 : 'k',
-'INSERT'                      : 'k',
+'INSERT'                      : 'E',
 'INSTR'                       : 'f',
 'INSTRREV'                    : 'f',
 'INT'                         : 'k',
@@ -558,7 +568,7 @@ KEYWORDS = {
 'PARTITION'                   : 'k',
 
 # keyword "SET PASSWORD", and a function
-'PASSWORD'                    : 'k',
+'PASSWORD'                    : 'n',
 'PATINDEX'                    : 'f',
 'PATHINDEX'                   : 'f',
 'PERCENT_RANK'                : 'f',
@@ -666,11 +676,11 @@ KEYWORDS = {
 'SCOPE_IDENTITY'              : 'f',
 'SECOND_MICROSECOND'          : 'k',
 'SEC_TO_TIME'                 : 'f',
-'SELECT'                      : 'k',
+'SELECT'                      : 'E',
 'SENSITIVE'                   : 'k',
 'SEPARATOR'                   : 'k',
 'SESSION_USER'                : 'f',
-'SET'                         : 'k',
+'SET'                         : 'E',
 'SETSEED'                     : 'f',
 'SETVAL'                      : 'f',
 'SET_BIT'                     : 'f',
@@ -749,6 +759,7 @@ KEYWORDS = {
 'SYSOBJECTS'                  : 'k',
 
 # 'SYSUSERS' - MSSQL
+# TBD
 'SYSUSERS'                    : 'k',
 # sqlserver
 'SYSUTCDATETME'               : 'f',
@@ -768,6 +779,7 @@ KEYWORDS = {
 'TEXTPTR'                     : 'f',
 'TEXTVALID'                   : 'f',
 'THEN'                        : 'k',
+# TBD
 'TIME'                        : 'k',
 'TIMEDIFF'                    : 'f',
 'TIMEFROMPARTS'               : 'f',
@@ -843,7 +855,7 @@ KEYWORDS = {
 'UNKNOWN'                     : 'k',
 'UNNEST'                      : 'f',
 'UNSIGNED'                    : 'k',
-'UPDATE'                      : 'k',
+'UPDATE'                      : 'E',
 'UPDATEXML'                   : 'f',
 'UPPER'                       : 'f',
 'UPPER_INC'                   : 'f',
@@ -854,12 +866,15 @@ KEYWORDS = {
 # transact-sql function
 # however treating as a 'none' type
 # since 'user_id' is such a common column name
+# TBD
 'USER_ID'                     : 'n',
 'USER_NAME'                   : 'f',
 # 'USER' -- a MySQL function?
-#'USER'                       : 'k',
+#TBD
+#'USER'                       : 'n',
 
 'USING'                       : 'f',
+# next 3 TBD
 'UTC_DATE'                    : 'k',
 'UTC_TIME'                    : 'k',
 'UTC_TIMESTAMP'               : 'k',
@@ -878,7 +893,7 @@ KEYWORDS = {
 'VERIFYSIGNEDBYASMKEY'        : 'f',
 'VERIFYSIGNEDBYCERT'          : 'f',
 'VERSION'                     : 'f',
-'WAITFOR'                     : 'k',
+'WAITFOR'                     : 'n',
 'WEEK'                        : 'f',
 'WEEKDAY'                     : 'f',
 'WEEKDAYNAME'                 : 'f',
@@ -1093,7 +1108,7 @@ PHRASES = {
     'GROUP BY'          : 'B',
     'ORDER BY'          : 'B',
     'OWN3D BY'          : 'B',
-    'SELECT ALL'        : 'k',
+    'SELECT ALL'        : 'E',
     'READ WRITE'        : 'k',
 
     # 'LOCAL TABLE' pgsql/oracle
@@ -1130,7 +1145,12 @@ PHRASES = {
     'SIMILAR TO'        : 'o',
     'NOT SIMILAR TO'    : 'o',
     'UNION ALL'         : 'U',
-
+    'INTO OUTFILE'      : 'k',
+    'WAITFOR DELAY'     : 'E',
+    'WAITFOR TIME'      : 'E',
+    'WAITFOR RECEIVE'   : 'E',
+    'WAITFOR RECEIVE': 'E',
+    'CREATE OR REPLACE' : 'E',
     # 'INTERSECT ALL' -- ORACLE
     'INTERSECT ALL'     : 'o'
     }
