@@ -301,7 +301,7 @@ KEYWORDS = {
 
 # 'EXEC' - MSSQL
 #
-'EXEC'                        : 'k',
+'EXEC'                        : 'E',
 'EXECUTE'                     : 'k',
 'EXISTS'                      : 'k',
 'EXIT'                        : 'k',
@@ -691,7 +691,7 @@ KEYWORDS = {
 'SHA1'                        : 'f',
 'SHA2'                        : 'f',
 'SHOW'                        : 'n',
-'SHUTDOWN'                    : 'k',
+'SHUTDOWN'                    : 'E',
 'SIGN'                        : 'f',
 'SIGNBYASMKEY'                : 'f',
 'SIGNBYCERT'                  : 'f',
@@ -861,7 +861,7 @@ KEYWORDS = {
 'UPPER_INC'                   : 'f',
 'UPPER_INF'                   : 'f',
 'USAGE'                       : 'k',
-'USE'                         : 'k',
+'USE'                         : 'E',
 
 # transact-sql function
 # however treating as a 'none' type
@@ -900,7 +900,7 @@ KEYWORDS = {
 'WEEKOFYEAR'                  : 'f',
 'WHEN'                        : 'k',
 'WHERE'                       : 'k',
-'WHILE'                       : 'k',
+'WHILE'                       : 'E',
 # pgsql
 'WIDTH_BUCKET'                : 'f',
 'WITH'                        : 'k',
