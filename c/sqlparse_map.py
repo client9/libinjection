@@ -927,7 +927,6 @@ KEYWORDS = {
 'ZEROFILL'                    : 'k'
 }
 
-
 # special in that single char is a valid operator
 # special case in that '<=' might also be '<=>'
 # ":" isn't an operator in mysql, but other dialects
@@ -1020,7 +1019,7 @@ CHARMAP = [
     'CHAR_NUM',   # 55 7
     'CHAR_NUM',   # 56 8
     'CHAR_NUM',   # 57 9
-    'CHAR_CHAR',  # 58 : colon
+    'CHAR_OP2',  # 58 : colon
     'CHAR_CHAR',  # 59 ; semiclon
     'CHAR_OP2',   # 60 <
     'CHAR_OP2',   # 61 =

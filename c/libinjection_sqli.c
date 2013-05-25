@@ -552,6 +552,10 @@ static size_t parse_operator2(sfilter * sf)
             st_assign(sf->current, 'o', op2, 2);
         }
         return pos + 2;
+    } else if (op2[0] == ':') {
+        /* ':' is not an operator */
+        st_assign_char(sf->current, ':', ':');
+        return pos + 1;
     } else {
         /*
          * must be a single char operator
