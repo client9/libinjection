@@ -64,7 +64,7 @@ int main(int argc, const char* argv[])
                 }
                 printf("%s", "\n");
             } else {
-                printf("%c %s \n", sf.tokenvec[i].type, sf.tokenvec[i].val);
+                printf("%c %s\n", sf.tokenvec[i].type, sf.tokenvec[i].val);
             }
         }
     } else {

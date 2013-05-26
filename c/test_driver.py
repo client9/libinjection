@@ -47,6 +47,7 @@ def readtestdata(filename):
     Read a test file and split into components
     """
 
+
     state = None
     info = {
         '--TEST--': '',
@@ -66,27 +67,39 @@ def readtestdata(filename):
 
     return (info['--TEST--'], info['--INPUT--'].strip(), info['--EXPECTED--'].strip())
 
-def runtest(testname):
+def runtest(testname, flag=None):
     """
     runs a test, optionally with valgrind
     """
     data =  readtestdata(os.path.join('../tests', testname))
 
     if os.environ.get('VALGRIND', None):
-        args = ['valgrind',
-                '--gen-suppressions=no',
-                '--read-var-info=yes',
-                '--leak-check=full',
-                '--error-exitcode=1',
-                '--track-origins=yes',
-                '--xml=yes',
-                '--xml-file=valgrind-'+ testname.replace('.txt', '.xml'),
-                './sqli', data[1]]
-        actual = run(args)
+        args = [
+            'valgrind',
+            '--gen-suppressions=no',
+            '--read-var-info=yes',
+            '--leak-check=full',
+            '--error-exitcode=1',
+            '--track-origins=yes',
+            '--xml=yes',
+            '--xml-file=valgrind-'+ testname.replace('.txt', '.xml')
+            ]
     else:
-        actual = run(['./sqli', data[1]])
+        args = []
+
+    args.append('./sqli')
+
+    if flag:
+        args.append(flag)
+
+    args.append(data[1])
+    actual = run(args)
 
     actual = actual.strip()
+
+    print
+    print len(actual)
+    print len(data[2])
 
     if actual != data[2]:
         print "INPUT: \n" + toascii(data[1])
@@ -94,12 +107,24 @@ def runtest(testname):
         print "EXPECTED: \n" + toascii(data[2])
         print
         print "GOT: \n" + toascii(actual)
-        assert False
+        assert actual == data[2]
 
-def test_unit():
-    for testname in sorted(glob.glob('../tests/test-*.txt')):
+
+def run_tokens(testname):
+    runtest(testname)
+
+def run_folding(testname):
+    runtest(testname, '-f')
+
+def test_tokens():
+    for testname in sorted(glob.glob('../tests/test-tokens-*.txt')):
         testname = os.path.basename(testname)
-        yield runtest, testname
+        yield run_tokens, testname
+
+def test_folding():
+    for testname in sorted(glob.glob('../tests/test-folding-*.txt')):
+        testname = os.path.basename(testname)
+        yield run_folding, testname
 
 if __name__ == '__main__':
     import sys
