@@ -1413,7 +1413,8 @@ int libinjection_is_string_sqli(sfilter * sql_state,
                     return FALSE;
                 }
         } else if (streq(sql_state->pat, "so1")) {
-            if (sql_state->tokenvec[0].str_open == CHAR_NULL) {
+            if (sql_state->tokenvec[0].str_open != CHAR_NULL) {
+                /* "foo" -1 is ok, foo"-1 is not */
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
