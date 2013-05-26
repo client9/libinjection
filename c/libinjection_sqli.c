@@ -1424,21 +1424,8 @@ int libinjection_is_string_sqli(sfilter * sql_state,
         break;
     }  /* case 3 */
     case 5: {
-        if (streq(sql_state->pat, "sosos")) {
-            if (sql_state->tokenvec[0].str_open == CHAR_NULL) {
-                /*
-                 * if ....foo" + "bar....
-                 */
-                return TRUE;
-            } else {
-                /*
-                 * not sqli
-                 */
-                sql_state->reason = __LINE__;
-                return FALSE;
-            }
-            break;
-        }
+        /* nothing right now */
+        break;
     } /* case 5 */
     } /* end switch */
 
