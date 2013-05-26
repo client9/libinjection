@@ -63,7 +63,10 @@ void print_token(stoken_t *t) {
 
 int main(int argc, const char* argv[])
 {
+
     int fold = 0;
+    int detect = 0;
+
     int i;
     int count;
     int offset = 1;
@@ -77,6 +80,9 @@ int main(int argc, const char* argv[])
     if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
         fold = 1;
         offset += 1;
+    } else if (strcmp(argv[offset], "-d") == 0 || strcmp(argv[offset], "--detect") == 0) {
+        detect = 1;
+        offset += 1;
     }
 
      /* ATTENTION: argv is a C-string, null terminated.  We copy this
@@ -89,7 +95,12 @@ int main(int argc, const char* argv[])
     memcpy(copy, argv[offset], slen);
 
     libinjection_sqli_init(&sf, copy, slen, CHAR_NULL);
-    if (fold == 1) {
+    if (detect == 1) {
+        detect = libinjection_is_sqli(&sf, copy, slen, NULL, NULL);
+        if (detect) {
+            printf("%s\n", sf.pat);
+        }
+    } else if (fold == 1) {
         count = filter_fold(&sf);
         // printf("count = %d\n", count);
         for (i = 0; i < count; ++i) {

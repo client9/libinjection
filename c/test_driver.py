@@ -112,6 +112,9 @@ def run_tokens(testname):
 def run_folding(testname):
     runtest(testname, '-f')
 
+def run_sqli(testname):
+    runtest(testname, '-d')
+
 def test_tokens():
     for testname in sorted(glob.glob('../tests/test-tokens-*.txt')):
         testname = os.path.basename(testname)
@@ -121,6 +124,11 @@ def test_folding():
     for testname in sorted(glob.glob('../tests/test-folding-*.txt')):
         testname = os.path.basename(testname)
         yield run_folding, testname
+
+def test_sqli():
+    for testname in sorted(glob.glob('../tests/test-sqli-*.txt')):
+        testname = os.path.basename(testname)
+        yield run_sqli, testname
 
 if __name__ == '__main__':
     import sys
