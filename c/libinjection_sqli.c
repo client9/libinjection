@@ -582,16 +582,7 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             st_assign(st, 's', cs + pos + offset, len - pos - offset);
             st->str_close = CHAR_NULL;
             return len;
-        } else if (delim == '`' && (qpos == (cs + len) ||
-                                    (qpos < (cs+len) && *(qpos + 1) != '`'))) {
-            /*
-             * ending quote is not escaped.. copy and end
-             */
-            st_assign(st, 's', cs + pos + offset,
-                      qpos - (cs + pos + offset));
-            st->str_close = delim;
-            return qpos - cs + 1;
-        } else if (delim != '`' && *(qpos - 1) != '\\') {
+        } else if (*(qpos - 1) != '\\') {
             /*
              * ending quote is not escaped.. copy and end
              */
