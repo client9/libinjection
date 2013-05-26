@@ -1213,7 +1213,7 @@ int filter_fold(sfilter * sf)
             st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
             pos -= 1;
         } else if (sf->tokenvec[left].type == 'n' &&
-                   sf->tokenvec[left+1].type == '.' &&
+                   sf->tokenvec[left+1].type == 'n'  && sf->tokenvec[left+1].val[0] == '.' &&
                    sf->tokenvec[left+2].type == 'n') {
             /* ignore the '.n'
              * typically is this dabasename.table

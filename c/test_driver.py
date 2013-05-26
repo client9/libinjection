@@ -97,10 +97,6 @@ def runtest(testname, flag=None):
 
     actual = actual.strip()
 
-    print
-    print len(actual)
-    print len(data[2])
-
     if actual != data[2]:
         print "INPUT: \n" + toascii(data[1])
         print
