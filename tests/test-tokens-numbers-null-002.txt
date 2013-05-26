@@ -3,7 +3,7 @@ smoke
 --INPUT--
 SELECT \N;
 --EXPECTED--
-k SELECT
+E SELECT
 1 NULL
 ; ;
 

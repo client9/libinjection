@@ -3,7 +3,7 @@ name using backquotes
 --INPUT--
 SELECT `foo`.`bar`;
 --EXPECTED--
-k SELECT
+E SELECT
 n foo
 n .
 n bar

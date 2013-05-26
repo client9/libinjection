@@ -3,6 +3,6 @@ name using backquotes
 --INPUT--
 SELECT foo.`select`;
 --EXPECTED--
-k SELECT
+E SELECT
 n foo.`select`
 ; ;

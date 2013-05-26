@@ -3,7 +3,7 @@ Comments, C-style. Nested
 --INPUT--
 SELECT /* FOO /*/ BAR */
 --EXPECTED--
-k SELECT
+E SELECT
 X /* FOO /*/
 n BAR
 o *

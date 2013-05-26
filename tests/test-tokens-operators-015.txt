@@ -1,10 +1,10 @@
 --TEST--
-operator
+:= operator
 --INPUT--
-SELECT 1 | 2;
+SELECT 1 := 2;
 --EXPECTED--
 E SELECT
 1 1
-o |
+o :=
 1 2
 ; ;

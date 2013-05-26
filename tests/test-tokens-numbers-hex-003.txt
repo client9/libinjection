@@ -3,7 +3,7 @@
 --INPUT--
 SELECT 0X;
 --EXPECTED--
-k SELECT
+E SELECT
 n 0X
 ; ;
 

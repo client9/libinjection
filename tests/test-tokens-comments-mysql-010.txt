@@ -3,7 +3,7 @@ Comments, C-style. MySQL dangling. Incorrect version format
 --INPUT--
 SELECT 1 /*!12XXXXXXXXXXXX
 --EXPECTED--
-k SELECT
+E SELECT
 1 1
 1 12
 n XXXXXXXXXXXX

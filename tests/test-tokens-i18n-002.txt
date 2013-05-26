@@ -3,7 +3,7 @@ non-ascii word
 --INPUT--
 SELECT テスト;
 --EXPECTED--
-k SELECT
+E SELECT
 n テスト
 ; ;
 

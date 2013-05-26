@@ -1,8 +1,7 @@
 --TEST--
-Strings, basic
+Variables
 --INPUT--
-SELECT 'FOO\
+SELECT @'foo'
 --EXPECTED--
 E SELECT
-s 'FOO\
-
+v @'foo'

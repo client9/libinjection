@@ -307,22 +307,6 @@ static int st_is_unary_op(const stoken_t * st)
                                  strcmp(st->val, "~")));
 }
 
-static int st_is_arith_op(const stoken_t * st)
-{
-    return (st->type == 'o' && !(strcmp(st->val, "-") &&
-                                 strcmp(st->val, "+") &&
-                                 strcmp(st->val, "~") &&
-                                 strcmp(st->val, "!") &&
-                                 strcmp(st->val, "/") &&
-                                 strcmp(st->val, "%") &&
-                                 strcmp(st->val, "*") &&
-                                 strcmp(st->val, "|") &&
-                                 strcmp(st->val, "&") &&
-                                 /* arg1 = upper case only, arg1 = mixed case */
-                                 cstrcasecmp("MOD", st->val) &&
-                                 cstrcasecmp("DIV", st->val)));
-}
-
 /* Parsers
  *
  *
@@ -710,13 +694,13 @@ static size_t parse_word(sfilter * sf)
 
     st_assign(sf->current, 'n', cs + pos, slen);
 
-     dot = strchr(sf->current->val, '.');
+    dot = strchr(sf->current->val, '.');
     if (dot != NULL) {
         *dot = '\0';
 
         ch = is_keyword(sf->current->val);
 
-        if (ch == 'k' || ch == 'o') {
+        if (ch == 'k' || ch == 'o' || ch == 'E') {
             /*
              * we got something like "SELECT.1"
              */
@@ -795,12 +779,20 @@ static size_t parse_var(sfilter * sf)
     /*
      * MySQL allows @@`version`
      */
-    if (pos1 < slen && cs[pos1] == '`') {
-        sf->pos = pos1;
-        pos1 = parse_string_tick(sf);
-        sf->current->type = 'v';
-        return pos1;
+    if (pos1 < slen) {
+        if (cs[pos1] == '`') {
+            sf->pos = pos1;
+            pos1 = parse_string_tick(sf);
+            sf->current->type = 'v';
+            return pos1;
+        } else if (cs[pos1] == CHAR_SINGLE || cs[pos1] == CHAR_DOUBLE) {
+            sf->pos = pos1;
+            pos1 = parse_string(sf);
+            sf->current->type = 'v';
+            return pos1;
+        }
     }
+
 
     xlen = strlencspn(cs + pos1, slen - pos1,
                      " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013\014");
@@ -993,7 +985,7 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
 
     if (!
         (a->type == 'k' || a->type == 'n' || a->type == 'o'
-         || a->type == 'U')) {
+         || a->type == 'U' || a->type == 'E')) {
         return FALSE;
     }
 
@@ -1095,6 +1087,15 @@ int filter_fold(sfilter * sf)
             continue;
         } else if (sf->tokenvec[left].type =='o' && st_is_unary_op(&sf->tokenvec[left+1])) {
             pos -= 1;
+            if (left > 0) {
+                left -= 1;
+            }
+            continue;
+        } else if (sf->tokenvec[left].type =='(' && st_is_unary_op(&sf->tokenvec[left+1])) {
+            pos -= 1;
+            if (left > 0) {
+                left -= 1;
+            }
             continue;
         } else if (syntax_merge_words(&sf->tokenvec[left], &sf->tokenvec[left+1])) {
             pos -= 1;
@@ -1118,6 +1119,14 @@ int filter_fold(sfilter * sf)
             // password CAN be a function, coalese CAN be a function
             sf->tokenvec[left].type = 'E';
             continue;
+#if 0
+        } else if (sf->tokenvec[left].type == 'o' && cstrcasecmp("LIKE", sf->tokenvec[left].val) == 0
+                   && sf->tokenvec[left+1].type == '(') {
+            // two use cases   "foo" LIKE "BAR" (normal operator)
+            // "foo" = LIKE(1,2)
+            sf->tokenvec[left].type = 'f';
+            continue;
+#endif
         }
 
         /* all cases of handing 2 tokens is done
@@ -1157,12 +1166,27 @@ int filter_fold(sfilter * sf)
             pos -= 1;
             continue;
         } else if (sf->tokenvec[left].type == '1' &&
-                   st_is_arith_op(&sf->tokenvec[left+1]) &&
+                   sf->tokenvec[left+1].type == 'o' &&
                    sf->tokenvec[left+2].type == '1') {
             pos -= 2;
             continue;
-        } else if (sf->tokenvec[left].type == 'n' &&
-                   st_is_arith_op(&sf->tokenvec[left+1]) &&
+
+        } else if (sf->tokenvec[left].type == 'o' &&
+                   sf->tokenvec[left+1].type != '(' &&
+                   sf->tokenvec[left+2].type == 'o') {
+            if (left > 0) {
+                left -= 1;
+            }
+            pos -= 2;
+            continue;
+        } else if (sf->tokenvec[left].type == '&' &&
+                   sf->tokenvec[left+2].type == '&') {
+            pos -= 2;
+            continue;
+
+/* increases false positives */
+        } else if ((sf->tokenvec[left].type == 'n' || sf->tokenvec[left].type == '1' ) &&
+                   sf->tokenvec[left+1].type == 'o' &&
                    (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
             pos -= 2;
             continue;
@@ -1385,7 +1409,8 @@ int libinjection_is_string_sqli(sfilter * sql_state,
         if (streq(sql_state->pat, "sos")
             || streq(sql_state->pat, "s&s")) {
                 if ((sql_state->tokenvec[0].str_open == CHAR_NULL)
-                    && (sql_state->tokenvec[2].str_close == CHAR_NULL)) {
+                    && (sql_state->tokenvec[2].str_close == CHAR_NULL)
+                    && (sql_state->tokenvec[0].str_close == sql_state->tokenvec[2].str_open)) {
                     /*
                      * if ....foo" + "bar....
                      */
@@ -1397,7 +1422,12 @@ int libinjection_is_string_sqli(sfilter * sql_state,
                     sql_state->reason = __LINE__;
                     return FALSE;
                 }
-        } else if (streq(sql_state->pat, "sks") && cstrcasecmp("INTO OUTFILE", sql_state->tokenvec[1].val)) {
+        } else if (streq(sql_state->pat, "so1")) {
+            if (sql_state->tokenvec[0].str_open == CHAR_NULL) {
+                sql_state->reason = __LINE__;
+                return FALSE;
+            }
+        } else if ((sql_state->tokenvec[1].type == 'k') && cstrcasecmp("INTO OUTFILE", sql_state->tokenvec[1].val)) {
             sql_state->reason = __LINE__;
             return FALSE;
         }

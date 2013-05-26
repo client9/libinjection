@@ -3,6 +3,6 @@ smoke
 --INPUT--
 SELECT +1
 --EXPECTED--
-k SELECT
+E SELECT
 o +
 1 1

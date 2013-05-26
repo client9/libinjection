@@ -3,7 +3,7 @@ floating point parsing
 --INPUT--
 SELECT .123e-1;
 --EXPECTED--
-k SELECT
+E SELECT
 1 .123e-1
 ; ;
 

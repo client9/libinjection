@@ -4,5 +4,5 @@ problems.
 --INPUT--
 SELECT @`foobar`
 --EXPECTED--
-k SELECT
+E SELECT
 v foobar

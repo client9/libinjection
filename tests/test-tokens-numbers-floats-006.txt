@@ -3,6 +3,6 @@ floating point parsing
 --INPUT--
 SELECT .;
 --EXPECTED--
-k SELECT
+E SELECT
 n .
 ; ;

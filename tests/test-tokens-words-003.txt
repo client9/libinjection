@@ -3,7 +3,7 @@ keyword parsing
 --INPUT--
 SELECT 1 IN BOOLEAN MODE;
 --EXPECTED--
-k SELECT
+E SELECT
 1 1
 n IN
 k BOOLEAN

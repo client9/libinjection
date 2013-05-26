@@ -140,8 +140,8 @@ a%27%2B%27b
 ' OR 1='1
 
 # new variations
-X' != 'Y' = 0 = 1
-X' = 'X' = 0 = 1
+X' != 'Y' = 0 = '1
+X' = 'X' = 0 = '1
 X' = 'X' = 'X' = 0 = '1
 X' - 'Y' - 0 = '1
 
@@ -254,3 +254,13 @@ union%20%28select+id+from+users+limit+1%2C1%29
 1--%0a+union%0C-%28%20select+table_name+from+information_schema.tables+limit+1%2C1%29
 1'--%0a+union%0C-%28%20select+table_name+from+information_schema.tables+limit+1%2C1%29
 @version--%0a+union%0C-%28%20select+table_name+from+information_schema.tables+limit+1%2C1%29
+
+-.1a%20union%20%28select+id+from+users+limit+1%2C1%29
+
+case 1 when 2 then 2 end
+case sin(1) when 2 then 2 end
+case '1' when 2 then 2 end
+case 1 when 's' then 2 end
+case when 2 then 3 end
+case when 's' then 3 end
+case when f(1) then 3 end

@@ -3,6 +3,6 @@ Comments, C-style.  Dangling operator or partial cstyle comment?
 --INPUT--
 SELECT 1 /
 --EXPECTED--
-k SELECT
+E SELECT
 1 1
 o /

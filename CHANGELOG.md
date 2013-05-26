@@ -4,7 +4,13 @@ Big Engine change.
 * Tokenizer is now really dumb, and publically exposed.  See `libinjection_sqli_tokenize`.
 * Folding engine completely rewritten to be simpler and easier to extend, debug, port.
 * MySQL `backticks` now handled correctly
+* @"var" and @'var' parsed correctly (mysql)
+* ":=" operator parsed correctly
 * non-ascii SQL variables and barewords handled correctly
+* less false positives and those that are false positives
+  are more "indeterminate cases" and are only in a few
+  fingerprints
+* autogeneration of fingerprints with trivial SQL variations
 
 # v2.0.4 2013-05-21 IMPORTANT
 

@@ -4,7 +4,7 @@ For keywords only, no space between keyword and unary operator
 SELECT UTL_INADDR.GET_HOST_ADDRESS(1)
 
 --EXPECTED--
-k SELECT
+E SELECT
 f UTL_INADDR.GET_HOST_ADDRESS
 ( (
 1 1

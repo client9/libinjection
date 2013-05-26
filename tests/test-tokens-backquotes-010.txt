@@ -5,5 +5,5 @@ and code-coverage tests
 --INPUT--
 SELECT @`foobar
 --EXPECTED--
-k SELECT
+E SELECT
 v foobar

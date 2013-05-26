@@ -58,7 +58,8 @@ KEYWORDS = {
 'APPLOCK_MODE'                : 'f',
 'APPLOCK_TEST'                : 'f',
 'ASSEMBLYPROPERTY'            : 'f',
-'AS'                          : 'k',
+# too ordinary to be a keyword
+'AS'                          : 'n',
 'ASC'                         : 'k',
 'ASCII'                       : 'f',
 'ASENSITIVE'                  : 'k',
@@ -517,7 +518,15 @@ KEYWORDS = {
 'NO_WRITE_TO_BINLOG'          : 'k',
 'NTH_VALUE'                   : 'f',
 'NTILE'                       : 'f',
-'NULL'                        : '1',
+
+# NULL is treated as "variable" type
+# Sure it's a keyword, but it's really more
+# like a number or value.
+# but we don't want it folded away
+# since it's a good indicator of SQL
+# ('true' and 'false' are also similar)
+'NULL'                        : 'v',
+
 'NULLIF'                      : 'f',
 'NUMERIC'                     : 'k',
 # MSACCESS
@@ -1151,7 +1160,10 @@ PHRASES = {
     'WAITFOR RECEIVE': 'E',
     'CREATE OR REPLACE' : 'E',
     # 'INTERSECT ALL' -- ORACLE
-    'INTERSECT ALL'     : 'o'
+    'INTERSECT ALL'     : 'o',
+
+    # hacker mistake
+    'SELECT ALL' : 'E'
     }
 
 import json

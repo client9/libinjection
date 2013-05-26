@@ -4,5 +4,5 @@ close enough and needed for testing for memory issues
 --INPUT--
 SELECT @`foobar``
 --EXPECTED--
-k SELECT
+E SELECT
 v foobar``

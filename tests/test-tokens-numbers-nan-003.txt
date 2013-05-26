@@ -3,5 +3,5 @@ smoke
 --INPUT--
 SELECT binary_float_infinity
 --EXPECTED--
-k SELECT
+E SELECT
 1 binary_float_infinity

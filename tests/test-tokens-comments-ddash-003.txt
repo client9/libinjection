@@ -4,7 +4,7 @@ Double dash 'till end of line' comment.  Comment is removed not last token.
 SELECT 1 -- ABCD
 ;
 --EXPECTED--
-k SELECT
+E SELECT
 1 1
 c -- ABCD
 ; ;

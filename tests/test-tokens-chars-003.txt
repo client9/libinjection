@@ -3,5 +3,5 @@ Blackslash test
 --INPUT--
 SELECT \
 --EXPECTED--
-k SELECT
+E SELECT
 ? \

@@ -3,6 +3,6 @@ Variables
 --INPUT--
 SELECT @@VERSION;
 --EXPECTED--
-k SELECT
+E SELECT
 v @@VERSION
 ; ;

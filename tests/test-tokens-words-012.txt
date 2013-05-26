@@ -3,6 +3,6 @@ For keywords only, no space between keyword and unary operator
 --INPUT--
 SELECT-1.
 --EXPECTED--
-k SELECT
+E SELECT
 o -
 1 1.

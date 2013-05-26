@@ -47,7 +47,7 @@ sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_d
 	${CC} -g -O1 -o sqli sqli_cli.c
 
 fptool: Makefile fptool.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
-	${CC} ${CFLAGS} -o fptool fptool.c 
+	${CC} ${CFLAGS} -o fptool fptool.c
 
 test_speed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_speed.c
 	${CC} ${CFLAGS} -DNDEDBUG -o test_speed libinjection_sqli.c test_speed.c
@@ -89,7 +89,8 @@ libinjection_sqli_data.h: Makefile sqlparse2c.py sqlparse_data.json
 #
 sort:
 	wc -l fingerprints.txt
-	cat fingerprints.txt | ./make_parens.py | ./make_parens.py | grep -v -E '(1ono1)|(1onos)|(sono1)|(1oko1)|(1onc)' | LC_ALL=C sort -u > /tmp/junk
+	cp fingerprints.txt fingerprints-orig.txt
+	cat fingerprints.txt | ./make_parens.py | ./make_parens.py > /tmp/junk
 	mv /tmp/junk fingerprints.txt
 	wc -l fingerprints.txt
 	${MAKE} libinjection_sqli_data.h

@@ -3,7 +3,7 @@ Bogus double operator
 --INPUT--
 SELECT 1 */* FOO */ 2;
 --EXPECTED--
-k SELECT
+E SELECT
 1 1
 o *
 c /* FOO */

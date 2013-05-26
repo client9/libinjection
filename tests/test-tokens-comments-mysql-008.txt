@@ -3,6 +3,6 @@ Comments, C-style. MySQL dangling.  Not clear what right behavior is
 --INPUT--
 SELECT 1 /*!123
 --EXPECTED--
-k SELECT
+E SELECT
 1 1
 1 23

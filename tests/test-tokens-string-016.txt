@@ -3,6 +3,6 @@ Strings, basic
 --INPUT--
 SELECT "FOO\"
 --EXPECTED--
-k SELECT
+E SELECT
 s "FOO\"
 

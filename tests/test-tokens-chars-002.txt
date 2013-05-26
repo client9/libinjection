@@ -3,7 +3,7 @@ Blackslash test
 --INPUT--
 SELECT \X;
 --EXPECTED--
-k SELECT
+E SELECT
 ? \
 n X
 ; ;

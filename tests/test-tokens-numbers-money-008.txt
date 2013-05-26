@@ -3,5 +3,5 @@ smoke
 --INPUT--
 SELECT $
 --EXPECTED--
-k SELECT
+E SELECT
 

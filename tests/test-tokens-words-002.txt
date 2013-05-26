@@ -3,6 +3,6 @@ keyword parsing
 --INPUT--
 SELECT Z;
 --EXPECTED--
-k SELECT
+E SELECT
 n Z
 ; ;

@@ -3,6 +3,6 @@ Comments, C-style.  Note last comment is preserved
 --INPUT--
 SELECT 1 /* 2
 --EXPECTED--
-k SELECT
+E SELECT
 1 1
 c /* 2

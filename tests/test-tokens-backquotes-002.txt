@@ -3,6 +3,6 @@ keywords backquotes are not keywords
 --INPUT--
 SELECT `select`;
 --EXPECTED--
-k SELECT
+E SELECT
 n select
 ; ;

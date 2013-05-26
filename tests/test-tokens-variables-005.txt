@@ -3,5 +3,5 @@ Variables
 --INPUT--
 SELECT @
 --EXPECTED--
-k SELECT
+E SELECT
 v @
