@@ -233,6 +233,7 @@ static const keyword_t sql_keywords[] = {
     {"DAY_MICROSECOND", 'k'},
     {"DAY_MINUTE", 'k'},
     {"DAY_SECOND", 'k'},
+    {"DBMS_LOCK.SLEEP", 'f'},
     {"DBMS_PIPE.RECEIVE_MESSAGE", 'f'},
     {"DB_ID", 'f'},
     {"DB_NAME", 'f'},
@@ -758,6 +759,7 @@ static const keyword_t sql_keywords[] = {
     {"USAGE", 'k'},
     {"USE", 'E'},
     {"USER_ID", 'n'},
+    {"USER_LOCK.SLEEP", 'f'},
     {"USER_NAME", 'f'},
     {"USING", 'f'},
     {"UTC_DATE", 'k'},
@@ -810,7 +812,7 @@ static const keyword_t sql_keywords[] = {
     {"ZEROBLOB", 'f'},
     {"ZEROFILL", 'k'},
 };
-static const size_t sql_keywords_sz = 753;
+static const size_t sql_keywords_sz = 755;
 static const char* multikeywords_start[] = {
     "ALTER",
     "AT",

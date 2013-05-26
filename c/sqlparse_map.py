@@ -933,7 +933,9 @@ KEYWORDS = {
 'YEARWEEK'                    : 'f',
 'YEAR_MONTH'                  : 'k',
 'ZEROBLOB'                    : 'f',
-'ZEROFILL'                    : 'k'
+'ZEROFILL'                    : 'k',
+'DBMS_LOCK.SLEEP'             : 'f',
+'USER_LOCK.SLEEP'             : 'f',
 }
 
 # special in that single char is a valid operator
@@ -1163,7 +1165,9 @@ PHRASES = {
     'INTERSECT ALL'     : 'o',
 
     # hacker mistake
-    'SELECT ALL' : 'E'
+    'SELECT ALL' : 'E',
+
+
     }
 
 import json

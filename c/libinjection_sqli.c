@@ -1110,10 +1110,12 @@ int filter_fold(sfilter * sf)
             continue;
         } else if (sf->tokenvec[left].type == 'n' &&
                    sf->tokenvec[left+1].type == '(' && (
-                   cstrcasecmp("IN", sf->tokenvec[left].val) |
-                   cstrcasecmp("DATABASE", sf->tokenvec[left].val) |
-                   cstrcasecmp("USER", sf->tokenvec[left].val) |
-                   cstrcasecmp("PASSWORD", sf->tokenvec[left].val))) {
+                       cstrcasecmp("IN", sf->tokenvec[left].val) == 0 ||
+                       cstrcasecmp("DATABASE", sf->tokenvec[left].val) == 0 ||
+                       cstrcasecmp("USER", sf->tokenvec[left].val) == 0 ||
+                       cstrcasecmp("PASSWORD", sf->tokenvec[left].val) == 0
+                       )
+            ) {
 
             // pos is the same
             // other conversions need to go here... for instance
