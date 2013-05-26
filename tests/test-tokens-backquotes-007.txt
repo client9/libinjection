@@ -4,5 +4,5 @@ variable using backquotes
 SELECT @`version`;
 --EXPECTED--
 E SELECT
-v version
+v @`version`
 ; ;

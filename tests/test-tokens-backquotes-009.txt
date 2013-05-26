@@ -5,4 +5,4 @@ problems.
 SELECT @`foobar`
 --EXPECTED--
 E SELECT
-v foobar
+v @`foobar`

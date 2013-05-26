@@ -765,44 +765,52 @@ static size_t parse_var(sfilter * sf)
 {
     const char *cs = sf->s;
     const size_t slen = sf->slen;
-    size_t pos = sf->pos;
-    size_t pos1 = pos + 1;
+    size_t pos = sf->pos + 1;
     size_t xlen;
+
+    /*
+     * var_count is only used to reconstruct
+     * the input.  It counts the number of '@'
+     * seen 0 in the case of NULL, 1 or 2
+     */
 
     /*
      * move past optional other '@'
      */
-    if (pos1 < slen && cs[pos1] == '@') {
-        pos1 += 1;
+    if (pos < slen && cs[pos] == '@') {
+        pos += 1;
+        sf->current->var_count = 2;
+    } else {
+        sf->current->var_count = 1;
     }
 
     /*
      * MySQL allows @@`version`
      */
-    if (pos1 < slen) {
-        if (cs[pos1] == '`') {
-            sf->pos = pos1;
-            pos1 = parse_string_tick(sf);
+    if (pos < slen) {
+        if (cs[pos] == '`') {
+            sf->pos = pos;
+            pos = parse_string_tick(sf);
             sf->current->type = 'v';
-            return pos1;
-        } else if (cs[pos1] == CHAR_SINGLE || cs[pos1] == CHAR_DOUBLE) {
-            sf->pos = pos1;
-            pos1 = parse_string(sf);
+            return pos;
+        } else if (cs[pos] == CHAR_SINGLE || cs[pos] == CHAR_DOUBLE) {
+            sf->pos = pos;
+            pos = parse_string(sf);
             sf->current->type = 'v';
-            return pos1;
+            return pos;
         }
     }
 
 
-    xlen = strlencspn(cs + pos1, slen - pos1,
+    xlen = strlencspn(cs + pos, slen - pos,
                      " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013\014");
 //                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
     if (xlen == 0) {
-        st_assign(sf->current, 'v', cs + pos, (pos1 - pos));
-        return pos1;
+        st_assign(sf->current, 'v', cs + pos, 0);
+        return pos;
     } else {
-        st_assign(sf->current, 'v', cs + pos, xlen + (pos1 - pos));
-        return pos1 + xlen;
+        st_assign(sf->current, 'v', cs + pos, xlen);
+        return pos + xlen;
     }
 }
 

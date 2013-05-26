@@ -50,6 +50,7 @@ typedef struct {
     char type;
     char str_open;
     char str_close;
+    char var_count;
     char val[ST_MAX_SIZE];
 } stoken_t;
 

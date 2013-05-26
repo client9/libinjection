@@ -6,4 +6,4 @@ and code-coverage tests
 SELECT @`foobar
 --EXPECTED--
 E SELECT
-v foobar
+v @`foobar

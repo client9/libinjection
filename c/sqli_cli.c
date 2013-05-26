@@ -19,6 +19,47 @@
  */
 #include "libinjection_sqli.c"
 
+void print_string(stoken_t* t)
+{
+    /* print opening quote */
+    if (t->str_open != CHAR_NULL) {
+        printf("%c", t->str_open);
+    }
+
+    /* print content */
+    printf("%s", t->val);
+
+    /* print closing quote */
+    if (t->str_close != CHAR_NULL) {
+        printf("%c", t->str_close);
+    }
+}
+
+void print_var(stoken_t* t)
+{
+    if (t->var_count >= 1) {
+        printf("%c", '@');
+    }
+    if (t->var_count == 2) {
+        printf("%c", '@');
+    }
+    print_string(t);
+}
+
+void print_token(stoken_t *t) {
+    printf("%c ", t->type);
+    switch (t->type) {
+    case 's':
+        print_string(t);
+        break;
+    case 'v':
+        print_var(t);
+        break;
+    default:
+        printf("%s", t->val);
+    }
+    printf("%s", "\n");
+}
 
 int main(int argc, const char* argv[])
 {
@@ -53,35 +94,11 @@ int main(int argc, const char* argv[])
         // printf("count = %d\n", count);
         for (i = 0; i < count; ++i) {
             //printf("token: %d :: ", i);
-            if (sf.tokenvec[i].type == 's') {
-                printf("%c ", sf.tokenvec[i].type);
-                if (sf.tokenvec[i].str_open != CHAR_NULL) {
-                    printf("%c", sf.tokenvec[i].str_open);
-                }
-                printf("%s", sf.tokenvec[i].val);
-                if (sf.tokenvec[i].str_close != CHAR_NULL) {
-                    printf("%c", sf.tokenvec[i].str_open);
-                }
-                printf("%s", "\n");
-            } else {
-                printf("%c %s\n", sf.tokenvec[i].type, sf.tokenvec[i].val);
-            }
+            print_token(&(sf.tokenvec[i]));
         }
     } else {
         while (libinjection_sqli_tokenize(&sf, &current)) {
-            if (current.type == 's') {
-                printf("%c ", current.type);
-                if (current.str_open != CHAR_NULL) {
-                    printf("%c", current.str_open);
-                }
-                printf("%s", current.val);
-                if (current.str_close != CHAR_NULL) {
-                    printf("%c", current.str_open);
-               }
-                printf("%s", "\n");
-            } else {
-                printf("%c %s\n", current.type, current.val);
-            }
+            print_token(&current);
         }
     }
 
