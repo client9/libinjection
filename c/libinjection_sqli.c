@@ -1122,13 +1122,6 @@ int filter_fold(sfilter * sf)
             // password CAN be a function, coalese CAN be a function
             sf->tokenvec[left].type = 'f';
             continue;
-        } else if (sf->tokenvec[left].type == 'k' && cstrcasecmp("IF", sf->tokenvec[left].val) == 0
-                   && sf->tokenvec[left+1].type == '(') {
-            // pos is the same
-            // other conversions need to go here... for instance
-            // password CAN be a function, coalese CAN be a function
-            sf->tokenvec[left].type = 'E';
-            continue;
 #if 0
         } else if (sf->tokenvec[left].type == 'o' && cstrcasecmp("LIKE", sf->tokenvec[left].val) == 0
                    && sf->tokenvec[left+1].type == '(') {
