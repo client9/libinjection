@@ -1163,22 +1163,11 @@ int filter_fold(sfilter * sf)
         /*
          * now look for three token folding
          */
-
-        /* FOLD "(-(" -> "(("
-         * remove unary operators
-         */
-        if (sf->tokenvec[left].type == '(' &&
+        if (sf->tokenvec[left].type == '1' &&
             sf->tokenvec[left+1].type == 'o' &&
-            sf->tokenvec[left+2].type == '(') {
-            st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
-            pos -= 1;
-            continue;
-        } else if (sf->tokenvec[left].type == '1' &&
-                   sf->tokenvec[left+1].type == 'o' &&
-                   sf->tokenvec[left+2].type == '1') {
+            sf->tokenvec[left+2].type == '1') {
             pos -= 2;
             continue;
-
         } else if (sf->tokenvec[left].type == 'o' &&
                    sf->tokenvec[left+1].type != '(' &&
                    sf->tokenvec[left+2].type == 'o') {
@@ -1191,8 +1180,6 @@ int filter_fold(sfilter * sf)
                    sf->tokenvec[left+2].type == '&') {
             pos -= 2;
             continue;
-
-/* increases false positives */
         } else if ((sf->tokenvec[left].type == 'n' || sf->tokenvec[left].type == '1' ) &&
                    sf->tokenvec[left+1].type == 'o' &&
                    (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
