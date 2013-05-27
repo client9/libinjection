@@ -677,31 +677,33 @@ static size_t parse_word(sfilter * sf)
 {
     const char *cs = sf->s;
     size_t pos = sf->pos;
-    char *dot;
     char ch;
+    char delim;
+    size_t i;
     size_t slen =
         strlencspn(cs + pos, sf->slen - pos,
                    " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013\014");
 
     st_assign(sf->current, 'n', cs + pos, slen);
 
-    dot = strchr(sf->current->val, '.');
-    if (dot != NULL) {
-        *dot = '\0';
-
-        ch = is_keyword(sf->current->val);
-
-        if (ch == 'k' || ch == 'o' || ch == 'E') {
-            /*
-             * we got something like "SELECT.1"
-             */
-            sf->current->type = ch;
-            return pos + strlen(sf->current->val);
-        } else {
-            /*
-             * something else, put back dot
-             */
-            *dot = '.';
+    /* now we need to look inside what we good for "." and "`"
+     * and see if what is before is a keyword or not
+     */
+    for (i =0; i < strlen(sf->current->val); ++i) {
+        delim = sf->current->val[i];
+        if (delim == '.' || delim == '`') {
+            sf->current->val[i] = '\0';
+            ch = is_keyword(sf->current->val);
+            if (ch == 'k' || ch == 'o' || ch == 'E') {
+                /*
+                 * we got something like "SELECT.1"
+                 * or SELECT`column`
+                 */
+                sf->current->type = ch;
+                return pos + strlen(sf->current->val);
+            } else {
+                sf->current->val[i] = delim;
+            }
         }
     }
 
