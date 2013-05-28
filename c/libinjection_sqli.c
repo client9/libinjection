@@ -587,7 +587,7 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             st_assign(st, 's', cs + pos + offset, len - pos - offset);
             st->str_close = CHAR_NULL;
             return len;
-        } else if (qpos > cs && *(qpos - 1) != '\\') {
+        } else if (qpos == cs || *(qpos - 1) != '\\') {
             /*
              * ending quote is not escaped.. copy and end
              */
@@ -1439,7 +1439,6 @@ int libinjection_is_sqli_pattern(sfilter* sql_state, void* callbackarg)
                 /* "foo" -1 is ok, foo"-1 is not */
                 sql_state->reason = __LINE__;
                 return FALSE;
-            }
         } else if ((sql_state->tokenvec[1].type == 'k') && cstrcasecmp("INTO OUTFILE", sql_state->tokenvec[1].val)) {
             sql_state->reason = __LINE__;
             return FALSE;
