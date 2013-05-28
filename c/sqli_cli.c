@@ -104,7 +104,7 @@ int main(int argc, const char* argv[])
 
     libinjection_sqli_init(&sf, copy, slen, CHAR_NULL, comment_style);
     if (detect == 1) {
-        detect = libinjection_is_sqli(&sf, copy, slen, NULL, NULL);
+        detect = libinjection_is_sqli(&sf, copy, slen, CHAR_NULL, COMMENTS_ANSI);
         if (detect) {
             printf("%s\n", sf.pat);
         }
