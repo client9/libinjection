@@ -63,7 +63,7 @@ void print_token(stoken_t *t) {
 
 int main(int argc, const char* argv[])
 {
-  char comment_style = COMMENTS_ANSI;
+    char comment_style = COMMENTS_ANSI;
     int fold = 0;
     int detect = 0;
 
@@ -78,25 +78,25 @@ int main(int argc, const char* argv[])
         return 1;
     }
     while (1) {
-      if (strcmp(argv[offset], "-m") == 0) {
-        comment_style = COMMENTS_MYSQL;
-        offset += 1;
-      }
-      else if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
-        fold = 1;
-        offset += 1;
-      } else if (strcmp(argv[offset], "-d") == 0 || strcmp(argv[offset], "--detect") == 0) {
-        detect = 1;
-        offset += 1;
-      } else {
-	break;
-      }
+        if (strcmp(argv[offset], "-m") == 0) {
+            comment_style = COMMENTS_MYSQL;
+            offset += 1;
+        }
+        else if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
+            fold = 1;
+            offset += 1;
+        } else if (strcmp(argv[offset], "-d") == 0 || strcmp(argv[offset], "--detect") == 0) {
+            detect = 1;
+            offset += 1;
+        } else {
+            break;
+        }
     }
 
-     /* ATTENTION: argv is a C-string, null terminated.  We copy this
-      * to it's own location, WITHOUT null byte.  This way, valgrind
-      * can see if we run past the buffer.
-      */
+    /* ATTENTION: argv is a C-string, null terminated.  We copy this
+     * to it's own location, WITHOUT null byte.  This way, valgrind
+     * can see if we run past the buffer.
+     */
 
     size_t slen = strlen(argv[offset]);
     char* copy = (char* ) malloc(slen);
@@ -104,7 +104,7 @@ int main(int argc, const char* argv[])
 
     libinjection_sqli_init(&sf, copy, slen, CHAR_NULL, comment_style);
     if (detect == 1) {
-      detect = libinjection_is_sqli(&sf, copy, slen, NULL, NULL);
+        detect = libinjection_is_sqli(&sf, copy, slen, NULL, NULL);
         if (detect) {
             printf("%s\n", sf.pat);
         }
