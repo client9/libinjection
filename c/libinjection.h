@@ -37,7 +37,7 @@ extern "C" {
  * See python's normalized version
  * http://www.python.org/dev/peps/pep-0386/#normalizedversion
  */
-#define LIBINJECTION_VERSION "3.0.0-pre2"
+#define LIBINJECTION_VERSION "3.0.0-pre3"
 
 #define ST_MAX_SIZE 32
 #define MAX_TOKENS 5
@@ -45,6 +45,9 @@ extern "C" {
 #define CHAR_NULL '\0'
 #define CHAR_SINGLE '\''
 #define CHAR_DOUBLE '"'
+
+#define COMMENTS_ANSI 0
+#define COMMENTS_MYSQL 1
 
 typedef struct {
     char type;
@@ -73,11 +76,32 @@ typedef struct {
     /*  +1 for ending null */
     char pat[MAX_TOKENS + 1];
     char delim;
+    char comment_style;
+
     int reason;
 
-    int stats_dd;
-    int stats_ddmysql;
-    int stats_c;
+    /* Number of ddw (dash-dash-white) comments
+     * These comments are in the form of
+     *   '--[whitespace]' or '--[EOF]'
+     *
+     * All databases treat this as a comment.
+     */
+     int stats_comment_ddw;
+
+    /* Number of ddx (dash-dash-[notwhite]) comments
+     *
+     * ANSI SQL treats these are comments, MySQL treats this as
+     * two unary operators '-' '-'
+     *
+     * If you are parsing result returns FALSE and 
+     * stats_comment_dd > 0, you should reparse with
+     * COMMENT_MYSQL
+     *
+     */
+    int stats_comment_ddx;
+
+    int stats_comment_c;
+
     int stats_folds;
 
 } sfilter;
@@ -125,14 +149,16 @@ int libinjection_is_sqli(sfilter * sql_state,
  */
 const char* libinjection_sqli_fingerprint(sfilter * sql_state,
                                           const char *s, size_t slen,
-                                          const char delim);
+                                          char delim,
+					  char comment_style);
 
 /*  FOR H@CKERS ONLY
  *
  */
 
-void libinjection_sqli_init(sfilter* sql_state, const char* str,
-                            size_t slen, char delim);
+void libinjection_sqli_init(sfilter* sql_state,
+			    const char* str, size_t slen,
+			    char delim, char comment_style);
 
 int libinjection_sqli_tokenize(sfilter * sql_state, stoken_t *ouput);
 

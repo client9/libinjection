@@ -361,17 +361,24 @@ static size_t parse_dash(sfilter * sf)
     size_t pos = sf->pos;
 
     /*
-     * three cases
+     * five cases
      * 1) --[white]  this is always a SQL comment
-     * 1) --[EOF]    this is a comment
-     * 2) --[notwhite] in MySQL this is NOT a comment but two unary operators
-     * 3) --[notwhite] everyone ele thinks this is a comment
+     * 2) --[EOF]    this is a comment
+     * 3) --[notwhite] in MySQL this is NOT a comment but two unary operators
+     * 4) --[notwhite] everyone else thinks this is a comment
+     * 5) -[not dash]  '-' is a unary operator
      */
 
     if (pos + 2 < slen && cs[pos + 1] == '-' && char_is_white(cs[pos+2]) ) {
         return parse_eol_comment(sf);
     } else if (pos +2 == slen && cs[pos + 1] == '-') {
         return parse_eol_comment(sf);
+    } else if (pos + 1 < slen && cs[pos + 1] == '-' && sf->comment_style == COMMENTS_ANSI) {
+	/* --[not-white] not-white case:
+	 *
+	 */
+	sf->stats_comment_ddx += 1;
+	return parse_eol_comment(sf);
     } else {
         st_assign_char(sf->current, 'o', '-');
         return pos + 1;
@@ -953,12 +960,13 @@ int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
  * Initializes parsing state
  *
  */
-void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, char delim)
+void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, char delim, char comment_style)
 {
     memset(sf, 0, sizeof(sfilter));
     sf->s = s;
     sf->slen = len;
     sf->delim = delim;
+    sf->comment_style = comment_style;
 }
 
 /** See if two tokens can be merged since they are compound SQL phrases.
@@ -1243,12 +1251,12 @@ int filter_fold(sfilter * sf)
 const char*
 libinjection_sqli_fingerprint(sfilter * sql_state,
                               const char *s, size_t slen,
-                              const char delim)
+                              char delim, char comment_style)
 {
     int i;
     int tlen = 0;
 
-    libinjection_sqli_init(sql_state, s, slen, delim);
+    libinjection_sqli_init(sql_state, s, slen, delim, comment_style);
 
     tlen = filter_fold(sql_state);
     for (i = 0; i < tlen; ++i) {
@@ -1471,11 +1479,15 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
     /*
      * test input "as-is"
      */
-    libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL);
+    libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_ANSI);
     if (fn(sql_state, callbackarg)) {
         return TRUE;
+    } else if (sql_state->stats_comment_ddx) {
+      libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_MYSQL);
+      if (fn(sql_state, callbackarg)) {
+        return TRUE;
+      }
     }
-
     /*
      * if input has a single_quote, then
      * test as if input was actually '
@@ -1486,17 +1498,22 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
      *
      */
     if (memchr(s, CHAR_SINGLE, slen)) {
-        libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE);
-        if (fn(sql_state, callbackarg)) {
-            return TRUE;
-        }
+      libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_ANSI);
+      if (fn(sql_state, callbackarg)) {
+	return TRUE;
+      } else if (sql_state->stats_comment_ddx) {
+	libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_MYSQL);
+	if (fn(sql_state, callbackarg)) {
+	  return TRUE;
+	}
+      }
     }
 
     /*
      * same as above but with a double-quote "
      */
     if (memchr(s, CHAR_DOUBLE, slen)) {
-        libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_DOUBLE);
+      libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_DOUBLE, COMMENTS_MYSQL);
         if (fn(sql_state, callbackarg)) {
             return TRUE;
         }
