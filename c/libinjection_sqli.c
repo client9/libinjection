@@ -255,7 +255,7 @@ static char is_keyword(const char* key)
 
 static void st_clear(stoken_t * st)
 {
-    memset(st, 0, sizeof(stokent));
+    memset(st, 0, sizeof(stoken_t));
 }
 
 static void st_assign_char(stoken_t * st, const char stype, const char value)
