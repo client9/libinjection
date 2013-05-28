@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 
-#include "libinjection_sqli.c"
+#include "libinjection.h"
 
 int main(int argc, const char* argv[])
 {

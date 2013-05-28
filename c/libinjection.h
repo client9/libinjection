@@ -93,7 +93,7 @@ typedef struct {
      * ANSI SQL treats these are comments, MySQL treats this as
      * two unary operators '-' '-'
      *
-     * If you are parsing result returns FALSE and 
+     * If you are parsing result returns FALSE and
      * stats_comment_dd > 0, you should reparse with
      * COMMENT_MYSQL
      *
@@ -150,17 +150,25 @@ int libinjection_is_sqli(sfilter * sql_state,
 const char* libinjection_sqli_fingerprint(sfilter * sql_state,
                                           const char *s, size_t slen,
                                           char delim,
-					  char comment_style);
+                                          char comment_style);
 
 /*  FOR H@CKERS ONLY
  *
  */
 
 void libinjection_sqli_init(sfilter* sql_state,
-			    const char* str, size_t slen,
-			    char delim, char comment_style);
+                            const char* str, size_t slen,
+                            char delim, char comment_style);
 
 int libinjection_sqli_tokenize(sfilter * sql_state, stoken_t *ouput);
+
+/** The built-in default function to match fingerprints
+ *  and do false negative/positive analysis.
+ *
+ * \param sql_state should be filled out after libinjection_sqli_fingerprint is called
+ * \param callbackarg is unused but here to be used with API.
+ */
+int libinjection_is_sqli_pattern(sfilter *sql_state, void* callbackarg);
 
 #ifdef __cplusplus
 }

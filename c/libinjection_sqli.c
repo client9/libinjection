@@ -374,11 +374,11 @@ static size_t parse_dash(sfilter * sf)
     } else if (pos +2 == slen && cs[pos + 1] == '-') {
         return parse_eol_comment(sf);
     } else if (pos + 1 < slen && cs[pos + 1] == '-' && sf->comment_style == COMMENTS_ANSI) {
-	/* --[not-white] not-white case:
-	 *
-	 */
-	sf->stats_comment_ddx += 1;
-	return parse_eol_comment(sf);
+        /* --[not-white] not-white case:
+         *
+         */
+        sf->stats_comment_ddx += 1;
+        return parse_eol_comment(sf);
     } else {
         st_assign_char(sf->current, 'o', '-');
         return pos + 1;
@@ -1294,7 +1294,7 @@ libinjection_sqli_fingerprint(sfilter * sql_state,
  */
 #define UNUSED(x) (void)(x)
 
-static int is_sqli_pattern(sfilter* sql_state, void* callbackarg)
+int libinjection_is_sqli_pattern(sfilter* sql_state, void* callbackarg)
 {
     char ch;
     size_t tlen;
@@ -1473,7 +1473,7 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
     }
 
     if (fn == NULL) {
-        fn = is_sqli_pattern;
+        fn = libinjection_is_sqli_pattern;
     }
 
     /*
@@ -1500,12 +1500,12 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
     if (memchr(s, CHAR_SINGLE, slen)) {
       libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_ANSI);
       if (fn(sql_state, callbackarg)) {
-	return TRUE;
+        return TRUE;
       } else if (sql_state->stats_comment_ddx) {
-	libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_MYSQL);
-	if (fn(sql_state, callbackarg)) {
-	  return TRUE;
-	}
+        libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_MYSQL);
+        if (fn(sql_state, callbackarg)) {
+          return TRUE;
+        }
       }
     }
 
