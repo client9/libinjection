@@ -35,25 +35,40 @@ int main(int argc, const char* argv[])
     /*
      * "plain" context.. test string "as-is"
      */
-    ok = libinjection_is_string_sqli(&sf, argv[offset], slen, CHAR_NULL,
-                                     is_sqli_pattern, NULL);
-    if (strlen(sf.pat) > 1) {
-        fprintf(stdout, "plain\t%s\t%s\n", sf.pat, ok ? "true": "false");
+    libinjection_sqli_fingerprint(&sf, argv[offset], slen,
+                                  CHAR_NULL, COMMENTS_ANSI);
+    ok = libinjection_is_sqli_pattern(&sf, NULL);
+    fprintf(stdout, "plain-asni\t%s\t%s\n", sf.pat, ok ? "true": "false");
+
+    if (sf.stats_comment_ddx) {
+        libinjection_sqli_fingerprint(&sf, argv[offset], slen,
+                                      CHAR_NULL, COMMENTS_MYSQL);
+        ok = libinjection_is_sqli_pattern(&sf, NULL);
+        fprintf(stdout, "plain-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
     }
+
     if (memchr(argv[offset], CHAR_SINGLE, slen)) {
-        ok = libinjection_is_string_sqli(&sf, argv[offset], slen, CHAR_SINGLE,
-                                         is_sqli_pattern, NULL);
-        if (strlen(sf.pat) > 1 && strcmp(sf.pat, "sns") != 0) {
-            fprintf(stdout, "single\t%s\t%s\n", sf.pat, ok ? "true": "false");
+        libinjection_sqli_fingerprint(&sf, argv[offset], slen,
+                                    CHAR_SINGLE, COMMENTS_ANSI);
+        ok = libinjection_is_sqli_pattern(&sf, NULL);
+        fprintf(stdout, "single-ansi\t%s\t%s\n", sf.pat, ok ? "true": "false");
+    }
+
+    if (sf.stats_comment_ddx) {
+        if (memchr(argv[offset], CHAR_SINGLE, slen)) {
+            libinjection_sqli_fingerprint(&sf, argv[offset], slen,
+                                          CHAR_SINGLE, COMMENTS_MYSQL);
+            ok = libinjection_is_sqli_pattern(&sf, NULL);
+            fprintf(stdout, "single-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
         }
     }
 
     if (memchr(argv[offset], CHAR_DOUBLE, slen)) {
-        ok = libinjection_is_string_sqli(&sf, argv[offset], slen, CHAR_DOUBLE,
-                                         is_sqli_pattern, NULL);
-        if (strlen(sf.pat) > 1 &&  strcmp(sf.pat, "sns") != 0) {
-            fprintf(stdout, "double\t%s\t%s\n", sf.pat, ok ? "true": "false");
-        }
+        libinjection_sqli_fingerprint(&sf, argv[offset], slen,
+                                      CHAR_DOUBLE, COMMENTS_MYSQL);
+        ok = libinjection_is_sqli_pattern(&sf, NULL);
+        fprintf(stdout, "double-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
     }
+
     return 0;
 }
