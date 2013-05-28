@@ -20,9 +20,6 @@ class PermuteFingerprints(object):
         if len(s) > 5:
             s = s[0:5]
 
-        if 'X' in s:
-            return False
-
         if '11' in s:
             return False
 
