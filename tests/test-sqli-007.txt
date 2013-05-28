@@ -3,5 +3,5 @@ sqli nested pgsql style comments
 --INPUT--
 1 /* /* */ */ 2
 --EXPECTED--
-1Xoo1
+X
 

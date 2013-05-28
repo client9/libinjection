@@ -37,7 +37,7 @@ extern "C" {
  * See python's normalized version
  * http://www.python.org/dev/peps/pep-0386/#normalizedversion
  */
-#define LIBINJECTION_VERSION "3.0.0-pre1"
+#define LIBINJECTION_VERSION "3.0.0-pre2"
 
 #define ST_MAX_SIZE 32
 #define MAX_TOKENS 5
@@ -74,12 +74,18 @@ typedef struct {
     char pat[MAX_TOKENS + 1];
     char delim;
     int reason;
+
+    int stats_dd;
+    int stats_ddmysql;
+    int stats_c;
+    int stats_folds;
+
 } sfilter;
 
 /**
  * Pointer to function, takes cstr input, returns 1 for true, 0 for false
  */
-typedef int (*ptr_fingerprints_fn)(const char*, void* callbackarg);
+typedef int (*ptr_fingerprints_fn)(sfilter*, void* callbackarg);
 
 /**
  * Main API: tests for SQLi in three possible contexts, no quotes,
@@ -112,18 +118,14 @@ int libinjection_is_sqli(sfilter * sql_state,
  *        CHAR_SINGLE ('), single quote context
  *        CHAR_DOUBLE ("), double quote context
  *        Other values will likely be ignored.
- * \param ptr_fingerprints_fn is a pointer to a function
- *        that determines if a fingerprint is a match or not.
- * \param callbackarg passed to function above
  *
- *
- * \return 1 (true) if SQLi or 0 (false) if not SQLi **in this context**
+ * \return pointer to sfilter.pat as convience.
+ *         do not free!
  *
  */
-int libinjection_is_string_sqli(sfilter * sql_state,
-                                const char *s, size_t slen,
-                                const char delim,
-                                ptr_fingerprints_fn fn, void* callbackarg);
+const char* libinjection_sqli_fingerprint(sfilter * sql_state,
+                                          const char *s, size_t slen,
+                                          const char delim);
 
 /*  FOR H@CKERS ONLY
  *
