@@ -49,7 +49,7 @@ int main(int argc, const char* argv[])
 
     if (memchr(argv[offset], CHAR_SINGLE, slen)) {
         libinjection_sqli_fingerprint(&sf, argv[offset], slen,
-                                    CHAR_SINGLE, COMMENTS_ANSI);
+                                      CHAR_SINGLE, COMMENTS_ANSI);
         ok = libinjection_is_sqli_pattern(&sf, NULL);
         fprintf(stdout, "single-ansi\t%s\t%s\n", sf.pat, ok ? "true": "false");
     }
