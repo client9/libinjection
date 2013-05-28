@@ -33,7 +33,8 @@ class PermuteFingerprints(object):
         if 'U' not in s and 'ns' in s:
             return False
 
-        if 'nn' in s:
+        # select foo (as) bar is only nn type i know
+        if 'nn' in s and 'Enn' not in s:
             return False
 
         if 'kk' in s:

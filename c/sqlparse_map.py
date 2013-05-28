@@ -59,7 +59,7 @@ KEYWORDS = {
 'APPLOCK_TEST'                : 'f',
 'ASSEMBLYPROPERTY'            : 'f',
 # too ordinary to be a keyword
-'AS'                          : 'k',
+'AS'                          : 'n',
 'ASC'                         : 'k',
 'ASCII'                       : 'f',
 'ASENSITIVE'                  : 'k',

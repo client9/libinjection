@@ -85,7 +85,7 @@ static const keyword_t sql_keywords[] = {
     {"ARRAY_TO_JSON", 'f'},
     {"ARRAY_TO_STRING", 'f'},
     {"ARRAY_UPPER", 'f'},
-    {"AS", 'k'},
+    {"AS", 'n'},
     {"ASC", 'k'},
     {"ASCII", 'f'},
     {"ASENSITIVE", 'k'},
@@ -1681,6 +1681,7 @@ static const char* sql_fingerprints[] = {
     "1UEnc",
     "1UEnf",
     "1UEnk",
+    "1UEnn",
     "1UEno",
     "1UEns",
     "1UEok",
@@ -5754,6 +5755,6 @@ static const char* sql_fingerprints[] = {
     "vovso",
     "vovsv",
 };
-static const size_t sqli_fingerprints_sz = 4721;
+static const size_t sqli_fingerprints_sz = 4722;
 
 #endif
