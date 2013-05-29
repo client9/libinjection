@@ -10,15 +10,14 @@ class PermuteFingerprints(object):
         return sorted(list(self.fingerprints))
 
     def insert(self,s):
+        if len(s) > 5:
+            s = s[0:5]
         if self.validate(s):
             self.fingerprints.add(s)
 
     def validate(self, s):
         if len(s) == 0:
             return False
-
-        if len(s) > 5:
-            s = s[0:5]
 
         if '11' in s:
             return False
@@ -95,7 +94,7 @@ class PermuteFingerprints(object):
             return False
 
         # bogus
-        if s in ('sns', '1&n', 's1s', '1n1', '1o1', '1os'):
+        if s in ('E1n', 'sns', '1&n', 's1s', '1n1', '1o1', '1os'):
             return False
 
         # unlikely to be sqli but case FP
@@ -182,7 +181,7 @@ if __name__ == '__main__':
     mutator = PermuteFingerprints()
 
     for line in sys.stdin:
-        mutator.insert(line.strip())
+        mutator.permute(line.strip())
 
     for fp in mutator.aslist():
         print fp
