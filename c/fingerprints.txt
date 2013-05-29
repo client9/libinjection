@@ -633,6 +633,8 @@
 1UE1k
 1UE1n
 1UE1o
+1UE1s
+1UE1v
 1UEc
 1UEf
 1UEf(
@@ -656,11 +658,13 @@
 1UEs
 1UEs&
 1UEs,
+1UEs1
 1UEsc
 1UEsf
 1UEsk
 1UEsn
 1UEso
+1UEsv
 1UEv
 1UEv&
 1UEv,
@@ -669,6 +673,7 @@
 1UEvk
 1UEvn
 1UEvo
+1UEvs
 1Uc
 1Uf((
 1Uf(1
@@ -2872,6 +2877,8 @@ sUE1f
 sUE1k
 sUE1n
 sUE1o
+sUE1s
+sUE1v
 sUEc
 sUEf
 sUEf(
@@ -2895,11 +2902,13 @@ sUEok
 sUEs
 sUEs&
 sUEs,
+sUEs1
 sUEsc
 sUEsf
 sUEsk
 sUEsn
 sUEso
+sUEsv
 sUEv
 sUEv&
 sUEv,
@@ -2908,6 +2917,7 @@ sUEvf
 sUEvk
 sUEvn
 sUEvo
+sUEvs
 sUc
 sUf((
 sUf(1
@@ -4129,6 +4139,8 @@ vUE1f
 vUE1k
 vUE1n
 vUE1o
+vUE1s
+vUE1v
 vUEc
 vUEf
 vUEf(
@@ -4152,11 +4164,13 @@ vUEok
 vUEs
 vUEs&
 vUEs,
+vUEs1
 vUEsc
 vUEsf
 vUEsk
 vUEsn
 vUEso
+vUEsv
 vUEv
 vUEv&
 vUEv,
@@ -4165,6 +4179,7 @@ vUEvf
 vUEvk
 vUEvn
 vUEvo
+vUEvs
 vUc
 vUf((
 vUf(1
