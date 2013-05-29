@@ -1,0 +1,9 @@
+--TEST--
+pgsql type intents, prefix, keyword are not folded
+--INPUT--
+float table
+--EXPECTED--
+t float
+k table
+
+
