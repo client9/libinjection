@@ -693,6 +693,35 @@ static size_t parse_string_tick(sfilter *sf)
     }
 }
 
+/** MySQL ad-hoc character encoding
+ *
+ * if something starts with a underscore
+ * check to see if it's in this form
+ * _[a-z0-9] and if it's a character encoding
+ * If not, let the normal 'word parser'
+ * handle it.
+ */
+static size_t parse_underscore(sfilter *sf)
+{
+    const char *cs = sf->s;
+    size_t slen = sf->slen;
+    size_t pos = sf->pos;
+    char ch;
+
+    size_t xlen = strlenspn(cs + pos + 1, slen - pos - 1,
+                              "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    if (xlen == 0) {
+        return parse_word(sf);
+    }
+    st_assign(sf->current, 'n', cs + pos, xlen);
+    ch = is_keyword(sf->current->val);
+    if (ch == 't') {
+        sf->current->type = 't';
+        return xlen + 1;
+    }
+    return parse_word(sf);
+}
+
 static size_t parse_word(sfilter * sf)
 {
     const char *cs = sf->s;
@@ -1203,7 +1232,15 @@ int filter_fold(sfilter * sf)
             sf->tokenvec[left].type = 'f';
             continue;
 #endif
+        } else if (sf->tokenvec[left].type == 't' &&
+                   (sf->tokenvec[left+1].type == 'n' || sf->tokenvec[left+1].type == '1' ||
+                    sf->tokenvec[left+1].type == 'v' || sf->tokenvec[left+1].type == 's'))  {
+            st_copy(&sf->tokenvec[left], &sf->tokenvec[left+1]);
+            pos -= 1;
+            sf->stats_folds += 1;
+            continue;
         }
+
 
         /* all cases of handing 2 tokens is done
            and nothing matched.  Get one more token
@@ -1252,6 +1289,13 @@ int filter_fold(sfilter * sf)
                    sf->tokenvec[left+1].type == 'o' &&
                    (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
             pos -= 2;
+            continue;
+        } else if ((sf->tokenvec[left].type == 'n' || sf->tokenvec[left].type == '1' ||
+                    sf->tokenvec[left].type == 'v' || sf->tokenvec[left].type == 's') &&
+                   sf->tokenvec[left+1].type == 'o' &&
+                   sf->tokenvec[left+2].type == 't') {
+            pos -= 2;
+            sf->stats_folds += 2;
             continue;
         } else if ((sf->tokenvec[left].type == 'n' || sf->tokenvec[left].type == '1' || sf->tokenvec[left].type == 's') &&
                    sf->tokenvec[left+1].type == ',' &&

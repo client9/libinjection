@@ -12,6 +12,42 @@ added to the data directly (JSON doesn't support comments).
 """
 
 KEYWORDS = {
+'_BIG5': 't',
+'_DEC8': 't',
+'_CP850': 't',
+'_HP8': 't',
+'_KOI8R': 't',
+'_LATIN1': 't',
+'_LATIN2': 't',
+'_SWE7': 't',
+'_ASCII': 't',
+'_UJIS': 't',
+'_SJIS': 't',
+'_HEBREW': 't',
+'_TIS620': 't',
+'_EUCKR': 't',
+'_KOI8U': 't',
+'_GB2312': 't',
+'_GREEK': 't',
+'_CP1250': 't',
+'_GBK': 't',
+'_LATIN5': 't',
+'_ARMSCII8': 't',
+'_UTF8': 't',
+'_USC2': 't',
+'_CP866': 't',
+'_KEYBCS2': 't',
+'_MACCE': 't',
+'_MACROMAN': 't',
+'_CP852': 't',
+'_LATIN7': 't',
+'_CP1251': 't',
+'_CP1257': 't',
+'_BINARY': 't',
+'_GEOSTD8': 't',
+'_CP932': 't',
+'_EUCJPMS': 't',
+
 'AUTOINCREMENT'              : 'k',
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',
 
@@ -42,6 +78,13 @@ KEYWORDS = {
 
 'ANALYZE'                     : 'k',
 'AND'                         : '&',
+
+# pgsql
+'ANYELEMENT'                  : 't',
+'ANYARRAY'                    : 't',
+'ANYNONARRY'                  : 't',
+'CSTRING'                     : 't',
+
 # array_... pgsql
 'ARRAY_AGG'                   : 'f',
 'ARRAY_CAT'                   : 'f',
@@ -72,7 +115,8 @@ KEYWORDS = {
 'BEGIN'                       : 'E',
 'BENCHMARK'                   : 'f',
 'BETWEEN'                     : 'k',
-'BIGINT'                      : 'k',
+'BIGINT'                      : 't',
+'BIGSERIAL'                   : 't',
 'BIN'                         : 'f',
 'BINARY'                      : 'k',
 'BINARY_DOUBLE_INFINITY'      : '1',
@@ -90,11 +134,12 @@ KEYWORDS = {
 'BOOL_AND'                    : 'f',
 # pgsql
 'BOOL_OR'                     : 'f',
-'BOOLEAN'                     : 'k',
+'BOOLEAN'                     : 't',
 'BOTH'                        : 'k',
 # pgsql
 'BTRIM'                       : 'f',
 'BY'                          : 'n',
+'BYTEA'                       : 't',
 
 # MS ACCESS
 #
@@ -143,9 +188,10 @@ KEYWORDS = {
 
 # 'CHAR'
 # sometimes a function too
+# TBD
 'CHAR'                        : 'f',
 
-'CHARACTER'                   : 'k',
+'CHARACTER'                   : 't',
 'CHARACTER_LENGTH'            : 'f',
 'CHARINDEX'                   : 'f',
 'CHARSET'                     : 'f',
@@ -249,7 +295,7 @@ KEYWORDS = {
 'DB_ID'                       : 'f',
 'DB_NAME'                     : 'f',
 'DEC'                         : 'k',
-'DECIMAL'                     : 'k',
+'DECIMAL'                     : 't',
 'DECLARE'                     : 'E',
 'DECODE'                      : 'f',
 'DECRYPTBYASMKEY'             : 'f',
@@ -272,6 +318,7 @@ KEYWORDS = {
 'DISTINCROW'                  : 'k',
 'DISTINCT'                    : 'k',
 'DIV'                         : 'o',
+'DOUBLE'                      : 't',
 'DROP'                        : 'E',
 'DUAL'                        : 'k',
 'EACH'                        : 'k',
@@ -325,6 +372,9 @@ KEYWORDS = {
 'FILEPROPERTY'                : 'f',
 'FIND_IN_SET'                 : 'f',
 'FIRST_VALUE'                 : 'f',
+'FLOAT'                       : 't',
+'FLOAT4'                       : 't',
+'FLOAT8'                       : 't',
 'FLOOR'                       : 'f',
 'FN_VIRTUALFILESTATS'         : 'f',
 'FORCE'                       : 'k',
@@ -415,7 +465,7 @@ KEYWORDS = {
 'INT3'                        : 'k',
 'INT4'                        : 'k',
 'INT8'                        : 'k',
-'INTEGER'                     : 'k',
+'INTEGER'                     : 't',
 'INTERVAL'                    : 'k',
 'INTO'                        : 'k',
 'IS'                          : 'o',
@@ -506,6 +556,7 @@ KEYWORDS = {
 'MOD'                         : 'o',
 'MODE'                        : 'n',
 'MODIFIES'                    : 'k',
+'MONEY'                       : 't',
 'MONTH'                       : 'f',
 'MONTHNAME'                   : 'f',
 'NAME_CONST'                  : 'f',
@@ -528,7 +579,7 @@ KEYWORDS = {
 'NULL'                        : 'v',
 
 'NULLIF'                      : 'f',
-'NUMERIC'                     : 'k',
+'NUMERIC'                     : 't',
 # MSACCESS
 'NZ'                          : 'f',
 'OBJECT_DEFINITION'           : 'f',
@@ -540,6 +591,7 @@ KEYWORDS = {
 'OCT'                         : 'f',
 'OCTET_LENGTH'                : 'f',
 'OFFSET'                      : 'k',
+'OID'                         : 't',
 'OLD_PASSWORD'                : 'f',
 
 # need to investigate how used
@@ -644,7 +696,7 @@ KEYWORDS = {
 'READ_WRITE'                  : 'k',
 
 # 'REAL' only used in data definition
-'REAL'                        : 'n',
+'REAL'                        : 't',
 'REFERENCES'                  : 'k',
 'REGEXP'                      : 'o',
 # pgsql
@@ -652,6 +704,14 @@ KEYWORDS = {
 'REGEXP_MATCHES'              : 'f',
 'REGEXP_SPLIT_TO_TABLE'       : 'f',
 'REGEXP_SPLIT_TO_ARRAY'       : 'f',
+'REGPROC'                     : 't',
+'REGPROCEDURE'                : 't',
+'REGOPER'                     : 't',
+'REGOPERATOR'                 : 't',
+'REGCLASS'                    : 't',
+'REGTYPE'                     : 't',
+'REGCONFIG'                   : 't',
+'REGDICTIONARY'               : 't',
 'RELEASE'                     : 'k',
 'RELEASE_LOCK'                : 'f',
 'RENAME'                      : 'k',
@@ -688,6 +748,10 @@ KEYWORDS = {
 'SELECT'                      : 'E',
 'SENSITIVE'                   : 'k',
 'SEPARATOR'                   : 'k',
+'SERIAL'                      : 't',
+'SERIAL2'                     : 't',
+'SERIAL4'                     : 't',
+'SERIAL8'                     : 't',
 'SESSION_USER'                : 'f',
 'SET'                         : 'E',
 'SETSEED'                     : 'f',
@@ -711,7 +775,8 @@ KEYWORDS = {
 #
 # sqlserver
 'SMALLDATETIMEFROMPARTS'      : 'f',
-'SMALLINT'                    : 'k',
+'SMALLINT'                    : 't',
+'SMALLSERIAL'                 : 't',
 'SOUNDEX'                     : 'f',
 'SOUNDS'                      : 'o',
 'SPACE'                       : 'f',
@@ -781,6 +846,7 @@ KEYWORDS = {
 'TAN'                         : 'f',
 'TERMINATED'                  : 'k',
 'TERTIARY_WEIGHTS'            : 'f',
+'TEXT'                        : 't',
 # TEXTPOS PGSQL 6.0
 # remnamed to strpos in 7.0
 # http://www.postgresql.org/message-id/20000601091055.A20245@rice.edu
@@ -797,7 +863,7 @@ KEYWORDS = {
 # ms access
 'TIMESERIAL'                  : 'f',
 'TIMEVALUE'                   : 'f',
-'TIMESTAMP'                   : 'f',
+'TIMESTAMP'                   : 't',
 'TIMESTAMPADD'                : 'f',
 'TIME_FORMAT'                 : 'f',
 'TIME_TO_SEC'                 : 'f',
@@ -891,7 +957,7 @@ KEYWORDS = {
 'UUID_SHORT'                  : 'f',
 'VALUES'                      : 'k',
 'VARBINARY'                   : 'k',
-'VARCHAR'                     : 'k',
+'VARCHAR'                     : 't',
 'VARCHARACTER'                : 'k',
 'VARIANCE'                    : 'f',
 'VAR'                         : 'f',
@@ -902,6 +968,7 @@ KEYWORDS = {
 'VERIFYSIGNEDBYASMKEY'        : 'f',
 'VERIFYSIGNEDBYCERT'          : 'f',
 'VERSION'                     : 'f',
+'VOID'                        : 't',
 'WAITFOR'                     : 'n',
 'WEEK'                        : 'f',
 'WEEKDAY'                     : 'f',
@@ -951,6 +1018,7 @@ OPERATORS2 = (
     '<=',
     '<>',
     ':=',
+    '::',
     '<<',
     '!<', # http://msdn.microsoft.com/en-us/library/ms188074.aspx
     '!>', # http://msdn.microsoft.com/en-us/library/ms188074.aspx
@@ -1030,7 +1098,7 @@ CHARMAP = [
     'CHAR_NUM',   # 55 7
     'CHAR_NUM',   # 56 8
     'CHAR_NUM',   # 57 9
-    'CHAR_OP2',  # 58 : colon
+    'CHAR_OP2',   # 58 : colon
     'CHAR_CHAR',  # 59 ; semiclon
     'CHAR_OP2',   # 60 <
     'CHAR_OP2',   # 61 =
@@ -1067,7 +1135,7 @@ CHARMAP = [
     'CHAR_BACK',            # \\
     'CHAR_OTHER',           # ]
     'CHAR_OP1',             # ^
-    'CHAR_WORD',            # _
+    'CHAR_UNDERSCORE',      # 95 _
     'CHAR_TICK',            # 96  backtick `
     'CHAR_WORD',            # 97  a
     'CHAR_WORD',            # 98  b

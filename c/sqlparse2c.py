@@ -38,6 +38,7 @@ static size_t parse_word(sfilter * sf);
 static size_t parse_var(sfilter * sf);
 static size_t parse_number(sfilter * sf);
 static size_t parse_tick(sfilter * sf);
+static size_t parse_underscore(sfilter * sf);
 
 """
 
@@ -104,7 +105,8 @@ static size_t parse_tick(sfilter * sf);
         'CHAR_VAR'  : 'parse_var',
         'CHAR_OTHER': 'parse_other',
         'CHAR_MONEY': 'parse_money',
-        'CHAR_TICK' : 'parse_tick'
+        'CHAR_TICK' : 'parse_tick',
+        'CHAR_UNDERSCORE': 'parse_underscore'
         }
     print
     print "typedef size_t (*pt2Function)(sfilter *sf);"
