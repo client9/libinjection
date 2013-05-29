@@ -108,6 +108,11 @@ class PermuteFingerprints(object):
         self.insert(fp)
 
         # do this for safety
+        if len(fp) > 1 and len(fp) < 5 and fp[-1] != ';' and fp[-1] != 'c':
+            self.insert(fp + ";")
+            self.insert(fp + ";c")
+
+        # do this for safety
         if len(fp) > 1 and len(fp) < 5 and fp[-1] != 'c':
             self.insert(fp + "c")
 
