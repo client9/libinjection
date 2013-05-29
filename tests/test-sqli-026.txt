@@ -3,5 +3,5 @@ sqli test for code coverage, plain, mysql-style non-comment
 --INPUT--
 1' == --1 OR 1
 --EXPECTED--
-s&1
+so1&1
 
