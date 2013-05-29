@@ -887,11 +887,11 @@ static size_t parse_money(sfilter *sf)
             strend = my_memmem(cs+xlen+2, slen - (pos+xlen+2), cs + pos, xlen+2);
 
             if (strend == NULL) {
+                /* fell off edge */
                 st_assign(sf->current, 's', cs+pos+xlen+2, slen - pos - xlen - 2);
                 sf->current->str_open = '$';
                 sf->current->str_close = CHAR_NULL;
                 return slen;
-                /* fel off edge */
             } else {
                 /* got one */
                 st_assign(sf->current, 's', cs+pos+xlen+2, strend - (cs + pos + xlen + 2));
@@ -899,8 +899,6 @@ static size_t parse_money(sfilter *sf)
                 sf->current->str_close = '$';
                 return (strend + xlen + 2) - cs;
             }
-            st_assign_char(sf->current, 'n', '$');
-            return pos + 1;
         }
     } else {
         st_assign(sf->current, '1', cs + pos, 1 + xlen);
