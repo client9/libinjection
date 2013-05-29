@@ -881,9 +881,11 @@ static const char* multikeywords_start[] = {
     "ALTER",
     "AT",
     "AT TIME",
+    "CHARACTER",
     "CREATE",
     "CREATE OR",
     "CROSS",
+    "DOUBLE",
     "FULL",
     "GROUP",
     "IN",
@@ -910,14 +912,16 @@ static const char* multikeywords_start[] = {
     "UNION",
     "WAITFOR",
 };
-static const size_t multikeywords_start_sz = 31;
+static const size_t multikeywords_start_sz = 33;
 static const keyword_t multikeywords[] = {
     {"ALTER DOMAIN", 'k'},
     {"ALTER TABLE", 'k'},
     {"AT TIME", 'n'},
     {"AT TIME ZONE", 'k'},
+    {"CHARACTER VARYING", 't'},
     {"CREATE OR REPLACE", 'E'},
     {"CROSS JOIN", 'k'},
+    {"DOUBLE PRECISION", 't'},
     {"FULL OUTER", 'k'},
     {"GROUP BY", 'B'},
     {"IN BOOLEAN", 'n'},
@@ -961,7 +965,7 @@ static const keyword_t multikeywords[] = {
     {"WAITFOR RECEIVE", 'E'},
     {"WAITFOR TIME", 'E'},
 };
-static const size_t multikeywords_sz = 48;
+static const size_t multikeywords_sz = 50;
 
 typedef size_t (*pt2Function)(sfilter *sf);
 static const pt2Function char_parse_map[] = {

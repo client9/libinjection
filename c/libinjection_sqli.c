@@ -1092,7 +1092,7 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
 
     if (!
         (a->type == 'k' || a->type == 'n' || a->type == 'o'
-         || a->type == 'U' || a->type == 'E')) {
+         || a->type == 'U' || a->type == 'E' || a->type == 't')) {
         return FALSE;
     }
 

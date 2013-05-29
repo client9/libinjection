@@ -1235,7 +1235,9 @@ PHRASES = {
     # hacker mistake
     'SELECT ALL' : 'E',
 
-
+    # types
+    'DOUBLE PRECISION': 't',
+    'CHARACTER VARYING': 't'
     }
 
 import json
