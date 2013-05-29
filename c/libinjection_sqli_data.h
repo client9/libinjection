@@ -39,6 +39,7 @@ static const char* operators2[] = {
     "+=",
     "-=",
     "/=",
+    "::",
     ":=",
     "<<",
     "<=",
@@ -53,7 +54,7 @@ static const char* operators2[] = {
     "||",
     "~*",
 };
-static const size_t operators2_sz = 25;
+static const size_t operators2_sz = 26;
 
 static const keyword_t sql_keywords[] = {
     {"ABORT", 'k'},
@@ -2683,11 +2684,14 @@ static const char* sql_fingerprints[] = {
     "UE((f",
     "UE((s",
     "UE((v",
+    "UE(1)",
     "UE(1,",
     "UE(1o",
     "UE(f(",
+    "UE(s)",
     "UE(s,",
     "UE(so",
+    "UE(v)",
     "UE(v,",
     "UE(vo",
     "UE1,f",
@@ -5981,6 +5985,6 @@ static const char* sql_fingerprints[] = {
     "vovso",
     "vovsv",
 };
-static const size_t sqli_fingerprints_sz = 4948;
+static const size_t sqli_fingerprints_sz = 4951;
 
 #endif
