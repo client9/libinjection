@@ -49,6 +49,24 @@ class PermuteFingerprints(object):
             return False
 
         # folded away
+        if '1,1' in s:
+            return False
+        if '1,s' in s:
+            return False
+        if '1,n' in s:
+            return False
+        if 's,1' in s:
+            return False
+        if 's,s' in s:
+            return False
+        if 's,n' in s:
+            return False
+        if 'n,1' in s:
+            return False
+        if 'n,s' in s:
+            return False
+        if 'n,n' in s:
+            return False
         if '1o1' in s:
             return False
         if '1on' in s:
@@ -106,6 +124,11 @@ class PermuteFingerprints(object):
     def permute(self, fp):
 
         self.insert(fp)
+
+        # do this for safety
+        if len(fp) > 1 and len(fp) < 5 and fp[-1] != ';' and fp[-1] != 'c':
+            self.insert(fp + ";")
+            self.insert(fp + ";c")
 
         # do this for safety
         if len(fp) > 1 and len(fp) < 5 and fp[-1] != 'c':
