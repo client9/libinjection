@@ -273,3 +273,15 @@ case when f(1) then 3 end
 -1 union select table_name as `asda` from information_schema.tables
 
 a'and(select(binary(/*!system_user()*/)))like'reading%
+
+-1 union select @``"", table_name from information_schema.tables
+'foo' union select @``"", table_name from information_schema.tables
+@version union select @``"", table_name from information_schema.tables
+
+select @version foo
+select @version "foo"
+select @version foo -- junk
+select @version "foo" -- junk
+
+$$pgsql evade$$ union select * from foo
+$foo$pgsql evade$foo$ union select * from foo

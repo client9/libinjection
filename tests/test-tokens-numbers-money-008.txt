@@ -4,4 +4,4 @@ smoke
 SELECT $
 --EXPECTED--
 E SELECT
-
+n $

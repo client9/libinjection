@@ -47,16 +47,13 @@ memchr2(const char *haystack, size_t haystack_len, char c0, char c1)
     if (haystack_len < 2) {
         return NULL;
     }
-    if (c0 == c1) {
-        return NULL;
-    }
 
     while (cur < last) {
         if (cur[0] == c0) {
             if (cur[1] == c1) {
                 return cur;
             } else {
-                cur += 2;
+                cur += 2; //(c0 == c1) ? 1 : 2;
             }
         } else {
             cur += 1;
@@ -814,21 +811,64 @@ static size_t parse_var(sfilter * sf)
 
 static size_t parse_money(sfilter *sf)
 {
+    const char* strend;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
     size_t xlen;
 
+    if (pos + 1 == slen) {
+        /* end of line */
+        st_assign_char(sf->current, 'n', '$');
+        return slen;
+    }
+
     /*
      * $1,000.00 or $1.000,00 ok!
      * This also parses $....,,,111 but that's ok
      */
+
     xlen = strlenspn(cs + pos + 1, slen - pos - 1, "0123456789.,");
+    //printf( "XLEN = %d next char is %c\n", (int)xlen, cs[pos+1]);
     if (xlen == 0) {
-        /*
-         * just ignore '$'
-         */
-        return pos + 1;
+        if (cs[pos + 1] == '$') {
+            //printf("\n*** We have $$\n");
+            /* we have $$ .. find ending $$ and make string */
+            strend = memchr2(cs + pos + 2, slen - pos -2, '$', '$');
+            if (strend == NULL) {
+                /* fell off edge */
+                st_assign(sf->current, 's', cs + pos + 2, slen - (pos + 2));
+                sf->current->str_open = '$';
+                sf->current->str_close = CHAR_NULL;
+                //printf("$$ STRING EOF = %s\n", sf->current->val);
+                return slen;
+            } else {
+                st_assign(sf->current, 's', cs + pos + 2, strend - (cs + pos + 2));
+                sf->current->str_open = '$';
+                sf->current->str_close = '$';
+                //printf("$$ STRING $$ = %s\n", sf->current->val);
+                return strend - cs + 2;
+            }
+        } else {
+            /* ok it's not a number or '$$', but maybe it's pgsql "$ quoted strings" */
+            xlen = strlenspn(cs + pos + 1, slen - pos - 1, "abcdefghjiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            if (xlen == 0) {
+                /* hmm it's "$" _something_ .. just add $ and keep going*/
+                st_assign_char(sf->current, 'n', '$');
+                return pos + 1;
+            }
+            /* we have $foobar????? */
+            /* is it $foobar$ */
+            if (pos + xlen + 1 == slen || cs[pos+xlen+1] != '$') {
+                /* not $foobar$, or fell off edge */
+                st_assign_char(sf->current, 'n', '$');
+                return pos + 1;
+            }
+            /* we have $foobar$ ... find it again */
+            /* need memmem here */
+            st_assign_char(sf->current, 'n', '$');
+            return pos + 1;
+        }
     } else {
         st_assign(sf->current, '1', cs + pos, 1 + xlen);
         return pos + 1 + xlen;
