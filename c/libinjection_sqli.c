@@ -63,6 +63,24 @@ memchr2(const char *haystack, size_t haystack_len, char c0, char c1)
     return NULL;
 }
 
+/**
+ */
+static const char *
+my_memmem(const char* haystack, size_t hlen, const char* needle, size_t nlen)
+{
+    assert(haystack);
+    assert(needle);
+    assert(nlen > 1);
+    const char* cur;
+    const char* last =  haystack + hlen - nlen;
+    for (cur = haystack; cur <= last; ++cur) {
+        if (cur[0] == needle[0] && memcmp(cur, needle, nlen) == 0) {
+            return cur;
+        }
+    }
+    return NULL;
+}
+
 /** Find largest string containing certain characters.
  *
  * C Standard library 'strspn' only works for 'c-strings' (null terminated)
@@ -864,8 +882,23 @@ static size_t parse_money(sfilter *sf)
                 st_assign_char(sf->current, 'n', '$');
                 return pos + 1;
             }
+
             /* we have $foobar$ ... find it again */
-            /* need memmem here */
+            strend = my_memmem(cs+xlen+2, slen - (pos+xlen+2), cs + pos, xlen+2);
+
+            if (strend == NULL) {
+                st_assign(sf->current, 's', cs+pos+xlen+2, slen - pos - xlen - 2);
+                sf->current->str_open = '$';
+                sf->current->str_close = CHAR_NULL;
+                return slen;
+                /* fel off edge */
+            } else {
+                /* got one */
+                st_assign(sf->current, 's', cs+pos+xlen+2, strend - (cs + pos + xlen + 2));
+                sf->current->str_open = '$';
+                sf->current->str_close = '$';
+                return (strend + xlen + 2) - cs;
+            }
             st_assign_char(sf->current, 'n', '$');
             return pos + 1;
         }
