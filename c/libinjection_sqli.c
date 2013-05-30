@@ -749,7 +749,7 @@ static size_t parse_qstring_core(sfilter * sf, int offset)
     size_t slen = sf->slen;
     size_t pos = sf->pos + offset;
 
-    if (cs[pos] != 'q' || pos + 2 >= slen || cs[pos + 1] != '\'') {
+    if ((cs[pos] != 'q' && cs[pos] != 'Q') || pos + 2 >= slen || cs[pos + 1] != '\'') {
         return parse_word(sf);
     }
 

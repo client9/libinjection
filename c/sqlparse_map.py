@@ -1109,23 +1109,23 @@ CHARMAP = [
     'CHAR_OP2',   # 62 >
     'CHAR_OTHER', # 63 ?   BEEP BEEP
     'CHAR_VAR',   # 64 @
-    'CHAR_WORD',  # 65 A
-    'CHAR_WORD',  # 66 B
-    'CHAR_WORD',  # 67 C
-    'CHAR_WORD',  # 68 D
-    'CHAR_WORD',  # 69 E
-    'CHAR_WORD',  # 70 F
-    'CHAR_WORD',  # 71 G
-    'CHAR_WORD',  # 72 H
-    'CHAR_WORD',  # 73 I
-    'CHAR_WORD',  # 74 J
-    'CHAR_WORD',  # 75 K
-    'CHAR_WORD',  # 76 L
-    'CHAR_WORD',  # 77 M
-    'CHAR_WORD',            # 78  N
+    'CHAR_WORD',            # 65  A
+    'CHAR_WORD',            # 66  B
+    'CHAR_WORD',            # 67  C
+    'CHAR_WORD',            # 68  D
+    'CHAR_WORD',            # 69  E
+    'CHAR_WORD',            # 70  F
+    'CHAR_WORD',            # 71  G
+    'CHAR_WORD',            # 72  H
+    'CHAR_WORD',            # 73  I
+    'CHAR_WORD',            # 74  J
+    'CHAR_WORD',            # 75  K
+    'CHAR_WORD',            # 76  L
+    'CHAR_WORD',            # 77  M
+    'CHAR_NQSTRING',        # 78  N
     'CHAR_WORD',            # 79  O
     'CHAR_WORD',            # 80  P
-    'CHAR_WORD',            # 81  Q
+    'CHAR_QSTRING',         # 81  Q
     'CHAR_WORD',            # 82  R
     'CHAR_WORD',            # 83  S
     'CHAR_WORD',            # 84  T

@@ -1051,10 +1051,10 @@ static const pt2Function char_parse_map[] = {
    &parse_word, /* 75 */
    &parse_word, /* 76 */
    &parse_word, /* 77 */
-   &parse_word, /* 78 */
+   &parse_nqstring, /* 78 */
    &parse_word, /* 79 */
    &parse_word, /* 80 */
-   &parse_word, /* 81 */
+   &parse_qstring, /* 81 */
    &parse_word, /* 82 */
    &parse_word, /* 83 */
    &parse_word, /* 84 */
