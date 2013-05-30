@@ -749,7 +749,16 @@ static size_t parse_qstring_core(sfilter * sf, int offset)
     size_t slen = sf->slen;
     size_t pos = sf->pos + offset;
 
-    if ((cs[pos] != 'q' && cs[pos] != 'Q') || pos + 2 >= slen || cs[pos + 1] != '\'') {
+    /* if we are already at end of string..
+       if current char is not q or Q
+       if we don't have 2 more chars
+       if char2 != a single quote
+       then, just treat as word
+    */
+    if (pos >= slen ||
+        (cs[pos] != 'q' && cs[pos] != 'Q') ||
+        pos + 2 >= slen ||
+        cs[pos + 1] != '\'') {
         return parse_word(sf);
     }
 
