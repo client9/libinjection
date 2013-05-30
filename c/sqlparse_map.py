@@ -910,6 +910,10 @@ KEYWORDS = {
 'TYPEOF'                      : 'f',
 'TYPEPROPERTY'                : 'f',
 'UCASE'                       : 'f',
+
+# pgsql -- used in weird unicode string
+# it's an operator so its' gets folded away
+'UESCAPE'                     : 'o',
 'UNCOMPRESS'                  : 'f',
 'UNCOMPRESS_LENGTH'           : 'f',
 'UNDO'                        : 'k',
@@ -1111,63 +1115,63 @@ CHARMAP = [
     'CHAR_WORD',  # 68 D
     'CHAR_WORD',  # 69 E
     'CHAR_WORD',  # 70 F
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # Z
-    'CHAR_OTHER',           # [
-    'CHAR_BACK',            # \\
-    'CHAR_OTHER',           # ]
-    'CHAR_OP1',             # ^
-    'CHAR_UNDERSCORE',      # 95 _
-    'CHAR_TICK',            # 96  backtick `
+    'CHAR_WORD',  # 71 G
+    'CHAR_WORD',  # 72 H
+    'CHAR_WORD',  # 73 I
+    'CHAR_WORD',  # 74 J
+    'CHAR_WORD',  # 75 K
+    'CHAR_WORD',  # 76 L
+    'CHAR_WORD',  # 77 M
+    'CHAR_WORD',            # 78  N
+    'CHAR_WORD',            # 79  O
+    'CHAR_WORD',            # 80  P
+    'CHAR_WORD',            # 81  Q
+    'CHAR_WORD',            # 82  R
+    'CHAR_WORD',            # 83  S
+    'CHAR_WORD',            # 84  T
+    'CHAR_USTRING',         # 85  U special pgsql unicode
+    'CHAR_WORD',            # 86  V
+    'CHAR_WORD',            # 87  W
+    'CHAR_WORD',            # 88  X
+    'CHAR_WORD',            # 89  Y
+    'CHAR_WORD',            # 90  Z
+    'CHAR_OTHER',           # 91  [
+    'CHAR_BACK',            # 92  \\
+    'CHAR_OTHER',           # 93  ]
+    'CHAR_OP1',             # 94  ^
+    'CHAR_UNDERSCORE',      # 95  _ underscore
+    'CHAR_TICK',            # 96  ` backtick
     'CHAR_WORD',            # 97  a
     'CHAR_WORD',            # 98  b
     'CHAR_WORD',            # 99  c
     'CHAR_WORD',            # 100 d
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',            # @
-    'CHAR_WORD',    # 122 z
-    'CHAR_OTHER',   # 123 { left brace
-    'CHAR_OP2',     # 124 | pipe
-    'CHAR_OTHER',   # 125 } right brace
-    'CHAR_OP1',     # 126 ~
-    'CHAR_WHITE'
+    'CHAR_WORD',            # 101 e
+    'CHAR_WORD',            # 102 f
+    'CHAR_WORD',            # 103 g
+    'CHAR_WORD',            # 104 h
+    'CHAR_WORD',            # 105 i
+    'CHAR_WORD',            # 106 j
+    'CHAR_WORD',            # 107 k
+    'CHAR_WORD',            # 108 l
+    'CHAR_WORD',            # 109 m
+    'CHAR_NQSTRING',        # 110 n special oracle code
+    'CHAR_WORD',            # 111 o
+    'CHAR_WORD',            # 112 p
+    'CHAR_QSTRING',         # 113 q special oracle code
+    'CHAR_WORD',            # 114 r
+    'CHAR_WORD',            # 115 s
+    'CHAR_WORD',            # 116 t
+    'CHAR_USTRING',         # 117 u  special pgsql unicode
+    'CHAR_WORD',            # 118 v
+    'CHAR_WORD',            # 119 w
+    'CHAR_WORD',            # 120 x
+    'CHAR_WORD',            # 121 y
+    'CHAR_WORD',            # 122 z
+    'CHAR_OTHER',           # 123 { left brace
+    'CHAR_OP2',             # 124 | pipe
+    'CHAR_OTHER',           # 125 } right brace
+    'CHAR_OP1',             # 126 ~
+    'CHAR_WHITE'            # 127
 ]
 
 PHRASES = {

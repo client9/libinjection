@@ -722,6 +722,78 @@ static size_t parse_underscore(sfilter *sf)
     return parse_word(sf);
 }
 
+static size_t parse_ustring(sfilter * sf)
+{
+    const char *cs = sf->s;
+    size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
+    if (pos + 2 < slen && cs[pos+1] == '&' && cs[pos+2] == '\'') {
+        sf->pos += 2;
+        pos = parse_string(sf);
+        sf->current->str_open = 'u';
+        if (sf->current->str_close == '\'') {
+            sf->current->str_close = 'u';
+        }
+        return pos;
+    } else {
+        return parse_word(sf);
+    }
+}
+
+static size_t parse_qstring_core(sfilter * sf, int offset)
+{
+    char ch;
+    const char *strend;
+    const char *cs = sf->s;
+    size_t slen = sf->slen;
+    size_t pos = sf->pos + offset;
+
+    if (cs[pos] != 'q' || pos + 2 >= slen || cs[pos + 1] != '\'') {
+        return parse_word(sf);
+    }
+
+    ch = cs[pos + 2];
+    if (ch < 33 && ch > 127) {
+        return parse_word(sf);
+    }
+    switch (ch) {
+    case '(' : ch = ')'; break;
+    case '[' : ch = ']'; break;
+    case '{' : ch = '}'; break;
+    case '<' : ch = '>'; break;
+    }
+
+    strend = memchr2(cs + pos + 3, slen - pos - 3, ch, '\'');
+    if (strend == NULL) {
+        st_assign(sf->current, 's', cs + pos + 3, slen - pos - 3);
+        sf->current->str_open = 'q';
+        sf->current->str_close = CHAR_NULL;
+        return slen;
+    } else {
+        st_assign(sf->current, 's', cs + pos + 3, strend - cs - pos -  3);
+        sf->current->str_open = 'q';
+        sf->current->str_close = 'q';
+        return (strend - cs) + 2;
+    }
+}
+
+/*
+ * Oracle's q string
+ */
+static size_t parse_qstring(sfilter * sf)
+{
+    return parse_qstring_core(sf, 0);
+}
+
+/*
+ * Oracle's nq string
+ */
+static size_t parse_nqstring(sfilter * sf)
+{
+    return parse_qstring_core(sf, 1);
+}
+
 static size_t parse_word(sfilter * sf)
 {
     const char *cs = sf->s;

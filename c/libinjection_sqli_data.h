@@ -25,6 +25,9 @@ static size_t parse_var(sfilter * sf);
 static size_t parse_number(sfilter * sf);
 static size_t parse_tick(sfilter * sf);
 static size_t parse_underscore(sfilter * sf);
+static size_t parse_ustring(sfilter * sf);
+static size_t parse_qstring(sfilter * sf);
+static size_t parse_nqstring(sfilter * sf);
 
 
 static const char* operators2[] = {
@@ -766,6 +769,7 @@ static const keyword_t sql_keywords[] = {
     {"TYPE_ID", 'f'},
     {"TYPE_NAME", 'f'},
     {"UCASE", 'f'},
+    {"UESCAPE", 'o'},
     {"UNCOMPRESS", 'f'},
     {"UNCOMPRESS_LENGTH", 'f'},
     {"UNDO", 'k'},
@@ -876,7 +880,7 @@ static const keyword_t sql_keywords[] = {
     {"_USC2", 't'},
     {"_UTF8", 't'},
 };
-static const size_t sql_keywords_sz = 817;
+static const size_t sql_keywords_sz = 818;
 static const char* multikeywords_start[] = {
     "ALTER",
     "AT",
@@ -1054,7 +1058,7 @@ static const pt2Function char_parse_map[] = {
    &parse_word, /* 82 */
    &parse_word, /* 83 */
    &parse_word, /* 84 */
-   &parse_word, /* 85 */
+   &parse_ustring, /* 85 */
    &parse_word, /* 86 */
    &parse_word, /* 87 */
    &parse_word, /* 88 */
@@ -1079,14 +1083,14 @@ static const pt2Function char_parse_map[] = {
    &parse_word, /* 107 */
    &parse_word, /* 108 */
    &parse_word, /* 109 */
-   &parse_word, /* 110 */
+   &parse_nqstring, /* 110 */
    &parse_word, /* 111 */
    &parse_word, /* 112 */
-   &parse_word, /* 113 */
+   &parse_qstring, /* 113 */
    &parse_word, /* 114 */
    &parse_word, /* 115 */
    &parse_word, /* 116 */
-   &parse_word, /* 117 */
+   &parse_ustring, /* 117 */
    &parse_word, /* 118 */
    &parse_word, /* 119 */
    &parse_word, /* 120 */
