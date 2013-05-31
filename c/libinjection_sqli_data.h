@@ -899,8 +899,11 @@ static const char* multikeywords_start[] = {
     "IS",
     "IS DISTINCT",
     "IS NOT",
+    "IS NOT DISTINCT",
     "LEFT",
     "LOCK",
+    "LOCK IN",
+    "LOCK IN SHARE",
     "NATURAL",
     "NEXT",
     "NEXT VALUE",
@@ -916,7 +919,7 @@ static const char* multikeywords_start[] = {
     "UNION",
     "WAITFOR",
 };
-static const size_t multikeywords_start_sz = 33;
+static const size_t multikeywords_start_sz = 36;
 static const keyword_t multikeywords[] = {
     {"ALTER DOMAIN", 'k'},
     {"ALTER TABLE", 'k'},
@@ -939,6 +942,9 @@ static const keyword_t multikeywords[] = {
     {"IS NOT DISTINCT FROM", 'k'},
     {"LEFT JOIN", 'k'},
     {"LEFT OUTER", 'k'},
+    {"LOCK IN", 'n'},
+    {"LOCK IN SHARE", 'n'},
+    {"LOCK IN SHARE MODE", 'k'},
     {"LOCK TABLE", 'k'},
     {"LOCK TABLES", 'k'},
     {"NATURAL FULL", 'k'},
@@ -969,7 +975,7 @@ static const keyword_t multikeywords[] = {
     {"WAITFOR RECEIVE", 'E'},
     {"WAITFOR TIME", 'E'},
 };
-static const size_t multikeywords_sz = 50;
+static const size_t multikeywords_sz = 53;
 
 typedef size_t (*pt2Function)(sfilter *sf);
 static const pt2Function char_parse_map[] = {
@@ -1937,6 +1943,7 @@ static const char* sql_fingerprints[] = {
     "1k1of",
     "1k1os",
     "1k1ov",
+    "1kUEn",
     "1kf((",
     "1kf()",
     "1kf(1",
@@ -2166,6 +2173,7 @@ static const char* sql_fingerprints[] = {
     "1osk(",
     "1osk)",
     "1osk1",
+    "1oskU",
     "1oskf",
     "1oskn",
     "1osks",
@@ -2254,6 +2262,7 @@ static const char* sql_fingerprints[] = {
     "1ovk(",
     "1ovk)",
     "1ovk1",
+    "1ovkU",
     "1ovkf",
     "1ovkn",
     "1ovks",
@@ -2943,6 +2952,7 @@ static const char* sql_fingerprints[] = {
     "f()k(",
     "f()k)",
     "f()k1",
+    "f()kU",
     "f()kf",
     "f()kn",
     "f()ks",
@@ -4378,6 +4388,7 @@ static const char* sql_fingerprints[] = {
     "sk1of",
     "sk1os",
     "sk1ov",
+    "skUEn",
     "skf((",
     "skf()",
     "skf(1",
@@ -4569,6 +4580,7 @@ static const char* sql_fingerprints[] = {
     "so1k(",
     "so1k)",
     "so1k1",
+    "so1kU",
     "so1kf",
     "so1kn",
     "so1ks",
@@ -4694,6 +4706,7 @@ static const char* sql_fingerprints[] = {
     "sonk(",
     "sonk)",
     "sonk1",
+    "sonkU",
     "sonkf",
     "sonkn",
     "sonks",
@@ -4770,6 +4783,7 @@ static const char* sql_fingerprints[] = {
     "sosk(",
     "sosk)",
     "sosk1",
+    "soskU",
     "soskf",
     "soskn",
     "sosks",
@@ -4858,6 +4872,7 @@ static const char* sql_fingerprints[] = {
     "sovk(",
     "sovk)",
     "sovk1",
+    "sovkU",
     "sovkf",
     "sovkn",
     "sovks",
@@ -5714,6 +5729,7 @@ static const char* sql_fingerprints[] = {
     "vk1of",
     "vk1os",
     "vk1ov",
+    "vkUEn",
     "vkf((",
     "vkf()",
     "vkf(1",
@@ -5905,6 +5921,7 @@ static const char* sql_fingerprints[] = {
     "vo1k(",
     "vo1k)",
     "vo1k1",
+    "vo1kU",
     "vo1kf",
     "vo1kn",
     "vo1ks",
@@ -6031,6 +6048,7 @@ static const char* sql_fingerprints[] = {
     "vonk(",
     "vonk)",
     "vonk1",
+    "vonkU",
     "vonkf",
     "vonkn",
     "vonks",
@@ -6108,6 +6126,7 @@ static const char* sql_fingerprints[] = {
     "vosk(",
     "vosk)",
     "vosk1",
+    "voskU",
     "voskf",
     "voskn",
     "vosks",
@@ -6196,6 +6215,7 @@ static const char* sql_fingerprints[] = {
     "vovk(",
     "vovk)",
     "vovk1",
+    "vovkU",
     "vovkf",
     "vovkn",
     "vovks",
@@ -6223,6 +6243,6 @@ static const char* sql_fingerprints[] = {
     "vovso",
     "vovsv",
 };
-static const size_t sqli_fingerprints_sz = 5118;
+static const size_t sqli_fingerprints_sz = 5132;
 
 #endif

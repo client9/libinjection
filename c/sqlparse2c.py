@@ -75,6 +75,8 @@ static size_t parse_nqstring(sfilter * sf);
         multikeywords_start.add(parts[0])
         if plen == 3:
             multikeywords_start.add(parts[0] + ' ' + parts[1])
+        elif plen == 4:
+            multikeywords_start.add(parts[0] + ' ' + parts[1] + ' ' + parts[2])
 
     print "static const char* multikeywords_start[] = {"
     for k in sorted(list(multikeywords_start)):

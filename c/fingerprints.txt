@@ -831,6 +831,7 @@
 1k1of
 1k1os
 1k1ov
+1kUEn
 1kf((
 1kf()
 1kf(1
@@ -1060,6 +1061,7 @@
 1osk(
 1osk)
 1osk1
+1oskU
 1oskf
 1oskn
 1osks
@@ -1148,6 +1150,7 @@
 1ovk(
 1ovk)
 1ovk1
+1ovkU
 1ovkf
 1ovkn
 1ovks
@@ -1837,6 +1840,7 @@ f()f(
 f()k(
 f()k)
 f()k1
+f()kU
 f()kf
 f()kn
 f()ks
@@ -3272,6 +3276,7 @@ sk1oE
 sk1of
 sk1os
 sk1ov
+skUEn
 skf((
 skf()
 skf(1
@@ -3463,6 +3468,7 @@ so1f(
 so1k(
 so1k)
 so1k1
+so1kU
 so1kf
 so1kn
 so1ks
@@ -3588,6 +3594,7 @@ sonf(
 sonk(
 sonk)
 sonk1
+sonkU
 sonkf
 sonkn
 sonks
@@ -3664,6 +3671,7 @@ sosf(
 sosk(
 sosk)
 sosk1
+soskU
 soskf
 soskn
 sosks
@@ -3752,6 +3760,7 @@ sovf(
 sovk(
 sovk)
 sovk1
+sovkU
 sovkf
 sovkn
 sovks
@@ -4608,6 +4617,7 @@ vk1oE
 vk1of
 vk1os
 vk1ov
+vkUEn
 vkf((
 vkf()
 vkf(1
@@ -4799,6 +4809,7 @@ vo1f(
 vo1k(
 vo1k)
 vo1k1
+vo1kU
 vo1kf
 vo1kn
 vo1ks
@@ -4925,6 +4936,7 @@ vonf(
 vonk(
 vonk)
 vonk1
+vonkU
 vonkf
 vonkn
 vonks
@@ -5002,6 +5014,7 @@ vosf(
 vosk(
 vosk)
 vosk1
+voskU
 voskf
 voskn
 vosks
@@ -5090,6 +5103,7 @@ vovf(
 vovk(
 vovk)
 vovk1
+vovkU
 vovkf
 vovkn
 vovks

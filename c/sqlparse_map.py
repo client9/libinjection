@@ -1242,7 +1242,12 @@ PHRASES = {
 
     # types
     'DOUBLE PRECISION': 't',
-    'CHARACTER VARYING': 't'
+    'CHARACTER VARYING': 't',
+
+    # MYSQL
+    'LOCK IN': 'n',
+    'LOCK IN SHARE': 'n',
+    'LOCK IN SHARE MODE': 'k'
     }
 
 import json
