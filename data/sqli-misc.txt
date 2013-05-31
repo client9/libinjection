@@ -298,3 +298,11 @@ _utf8'foo' union select * from foo
 REAL 1 union select * from foo
 1::REAL union select * from foo
 1::REAL::REAL union select * from foo
+
+-1 union select @``"", table_name from information_schema.tables
+!~1 union select table_name from information_schema.tables
+-1 union select @a`from 1`, table_name from information_schema.tables
+version() union select table_name from information_schema.tables
+-1 LOCK IN SHARE MODE UNION SELECT table_name from information_schema.tables
+1 is unknown union select table_name from information_schema.tables
+true is not unknown for update union select table_name from information_schema.tables
