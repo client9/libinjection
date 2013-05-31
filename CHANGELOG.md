@@ -11,6 +11,8 @@ Big Engine change.
   are more "indeterminate cases" and are only in a few
   fingerprints
 * autogeneration of fingerprints with trivial SQL variations
+* support for pgsql $ strings
+* support for oracle's q and nq strings
 
 # v2.0.4 2013-05-21 IMPORTANT
 

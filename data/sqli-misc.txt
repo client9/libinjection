@@ -286,6 +286,11 @@ select @version "foo" -- junk
 $$pgsql evade$$ union select * from foo
 $foo$pgsql evade$foo$ union select * from foo
 
+u&'pgsql evade' union select * from foo
+U&'pgsql evade' union select * from foo
+
+U&'pgsql evade' uescape '!' union select * from foo
+
 _latin1'foo' union select * from foo
 _LATIN7'foo' union select * from foo
 _utf8'foo' union select * from foo
