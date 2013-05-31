@@ -779,7 +779,7 @@ static const keyword_t sql_keywords[] = {
     {"UNIQUE", 'n'},
     {"UNIX_TIMESTAMP", 'f'},
     {"UNI_ON", 'U'},
-    {"UNKNOWN", 'k'},
+    {"UNKNOWN", 'v'},
     {"UNLOCK", 'k'},
     {"UNNEST", 'f'},
     {"UNSIGNED", 'k'},

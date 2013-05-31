@@ -577,6 +577,9 @@ KEYWORDS = {
 # since it's a good indicator of SQL
 # ('true' and 'false' are also similar)
 'NULL'                        : 'v',
+# unknown is mysql keyword, again treat
+# as 'v' type
+'UNKNOWN'                     : 'v',
 
 'NULLIF'                      : 'f',
 'NUMERIC'                     : 't',
@@ -930,8 +933,6 @@ KEYWORDS = {
 
 'UNIX_TIMESTAMP'              : 'f',
 'UNLOCK'                      : 'k',
-# pgsql
-'UNKNOWN'                     : 'k',
 'UNNEST'                      : 'f',
 'UNSIGNED'                    : 'k',
 'UPDATE'                      : 'E',
