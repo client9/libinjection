@@ -123,8 +123,15 @@ strlencspn(const char *s, size_t len, const char *accept)
     return len;
 }
 static int char_is_white(char ch) {
-    /* \240 is latin1 0xA0 */
-    return strchr(" \r\n\t\013\014\240", ch) != NULL;
+    /* ' '  space is 0x32
+       '\t  0x09 \011 horizontal tab
+       '\n' 0x0a \012 new line
+       '\v' 0x0b \013 verical tab
+       '\f' 0x0c \014 new page
+       '\r' 0x0d \015 carriage return
+            0xa0 \240 is latin1
+    */
+    return strchr(" \t\n\v\f\r\240", ch) != NULL;
 }
 
 /*
@@ -812,7 +819,7 @@ static size_t parse_word(sfilter * sf)
     size_t i;
     size_t slen =
         strlencspn(cs + pos, sf->slen - pos,
-                   " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013\014");
+                   " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"");
 
     st_assign(sf->current, 'n', cs + pos, slen);
 
@@ -926,8 +933,7 @@ static size_t parse_var(sfilter * sf)
 
 
     xlen = strlencspn(cs + pos, slen - pos,
-                     " <>:\\?=@!#~+-*/&|^%(),';\r\n\t\"\013\014");
-//                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$");
+                     " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"");
     if (xlen == 0) {
         st_assign(sf->current, 'v', cs + pos, 0);
         return pos;
