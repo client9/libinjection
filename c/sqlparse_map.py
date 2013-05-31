@@ -1038,7 +1038,11 @@ OPERATORS2 = (
     '|/', # http://www.postgresql.org/docs/9.1/static/functions-math.html
     '!!', # http://www.postgresql.org/docs/9.1/static/functions-math.html
     '~*', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
-    '!~', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
+
+# problematic since ! and ~ are both unary operators in other db engines
+# converting to one unary operator is probably ok
+#    '!~', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
+
     '@>',
     '<@'
     # '!~*'

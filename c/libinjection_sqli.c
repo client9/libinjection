@@ -933,7 +933,7 @@ static size_t parse_var(sfilter * sf)
 
 
     xlen = strlencspn(cs + pos, slen - pos,
-                     " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"");
+                     " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r'`\"");
     if (xlen == 0) {
         st_assign(sf->current, 'v', cs + pos, 0);
         return pos;

@@ -35,7 +35,6 @@ static const char* operators2[] = {
     "!<",
     "!=",
     "!>",
-    "!~",
     "%=",
     "&&",
     "&=",
@@ -58,7 +57,7 @@ static const char* operators2[] = {
     "||",
     "~*",
 };
-static const size_t operators2_sz = 26;
+static const size_t operators2_sz = 25;
 
 static const keyword_t sql_keywords[] = {
     {"ABORT", 'k'},
