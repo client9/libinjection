@@ -889,6 +889,7 @@ static const char* multikeywords_start[] = {
     "CREATE OR",
     "CROSS",
     "DOUBLE",
+    "FOR",
     "FULL",
     "GROUP",
     "IN",
@@ -918,7 +919,7 @@ static const char* multikeywords_start[] = {
     "UNION",
     "WAITFOR",
 };
-static const size_t multikeywords_start_sz = 36;
+static const size_t multikeywords_start_sz = 37;
 static const keyword_t multikeywords[] = {
     {"ALTER DOMAIN", 'k'},
     {"ALTER TABLE", 'k'},
@@ -928,6 +929,7 @@ static const keyword_t multikeywords[] = {
     {"CREATE OR REPLACE", 'E'},
     {"CROSS JOIN", 'k'},
     {"DOUBLE PRECISION", 't'},
+    {"FOR UPDATE", 'k'},
     {"FULL OUTER", 'k'},
     {"GROUP BY", 'B'},
     {"IN BOOLEAN", 'n'},
@@ -974,7 +976,7 @@ static const keyword_t multikeywords[] = {
     {"WAITFOR RECEIVE", 'E'},
     {"WAITFOR TIME", 'E'},
 };
-static const size_t multikeywords_sz = 53;
+static const size_t multikeywords_sz = 54;
 
 typedef size_t (*pt2Function)(sfilter *sf);
 static const pt2Function char_parse_map[] = {
@@ -1943,7 +1945,11 @@ static const char* sql_fingerprints[] = {
     "1k1of",
     "1k1os",
     "1k1ov",
+    "1kUE1",
+    "1kUEf",
     "1kUEn",
+    "1kUEs",
+    "1kUEv",
     "1kf((",
     "1kf()",
     "1kf(1",
@@ -4399,7 +4405,11 @@ static const char* sql_fingerprints[] = {
     "sk1of",
     "sk1os",
     "sk1ov",
+    "skUE1",
+    "skUEf",
     "skUEn",
+    "skUEs",
+    "skUEv",
     "skf((",
     "skf()",
     "skf(1",
@@ -5741,7 +5751,11 @@ static const char* sql_fingerprints[] = {
     "vk1of",
     "vk1os",
     "vk1ov",
+    "vkUE1",
+    "vkUEf",
     "vkUEn",
+    "vkUEs",
+    "vkUEv",
     "vkf((",
     "vkf()",
     "vkf(1",
@@ -6255,6 +6269,6 @@ static const char* sql_fingerprints[] = {
     "vovso",
     "vovsv",
 };
-static const size_t sqli_fingerprints_sz = 5145;
+static const size_t sqli_fingerprints_sz = 5157;
 
 #endif

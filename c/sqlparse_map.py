@@ -1249,9 +1249,14 @@ PHRASES = {
     'CHARACTER VARYING': 't',
 
     # MYSQL
+    # http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
     'LOCK IN': 'n',
     'LOCK IN SHARE': 'n',
-    'LOCK IN SHARE MODE': 'k'
+    'LOCK IN SHARE MODE': 'k',
+
+    # MYSQL
+    # http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
+    'FOR UPDATE': 'k'
     }
 
 import json

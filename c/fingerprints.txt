@@ -832,7 +832,11 @@
 1k1of
 1k1os
 1k1ov
+1kUE1
+1kUEf
 1kUEn
+1kUEs
+1kUEv
 1kf((
 1kf()
 1kf(1
@@ -3288,7 +3292,11 @@ sk1oE
 sk1of
 sk1os
 sk1ov
+skUE1
+skUEf
 skUEn
+skUEs
+skUEv
 skf((
 skf()
 skf(1
@@ -4630,7 +4638,11 @@ vk1oE
 vk1of
 vk1os
 vk1ov
+vkUE1
+vkUEf
 vkUEn
+vkUEs
+vkUEv
 vkf((
 vkf()
 vkf(1

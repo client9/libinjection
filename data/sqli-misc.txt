@@ -306,3 +306,4 @@ version() union select table_name from information_schema.tables
 -1 LOCK IN SHARE MODE UNION SELECT table_name from information_schema.tables
 1 is unknown union select table_name from information_schema.tables
 true is not unknown for update union select table_name from information_schema.tables
+1 for update union select 1
