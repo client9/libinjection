@@ -287,8 +287,8 @@ static void st_assign_char(stoken_t * st, const char stype, const char value)
     st->val[1] = CHAR_NULL;
 }
 
-static void st_assign(stoken_t * st, const char stype, const char *value,
-               size_t len)
+static void st_assign(stoken_t * st, const char stype,
+                      const char *value, size_t len)
 {
     size_t last = len < ST_MAX_SIZE ? len : (ST_MAX_SIZE - 1);
     st->type = stype;
@@ -812,16 +812,15 @@ static size_t parse_nqstring(sfilter * sf)
 
 static size_t parse_word(sfilter * sf)
 {
-    const char *cs = sf->s;
-    size_t pos = sf->pos;
     char ch;
     char delim;
     size_t i;
-    size_t slen =
-        strlencspn(cs + pos, sf->slen - pos,
-                   " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"");
+    const char *cs = sf->s;
+    size_t pos = sf->pos;
+    size_t wlen = strlencspn(cs + pos, sf->slen - pos,
+                             " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"");
 
-    st_assign(sf->current, 'n', cs + pos, slen);
+    st_assign(sf->current, 'n', cs + pos, wlen);
 
     /* now we need to look inside what we good for "." and "`"
      * and see if what is before is a keyword or not
@@ -829,16 +828,19 @@ static size_t parse_word(sfilter * sf)
     for (i =0; i < strlen(sf->current->val); ++i) {
         delim = sf->current->val[i];
         if (delim == '.' || delim == '`') {
-            sf->current->val[i] = '\0';
+            sf->current->val[i] = CHAR_NULL;
             ch = is_keyword(sf->current->val);
             if (ch == 'k' || ch == 'o' || ch == 'E') {
+                /* needed for swig */
+                st_clear(sf->current);
                 /*
                  * we got something like "SELECT.1"
                  * or SELECT`column`
                  */
-                sf->current->type = ch;
-                return pos + strlen(sf->current->val);
+                st_assign(sf->current, ch, cs + pos, i);
+                return pos + i;
             } else {
+                /* restore character */
                 sf->current->val[i] = delim;
             }
         }
@@ -847,7 +849,7 @@ static size_t parse_word(sfilter * sf)
     /*
      * do normal lookup with word including '.'
      */
-    if (slen < ST_MAX_SIZE) {
+    if (wlen < ST_MAX_SIZE) {
 
         ch = is_keyword(sf->current->val);
 
@@ -856,7 +858,7 @@ static size_t parse_word(sfilter * sf)
         }
         sf->current->type = ch;
     }
-    return pos + slen;
+    return pos + wlen;
 }
 
 /* MySQL backticks are a cross between string and
@@ -963,10 +965,8 @@ static size_t parse_money(sfilter *sf)
      */
 
     xlen = strlenspn(cs + pos + 1, slen - pos - 1, "0123456789.,");
-    //printf( "XLEN = %d next char is %c\n", (int)xlen, cs[pos+1]);
     if (xlen == 0) {
         if (cs[pos + 1] == '$') {
-            //printf("\n*** We have $$\n");
             /* we have $$ .. find ending $$ and make string */
             strend = memchr2(cs + pos + 2, slen - pos -2, '$', '$');
             if (strend == NULL) {
@@ -974,13 +974,11 @@ static size_t parse_money(sfilter *sf)
                 st_assign(sf->current, 's', cs + pos + 2, slen - (pos + 2));
                 sf->current->str_open = '$';
                 sf->current->str_close = CHAR_NULL;
-                //printf("$$ STRING EOF = %s\n", sf->current->val);
                 return slen;
             } else {
                 st_assign(sf->current, 's', cs + pos + 2, strend - (cs + pos + 2));
                 sf->current->str_open = '$';
                 sf->current->str_close = '$';
-                //printf("$$ STRING $$ = %s\n", sf->current->val);
                 return strend - cs + 2;
             }
         } else {
@@ -1475,11 +1473,14 @@ libinjection_sqli_fingerprint(sfilter * sql_state,
      * Should be very rare false positive
      */
     if (strchr(sql_state->pat, 'X')) {
+        /*  needed for SWIG */
+        memset((void*)sql_state->pat, 0, MAX_TOKENS + 1);
         sql_state->pat[0] = 'X';
-        sql_state->pat[1] = '\0';
+
         sql_state->tokenvec[0].type = 'X';
         sql_state->tokenvec[0].val[0] = 'X';
         sql_state->tokenvec[0].val[1] = '\0';
+        sql_state->tokenvec[1].type = CHAR_NULL;
     }
 
     return sql_state->pat;
@@ -1491,11 +1492,16 @@ libinjection_sqli_fingerprint(sfilter * sql_state,
  */
 #define UNUSED(x) (void)(x)
 
-int libinjection_is_sqli_pattern(sfilter* sql_state, void* callbackarg)
+int libinjection_sqli_check_fingerprint(sfilter* sql_state, void* callbackarg)
 {
-    char ch;
-    size_t tlen;
     UNUSED(callbackarg);
+
+    return libinjection_sqli_blacklist(sql_state) &&
+        libinjection_sqli_not_whitelist(sql_state);
+}
+
+int libinjection_sqli_blacklist(sfilter* sql_state)
+{
     int patmatch = bsearch_cstr(sql_state->pat, sql_fingerprints, sqli_fingerprints_sz);
 
     /*
@@ -1509,12 +1515,21 @@ int libinjection_is_sqli_pattern(sfilter* sql_state, void* callbackarg)
         return FALSE;
     }
 
+    return TRUE;
+}
+
+/*
+ * return TRUE if sqli, false is benign
+ */
+int libinjection_sqli_not_whitelist(sfilter* sql_state)
+{
     /*
-     * We got a SQLi match
+     * We assume we got a SQLi match
      * This next part just helps reduce false positives.
      *
      */
-    tlen = strlen(sql_state->pat);
+    char ch;
+    size_t tlen = strlen(sql_state->pat);
 
     switch (tlen) {
     case 2:{
@@ -1670,7 +1685,7 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
     }
 
     if (fn == NULL) {
-        fn = libinjection_is_sqli_pattern;
+        fn = libinjection_sqli_check_fingerprint;
     }
 
     /*

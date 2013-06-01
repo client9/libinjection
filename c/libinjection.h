@@ -157,18 +157,35 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state,
  */
 
 void libinjection_sqli_init(sfilter* sql_state,
-                            const char* str, size_t slen,
+                            const char* s, size_t slen,
                             char delim, char comment_style);
 
 int libinjection_sqli_tokenize(sfilter * sql_state, stoken_t *ouput);
 
 /** The built-in default function to match fingerprints
- *  and do false negative/positive analysis.
+ *  and do false negative/positive analysis.  This calls the following
+ *  two functions.  With this, you other-ride one part or the other.
+ *
+ *     return libinjection_sqli_blacklist(sql_state, callbackarg) &&
+ *        libinject_sqli_not_whitelist(sql_state, callbackarg);
  *
  * \param sql_state should be filled out after libinjection_sqli_fingerprint is called
  * \param callbackarg is unused but here to be used with API.
  */
-int libinjection_is_sqli_pattern(sfilter *sql_state, void* callbackarg);
+int libinjection_sqli_check_fingerprint(sfilter *sql_state, void* callbackarg);
+
+/* Given a pattern determine if it's a SQLi pattern.
+ *
+ * \return TRUE if sqli, false otherwise
+ */
+int libinjection_sqli_blacklist(sfilter* sql_state);
+
+/* Given a positive match for a pattern (i.e. pattern is SQLi), this function
+ * does additional analysis to reduce false positives.
+ *
+ * \return TRUE if sqli, false otherwise
+ */
+int libinjection_sqli_not_whitelist(sfilter* sql_state);
 
 #ifdef __cplusplus
 }
