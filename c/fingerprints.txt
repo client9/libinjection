@@ -448,6 +448,7 @@
 1,f(1
 1,f(f
 1,f(s
+1,f(t
 1,f(v
 1,v))
 1,v),
@@ -1748,6 +1749,7 @@ f(((E
 f(((f
 f(((k
 f(((s
+f(((t
 f(((v
 f(()&
 f(())
@@ -1776,6 +1778,8 @@ f((k,
 f((s)
 f((s,
 f((so
+f((t)
+f((t,
 f((v)
 f((v,
 f((vo
@@ -1927,6 +1931,13 @@ f(sof
 f(son
 f(sos
 f(sov
+f(t))
+f(t),
+f(t,(
+f(t,1
+f(t,f
+f(t,s
+f(t,v
 f(v)
 f(v)&
 f(v))
@@ -2855,6 +2866,7 @@ s,f()
 s,f(1
 s,f(f
 s,f(s
+s,f(t
 s,f(v
 s,v))
 s,v),
@@ -4221,6 +4233,7 @@ v,f()
 v,f(1
 v,f(f
 v,f(s
+v,f(t
 v,f(v
 v,s))
 v,s),
