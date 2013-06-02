@@ -37,6 +37,12 @@ static int libinjection_python_check_fingerprint(sfilter* sf, void* pyfunc)
 %}
 %include "typemaps.i"
 
+// The C functions all start with 'libinjection_' as a namespace
+// We don't need this since it's in the libinjection python package
+// i.e. libinjection.libinjection_is_sqli --> libinjection.is_sqli
+ //
+%rename("%(strip:[libinjection_])s") "";
+
 // SWIG doesn't natively support fixed sized arrays.
 // this typemap converts the fixed size array sfilter.tokevec
 // into a list of pointers to stoken_t types. In otherword this code makes this example work

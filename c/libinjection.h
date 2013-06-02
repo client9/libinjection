@@ -50,6 +50,9 @@ extern "C" {
 #define COMMENTS_MYSQL 1
 
 typedef struct {
+#ifdef SWIG
+%immutable;
+#endif
     char type;
     char str_open;
     char str_close;
@@ -58,6 +61,10 @@ typedef struct {
 } stoken_t;
 
 typedef struct {
+#ifdef SWIG
+%immutable;
+#endif
+
     /* input */
     const char *s;
     size_t slen;

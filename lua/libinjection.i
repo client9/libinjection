@@ -12,23 +12,23 @@ static int libinjection_lua_check_fingerprint(sfilter* sf, void* luaptr)
     for (i = 1; i <= top; i++) {  /* repeat for each level */
         int t = lua_type(L, i);
         switch (t) {
-    
+
         case LUA_TSTRING:  /* strings */
             printf("%d `%s'\n", i,lua_tostring(L, i));
             break;
-    
+
         case LUA_TBOOLEAN:  /* booleans */
             printf("%d %s\n", i, lua_toboolean(L, i) ? "true" : "false");
             break;
-    
+
         case LUA_TNUMBER:  /* numbers */
             printf("%d %g\n", i, lua_tonumber(L, i));
             break;
-    
+
         default:  /* other values */
             printf("%d, %s\n", i, lua_typename(L, t));
             break;
-    
+
         }
         printf("  ");  /* put a separator */
     }
@@ -48,6 +48,13 @@ static int libinjection_lua_check_fingerprint(sfilter* sf, void* luaptr)
 }
 %}
 %include "typemaps.i"
+
+
+// The C functions all start with 'libinjection_' as a namespace
+// We don't need this since it's in the libinjection table
+// i.e. libinjection.libinjection_is_sqli --> libinjection.is_sqli
+ //
+%rename("%(strip:[libinjection_])s") "";
 
 %typemap(in) (ptr_fingerprints_fn fn, void* callbackarg) {
     if (lua_isnil(L, 4)) {

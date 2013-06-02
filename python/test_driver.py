@@ -79,16 +79,16 @@ def runtest(testname, flag=None):
 
     if flag == 'tokens':
         atoken = stoken_t()
-        libinjection_sqli_init(sql_state, data[1], CHAR_NULL, COMMENTS_ANSI);
-        while libinjection_sqli_tokenize(sql_state, atoken):
+        sqli_init(sql_state, data[1], CHAR_NULL, COMMENTS_ANSI);
+        while sqli_tokenize(sql_state, atoken):
             actual += print_token(atoken) + '\n';
         actual = actual.strip()
     elif flag == 'folding':
-        libinjection_sqli_fingerprint(sql_state, data[1], CHAR_NULL, COMMENTS_ANSI);
+        sqli_fingerprint(sql_state, data[1], CHAR_NULL, COMMENTS_ANSI);
         for i in range(len(sql_state.pat)):
             actual += print_token(sql_state.tokenvec[i]) + '\n';
     elif flag == 'fingerprints':
-        ok = libinjection_is_sqli(sql_state, data[1], None)
+        ok = is_sqli(sql_state, data[1], None)
         if ok:
             actual = sql_state.pat
     else:

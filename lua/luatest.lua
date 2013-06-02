@@ -4,8 +4,8 @@ dofile('sqlifingerprints.lua')
 -- identical to libinjection_is_sqli(sql_state, string_input, nil)
 --
 function check_pattern_c(sqlstate)
-    return(libinjection.libinjection_sqli_blacklist(sqlstate) and
-            libinjection.libinjection_sqli_not_whitelist(sqlstate))
+    return(libinjection.sqli_blacklist(sqlstate) and
+            libinjection.sqli_not_whitelist(sqlstate))
 end
 
 -- half lua / half c checker
@@ -15,7 +15,7 @@ function check_pattern(sqlstate)
     fp = sqlstate.pat
     if sqlifingerprints[fp] == true then
         -- try to eliminate certain false positives
-        return(libinjection.libinjection_sqli_not_whitelist(sqlstate))
+        return(libinjection.sqli_not_whitelist(sqlstate))
     else
         -- not sqli
         return 0
@@ -24,11 +24,11 @@ end
 
 sql_state = libinjection.sfilter()
 sqli = '1 union select * from table'
-print(libinjection.libinjection_is_sqli(sql_state, sqli, sqli:len(), nil))
+print(libinjection.is_sqli(sql_state, sqli, sqli:len(), nil))
 print(sql_state.pat)
 print('----')
 
-ok = libinjection.libinjection_is_sqli(sql_state, sqli, sqli:len(), 'check_pattern')
+ok = libinjection.is_sqli(sql_state, sqli, sqli:len(), 'check_pattern')
 if ok == 1 then
    print(sql_state.pat)
    vec = sql_state.tokenvec
