@@ -152,7 +152,3 @@ lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.
 http:
 	python -m  SimpleHTTPServer
 .PHONY: http
-
-python: libinjection_sqli.c libinjection.h libinjection_sqli_data.h python_libinjection_module.c
-	python setup.py --verbose build --force
-	sudo python setup.py --verbose install
