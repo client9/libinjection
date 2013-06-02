@@ -1,6 +1,17 @@
 
+#LUA_INC_DIR=/opt/local/include/luajit-2.0
+#LUA_LIB_DIR=/opt/local/lib
+#LUA_LIB=luajit-5.1
+
+LUA_INC_DIR=/opt/local/include
+LUA_LIB_DIR=/opt/local/lib
+LUA_LIB=lua
+
 lua: lua.c libinjection_wrap.c
-	gcc -I. -I/usr/local/include -L/usr/local/lib lua.c libinjection_wrap.c libinjection_sqli.c -llua -o lua
+	gcc -g -O0 -I. -I${LUA_INC_DIR} -L${LUA_LIB_DIR} -o lua \
+		lua.c libinjection_wrap.c libinjection_sqli.c -l${LUA_LIB}
+
+test-unit: lua
 	./lua luatest.lua
 
 libinjection_wrap.c: copy
@@ -19,6 +30,7 @@ copy:
 
 clean:
 	rm -f *~
+	rm -rf *.dSYM
 	rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	rm -f lua libinjection_wrap.c sqlifingerprints.lua
 
