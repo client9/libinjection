@@ -36,14 +36,12 @@ static int libinjection_lua_check_fingerprint(sfilter* sf, void* luaptr)
 
 #endif
     char* luafunc = (char *)lua_tostring(L, 4);
-    printf("GOT: %s\n", luafunc);
     lua_getglobal(L, (char*) luafunc);
     SWIG_NewPointerObj(L, (void*)sf, SWIGTYPE_p_sfilter, 0);
     if (lua_pcall(L, 1, 1, 0)) {
         printf("Something bad happened");
     }
     int issqli = lua_tonumber(L, -1);
-    printf("GOT VALUE: %d\n", issqli);
     return issqli;
 }
 %}
@@ -68,7 +66,6 @@ static int libinjection_lua_check_fingerprint(sfilter* sf, void* luaptr)
 
 
 %typemap(out) stoken_t [ANY] {
-    printf("Building tokenvec\n");
     int i;
     lua_newtable(L);
     for (i = 0; i < $1_dim0; i++) {

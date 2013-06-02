@@ -1,3 +1,14 @@
+LUA_PATH = "lua-TestMore/src/?.lua"
+
+require 'libinjection'
+require 'Test.More'
+require 'Test.Builder.Tester'
+plan(1)
+
+test_out "ok 1 - 1 <= 2"
+cmp_ok( 1, '<=', 2, "1 <= 2" )
+test_test "ok cmp_ok"
+
 dofile('sqlifingerprints.lua')
 
 -- silly callback that just calls back into C
@@ -28,11 +39,13 @@ print(libinjection.is_sqli(sql_state, sqli, sqli:len(), nil))
 print(sql_state.pat)
 print('----')
 
-ok = libinjection.is_sqli(sql_state, sqli, sqli:len(), 'check_pattern')
-if ok == 1 then
-   print(sql_state.pat)
-   vec = sql_state.tokenvec
-   for i = 1, sql_state.pat:len() do
-      print(vec[i].type, vec[i].val)
+for x = 1,10000 do
+   ok = libinjection.is_sqli(sql_state, sqli, sqli:len(), 'check_pattern')
+   if ok == 1 then
+      print(sql_state.pat)
+      vec = sql_state.tokenvec
+      for i = 1, sql_state.pat:len() do
+         print(vec[i].type, vec[i].val)
+      end
    end
 end
