@@ -29,7 +29,7 @@ endif
 # need to hack a linux version here
 #
 # MAC OS X: note using ".so" suffix NOT ".dylib"
-libinjection.so: libinjection_wrap.c
+libinjection.so: copy libinjection_wrap.c
 	${CC} ${CFLAGS} -I. ${LUA_FLAGS} \
 	${SHARED} libinjection_wrap.c libinjection_sqli.c -o libinjection.so
 
@@ -42,7 +42,15 @@ test-unit: libinjection.so lua-TestMore
 	./make_test.py > unit-test.t
 	LUA_PATH='?.lua;lua-TestMore/src/?.lua' ${LUA} unit-test.t
 
-libinjection_wrap.c: copy libinjection.i
+test-unit-junit: libinjection.so lua-TestMore
+	./make_test.py > unit-test.t
+	LUA_PATH='?.lua;lua-TestMore/src/?.lua' prove \
+	    --formatter=TAP::Formatter::JUnit \
+	    --exec ${LUA} \
+            unit-test.t
+	libinjection.so lua-TestMore
+
+libinjection_wrap.c: libinjection.i
 	swig -lua libinjection.i
 
 fingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json
@@ -58,6 +66,7 @@ libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection_sqli_data.h
 
 copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
+.PHONY: copy
 
 # --depth 1 -- get without history
 lua-TestMore:
