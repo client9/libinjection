@@ -1,15 +1,23 @@
 
 # either works
 
-#LUA_INC_DIR=/opt/local/include/luajit-2.0
-#LUA_LIB_DIR=/opt/local/lib
-#LUA_LIB=luajit-5.1.2
-#LUA=luajit
+# ubuntu
+LUA_FLAGS=-I/usr/include/lua-5.1 -lliblua5.1
+LUA=/usr/bin/lua
 
-LUA_INC_DIR=/opt/local/include
-LUA_LIB_DIR=/opt/local/lib
-LUA_LIB=lua
+# ubuntu libjit 2
+LUA_FLAGS=-I/usr/include/luajit-2.0 -llibluajit5.1
+LUA=XXX
+# where is luajit?
+
+# MAC OS X - "port" luajit
+LUA_FLAGS=-I/opt/local/include/luajit-2.0 -L/opt/local/lib -lluajit-5.1.2
+LUA=luajit
+
+# MAC OS X - "port" for lua
+LUA_FLAGS=-I/opt/local/include -L/opt/local/lib/ -llua
 LUA=lua
+
 
 SHARED=-shared -Wl,-soname,libinjection.so
 CFLAGS= -O0 -g -Wall -Werror
@@ -22,7 +30,7 @@ endif
 #
 # MAC OS X: note using ".so" suffix NOT ".dylib"
 libinjection.so: libinjection_wrap.c
-	${CC} ${CFLAGS} -I. -I${LUA_INC_DIR} -L${LUA_LIB_DIR} -l${LUA_LIB} \
+	${CC} ${CFLAGS} -I. ${LUA_FLAGS} \
 	${SHARED} libinjection_wrap.c libinjection_sqli.c -o libinjection.so
 
 # build and run unit tests
