@@ -42,18 +42,11 @@ test-unit: libinjection.so lua-TestMore
 	./make_test.py > unit-test.t
 	LUA_PATH='?.lua;lua-TestMore/src/?.lua' ${LUA} unit-test.t
 
-test-unit-junit: libinjection.so lua-TestMore
-	./make_test.py > unit-test.t
-	LUA_PATH='?.lua;lua-TestMore/src/?.lua' prove \
-	    --formatter=TAP::Formatter::JUnit \
-	    --exec ${LUA} \
-            unit-test.t
-
 libinjection_wrap.c: libinjection.i
 	swig -lua libinjection.i
 
-fingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json
-	./generate_lua_fingerprints.py < ../c/sqlparse_data.json > sqlifingerprints.lua
+sqlifingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json
+	./generate_lua_fingerprints.py > sqlifingerprints.lua
 
 libinjection.h: ../c/libinjection.h
 	cp ../c/libinjection.h libinjection.h
