@@ -70,7 +70,7 @@ copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 
 # --depth 1 -- get without history
 lua-TestMore:
-	git clone --depth 1 git://github.com/fperrad/lua-TestMore.git
+	git clone --depth 1 https://github.com/fperrad/lua-TestMore.git
 
 clean:
 	rm -f *~
