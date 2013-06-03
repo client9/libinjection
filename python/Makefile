@@ -1,4 +1,8 @@
 
+#
+# SWIG libinjection.i -> libinjection_wrap.c
+#  is done in 'setup.py'
+#
 python: copy
 	rm -f libinjection.py libinjection.pyc libinjection/libinjection_wrap.c
 	python setup.py --verbose build --force
@@ -11,13 +15,16 @@ test-unit: copy
 test: test-unit
 .PHONY: test
 
-# not very efficient
-copy:
-	(cd ../c && make sort)
-	cp ../c/libinjection.h libinjection/.
-	cp ../c/libinjection_sqli.c libinjection/.
-	cp ../c/libinjection_sqli_data.h libinjection/.
-.PHONY: copy
+libinjection/libinjection.h: ../c/libinjection.h
+	cp ../c/libinjection.h libinjection/libinjection.h
+
+libinjection/libinjection_sqli.c: ../c/libinjection_sqli.c
+	cp ../c/libinjection_sqli.c libinjection/libinjection_sqli.c
+
+libinjection/libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
+	cp ../c/libinjection_sqli_data.h libinjection/libinjection_sqli_data.h
+
+copy: libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
 
 clean:
 	rm -rf build dist

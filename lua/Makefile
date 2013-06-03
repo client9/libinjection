@@ -14,7 +14,7 @@ LUA=lua
 # need to hack a linux version here
 #
 # MAC OS X: note using ".so" suffix NOT ".dylib"
-shared: libinjection_wrap.c
+libinjection.so: libinjection_wrap.c
 	gcc -g -O0 -I. -I${LUA_INC_DIR} -L${LUA_LIB_DIR} -l${LUA_LIB} \
 	-dynamiclib libinjection_wrap.c libinjection_sqli.c -o libinjection.so
 
@@ -23,23 +23,26 @@ shared: libinjection_wrap.c
 # a TAP test plan.  Easier that writing lots of LUA glue code
 # and super-fast!
 #
-test-unit:
+test-unit: libinjection.so
 	./make_test.py > unit-test.t
 	LUA_PATH='?.lua;lua-TestMore/src/?.lua' ${LUA} unit-test.t
 
-libinjection_wrap.c: copy
+libinjection_wrap.c: copy libinjection.i
 	swig -lua libinjection.i
 
-swig: copy libinjection_wrap.c
-
-# not very efficient
-copy:
-	(cd ../c && make sort)
-	cp ../c/libinjection.h .
-	cp ../c/libinjection_sqli.c .
-	cp ../c/libinjection_sqli_data.h .
+fingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json
 	./generate_lua_fingerprints.py < ../c/sqlparse_data.json > sqlifingerprints.lua
-.PHONY: copy
+
+libinjection.h: ../c/libinjection.h
+	cp ../c/libinjection.h libinjection.h
+
+libinjection_sqli.c: ../c/libinjection_sqli.c
+	cp ../c/libinjection_sqli.c libinjection_sqli.c
+
+libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
+	cp ../c/libinjection_sqli_data.h libinjection_sqli_data.h
+
+copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 
 clean:
 	rm -f *~
