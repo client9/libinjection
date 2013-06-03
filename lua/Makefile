@@ -3,7 +3,7 @@
 
 # ubuntu
 LUA_FLAGS=-I/usr/include/lua5.1 -llua5.1
-LUA=/usr/bin/lua
+LUA=/usr/bin/lua5.1
 
 # ubuntu libjit 2
 LUA_FLAGS=-I/usr/include/luajit-2.0 -lluajit5.1
@@ -38,7 +38,7 @@ libinjection.so: libinjection_wrap.c
 # a TAP test plan.  Easier that writing lots of LUA glue code
 # and super-fast!
 #
-test-unit: libinjection.so
+test-unit: libinjection.so lua-TestMore
 	./make_test.py > unit-test.t
 	LUA_PATH='?.lua;lua-TestMore/src/?.lua' ${LUA} unit-test.t
 
@@ -58,6 +58,9 @@ libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection_sqli_data.h
 
 copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
+
+lua-TestMore:
+	git clone git://github.com/fperrad/lua-TestMore.git
 
 clean:
 	rm -f *~
