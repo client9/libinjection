@@ -46,7 +46,9 @@ class NullHandler(tornado.web.RequestHandler):
             for val in values:
                 # do it one more time include cut-n-paste was already url-encoded
                 val = urllib.unquote(val)
-                issqli = libinjection.is_sqli(sqlstate, val, None)
+
+                # swig returns 1/0, convert to True False
+                issqli = bool(libinjection.is_sqli(sqlstate, val, None))
 
                 # True if any issqli values are true
                 qssqli = qssqli or issqli
