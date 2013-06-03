@@ -71,3 +71,4 @@ clean:
 	rm -f sqlifingerprints.lua
 	rm -f unit-test.t
 	rm -f libinjection_sqli.c.*
+	rm -f junit*.xml
