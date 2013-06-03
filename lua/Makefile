@@ -67,6 +67,6 @@ clean:
 	rm -f *~
 	rm -rf *.dSYM *.so *.dylib
 	rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h
-	rm -f lua libinjection_wrap.c sqlifingerprints.lua
+	rm -f sqlifingerprints.lua
 	rm -f unit-test.t
 	rm -f libinjection_sqli.c.*
