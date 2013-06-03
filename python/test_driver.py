@@ -10,6 +10,9 @@ from libinjection import *
 print LIBINJECTION_VERSION
 
 def print_token_string(tok):
+    """
+    returns the value of token, handling opening and closing quote characters
+    """
     out = ''
     if tok.str_open != CHAR_NULL:
         out += tok.str_open
@@ -19,12 +22,16 @@ def print_token_string(tok):
     return out
 
 def print_token(tok):
+    """
+    prints a token for use in unit testing
+    """
     out = ''
     out += tok.type
     out += ' '
     if tok.type == 's':
         out += print_token_string(tok)
     elif tok.type == 'v':
+        # SWIG: var_count is still a char, so need to convert back to int
         vc = ord(tok.var_count);
         if vc == 1:
             out += '@'
@@ -104,27 +111,27 @@ def runtest(testname, flag=None):
         print "GOT: \n" + toascii(actual)
         assert actual == data[2]
 
-def run_tokens(testname):
-    runtest(testname, 'tokens')
-
-def run_folding(testname):
-    runtest(testname, 'folding')
-
-def run_fingerprints(testname):
-    runtest(testname, 'fingerprints')
-
 def test_tokens():
+    def run_tokens(testname):
+        runtest(testname, 'tokens')
+
     for testname in sorted(glob.glob('../tests/test-tokens-*.txt')):
         testname = os.path.basename(testname)
         yield run_tokens, testname
 
-
 def test_folding():
+    def run_folding(testname):
+        runtest(testname, 'folding')
+
     for testname in sorted(glob.glob('../tests/test-folding-*.txt')):
         testname = os.path.basename(testname)
         yield run_folding, testname
 
 def test_fingerprints():
+    def run_fingerprints(testname):
+        runtest(testname, 'fingerprints')
+
+
     for testname in sorted(glob.glob('../tests/test-sqli-*.txt')):
         testname = os.path.basename(testname)
         yield run_fingerprints, testname
