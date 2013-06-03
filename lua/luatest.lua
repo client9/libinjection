@@ -1,13 +1,5 @@
-LUA_PATH = "lua-TestMore/src/?.lua"
 
 require 'libinjection'
-require 'Test.More'
-require 'Test.Builder.Tester'
-plan(1)
-
-test_out "ok 1 - 1 <= 2"
-cmp_ok( 1, '<=', 2, "1 <= 2" )
-test_test "ok cmp_ok"
 
 dofile('sqlifingerprints.lua')
 
