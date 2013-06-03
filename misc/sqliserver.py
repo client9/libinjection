@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-# A 'nullserver' that accepts input and generates output
-# to trick sqlmap into thinking it's a database-driven site
 #
+#
+#
+
 
 import sys
 import logging
@@ -38,20 +39,23 @@ class NullHandler(tornado.web.RequestHandler):
         args = []
         extra = {}
         qssqli = False
+
+        sqlstate = libinjection.sfilter()
+
         for name,values in self.request.arguments.iteritems():
             for val in values:
                 # do it one more time include cut-n-paste was already url-encoded
                 val = urllib.unquote(val)
-                issqli = libinjection.detectsqli(val, extra)
+                issqli = libinjection.is_sqli(sqlstate, val, None)
 
                 # True if any issqli values are true
                 qssqli = qssqli or issqli
                 val = val.replace(',', ', ')
-                args.append([name, val, issqli, extra['fingerprint']])
+                args.append([name, val, issqli, sqlstate.pat])
 
         self.render("form.html",
                     title='libjection sqli diagnositc',
-                    version = libinjection.__version__,
+                    version = libinjection.LIBINJECTION_VERSION,
                     is_sqli=qssqli,
                     args=args,
                     formvalue=formvalue
