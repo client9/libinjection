@@ -60,6 +60,9 @@ libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 .PHONY: copy
 
+sample: sqlifingerprints.lua
+	${LUA} luatest.lua
+
 # --depth 1 -- get without history
 lua-TestMore:
 	git clone --depth 1 https://github.com/fperrad/lua-TestMore.git

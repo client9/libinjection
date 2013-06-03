@@ -25,13 +25,19 @@ function check_pattern(sqlstate)
     end
 end
 
+-- THIS USES BUILT IN FINGERPRINTS
+--  (with last arg of 'nil')
+
 sql_state = libinjection.sfilter()
 sqli = '1 union select * from table'
 print(libinjection.is_sqli(sql_state, sqli, sqli:len(), nil))
 print(sql_state.pat)
 print('----')
 
-for x = 1,10000 do
+
+-- THIS USES LUA FINGERPRINTS via 'check_pattern' function above
+
+for x = 1,2 do
    ok = libinjection.is_sqli(sql_state, sqli, sqli:len(), 'check_pattern')
    if ok == 1 then
       print(sql_state.pat)
