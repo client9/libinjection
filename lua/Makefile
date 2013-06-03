@@ -2,11 +2,11 @@
 # either works
 
 # ubuntu
-LUA_FLAGS=-I/usr/include/lua-5.1 -lliblua5.1
+LUA_FLAGS=-I/usr/include/lua5.1 -llua5.1
 LUA=/usr/bin/lua
 
 # ubuntu libjit 2
-LUA_FLAGS=-I/usr/include/luajit-2.0 -llibluajit5.1
+LUA_FLAGS=-I/usr/include/luajit-2.0 -lluajit5.1
 LUA=XXX
 # where is luajit?
 
@@ -20,7 +20,7 @@ LUA=lua
 
 
 SHARED=-shared -Wl,-soname,libinjection.so
-CFLAGS= -O0 -g -Wall -Werror
+CFLAGS= -O0 -g -Wall -Werror -fPIC -fno-common
 APPLE=$(shell uname -a | grep -c Darwin)
 ifeq ($(APPLE),1)
 	SHARED=-dynamiclib
