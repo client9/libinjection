@@ -48,7 +48,6 @@ test-unit-junit: libinjection.so lua-TestMore
 	    --formatter=TAP::Formatter::JUnit \
 	    --exec ${LUA} \
             unit-test.t
-	libinjection.so lua-TestMore
 
 libinjection_wrap.c: libinjection.i
 	swig -lua libinjection.i
