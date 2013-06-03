@@ -11,12 +11,19 @@ LUA_LIB_DIR=/opt/local/lib
 LUA_LIB=lua
 LUA=lua
 
+SHARED=-shared -Wl,-soname,libinjection.so
+CFLAGS= -O0 -g -Wall -Werror
+APPLE=$(shell uname -a | grep -c Darwin)
+ifeq ($(APPLE),1)
+	SHARED=-dynamiclib
+endif
+
 # need to hack a linux version here
 #
 # MAC OS X: note using ".so" suffix NOT ".dylib"
 libinjection.so: libinjection_wrap.c
-	gcc -g -O0 -I. -I${LUA_INC_DIR} -L${LUA_LIB_DIR} -l${LUA_LIB} \
-	-dynamiclib libinjection_wrap.c libinjection_sqli.c -o libinjection.so
+	${CC} ${CFLAGS} -I. -I${LUA_INC_DIR} -L${LUA_LIB_DIR} -l${LUA_LIB} \
+	${SHARED} libinjection_wrap.c libinjection_sqli.c -o libinjection.so
 
 # build and run unit tests
 # Uses a python helper to read the test files to generate
