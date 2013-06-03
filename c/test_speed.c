@@ -13,7 +13,7 @@ void testIsSQL(void)
         "APPLE 19.123 'FOO' \"BAR\"",
         "/* BAR */ UNION ALL SELECT (2,3,4)",
         "1 || COS(+0X04) --FOOBAR",
-        "dog apple cat banana bar",
+        "dog apple @cat banana bar",
         "dog apple cat \"banana \'bar",
         "102 TABLE CLOTH",
         NULL

@@ -106,6 +106,8 @@ clean:
 	rm -rf core* a.out
 	rm -f gmon.out nosetests.xml valgrind-*.txt
 	rm -f reader extractor is_sqli lcov-reader sqli
+	rm -f fingerprints-orig.txt
+
 
 sqli-gcov:
 	rm -f sqli
