@@ -9,10 +9,10 @@ Libinjection: advanced sqli detection.  Try it now on the <a href="/diagnostics"
 <ul>
 <li>Open source, code is at <a href="https://github.com/client9/libinjection/">github</a></li>
 <li><a href="https://github.com/client9/libinjection/blob/master/COPYING.txt">BSD License</a></li>
-<li>Standard C code, compiles on linux/unix/bsd, mac and windows</li>
+<li>Standard C code, compiles on Linux/Unix/BSD, Mac and Windows</li>
 <li>Over 500k inspections per second on commodity hardware</li>
-<li>No threads and no memory allocation - only 500 bytes on stack is used</li>
-<li>Small, under 1000 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
+<li>No threads and no memory allocation - only 500 bytes of state used (stack or heap)</li>x
+<li>Small - under 1000 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
 <li>No external library dependencies</li>
 </ul>
 
@@ -27,12 +27,12 @@ Tests include:
 </p>
 
 <ul>
-<li> built and tested using gcc and clang (windows tested via modsecurity)</li>
-<li> static analysis using cppcheck and clang's static analyzer</li>
-<li> tested against <a href="https://libinjection.client9.com/jenkins/job/libinjection-samples-positive/">50,000 sqli samples</a></li>
-<li> tested against previous and current <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-samples-negative/">false positives</a></li>
-<li> over 100+ <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, run under <a href="https://libinjection.client9.com/jenkins/job/libinjection-valgrind/valgrindResult">valgrind</a> for memory problems</li>
-<li> code coverages from <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-unittest/">unit tests</a> and <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-samples/">sqli samples</a></li>
+<li> Built and tested using gcc and clang (windows tested via modsecurity)</li>
+<li> Static analysis using <a href="http://cppcheck.sourceforge.net">cppcheck</a> and <a href="http://clang-analyzer.llvm.org">clang's static analyzer</a></li>
+<li> Tested against <a href="https://libinjection.client9.com/jenkins/job/libinjection-samples-positive/">50,000 sqli samples</a></li>
+<li> Tested against previous and current <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-samples-negative/">false positives</a></li>
+<li> Over 250+ <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, run under <a href="https://libinjection.client9.com/jenkins/job/libinjection-valgrind/valgrindResult">valgrind</a> for memory problems</li>
+<li> Code coverages from <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-unittest/">unit tests</a> and <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-samples/">sqli samples</a></li>
 </ul>
 
 <h2>Presentations</h2>
