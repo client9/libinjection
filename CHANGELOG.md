@@ -1,4 +1,4 @@
-# vNEXT
+# Upcoming 3.0.0 release
 
 Big Engine change.
 * Tokenizer is now really dumb, and publically exposed.  See `libinjection_sqli_tokenize`.
@@ -13,6 +13,12 @@ Big Engine change.
 * autogeneration of fingerprints with trivial SQL variations
 * support for pgsql $ strings
 * support for oracle's q and nq strings
+* parsing stats exposed
+* new swig bindings for python and lua, with callbacks into original scripting
+  language for accept/reject of fingerprints (i.e. manage fingerprints in
+  script, not C code)
+* Imporved parsing of various special cases in MySQL
+* Numerous evasions fixed
 
 # v2.0.4 2013-05-21 IMPORTANT
 
