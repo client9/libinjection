@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}libinjection sqli tokens diagnostic{% end %}
+{% block body %}
+<h1>libinjection {{ version }} tokens diagnostics</h1>
+<p>Enter text to be analyzed in form below or directly modify the query string: </p>
+<form method="get">
+<textarea name="id" rows="5">{{ formvalue }}</textarea><br/>
+<input type="submit" name="type" value="fingerprints"></input>
+<input type="submit" name="type" value="tokens"></input>
+</form>
+{% if len(formvalue) %}
+
+<hr/>
+<ul>
+{% for p in parsed %}
+<li>
+<a href="#{{ p['quote'] }}-{{ p['comment'] }}">
+{{ p['quote']}} quotes / {{ p['comment'] }} comments
+</a>
+</li>
+{% end %}
+</ul>
+
+{% for p in parsed %}
+<h2>{{ p['quote']}} quotes / {{ p['comment'] }} comments </h2>
+<a name="{{ p['quote'] }}-{{ p['comment'] }}"></a>
+<div style="float:left; margin:4px">
+<h3>Raw Tokens</h3>
+<table>
+<tr><th>type</th><th>value</th></tr>
+{% for i in p['tokens'] %}
+<tr><td>{{ i[0] }}</td><td>{{ i[1] }}</tr>
+{% end %}
+</table>
+</div>
+
+<div style="float:left; margin: 4px">
+<h3>Folded</h3>
+<table style="float:left">
+<tr><th>type</th><th>value</th></tr>
+{% for i in p['folds'] %}
+<tr><td>{{ i[0] }}</td><td>{{ i[1] }}</tr>
+{% end %}
+</table>
+</div>
+<hr style="clear:both">
+
+{% end %}
+{% end %}
+{% end %}

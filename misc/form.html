@@ -5,7 +5,8 @@
 <p>Enter text to be analyzed in form below or directly modify the query string: </p>
 <form method="get">
 <textarea name="id" rows="5">{{ formvalue }}</textarea><br/>
-<input type="submit" value="submit"></input>
+<input type="submit" name="type" value="fingerprints"></input>
+<input type="submit" name="type" value="tokens"></input>
 </form>
 {% if len(args) %}
 <h2>SQLi Detected: {{ is_sqli }}</h2>
