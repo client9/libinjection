@@ -2825,6 +2825,7 @@ static const char* sql_fingerprints[] = {
     "UEf(s",
     "UEf(v",
     "UEnkn",
+    "UEnnk",
     "UEs,f",
     "UEs,v",
     "UEsc",
@@ -6269,6 +6270,6 @@ static const char* sql_fingerprints[] = {
     "vovso",
     "vovsv",
 };
-static const size_t sqli_fingerprints_sz = 5157;
+static const size_t sqli_fingerprints_sz = 5158;
 
 #endif
