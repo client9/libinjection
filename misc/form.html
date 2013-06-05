@@ -18,10 +18,39 @@
 {% else %}
 <tr class="green">
 {% end %}
-<td>{{ arg[0] }}</td><td>{{ arg[1] }}</td><td>{{ arg[2] }}</td><td>{{ arg[3] }}</tr>
+<td>{{ arg[0] }}</td><td>{{ arg[1] }}</td><td>{{ arg[2] }}</td><td>{{ arg[3] }}</td></tr>
 {% end %}
 </table>
 {% end %}
+
+<hr/>
+<h2>Fingerprints in all contexts</h2>
+
+
+{% for name, v in allfp.iteritems() %}
+
+<div style="margin: 2px; border: 1px solid black">
+<h2>query string: "{{ name }}"</h2>
+<p><b><code>{{ v['value'] }}</code></b></p>
+
+<table>
+<tr><th>quoting context</th><th>comment style</th><th>is sqli</th><th>fingerprint</th></tr>
+{% for arg in v['fingerprints'] %}
+{% if arg[2] %}
+<tr class="red">
+{% else %}
+<tr class="green">
+{% end %}
+<td>{{ arg[0] }}</td>
+<td>{{ arg[1] }}</td>
+<td>{{ arg[2] }}</td>
+<td>{{ arg[3] }}</td>
+</tr>
+{% end %}
+</table>
+</div>
+{% end %}
+
 
 <h2>Notes:</h2>
 <ul>
