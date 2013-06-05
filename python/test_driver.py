@@ -31,8 +31,7 @@ def print_token(tok):
     if tok.type == 's':
         out += print_token_string(tok)
     elif tok.type == 'v':
-        # SWIG: var_count is still a char, so need to convert back to int
-        vc = ord(tok.var_count);
+        vc = tok.count;
         if vc == 1:
             out += '@'
         elif vc == 2:

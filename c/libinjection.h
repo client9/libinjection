@@ -56,7 +56,13 @@ typedef struct {
     char type;
     char str_open;
     char str_close;
-    char var_count;
+
+    /*  count:
+     *  in type 'v', used for number of opening '@'
+     *  but maybe unsed in other contexts
+     */
+    int  count;
+
     char val[ST_MAX_SIZE];
 } stoken_t;
 
@@ -65,26 +71,54 @@ typedef struct {
 %immutable;
 #endif
 
-    /* input */
+    /*
+     * input, does not need to be null terminated.
+     * it is also not modified.
+     */
     const char *s;
+
+    /*
+     * input length
+     */
     size_t slen;
 
-    /* current tokenize state */
+    char delim;
+    int  comment_style;
+
+    /*
+     * pos is index in string we are at when tokenizing
+     */
     size_t pos;
+
+    /*
+     * true if we are inside a mysql-non-comment /x! .. x/
+     * during tokenization
+     */
     int    in_comment;
 
-    /* final sqli data */
-    stoken_t *current;
-
-    /* MAX TOKENS + 1 since use one extra token to determine
-       the type of the previous token */
+    /* MAX TOKENS + 1 since we use one extra token
+     * to determine the type of the previous token
+     */
     stoken_t tokenvec[MAX_TOKENS + 1];
 
-    /*  +1 for ending null */
-    char pat[MAX_TOKENS + 1];
-    char delim;
-    char comment_style;
+    /*
+     * Pointer to token position in tokenvec, above
+     */
+    stoken_t *current;
 
+    /*
+     * fingerprint pattern c-string
+     * +1 for ending null
+     */
+    char pat[MAX_TOKENS + 1];
+
+    /*
+     * Line number of code that said input was NOT sqli.
+     * Most of the time it's line that said "it's not a
+     * matching fingerprint" but there is other logic that
+     * sometimes approves an input. This is only useful for debugging.
+     *
+     */
     int reason;
 
     /* Number of ddw (dash-dash-white) comments
@@ -107,10 +141,19 @@ typedef struct {
      */
     int stats_comment_ddx;
 
+    /*
+     * c-style comments found  /x .. x/
+     */
     int stats_comment_c;
 
+    /*
+     * mysql c-style not comments found /x! ... x/
+     */
     int stats_comment_mysql;
 
+    /*
+     * number of tokens folded away
+     */
     int stats_folds;
 
 } sfilter;
@@ -159,7 +202,7 @@ int libinjection_is_sqli(sfilter * sql_state,
 const char* libinjection_sqli_fingerprint(sfilter * sql_state,
                                           const char *s, size_t slen,
                                           char delim,
-                                          char comment_style);
+                                          int comment_style);
 
 /*  FOR H@CKERS ONLY
  *
@@ -167,7 +210,7 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state,
 
 void libinjection_sqli_init(sfilter* sql_state,
                             const char* s, size_t slen,
-                            char delim, char comment_style);
+                            char delim, int comment_style);
 
 int libinjection_sqli_tokenize(sfilter * sql_state, stoken_t *ouput);
 

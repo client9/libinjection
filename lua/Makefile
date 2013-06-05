@@ -42,7 +42,7 @@ test-unit: libinjection.so lua-TestMore
 	./make_test.py > unit-test.t
 	LUA_PATH='?.lua;lua-TestMore/src/?.lua' ${LUA} unit-test.t
 
-libinjection_wrap.c: libinjection.i
+libinjection_wrap.c: libinjection.i libinjection.h
 	swig -lua libinjection.i
 
 sqlifingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json

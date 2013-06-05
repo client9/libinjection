@@ -921,9 +921,9 @@ static size_t parse_var(sfilter * sf)
      */
     if (pos < slen && cs[pos] == '@') {
         pos += 1;
-        sf->current->var_count = 2;
+        sf->current->count = 2;
     } else {
-        sf->current->var_count = 1;
+        sf->current->count = 1;
     }
 
     /*
@@ -1156,7 +1156,7 @@ int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
  * Initializes parsing state
  *
  */
-void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, char delim, char comment_style)
+void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, char delim, int comment_style)
 {
     memset(sf, 0, sizeof(sfilter));
     sf->s = s;
@@ -1460,7 +1460,7 @@ int filter_fold(sfilter * sf)
 const char*
 libinjection_sqli_fingerprint(sfilter * sql_state,
                               const char *s, size_t slen,
-                              char delim, char comment_style)
+                              char delim, int comment_style)
 {
     int i;
     int tlen = 0;

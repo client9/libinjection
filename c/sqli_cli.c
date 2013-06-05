@@ -37,10 +37,10 @@ void print_string(stoken_t* t)
 
 void print_var(stoken_t* t)
 {
-    if (t->var_count >= 1) {
+    if (t->count >= 1) {
         printf("%c", '@');
     }
-    if (t->var_count == 2) {
+    if (t->count == 2) {
         printf("%c", '@');
     }
     print_string(t);

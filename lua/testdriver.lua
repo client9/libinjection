@@ -21,12 +21,9 @@ function print_token(tok)
    if tok.type == 's' then
        out = out .. print_token_string(tok)
    elseif tok.type == 'v' then
-       -- swig doesn't convert the char to an int
-       -- I'm lazy not lot looking how to convert
-       -- a string char to an int value
-       if tok.var_count == '\1' then
+       if tok.count == 1 then
            out = out .. '@'
-       elseif tok.var_count == '\2' then
+       elseif tok.count == 2 then
            out = out .. '@@'
        end
        out = out .. print_token_string(tok)
@@ -53,7 +50,7 @@ function test_tokens_mysql(input)
     local sql_state = libinjection.sfilter()
     local atoken = libinjection.stoken_t()
     libinjection.sqli_init(sql_state, input, input:len(),
-                           libinjection.CHAR_NULL, '\1')
+                           libinjection.CHAR_NULL, libinjection.COMMENTS_MYSQL)
     while (libinjection.sqli_tokenize(sql_state, atoken) == 1) do
         out = out .. print_token(atoken)
     end
