@@ -36,12 +36,18 @@ def genluatest(fname, data):
     if name.startswith('test-tokens-'):
         testname = 'test_tokens'
         extra = "\\n"
+    elif name.startswith('test-tokens_mysql'):
+        testname = 'test_tokens_mysql'
+        extra = "\\n"
     elif name.startswith('test-folding-'):
         testname = 'test_folding'
         extra = "\\n"
     elif name.startswith('test-sqli-'):
         testname = 'test_fingerprints'
         extra = ''
+    else:
+        print "IGNORING: " + name
+
     name = name.replace('.txt', '')
 
     print "is({0}('{1}'),\n   '{2}{3}',\n   '{4}')\n".format(

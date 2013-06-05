@@ -450,15 +450,32 @@ static size_t parse_slash(sfilter * sf)
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
     const char* cur = cs + pos;
-    size_t inc;
+    size_t inc = 0;
 
     size_t pos1 = pos + 1;
     if (pos1 == slen || cs[pos1] != '*') {
         return parse_operator1(sf);
     }
 
+    /* check if this looks like a mysql comment */
     inc = is_mysql_comment(cs, slen, pos);
-    if (inc == 0) {
+
+    if (inc > 0) {
+        /* yes, mark it */
+        sf->stats_comment_mysql += 1;
+
+        if (sf->comment_style == COMMENTS_MYSQL) {
+            /*
+             * MySQL Comment (which is actually not a comment)
+             */
+            sf->in_comment = TRUE;
+            st_clear(sf->current);
+            return pos + inc;
+        }
+    }
+
+    /* we didn't find a mysql comment or we don't care */
+    if (1) {
 
         /*
          * skip over initial '/x'
@@ -486,13 +503,6 @@ static size_t parse_slash(sfilter * sf)
 
             return pos + clen;
         }
-    } else {
-        /*
-         * MySQL Comment
-         */
-        sf->in_comment = TRUE;
-        st_clear(sf->current);
-        return pos + inc;
     }
 }
 
@@ -1089,6 +1099,10 @@ int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
     const size_t slen = sf->slen;
     size_t *pos = &sf->pos;
     pt2Function fnptr;
+
+    if (slen == 0) {
+        return FALSE;
+    }
 
     st_clear(current);
     sf->current = current;
@@ -1694,7 +1708,7 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
     libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_ANSI);
     if (fn(sql_state, callbackarg)) {
         return TRUE;
-    } else if (sql_state->stats_comment_ddx) {
+    } else if (sql_state->stats_comment_ddx || sql_state->stats_comment_mysql) {
       libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_MYSQL);
       if (fn(sql_state, callbackarg)) {
         return TRUE;
@@ -1713,7 +1727,7 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
       libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_ANSI);
       if (fn(sql_state, callbackarg)) {
         return TRUE;
-      } else if (sql_state->stats_comment_ddx) {
+      } else if (sql_state->stats_comment_ddx || sql_state->stats_comment_mysql) {
         libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_MYSQL);
         if (fn(sql_state, callbackarg)) {
           return TRUE;

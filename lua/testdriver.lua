@@ -48,6 +48,18 @@ function test_tokens(input)
     return(out)
 end
 
+function test_tokens_mysql(input)
+    local out = ''
+    local sql_state = libinjection.sfilter()
+    local atoken = libinjection.stoken_t()
+    libinjection.sqli_init(sql_state, input, input:len(),
+                           libinjection.CHAR_NULL, '\1')
+    while (libinjection.sqli_tokenize(sql_state, atoken) == 1) do
+        out = out .. print_token(atoken)
+    end
+    return(out)
+end
+
 function test_folding(input)
     local out = ''
     local sql_state = libinjection.sfilter()

@@ -64,12 +64,17 @@ void print_token(stoken_t *t) {
 int main(int argc, const char* argv[])
 {
     char comment_style = COMMENTS_ANSI;
+    char quote_style = CHAR_NULL;
+
     int fold = 0;
     int detect = 0;
+
+
 
     int i;
     int count;
     int offset = 1;
+    int issqli;
 
     sfilter sf;
     stoken_t current;
@@ -88,6 +93,21 @@ int main(int argc, const char* argv[])
         } else if (strcmp(argv[offset], "-d") == 0 || strcmp(argv[offset], "--detect") == 0) {
             detect = 1;
             offset += 1;
+        } else if (strcmp(argv[offset], "-ca") == 0) {
+            comment_style = COMMENTS_ANSI;
+            offset += 1;
+        } else if (strcmp(argv[offset], "-cm") == 0) {
+            comment_style = COMMENTS_MYSQL;
+            offset += 1;
+        } else if (strcmp(argv[offset], "-q0") == 0) {
+            quote_style = CHAR_NULL;
+            offset += 1;
+        } else if (strcmp(argv[offset], "-q1") == 0) {
+            quote_style = CHAR_SINGLE;
+            offset += 1;
+        } else if (strcmp(argv[offset], "-q2") == 0) {
+            quote_style = CHAR_DOUBLE;
+            offset += 1;
         } else {
             break;
         }
@@ -102,13 +122,13 @@ int main(int argc, const char* argv[])
     char* copy = (char* ) malloc(slen);
     memcpy(copy, argv[offset], slen);
 
-    libinjection_sqli_init(&sf, copy, slen, CHAR_NULL, comment_style);
     if (detect == 1) {
-        detect = libinjection_is_sqli(&sf, copy, slen, CHAR_NULL, COMMENTS_ANSI);
-        if (detect) {
+        issqli = libinjection_is_sqli(&sf, copy, slen, NULL, NULL);
+        if (issqli) {
             printf("%s\n", sf.pat);
         }
     } else if (fold == 1) {
+        libinjection_sqli_init(&sf, copy, slen, quote_style, comment_style);
         count = filter_fold(&sf);
         // printf("count = %d\n", count);
         for (i = 0; i < count; ++i) {
@@ -116,6 +136,7 @@ int main(int argc, const char* argv[])
             print_token(&(sf.tokenvec[i]));
         }
     } else {
+        libinjection_sqli_init(&sf, copy, slen, quote_style, comment_style);
         while (libinjection_sqli_tokenize(&sf, &current)) {
             print_token(&current);
         }

@@ -67,7 +67,7 @@ def readtestdata(filename):
 
     return (info['--TEST--'], info['--INPUT--'].strip(), info['--EXPECTED--'].strip())
 
-def runtest(testname, flag=None):
+def runtest(testname, flags=None):
     """
     runs a test, optionally with valgrind
     """
@@ -89,8 +89,9 @@ def runtest(testname, flag=None):
 
     args.append(os.getenv('PARSER_CMD', './sqli'))
 
-    if flag:
-        args.append(flag)
+    if flags:
+        for f in flags:
+            args.append(f)
 
     args.append(data[1])
     actual = run(args)
@@ -107,18 +108,26 @@ def runtest(testname, flag=None):
 
 
 def run_tokens(testname):
-    runtest(testname)
+    runtest(testname, [ '-q0', '-ca'])
+
+def run_tokens_mysql(testname):
+    runtest(testname, [ '-q0', '-cm'])
 
 def run_folding(testname):
-    runtest(testname, '-f')
+    runtest(testname, ['-f', '-q0', '-ca'])
 
 def run_sqli(testname):
-    runtest(testname, '-d')
+    runtest(testname, ['-d', ])
 
 def test_tokens():
     for testname in sorted(glob.glob('../tests/test-tokens-*.txt')):
         testname = os.path.basename(testname)
         yield run_tokens, testname
+
+def test_tokens_mysql():
+    for testname in sorted(glob.glob('../tests/test-tokens_mysql-*.txt')):
+        testname = os.path.basename(testname)
+        yield run_tokens_mysql, testname
 
 def test_folding():
     for testname in sorted(glob.glob('../tests/test-folding-*.txt')):

@@ -109,6 +109,8 @@ typedef struct {
 
     int stats_comment_c;
 
+    int stats_comment_mysql;
+
     int stats_folds;
 
 } sfilter;

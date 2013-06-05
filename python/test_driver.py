@@ -75,7 +75,7 @@ def readtestdata(filename):
 
     return (info['--TEST--'], info['--INPUT--'].strip(), info['--EXPECTED--'].strip())
 
-def runtest(testname, flag=None):
+def runtest(testname, flag, style_quote=None, style_comments=None):
     """
     runs a test, optionally with valgrind
     """
@@ -86,12 +86,12 @@ def runtest(testname, flag=None):
 
     if flag == 'tokens':
         atoken = stoken_t()
-        sqli_init(sql_state, data[1], CHAR_NULL, COMMENTS_ANSI);
+        sqli_init(sql_state, data[1], style_quote, style_comments);
         while sqli_tokenize(sql_state, atoken):
             actual += print_token(atoken) + '\n';
         actual = actual.strip()
     elif flag == 'folding':
-        sqli_fingerprint(sql_state, data[1], CHAR_NULL, COMMENTS_ANSI);
+        sqli_fingerprint(sql_state, data[1], style_quote, style_comments);
         for i in range(len(sql_state.pat)):
             actual += print_token(sql_state.tokenvec[i]) + '\n';
     elif flag == 'fingerprints':
@@ -113,15 +113,23 @@ def runtest(testname, flag=None):
 
 def test_tokens():
     def run_tokens(testname):
-        runtest(testname, 'tokens')
+        runtest(testname, 'tokens', libinjection.CHAR_NULL, libinjection.COMMENTS_ANSI)
 
     for testname in sorted(glob.glob('../tests/test-tokens-*.txt')):
         testname = os.path.basename(testname)
         yield run_tokens, testname
 
+def test_tokens_mysql():
+    def run_tokens(testname):
+        runtest(testname, 'tokens', libinjection.CHAR_NULL, libinjection.COMMENTS_MYSQL)
+
+    for testname in sorted(glob.glob('../tests/test-tokens_mysql-*.txt')):
+        testname = os.path.basename(testname)
+        yield run_tokens, testname
+
 def test_folding():
     def run_folding(testname):
-        runtest(testname, 'folding')
+        runtest(testname, 'folding', libinjection.CHAR_NULL, libinjection.COMMENTS_ANSI)
 
     for testname in sorted(glob.glob('../tests/test-folding-*.txt')):
         testname = os.path.basename(testname)

@@ -5,5 +5,5 @@ SELECT 1 /*! 2 */;
 --EXPECTED--
 E SELECT
 1 1
-1 2
+c /*! 2 */
 ; ;
