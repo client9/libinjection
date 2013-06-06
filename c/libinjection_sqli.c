@@ -404,43 +404,79 @@ static size_t parse_dash(sfilter * sf)
     }
 }
 
+
+/** This only parses MySQL 5 "versioned comments" in
+ * the form of /x![anything]x/ or /x!12345[anything] x/
+ *
+ * Mysql 3 (maybe 4), allowed this:
+ *    /x!0selectx/ 1;
+ * where 0 could be any number.
+ *
+ * The last version of MySQL 3 was in 2003.
+
+ * It is unclear if the MySQL 3 syntax was allowed
+ * in MySQL 4.  The last version of MySQL 4 was in 2008
+ *
+ * Both are EOL, but one can ban all forms of MySQL
+ * comments by inspecting the sfilter object.
+ * If stats_comment_mysql > 0, we've parsed on (perhaps
+ * incorrectly using mysql3 rules) and you can explcity
+ * ban it.
+ *
+ */
 static size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
 {
     size_t i;
 
+    /* so far...
+     * cs[pos] == '/' && cs[pos+1] == '*'
+     */
+
     if (pos + 2 >= len) {
+        /* not a mysql comment */
         return 0;
     }
+
     if (cs[pos + 2] != '!') {
+        /* not a mysql comment */
         return 0;
     }
+
     /*
      * this is a mysql comment
      *  got "/x!"
      */
+
     if (pos + 3 >= len) {
         return 3;
     }
 
-    if (!isdigit(cs[pos + 3])) {
+    /* ok here is where it gets interesting
+     * if the next 5 characters are all numbers
+     * ignore them (there are a mysql version number)
+     * and start using the 6th char.
+     * select 1, /x!123456x/ = "1,6" !!
+     *
+     * If the next 5 character are NOT all numbers
+     * then do nothing special
+     * select 1, /x!123,456x/ = "1,123,456"
+     *
+     */
+
+    /* /x!34567..... */
+    if (len < pos + 8) {
         return 3;
     }
-    /*
-     * handle odd case of /x!0SELECT
-     */
-    if (!isdigit(cs[pos + 4])) {
-        return 4;
-    }
 
-    if (pos + 7 >= len) {
-        return 4;
-    }
-
-    for (i = pos + 5; i <= pos + 7; ++i) {
+    for (i = pos + 3; i < pos + 8; ++i) {
         if (!isdigit(cs[i])) {
             return 3;
         }
     }
+
+    /* we got /x!34567?...
+     * skip over the first 7 characters and start using the 8th
+     */
     return 8;
 }
 
