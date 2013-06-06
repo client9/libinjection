@@ -636,6 +636,37 @@ static size_t parse_operator2(sfilter * sf)
     }
 }
 
+/*
+ * Ok!   "  \"   "  one backslash = escaped!
+ *       " \\"   "  two backslash = not escaped!
+ *       "\\\"   "  three backslash = escaped!
+ */
+static int is_backslash_escaped(const char* end, const char* start)
+{
+    const char* ptr;
+    for (ptr = end; ptr >= start; ptr--) {
+        if (*ptr != '\\') {
+            break;
+        }
+    }
+    /* if number of backslashes is odd, it is escaped */
+
+    return (end - ptr) & 1;
+}
+
+static size_t is_double_delim_escaped(const char* cur,  const char* end)
+{
+    return  ((cur + 1) < end) && *(cur+1) == *cur;
+}
+
+/* Look forward for doubling of deliminter
+ *
+ * case 'foo''bar' --> foo''bar
+ *
+ * ending quote isn't duplicated (i.e. escaped)
+ * since it's the wrong char or EOL
+ *
+ */
 static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
                                 stoken_t * st, char delim, size_t offset)
 {
@@ -670,18 +701,24 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             st_assign(st, 's', cs + pos + offset, len - pos - offset);
             st->str_close = CHAR_NULL;
             return len;
-        } else if (qpos == cs || *(qpos - 1) != '\\') {
-            /*
-             * ending quote is not escaped.. copy and end
-             */
+        } else if ( is_backslash_escaped(qpos - 1, cs + pos + offset)) {
+            /* keep going, move ahead one character */
+            qpos =
+                (const char *) memchr((const void *) (qpos + 1), delim,
+                                      (cs + len) - (qpos + 1));
+            continue;
+        } else if (is_double_delim_escaped(qpos, cs + len)) {
+            /* keep going, move ahead two characters */
+            qpos =
+                (const char *) memchr((const void *) (qpos + 2), delim,
+                                      (cs + len) - (qpos + 2));
+            continue;
+        } else {
+            /* hey it's a normal string */
             st_assign(st, 's', cs + pos + offset,
                       qpos - (cs + pos + offset));
             st->str_close = delim;
             return qpos - cs + 1;
-        } else {
-            qpos =
-                (const char *) memchr((const void *) (qpos + 1), delim,
-                                      (cs + len) - (qpos + 1));
         }
     }
 }
@@ -699,66 +736,6 @@ static size_t parse_string(sfilter * sf)
      * assert cs[pos] == single or double quote
      */
     return parse_string_core(cs, slen, pos, sf->current, cs[pos], 1);
-}
-
-/** Parse MySQL `backtick` quoted strings
- *
- * Unforunately, the escaping rules for `-quoted strings is different
- * when finding a "`" you need to look at NEXT CHAR to see if it's "`"
- * If so, you need to jump two characters ahead
- *
- * In normal strings, you need to look at PREVIOUS CHAR... and if so
- * just jump ahead one char.
- *
- * Also we don't need to code to fake an opening "`"
- *
- * Tried to keep code as similar to parse_string_core.
- */
-static size_t parse_string_tick(sfilter *sf)
-{
-    const size_t offset = 1;
-    const char delim = '`';
-
-    const char *cs = sf->s;
-    const size_t len = sf->slen;
-    size_t pos = sf->pos;
-    stoken_t *st = sf->current;
-
-    /*
-     * len -pos -1 : offset is to skip the perhaps first quote char
-     */
-    const char *qpos =
-        (const char *) memchr((const void *) (cs + pos + offset), delim,
-                              len - pos - offset);
-
-    st->str_open = delim;
-
-    while (TRUE) {
-        if (qpos == NULL) {
-            /*
-             * string ended with no trailing quote
-             * assign what we have
-             */
-            st_assign(st, 's', cs + pos + offset, len - pos - offset);
-            st->str_close = CHAR_NULL;
-            return len;
-        } else if (qpos + 1 == (cs + len) || ((qpos + 1) < (cs + len) && *(qpos + 1) != delim)) {
-            /*
-             * ending quote is not escaped.. copy and end
-             */
-            st_assign(st, 's', cs + pos + offset,
-                      qpos - (cs + pos + offset));
-            st->str_close = delim;
-            return qpos - cs + 1;
-        } else {
-            /*
-             * we got a `` so advance by 2 chars
-             */
-            qpos =
-                (const char *) memchr((const void *) (qpos + 2), delim,
-                                      (cs + len) - (qpos + 2));
-        }
-    }
 }
 
 /** MySQL ad-hoc character encoding
@@ -928,15 +905,13 @@ static size_t parse_word(sfilter * sf)
  */
 static size_t parse_tick(sfilter* sf)
 {
-    /* first we pretend we are looking for a string */
-    size_t slen = parse_string_tick(sf);
+    size_t pos =  parse_string_core(sf->s, sf->slen, sf->pos, sf->current, '`', 1);
 
     /* we could check to see if start and end of
      * of string are both "`", i.e. make sure we have
      * matching set.  `foo` vs. `foo
      * but I don't think it matters much
      */
-
 
     /* check value of string to see if it's a keyword,
      * function, operator, etc
@@ -951,7 +926,7 @@ static size_t parse_tick(sfilter* sf)
          */
         sf->current->type = 'n';
     }
-    return slen;
+    return pos;
 }
 
 static size_t parse_var(sfilter * sf)
@@ -983,7 +958,7 @@ static size_t parse_var(sfilter * sf)
     if (pos < slen) {
         if (cs[pos] == '`') {
             sf->pos = pos;
-            pos = parse_string_tick(sf);
+            pos = parse_tick(sf);
             sf->current->type = 'v';
             return pos;
         } else if (cs[pos] == CHAR_SINGLE || cs[pos] == CHAR_DOUBLE) {
