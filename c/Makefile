@@ -151,6 +151,7 @@ lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.
 	genhtml -o lcov-html libinjection.info
 .PHONY: lcov-reader
 
-http:
-	python -m  SimpleHTTPServer
-.PHONY: http
+
+test: allbin test_unit
+
+.PHONY: http test
