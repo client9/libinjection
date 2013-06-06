@@ -28,7 +28,7 @@ static size_t parse_underscore(sfilter * sf);
 static size_t parse_ustring(sfilter * sf);
 static size_t parse_qstring(sfilter * sf);
 static size_t parse_nqstring(sfilter * sf);
-
+static size_t parse_hash(sfilter * sf);
 
 static const char* operators2[] = {
     "!!",
@@ -1015,7 +1015,7 @@ static const pt2Function char_parse_map[] = {
    &parse_white, /* 32 */
    &parse_operator2, /* 33 */
    &parse_string, /* 34 */
-   &parse_eol_comment, /* 35 */
+   &parse_hash, /* 35 */
    &parse_money, /* 36 */
    &parse_operator1, /* 37 */
    &parse_operator2, /* 38 */

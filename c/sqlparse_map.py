@@ -1084,7 +1084,7 @@ CHARMAP = [
     'CHAR_WHITE', # 32
     'CHAR_OP2',   # 33 !
     'CHAR_STR',   # 34 "
-    'CHAR_COM1',  # 35 "#"
+    'CHAR_HASH',  # 35 "#"
     'CHAR_MONEY', # 36 $
     'CHAR_OP1',   # 37 %
     'CHAR_OP2',   # 38 &

@@ -373,6 +373,21 @@ static size_t parse_eol_comment(sfilter * sf)
     }
 }
 
+/** In Ansi mode, hash is an operator
+ *  In MYSQL mode, it's a EOL comment like '--'
+ */
+static size_t parse_hash(sfilter * sf)
+{
+    sf->stats_comment_hash += 1;
+    if (sf->comment_style == COMMENTS_ANSI) {
+        st_assign_char(sf->current, 'o', '#');
+        return sf->pos + 1;
+    } else {
+        sf->stats_comment_hash += 1;
+        return parse_eol_comment(sf);
+    }
+}
+
 static size_t parse_dash(sfilter * sf)
 {
     const char *cs = sf->s;
@@ -1724,6 +1739,13 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
  *
  *
  */
+static int reparse_as_mysql(sfilter * sql_state)
+{
+    return sql_state->stats_comment_ddx ||
+        sql_state->stats_comment_mysql ||
+        sql_state->stats_comment_hash;
+}
+
 int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
                          ptr_fingerprints_fn fn, void* callbackarg)
 {
@@ -1744,7 +1766,7 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
     libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_ANSI);
     if (fn(sql_state, callbackarg)) {
         return TRUE;
-    } else if (sql_state->stats_comment_ddx || sql_state->stats_comment_mysql) {
+    } else if (reparse_as_mysql(sql_state)) {
       libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_MYSQL);
       if (fn(sql_state, callbackarg)) {
         return TRUE;
@@ -1763,7 +1785,7 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
       libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_ANSI);
       if (fn(sql_state, callbackarg)) {
         return TRUE;
-      } else if (sql_state->stats_comment_ddx || sql_state->stats_comment_mysql) {
+      } else if (reparse_as_mysql(sql_state)) {
         libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_MYSQL);
         if (fn(sql_state, callbackarg)) {
           return TRUE;

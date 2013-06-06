@@ -35,7 +35,7 @@
         "CHAR_WHITE", 
         "CHAR_OP2", 
         "CHAR_STR", 
-        "CHAR_COM1", 
+        "CHAR_HASH", 
         "CHAR_MONEY", 
         "CHAR_OP1", 
         "CHAR_OP2", 

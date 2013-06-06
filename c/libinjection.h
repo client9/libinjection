@@ -151,6 +151,11 @@ typedef struct {
      */
     int stats_comment_mysql;
 
+    /* '#' operators or mysql EOL comments found
+     *
+     */
+    int stats_comment_hash;
+
     /*
      * number of tokens folded away
      */

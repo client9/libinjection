@@ -1,0 +1,11 @@
+--TEST--
+Comments, #-style
+--INPUT--
+SELECT 1 ; # FOOBAR
+--EXPECTED--
+E SELECT
+1 1
+; ;
+c # FOOBAR
+
+

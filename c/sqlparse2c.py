@@ -42,7 +42,7 @@ static size_t parse_underscore(sfilter * sf);
 static size_t parse_ustring(sfilter * sf);
 static size_t parse_qstring(sfilter * sf);
 static size_t parse_nqstring(sfilter * sf);
-
+static size_t parse_hash(sfilter * sf);
 """
 
     print 'static const char* operators2[] = {'
@@ -103,7 +103,7 @@ static size_t parse_nqstring(sfilter * sf);
         'CHAR_BACK' : 'parse_backslash',
         'CHAR_DASH' : 'parse_dash',
         'CHAR_STR'  : 'parse_string',
-        'CHAR_COM1' : 'parse_eol_comment',
+        'CHAR_HASH' : 'parse_hash',
         'CHAR_NUM'  : 'parse_number',
         'CHAR_SLASH': 'parse_slash',
         'CHAR_CHAR' : 'parse_char',
