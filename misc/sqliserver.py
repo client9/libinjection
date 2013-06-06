@@ -35,8 +35,7 @@ def print_token(tok):
     if tok.type == 's':
         out += print_token_string(tok)
     elif tok.type == 'v':
-        # SWIG: var_count is still a char, so need to convert back to int
-        vc = ord(tok.var_count);
+        vc = tok.count;
         if vc == 1:
             out += '@'
         elif vc == 2:
@@ -84,13 +83,13 @@ def alltokens(val, context, comments):
     parse['tokens'] = args
 
     args = []
-    issqli = libinjection.sqli_fingerprint(sqlstate, val, context, comments)
+    fingerprint = libinjection.sqli_fingerprint(sqlstate, val, context, comments)
     vec = sqlstate.tokenvec
     for i in range(len(sqlstate.pat)):
         args.append(print_token(vec[i]))
     parse['folds'] = args
-    parse['sqli'] = bool(issqli)
-
+    parse['sqli'] = bool(libinjection.sqli_blacklist(sqlstate) and libinjection.sqli_not_whitelist(sqlstate))
+    parse['fingerprint'] = fingerprint
     # todo add stats
 
     return parse
