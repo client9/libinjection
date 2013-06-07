@@ -4,5 +4,5 @@ Bizarre MySQL shortcut for NULL
 SELECT \N;
 --EXPECTED--
 E SELECT
-1 NULL
+1 \N
 ; ;

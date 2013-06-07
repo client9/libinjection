@@ -37,7 +37,7 @@ extern "C" {
  * See python's normalized version
  * http://www.python.org/dev/peps/pep-0386/#normalizedversion
  */
-#define LIBINJECTION_VERSION "3.0.0-pre10"
+#define LIBINJECTION_VERSION "3.0.0-pre11"
 
 #define ST_MAX_SIZE 32
 #define MAX_TOKENS 5
@@ -56,6 +56,13 @@ typedef struct {
     char type;
     char str_open;
     char str_close;
+
+    /*
+     * position and length of token
+     * in original string
+     */
+    size_t pos;
+    size_t len;
 
     /*  count:
      *  in type 'v', used for number of opening '@'

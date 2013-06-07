@@ -250,18 +250,23 @@ static void st_clear(stoken_t * st)
     memset(st, 0, sizeof(stoken_t));
 }
 
-static void st_assign_char(stoken_t * st, const char stype, const char value)
+static void st_assign_char(stoken_t * st, const char stype, size_t pos, size_t len,
+                           const char value)
 {
     st->type = (char) stype;
+    st->pos = pos;
+    st->len = len;
     st->val[0] = value;
     st->val[1] = CHAR_NULL;
 }
 
 static void st_assign(stoken_t * st, const char stype,
-                      const char *value, size_t len)
+                      size_t pos, size_t len, const char* value)
 {
     size_t last = len < ST_MAX_SIZE ? len : (ST_MAX_SIZE - 1);
     st->type = (char) stype;
+    st->pos = pos;
+    st->len = len;
     memcpy(st->val, value, last);
     st->val[last] = CHAR_NULL;
 }
@@ -274,7 +279,7 @@ static void st_copy(stoken_t * dest, const stoken_t * src)
 static int st_is_unary_op(const stoken_t * st)
 {
     const char* str = st->val;
-    const size_t len = strlen(st->val);
+    const size_t len = st->len;
 
     if (st->type != TYPE_OPERATOR) {
         return FALSE;
@@ -307,7 +312,7 @@ static size_t parse_operator1(sfilter * sf)
     const char *cs = sf->s;
     size_t pos = sf->pos;
 
-    st_assign_char(sf->current, TYPE_OPERATOR, cs[pos]);
+    st_assign_char(sf->current, TYPE_OPERATOR, pos, 1, cs[pos]);
     return pos + 1;
 }
 
@@ -316,7 +321,7 @@ static size_t parse_other(sfilter * sf)
     const char *cs = sf->s;
     size_t pos = sf->pos;
 
-    st_assign_char(sf->current, TYPE_UNKNOWN, cs[pos]);
+    st_assign_char(sf->current, TYPE_UNKNOWN, pos, 1, cs[pos]);
     return pos + 1;
 }
 
@@ -325,7 +330,7 @@ static size_t parse_char(sfilter * sf)
     const char *cs = sf->s;
     size_t pos = sf->pos;
 
-    st_assign_char(sf->current, cs[pos], cs[pos]);
+    st_assign_char(sf->current, cs[pos], pos, 1, cs[pos]);
     return pos + 1;
 }
 
@@ -338,10 +343,10 @@ static size_t parse_eol_comment(sfilter * sf)
     const char *endpos =
         (const char *) memchr((const void *) (cs + pos), '\n', slen - pos);
     if (endpos == NULL) {
-        st_assign(sf->current, TYPE_COMMENT, cs + pos, slen - pos);
+        st_assign(sf->current, TYPE_COMMENT, pos, slen - pos, cs + pos);
         return slen;
     } else {
-        st_assign(sf->current, TYPE_COMMENT, cs + pos, endpos - cs - pos);
+        st_assign(sf->current, TYPE_COMMENT, pos, endpos - cs - pos, cs + pos);
         return (endpos - cs) + 1;
     }
 }
@@ -353,7 +358,7 @@ static size_t parse_hash(sfilter * sf)
 {
     sf->stats_comment_hash += 1;
     if (sf->comment_style == COMMENTS_ANSI) {
-        st_assign_char(sf->current, TYPE_OPERATOR, '#');
+        st_assign_char(sf->current, TYPE_OPERATOR, sf->pos, 1, '#');
         return sf->pos + 1;
     } else {
         sf->stats_comment_hash += 1;
@@ -387,7 +392,7 @@ static size_t parse_dash(sfilter * sf)
         sf->stats_comment_ddx += 1;
         return parse_eol_comment(sf);
     } else {
-        st_assign_char(sf->current, TYPE_OPERATOR, '-');
+        st_assign_char(sf->current, TYPE_OPERATOR, pos, 1, '-');
         return pos + 1;
     }
 }
@@ -509,7 +514,7 @@ static size_t parse_slash(sfilter * sf)
             /*
              * unterminated comment
              */
-            st_assign(sf->current, TYPE_COMMENT, cs + pos, slen - pos);
+            st_assign(sf->current, TYPE_COMMENT, pos, slen - pos, cs + pos);
             return slen;
         } else {
             /*
@@ -523,7 +528,7 @@ static size_t parse_slash(sfilter * sf)
             if (memchr2(cur + 2, ptr - (cur + 1), '/', '*') !=  NULL) {
                 ctype = 'X';
             }
-            st_assign(sf->current, ctype, cs + pos, clen);
+            st_assign(sf->current, ctype, pos, clen, cs + pos);
 
             return pos + clen;
         }
@@ -540,7 +545,7 @@ static size_t parse_backslash(sfilter * sf)
      * Weird MySQL alias for NULL, "\N" (capital N only)
      */
     if (pos + 1 < slen && cs[pos + 1] == 'N') {
-        st_assign(sf->current, TYPE_NUMBER, "NULL", 4);
+        st_assign(sf->current, TYPE_NUMBER, pos, 2, cs + pos);
         return pos + 2;
     } else {
         return parse_other(sf);
@@ -565,13 +570,13 @@ static size_t parse_operator2(sfilter * sf)
         /*
          * special 3-char operator
          */
-        st_assign(sf->current, TYPE_OPERATOR, cs+pos, 3);
+        st_assign(sf->current, TYPE_OPERATOR, pos, 3, cs + pos);
         return pos + 3;
     }
 
     ch = is_keyword(cs + pos, 2);
     if (ch != CHAR_NULL) {
-        st_assign(sf->current, ch, cs+pos, 2);
+        st_assign(sf->current, ch, pos, 2, cs+pos);
         return pos + 2;
     }
 
@@ -592,7 +597,7 @@ static size_t parse_operator2(sfilter * sf)
         return pos + 2;
     } else if (cs[pos] == ':') {
         /* ':' is not an operator */
-        st_assign(sf->current, TYPE_COLON, cs+pos, 1);
+        st_assign(sf->current, TYPE_COLON, pos, 1, cs+pos);
         return pos + 1;
     } else {
         /*
@@ -664,7 +669,7 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
              * string ended with no trailing quote
              * assign what we have
              */
-            st_assign(st, TYPE_STRING, cs + pos + offset, len - pos - offset);
+            st_assign(st, TYPE_STRING, pos + offset, len - pos - offset, cs + pos + offset);
             st->str_close = CHAR_NULL;
             return len;
         } else if ( is_backslash_escaped(qpos - 1, cs + pos + offset)) {
@@ -681,8 +686,8 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             continue;
         } else {
             /* hey it's a normal string */
-            st_assign(st, TYPE_STRING, cs + pos + offset,
-                      qpos - (cs + pos + offset));
+            st_assign(st, TYPE_STRING, pos + offset,
+                      qpos - (cs + pos + offset), cs + pos + offset);
             st->str_close = delim;
             return qpos - cs + 1;
         }
@@ -724,8 +729,8 @@ static size_t parse_underscore(sfilter *sf)
     if (xlen == 0) {
         return parse_word(sf);
     }
-    st_assign(sf->current, TYPE_BAREWORD, cs + pos, xlen);
-    ch = is_keyword(sf->current->val, strlen(sf->current->val));
+    st_assign(sf->current, TYPE_BAREWORD, pos, xlen, cs + pos);
+    ch = is_keyword(sf->current->val, sf->current->len);
     if (ch == TYPE_SQLTYPE) {
         sf->current->type = TYPE_SQLTYPE;
         return xlen + 1;
@@ -786,12 +791,12 @@ static size_t parse_qstring_core(sfilter * sf, int offset)
 
     strend = memchr2(cs + pos + 3, slen - pos - 3, ch, '\'');
     if (strend == NULL) {
-        st_assign(sf->current, TYPE_STRING, cs + pos + 3, slen - pos - 3);
+        st_assign(sf->current, TYPE_STRING, pos + 3, slen - pos - 3, cs + pos + 3);
         sf->current->str_open = 'q';
         sf->current->str_close = CHAR_NULL;
         return slen;
     } else {
-        st_assign(sf->current, TYPE_STRING, cs + pos + 3, strend - cs - pos -  3);
+        st_assign(sf->current, TYPE_STRING, pos + 3, strend - cs - pos -  3, cs + pos + 3);
         sf->current->str_open = 'q';
         sf->current->str_close = 'q';
         return (strend - cs) + 2;
@@ -824,12 +829,12 @@ static size_t parse_word(sfilter * sf)
     size_t wlen = strlencspn(cs + pos, sf->slen - pos,
                              " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"");
 
-    st_assign(sf->current, TYPE_BAREWORD, cs + pos, wlen);
+    st_assign(sf->current, TYPE_BAREWORD, pos, wlen, cs + pos);
 
     /* now we need to look inside what we good for "." and "`"
      * and see if what is before is a keyword or not
      */
-    for (i =0; i < strlen(sf->current->val); ++i) {
+    for (i =0; i < sf->current->len; ++i) {
         delim = sf->current->val[i];
         if (delim == '.' || delim == '`') {
             ch = is_keyword(sf->current->val, i);
@@ -840,7 +845,7 @@ static size_t parse_word(sfilter * sf)
                  * we got something like "SELECT.1"
                  * or SELECT`column`
                  */
-                st_assign(sf->current, ch, cs + pos, i);
+                st_assign(sf->current, ch, pos, i, cs + pos);
                 return pos + i;
             }
         }
@@ -878,7 +883,7 @@ static size_t parse_tick(sfilter* sf)
     /* check value of string to see if it's a keyword,
      * function, operator, etc
      */
-    char ch = is_keyword(sf->current->val, strlen(sf->current->val));
+    char ch = is_keyword(sf->current->val, sf->current->len);
     if (ch == TYPE_FUNCTION) {
         /* if it's a function, then convert token */
         sf->current->type = TYPE_FUNCTION;
@@ -935,10 +940,10 @@ static size_t parse_var(sfilter * sf)
     xlen = strlencspn(cs + pos, slen - pos,
                      " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r'`\"");
     if (xlen == 0) {
-        st_assign(sf->current, TYPE_VARIABLE, cs + pos, 0);
+        st_assign(sf->current, TYPE_VARIABLE, pos, 0, cs + pos);
         return pos;
     } else {
-        st_assign(sf->current, TYPE_VARIABLE, cs + pos, xlen);
+        st_assign(sf->current, TYPE_VARIABLE, pos, xlen, cs + pos);
         return pos + xlen;
     }
 }
@@ -953,7 +958,7 @@ static size_t parse_money(sfilter *sf)
 
     if (pos + 1 == slen) {
         /* end of line */
-        st_assign_char(sf->current, TYPE_BAREWORD, '$');
+        st_assign_char(sf->current, TYPE_BAREWORD, pos, 1, '$');
         return slen;
     }
 
@@ -969,12 +974,12 @@ static size_t parse_money(sfilter *sf)
             strend = memchr2(cs + pos + 2, slen - pos -2, '$', '$');
             if (strend == NULL) {
                 /* fell off edge */
-                st_assign(sf->current, TYPE_STRING, cs + pos + 2, slen - (pos + 2));
+                st_assign(sf->current, TYPE_STRING, pos + 2, slen - (pos + 2), cs + pos + 2);
                 sf->current->str_open = '$';
                 sf->current->str_close = CHAR_NULL;
                 return slen;
             } else {
-                st_assign(sf->current, TYPE_STRING, cs + pos + 2, strend - (cs + pos + 2));
+                st_assign(sf->current, TYPE_STRING, pos + 2, strend - (cs + pos + 2), cs + pos + 2);
                 sf->current->str_open = '$';
                 sf->current->str_close = '$';
                 return strend - cs + 2;
@@ -984,14 +989,14 @@ static size_t parse_money(sfilter *sf)
             xlen = strlenspn(cs + pos + 1, slen - pos - 1, "abcdefghjiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
             if (xlen == 0) {
                 /* hmm it's "$" _something_ .. just add $ and keep going*/
-                st_assign_char(sf->current, TYPE_BAREWORD, '$');
+                st_assign_char(sf->current, TYPE_BAREWORD, pos, 1, '$');
                 return pos + 1;
             }
             /* we have $foobar????? */
             /* is it $foobar$ */
             if (pos + xlen + 1 == slen || cs[pos+xlen+1] != '$') {
                 /* not $foobar$, or fell off edge */
-                st_assign_char(sf->current, TYPE_BAREWORD, '$');
+                st_assign_char(sf->current, TYPE_BAREWORD, pos, 1, '$');
                 return pos + 1;
             }
 
@@ -1000,20 +1005,20 @@ static size_t parse_money(sfilter *sf)
 
             if (strend == NULL) {
                 /* fell off edge */
-                st_assign(sf->current, TYPE_STRING, cs+pos+xlen+2, slen - pos - xlen - 2);
+                st_assign(sf->current, TYPE_STRING, pos+xlen+2, slen - pos - xlen - 2, cs+pos+xlen+2);
                 sf->current->str_open = '$';
                 sf->current->str_close = CHAR_NULL;
                 return slen;
             } else {
                 /* got one */
-                st_assign(sf->current, TYPE_STRING, cs+pos+xlen+2, strend - (cs + pos + xlen + 2));
+                st_assign(sf->current, TYPE_STRING, pos+xlen+2, strend - (cs + pos + xlen + 2), cs+pos+xlen+2);
                 sf->current->str_open = '$';
                 sf->current->str_close = '$';
                 return (strend + xlen + 2) - cs;
             }
         }
     } else {
-        st_assign(sf->current, TYPE_NUMBER, cs + pos, 1 + xlen);
+        st_assign(sf->current, TYPE_NUMBER, pos, 1 + xlen, cs + pos);
         return pos + 1 + xlen;
     }
 }
@@ -1033,10 +1038,10 @@ static size_t parse_number(sfilter * sf)
         xlen =
             strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEFabcdef");
         if (xlen == 0) {
-            st_assign(sf->current, TYPE_BAREWORD, "0X", 2);
+            st_assign(sf->current, TYPE_BAREWORD, pos, 2, cs + pos);
             return pos + 2;
         } else {
-            st_assign(sf->current, TYPE_NUMBER, cs + pos, 2 + xlen);
+            st_assign(sf->current, TYPE_NUMBER, pos, 2 + xlen, cs + pos);
             return pos + 2 + xlen;
         }
     }
@@ -1051,7 +1056,7 @@ static size_t parse_number(sfilter * sf)
             pos += 1;
         }
         if (pos - start == 1) {
-            st_assign_char(sf->current, TYPE_BAREWORD, '.');
+            st_assign_char(sf->current, TYPE_BAREWORD, start, 1, '.');
             return pos;
         }
     }
@@ -1072,12 +1077,12 @@ static size_t parse_number(sfilter * sf)
              * the number part and leave the rest to be
              * parsed later
              */
-            st_assign(sf->current, TYPE_NUMBER, cs + start, pos - start);
+            st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);
             return pos;
         }
     }
 
-    st_assign(sf->current, TYPE_NUMBER, cs + start, pos - start);
+    st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);
     return pos;
 }
 
@@ -1184,14 +1189,14 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
         return CHAR_NULL;
     }
 
-    if (!
-        (b->type == TYPE_KEYWORD || b->type == TYPE_BAREWORD || b->type == TYPE_OPERATOR
-         || b->type == TYPE_UNION || b->type == TYPE_EXPRESSION)) {
+    if (b->type != TYPE_KEYWORD  && b->type != TYPE_BAREWORD &&
+        b->type != TYPE_OPERATOR && b->type != TYPE_SQLTYPE &&
+        b->type != TYPE_UNION    && b->type != TYPE_EXPRESSION) {
         return CHAR_NULL;
     }
 
-    sz1 = strlen(a->val);
-    sz2 = strlen(b->val);
+    sz1 = a->len;
+    sz2 = b->len;
     sz3 = sz1 + sz2 + 1; /* +1 for space in the middle */
     if (sz3 >= ST_MAX_SIZE) { /* make sure there is room for ending null */
         return FALSE;
@@ -1206,7 +1211,7 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
 
     ch = is_keyword(tmp, sz3);
     if (ch != CHAR_NULL) {
-        st_assign(a, ch, tmp, sz3);
+        st_assign(a, ch, a->pos, sz3, tmp);
         return TRUE;
     } else {
         return FALSE;
@@ -1302,10 +1307,10 @@ int filter_fold(sfilter * sf)
             continue;
         } else if (sf->tokenvec[left].type == TYPE_BAREWORD &&
                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS && (
-                       cstrcasecmp("IN", sf->tokenvec[left].val, strlen( sf->tokenvec[left].val)) == 0 ||
-                       cstrcasecmp("DATABASE", sf->tokenvec[left].val, strlen(sf->tokenvec[left].val)) == 0 ||
-                       cstrcasecmp("USER", sf->tokenvec[left].val,strlen(sf->tokenvec[left].val)) == 0 ||
-                       cstrcasecmp("PASSWORD", sf->tokenvec[left].val, strlen(sf->tokenvec[left].val)) == 0
+                       cstrcasecmp("IN", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("DATABASE", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("PASSWORD", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0
                        )) {
 
             // pos is the same
@@ -1603,7 +1608,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
         if (sql_state->tokenvec[0].type == TYPE_OPERATOR &&
             sql_state->tokenvec[1].type == TYPE_COMMENT &&
             sql_state->tokenvec[1].val[0] == '/' &&
-            cstrcasecmp("CASE", sql_state->tokenvec[0].val, strlen(sql_state->tokenvec[0].val)) != 0)
+            cstrcasecmp("CASE", sql_state->tokenvec[0].val, sql_state->tokenvec[0].len) != 0)
         {
             sql_state->reason = __LINE__;
             return FALSE;
@@ -1627,7 +1632,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
              * we check that next character after the number is either whitespace,
              * or '/' or a '-' ==> sqli.
              */
-            ch = sql_state->s[strlen(sql_state->tokenvec[0].val)];
+            ch = sql_state->s[sql_state->tokenvec[0].len];
             if ( ch <= 32 ) {
                 /* next char was whitespace,e.g. "1234 --"
                  * this isn't exactly correct.. ideally we should skip over all whitespace
@@ -1635,10 +1640,10 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                  */
                 return TRUE;
             }
-            if (ch == '/' && sql_state->s[strlen(sql_state->tokenvec[0].val) + 1] == '*') {
+            if (ch == '/' && sql_state->s[sql_state->tokenvec[0].len + 1] == '*') {
                 return TRUE;
             }
-            if (ch == '-' && sql_state->s[strlen(sql_state->tokenvec[0].val) + 1] == '-') {
+            if (ch == '-' && sql_state->s[sql_state->tokenvec[0].len + 1] == '-') {
                 return TRUE;
             }
 
@@ -1650,7 +1655,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          * detect obvious sqli scans.. many people put '--' in plain text
          * so only detect if input ends with '--', e.g. 1-- but not 1-- foo
          */
-        if ((strlen(sql_state->tokenvec[1].val) > 2)
+        if ((sql_state->tokenvec[1].len > 2)
             && sql_state->tokenvec[1].val[0] == '-') {
             sql_state->reason = __LINE__;
             return FALSE;
@@ -1686,9 +1691,12 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
-        } else if ((sql_state->tokenvec[1].type == TYPE_KEYWORD) && cstrcasecmp("INTO OUTFILE",
-                                                                       sql_state->tokenvec[1].val,
-                                                                       strlen(sql_state->tokenvec[1].val))) {
+        } else if ((sql_state->tokenvec[1].type == TYPE_KEYWORD) &&
+                   (sql_state->tokenvec[1].len > 5) &&
+                   cstrcasecmp("INTO", sql_state->tokenvec[1].val, 4)) {
+            /* if it's not "INTO OUTFILE", or "INTO DUMPFILE" (MySQL)
+             * then treat as safe
+             */
             sql_state->reason = __LINE__;
             return FALSE;
         }

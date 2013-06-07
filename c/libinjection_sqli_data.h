@@ -5562,8 +5562,8 @@ static const keyword_t sql_keywords[] = {
     {"DETERMINISTIC", 'k'},
     {"DFIRST", 'f'},
     {"DIFFERENCE", 'f'},
-    {"DISTINCROW", 'k'},
     {"DISTINCT", 'k'},
+    {"DISTINCTROW", 'k'},
     {"DIV", 'o'},
     {"DLAST", 'f'},
     {"DLOOKUP", 'f'},
@@ -5696,6 +5696,7 @@ static const keyword_t sql_keywords[] = {
     {"INTERSECT ALL", 'o'},
     {"INTERVAL", 'k'},
     {"INTO", 'k'},
+    {"INTO DUMPFILE", 'k'},
     {"INTO OUTFILE", 'k'},
     {"IS", 'o'},
     {"IS DISTINCT", 'n'},
@@ -6010,7 +6011,10 @@ static const keyword_t sql_keywords[] = {
     {"SQLSTATE", 'k'},
     {"SQLWARNING", 'k'},
     {"SQL_BIG_RESULT", 'k'},
+    {"SQL_BUFFER_RESULT", 'k'},
+    {"SQL_CACHE", 'k'},
     {"SQL_CALC_FOUND_ROWS", 'k'},
+    {"SQL_NO_CACHE", 'k'},
     {"SQL_SMALL_RESULT", 'k'},
     {"SQL_VARIANT_PROPERTY", 'f'},
     {"SQRT", 'f'},
@@ -6111,6 +6115,7 @@ static const keyword_t sql_keywords[] = {
     {"UNICODE", 'f'},
     {"UNION", 'U'},
     {"UNION ALL", 'U'},
+    {"UNION ALL DISTINCT", 'U'},
     {"UNIQUE", 'n'},
     {"UNIX_TIMESTAMP", 'f'},
     {"UNI_ON", 'U'},
@@ -6162,6 +6167,7 @@ static const keyword_t sql_keywords[] = {
     {"WHILE", 'E'},
     {"WIDTH_BUCKET", 'f'},
     {"WITH", 'k'},
+    {"WITH ROLLUP", 'k'},
     {"XMLAGG", 'f'},
     {"XMLCOMMENT", 'f'},
     {"XMLCONCAT", 'f'},
@@ -6223,5 +6229,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 6058;
+static const size_t sql_keywords_sz = 6064;
 #endif
