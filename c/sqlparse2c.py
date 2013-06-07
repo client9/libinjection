@@ -28,7 +28,7 @@ static size_t parse_other(sfilter * sf);
 static size_t parse_white(sfilter * sf);
 static size_t parse_operator1(sfilter *sf);
 static size_t parse_char(sfilter *sf);
-static size_t parse_eol_comment(sfilter *sf);
+static size_t parse_hash(sfilter *sf);
 static size_t parse_dash(sfilter *sf);
 static size_t parse_slash(sfilter *sf);
 static size_t parse_backslash(sfilter * sf);
@@ -42,18 +42,8 @@ static size_t parse_underscore(sfilter * sf);
 static size_t parse_ustring(sfilter * sf);
 static size_t parse_qstring(sfilter * sf);
 static size_t parse_nqstring(sfilter * sf);
-static size_t parse_hash(sfilter * sf);
+
 """
-
-    # keywords
-    #
-    keywords = obj['keywords']
-
-    print "static const keyword_t sql_keywords[] = {"
-    for k in sorted(keywords.keys()):
-        print "    {\"%s\", '%s'}," % (k, keywords[k])
-    print "};"
-    print "static const size_t sql_keywords_sz = %d;" % (len(keywords), )
 
     #
     # Mapping of character to function
@@ -89,16 +79,19 @@ static size_t parse_hash(sfilter * sf);
     print "};"
     print
 
-    #
-    # fingerprint data
-    #
-    print 'static const char* sql_fingerprints[] = {'
-    for  k in sorted(list(obj[u'fingerprints'])):
-        print '    "%s",' % (k,)
-    print '};'
-    dlen = len(obj['fingerprints'])
-    print 'static const size_t sqli_fingerprints_sz = %d;' % (dlen,)
-    print
+    # keywords
+    #  load them
+    keywords = obj['keywords']
+
+    for  fp in list(obj[u'fingerprints']):
+        fp = '0' + fp.upper()
+        keywords[fp] = 'X';
+
+    print "static const keyword_t sql_keywords[] = {"
+    for k in sorted(keywords.keys()):
+        print "    {\"%s\", '%s'}," % (k, keywords[k])
+    print "};"
+    print "static const size_t sql_keywords_sz = %d;" % (len(keywords), )
 
     print "#endif"
     return 0

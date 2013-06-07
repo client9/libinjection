@@ -51,6 +51,7 @@ typedef enum {
     TYPE_RIGHTPARENS = (int)')',  /* not used? */
     TYPE_COMMA       = (int)',',
     TYPE_COLON       = (int)':',
+    TYPE_UNKNOWN     = (int)'?',
     TYPE_FINGERPRINT = (int)'X',
 } sqli_token_types;
 
@@ -198,42 +199,6 @@ static int streq(const char *a, const char *b)
     return strcmp(a, b) == 0;
 }
 
-/*
- * Case-sensitive binary search with "deferred detection of equality"
- * We assume in most cases the key will NOT be found.  This makes the
- * main loop only have one comparison branch, which should optimize
- * better in CPU.  See #Deferred_detection_of_equality in
- * http://en.wikipedia.org/wiki/Binary_search_algorithm
- *
- * This is used for fingerprint lookups, and a few other places.
- * Note in normal operation this maybe takes 1% of total run time, so
- * replacing this with another datastructure probably isn't worth
- * the effort.
- */
-static int bsearch_cstr(const char *key, const char *base[], size_t nmemb)
-{
-    size_t pos;
-    size_t left = 0;
-    size_t right = nmemb - 1;
-
-    /* assert(nmemb > 0); */
-
-    while (left < right) {
-        pos = (left + right) >> 1;
-        /* assert(pos < right); */
-        if (strcmp(base[pos], key) < 0) {
-            left = pos + 1;
-        } else {
-            right = pos;
-        }
-    }
-    if ((left == right) && strcmp(base[left], key) == 0) {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
-}
-
 /**
  *
  *
@@ -285,18 +250,18 @@ static void st_clear(stoken_t * st)
     memset(st, 0, sizeof(stoken_t));
 }
 
-static void st_assign_char(stoken_t * st, const char stype, const char value)
+static void st_assign_char(stoken_t * st, sqli_token_types stype, const char value)
 {
-    st->type = stype;
+    st->type = (char) stype;
     st->val[0] = value;
     st->val[1] = CHAR_NULL;
 }
 
-static void st_assign(stoken_t * st, const char stype,
+static void st_assign(stoken_t * st, sqli_token_types stype,
                       const char *value, size_t len)
 {
     size_t last = len < ST_MAX_SIZE ? len : (ST_MAX_SIZE - 1);
-    st->type = stype;
+    st->type = (char) stype;
     memcpy(st->val, value, last);
     st->val[last] = CHAR_NULL;
 }
@@ -351,7 +316,7 @@ static size_t parse_other(sfilter * sf)
     const char *cs = sf->s;
     size_t pos = sf->pos;
 
-    st_assign_char(sf->current, '?', cs[pos]);
+    st_assign_char(sf->current, TYPE_UNKNOWN, cs[pos]);
     return pos + 1;
 }
 
@@ -1421,7 +1386,7 @@ int filter_fold(sfilter * sf)
             sf->stats_folds += 2;
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER || sf->tokenvec[left].type == TYPE_STRING) &&
-                   sf->tokenvec[left+1].type == ',' &&
+                   sf->tokenvec[left+1].type == TYPE_COMMA &&
                    (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING)) {
             pos -= 2;
             continue;
@@ -1540,7 +1505,34 @@ int libinjection_sqli_check_fingerprint(sfilter* sql_state, void* callbackarg)
 
 int libinjection_sqli_blacklist(sfilter* sql_state)
 {
-    int patmatch = bsearch_cstr(sql_state->pat, sql_fingerprints, sqli_fingerprints_sz);
+    char fp2[MAX_TOKENS + 2];
+    char ch;
+    size_t i;
+    size_t len = strlen(sql_state->pat);
+
+    if (len < 1) {
+        sql_state->reason = __LINE__;
+        return FALSE;
+    }
+
+    /*
+      to keep everything compatible, convert the
+      v0 fingerprint pattern to v1
+      v0: up to 5 chars, mixed case
+      v1: 1 char is '0', up to 5 more chars, upper case
+    */
+
+    fp2[0] = '0';
+    for (i = 0; i < len; ++i) {
+        ch = sql_state->pat[i];
+        if (ch >= 'a' && ch <= 'z') {
+            ch -= 0x20;
+        }
+        fp2[i+1] = ch;
+    }
+    fp2[i+1] = '\0';
+
+    int patmatch = is_keyword(fp2, len + 1) == TYPE_FINGERPRINT;
 
     /*
      * No match.
