@@ -55,35 +55,6 @@ static size_t parse_hash(sfilter * sf);
     print "};"
     print "static const size_t sql_keywords_sz = %d;" % (len(keywords), )
 
-
-    #
-    # compound keywords
-    #
-    phrases = obj['phrases']
-    multikeywords_start = set()
-    for words in phrases.iterkeys():
-        parts = words.split(' ')
-        plen = len(parts)
-        multikeywords_start.add(parts[0])
-        if plen == 3:
-            multikeywords_start.add(parts[0] + ' ' + parts[1])
-        elif plen == 4:
-            multikeywords_start.add(parts[0] + ' ' + parts[1] + ' ' + parts[2])
-
-    print "static const char* multikeywords_start[] = {"
-    for k in sorted(list(multikeywords_start)):
-        print "    \"%s\"," % (k)
-    print "};"
-
-    dlen = len(multikeywords_start)
-    print "static const size_t multikeywords_start_sz = %d;" % (dlen,)
-
-    print "static const keyword_t multikeywords[] = {"
-    for k in sorted(phrases.keys()):
-        print "    {\"%s\", '%s'}," % (k, phrases[k])
-    print "};"
-    print "static const size_t multikeywords_sz = %d;" % (len(phrases), )
-
     #
     # Mapping of character to function
     #

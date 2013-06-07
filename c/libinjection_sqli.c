@@ -234,32 +234,6 @@ static int bsearch_cstr(const char *key, const char *base[], size_t nmemb)
     }
 }
 
-/*
- * Case-insensitive binary search
- *
- */
-static int bsearch_cstrcase(const char *key, size_t len, const char *base[], size_t nmemb)
-{
-    size_t pos;
-    size_t left = 0;
-    size_t right = nmemb - 1;
-
-    while (left < right) {
-        pos = (left + right) >> 1;
-        /* arg0 = upper case only, arg1 = mixed case */
-        if (cstrcasecmp(base[pos], key, len) < 0) {
-            left = pos + 1;
-        } else {
-            right = pos;
-        }
-    }
-    if ((left == right) && cstrcasecmp(base[left], key, len) == 0) {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
-}
-
 /**
  *
  *
@@ -330,13 +304,6 @@ static void st_assign(stoken_t * st, const char stype,
 static void st_copy(stoken_t * dest, const stoken_t * src)
 {
     memcpy(dest, src, sizeof(stoken_t));
-}
-
-static int st_is_multiword_start(const stoken_t * st)
-{
-    return bsearch_cstrcase(st->val, strlen(st->val),
-                            multikeywords_start,
-                            multikeywords_start_sz);
 }
 
 static int st_is_unary_op(const stoken_t * st)
@@ -1235,13 +1202,22 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
     char tmp[ST_MAX_SIZE];
     char ch;
 
+    /* first token is of right type? */
+    if (!
+        (a->type == TYPE_KEYWORD || a->type == TYPE_BAREWORD || a->type == TYPE_OPERATOR
+         || a->type == TYPE_UNION || a->type == TYPE_EXPRESSION || a->type == TYPE_SQLTYPE)) {
+        return CHAR_NULL;
+    }
+
+    if (!
+        (b->type == TYPE_KEYWORD || b->type == TYPE_BAREWORD || b->type == TYPE_OPERATOR
+         || b->type == TYPE_UNION || b->type == TYPE_EXPRESSION)) {
+        return CHAR_NULL;
+    }
+
     if (!
         (a->type == 'k' || a->type == 'n' || a->type == 'o'
          || a->type == 'U' || a->type == 'E' || a->type == 't')) {
-        return FALSE;
-    }
-
-    if (! st_is_multiword_start(a)) {
         return FALSE;
     }
 
@@ -1259,7 +1235,7 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
     memcpy(tmp + sz1 + 1, b->val, sz2);
     tmp[sz3] = CHAR_NULL;
 
-    ch = bsearch_keyword_type(tmp, sz3, multikeywords, multikeywords_sz);
+    ch = is_keyword(tmp, sz3);
     if (ch != CHAR_NULL) {
         st_assign(a, ch, tmp, sz3);
         return TRUE;
@@ -1384,7 +1360,6 @@ int filter_fold(sfilter * sf)
             sf->stats_folds += 1;
             continue;
         }
-
 
         /* all cases of handing 2 tokens is done
            and nothing matched.  Get one more token

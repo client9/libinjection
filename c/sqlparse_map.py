@@ -1039,8 +1039,86 @@ KEYWORDS = {
 #    '!~', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
 
     '@>': 'o',
-    '<@': 'o'
+    '<@': 'o',
     # '!~*'
+
+    # pgsql "AT TIME ZONE"
+    'AT TIME'           : 'n',
+    'AT TIME ZONE'      : 'k',
+    'IN BOOLEAN'        : 'n',
+    'IN BOOLEAN MODE'   : 'k',
+    'IS DISTINCT FROM'  : 'k',
+    'IS DISTINCT'       : 'n',
+    'IS NOT DISTINCT FROM' : 'k',
+    'IS NOT DISTINCT':     'n',
+    'CROSS JOIN'        : 'k',
+    'ALTER DOMAIN'      : 'k',
+    'ALTER TABLE'       : 'k',
+    'GROUP BY'          : 'B',
+    'ORDER BY'          : 'B',
+    'OWN3D BY'          : 'B',
+    'SELECT ALL'        : 'E',
+    'READ WRITE'        : 'k',
+
+    # 'LOCAL TABLE' pgsql/oracle
+    # http://www.postgresql.org/docs/current/static/sql-lock.html
+    'LOCK TABLE'        : 'k',
+
+    # 'LOCK TABLES' MYSQL
+    #  http://dev.mysql.com/doc/refman/4.1/en/lock-tables.html
+    'LOCK TABLES'       : 'k',
+    'LEFT OUTER'        : 'k',
+    'LEFT JOIN'         : 'k',
+    'RIGHT OUTER'       : 'k',
+    'RIGHT JOIN'        : 'k',
+    'FULL OUTER'        : 'k',
+    'NATURAL JOIN'      : 'k',
+    'NATURAL INNER'     : 'k',
+    'NATURAL OUTER'     : 'k',
+    'NATURAL LEFT'      : 'k',
+    'NATURAL RIGHT'     : 'k',
+    'NATURAL FULL'      : 'k',
+    'SOUNDS LIKE'       : 'o',
+    'IS NOT'            : 'o',
+    'NEXT VALUE'        : 'n',
+    'NEXT VALUE FOR'    : 'k',
+    'NOT LIKE'          : 'o',
+    'NOT BETWEEN'       : 'o',
+    'NOT SIMILAR'       : 'o',
+
+    # 'NOT RLIKE' -- MySQL
+    'NOT RLIKE'         : 'o',
+
+    'NOT REGEXP'        : 'o',
+    'NOT IN'            : 'o',
+    'SIMILAR TO'        : 'o',
+    'NOT SIMILAR TO'    : 'o',
+    'UNION ALL'         : 'U',
+    'INTO OUTFILE'      : 'k',
+    'WAITFOR DELAY'     : 'E',
+    'WAITFOR TIME'      : 'E',
+    'WAITFOR RECEIVE'   : 'E',
+    'WAITFOR RECEIVE': 'E',
+    'CREATE OR REPLACE' : 'E',
+    # 'INTERSECT ALL' -- ORACLE
+    'INTERSECT ALL'     : 'o',
+
+    # hacker mistake
+    'SELECT ALL' : 'E',
+
+    # types
+    'DOUBLE PRECISION': 't',
+    'CHARACTER VARYING': 't',
+
+    # MYSQL
+    # http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
+    'LOCK IN': 'n',
+    'LOCK IN SHARE': 'n',
+    'LOCK IN SHARE MODE': 'k',
+
+    # MYSQL
+    # http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
+    'FOR UPDATE': 'k'
 }
 
 CHARMAP = [
@@ -1174,86 +1252,6 @@ CHARMAP = [
     'CHAR_WHITE'            # 127
 ]
 
-PHRASES = {
-    # pgsql "AT TIME ZONE"
-    'AT TIME'           : 'n',
-    'AT TIME ZONE'      : 'k',
-    'IN BOOLEAN'        : 'n',
-    'IN BOOLEAN MODE'   : 'k',
-    'IS DISTINCT FROM'  : 'k',
-    'IS DISTINCT'       : 'n',
-    'IS NOT DISTINCT FROM' : 'k',
-    'IS NOT DISTINCT':     'n',
-    'CROSS JOIN'        : 'k',
-    'ALTER DOMAIN'      : 'k',
-    'ALTER TABLE'       : 'k',
-    'GROUP BY'          : 'B',
-    'ORDER BY'          : 'B',
-    'OWN3D BY'          : 'B',
-    'SELECT ALL'        : 'E',
-    'READ WRITE'        : 'k',
-
-    # 'LOCAL TABLE' pgsql/oracle
-    # http://www.postgresql.org/docs/current/static/sql-lock.html
-    'LOCK TABLE'        : 'k',
-
-    # 'LOCK TABLES' MYSQL
-    #  http://dev.mysql.com/doc/refman/4.1/en/lock-tables.html
-    'LOCK TABLES'       : 'k',
-    'LEFT OUTER'        : 'k',
-    'LEFT JOIN'         : 'k',
-    'RIGHT OUTER'       : 'k',
-    'RIGHT JOIN'        : 'k',
-    'FULL OUTER'        : 'k',
-    'NATURAL JOIN'      : 'k',
-    'NATURAL INNER'     : 'k',
-    'NATURAL OUTER'     : 'k',
-    'NATURAL LEFT'      : 'k',
-    'NATURAL RIGHT'     : 'k',
-    'NATURAL FULL'      : 'k',
-    'SOUNDS LIKE'       : 'o',
-    'IS NOT'            : 'o',
-    'NEXT VALUE'        : 'n',
-    'NEXT VALUE FOR'    : 'k',
-    'NOT LIKE'          : 'o',
-    'NOT BETWEEN'       : 'o',
-    'NOT SIMILAR'       : 'o',
-
-    # 'NOT RLIKE' -- MySQL
-    'NOT RLIKE'         : 'o',
-
-    'NOT REGEXP'        : 'o',
-    'NOT IN'            : 'o',
-    'SIMILAR TO'        : 'o',
-    'NOT SIMILAR TO'    : 'o',
-    'UNION ALL'         : 'U',
-    'INTO OUTFILE'      : 'k',
-    'WAITFOR DELAY'     : 'E',
-    'WAITFOR TIME'      : 'E',
-    'WAITFOR RECEIVE'   : 'E',
-    'WAITFOR RECEIVE': 'E',
-    'CREATE OR REPLACE' : 'E',
-    # 'INTERSECT ALL' -- ORACLE
-    'INTERSECT ALL'     : 'o',
-
-    # hacker mistake
-    'SELECT ALL' : 'E',
-
-    # types
-    'DOUBLE PRECISION': 't',
-    'CHARACTER VARYING': 't',
-
-    # MYSQL
-    # http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
-    'LOCK IN': 'n',
-    'LOCK IN SHARE': 'n',
-    'LOCK IN SHARE MODE': 'k',
-
-    # MYSQL
-    # http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
-    'FOR UPDATE': 'k'
-    }
-
 import json
 
 def get_fingerprints():
@@ -1275,7 +1273,6 @@ def dump():
     objs = {
         'keywords': KEYWORDS,
         'charmap': CHARMAP,
-        'phrases': PHRASES,
         'fingerprints': get_fingerprints()
         }
     return json.dumps(objs, sort_keys=True, indent=4)
