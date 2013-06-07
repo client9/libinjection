@@ -5,4 +5,4 @@ close enough and needed for testing for memory issues
 SELECT`foobar`
 --EXPECTED--
 E SELECT
-n foobar
+s `foobar`

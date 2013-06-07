@@ -73,7 +73,15 @@ typedef struct {
     char val[ST_MAX_SIZE];
 } stoken_t;
 
-typedef struct {
+
+/**
+ * Pointer to function, takes cstr input,
+ *  returns '\0' for no match, else a char
+ */
+struct libinjection_sqli_state;
+typedef char (*ptr_lookup_fn)(struct libinjection_sqli_state*, char lookuptype, const char* word, size_t len);
+
+typedef struct libinjection_sqli_state {
 #ifdef SWIG
 %immutable;
 #endif
@@ -91,6 +99,12 @@ typedef struct {
 
     char delim;
     int  comment_style;
+
+    /*
+     * How to lookup a word or fingerprint
+     */
+    ptr_lookup_fn lookup;
+    void*         userdata;
 
     /*
      * pos is index in string we are at when tokenizing
@@ -170,10 +184,6 @@ typedef struct {
 
 } sfilter;
 
-/**
- * Pointer to function, takes cstr input, returns 1 for true, 0 for false
- */
-typedef int (*ptr_fingerprints_fn)(sfilter*, void* callbackarg);
 
 /**
  * Main API: tests for SQLi in three possible contexts, no quotes,
@@ -191,8 +201,7 @@ typedef int (*ptr_fingerprints_fn)(sfilter*, void* callbackarg);
  * \return 1 (true) if SQLi, 0 (false) if benign
  */
 int libinjection_is_sqli(sfilter * sql_state,
-                         const char *s, size_t slen,
-                         ptr_fingerprints_fn fn, void* callbackarg);
+                         const char *s, size_t slen);
 
 /**
  * This detects SQLi in a single context, mostly useful for custom
@@ -224,7 +233,15 @@ void libinjection_sqli_init(sfilter* sql_state,
                             const char* s, size_t slen,
                             char delim, int comment_style);
 
+void libinjection_sqli_callback(sfilter* sql_state, ptr_lookup_fn fn, void* userdata);
+
 int libinjection_sqli_tokenize(sfilter * sql_state, stoken_t *ouput);
+
+/**
+ *
+ */
+char libinjection_sqli_lookup_word(sfilter *sql_state, char lookup_type,
+                                   const char* str, size_t len);
 
 /** The built-in default function to match fingerprints
  *  and do false negative/positive analysis.  This calls the following
@@ -234,9 +251,8 @@ int libinjection_sqli_tokenize(sfilter * sql_state, stoken_t *ouput);
  *        libinject_sqli_not_whitelist(sql_state, callbackarg);
  *
  * \param sql_state should be filled out after libinjection_sqli_fingerprint is called
- * \param callbackarg is unused but here to be used with API.
  */
-int libinjection_sqli_check_fingerprint(sfilter *sql_state, void* callbackarg);
+int libinjection_sqli_check_fingerprint(sfilter *sql_state);
 
 /* Given a pattern determine if it's a SQLi pattern.
  *

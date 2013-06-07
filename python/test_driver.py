@@ -80,7 +80,7 @@ def runtest(testname, flag, style_quote=None, style_comments=None):
     """
     data =  readtestdata(os.path.join('../tests', testname))
 
-    sql_state = sfilter()
+    sql_state = sqli_state()
     actual = ''
 
     if flag == 'tokens':
@@ -94,7 +94,7 @@ def runtest(testname, flag, style_quote=None, style_comments=None):
         for i in range(len(sql_state.pat)):
             actual += print_token(sql_state.tokenvec[i]) + '\n';
     elif flag == 'fingerprints':
-        ok = is_sqli(sql_state, data[1], None)
+        ok = is_sqli(sql_state, data[1])
         if ok:
             actual = sql_state.pat
     else:

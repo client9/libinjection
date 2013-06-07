@@ -6,17 +6,17 @@
 /* This is the callback function that runs a python function
  *
  */
-static int libinjection_python_check_fingerprint(sfilter* sf, void* pyfunc)
+static char libinjection_python_check_fingerprint(sfilter* sf, char lookuptype, const char* word, size_t len)
 {
     int sqli;
     PyObject *arglist;
     PyObject *result;
     // get sfilter->pattern
     // convert to python string
-    PyObject* fp = SWIG_NewPointerObj((void*)sf, SWIGTYPE_p_sfilter,0);
+    PyObject* fp = SWIG_NewPointerObj((void*)sf, SWIGTYPE_p_libinjection_sqli_state,0);
     arglist = Py_BuildValue("(N)", fp);
     // call pyfunct with string arg
-    result = PyObject_CallObject((PyObject*) pyfunc, arglist);
+    result = PyObject_CallObject((PyObject*) sf->userdata, arglist);
     Py_DECREF(arglist);
     Py_DECREF(fp);
     if (result == NULL) {
@@ -25,7 +25,7 @@ static int libinjection_python_check_fingerprint(sfilter* sf, void* pyfunc)
         // pass it back
         //return NULL;
     }
-    // convert value of python call to true/false
+    // convert value of python call to a char
     sqli = PyObject_IsTrue(result);
     if (sqli == -1) {
         //return NULL;
@@ -64,7 +64,7 @@ for (i = 0; i < $1_dim0; i++) {
 // automatically append string length into arg array
 %apply (char *STRING, size_t LENGTH) { (const char *s, size_t slen) };
 
-%typemap(in) (ptr_fingerprints_fn fn, void* callbackarg) {
+%typemap(in) (ptr_lookup_fn fn, void* userdata) {
     if ($input == Py_None) {
         $1 = NULL;
         $2 = NULL;

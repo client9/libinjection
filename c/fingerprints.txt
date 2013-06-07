@@ -117,7 +117,11 @@
 1&1oo
 1&1os
 1&1ov
+1&1s
+1&1s;
+1&1sc
 1&1so
+1&1v
 1&1vo
 1&E((
 1&E(1
@@ -261,6 +265,7 @@
 1&voo
 1&vos
 1&vov
+1&vs
 1&vso
 1((((
 1(((E
@@ -2542,7 +2547,13 @@ s&1of
 s&1oo
 s&1os
 s&1ov
+s&1s
+s&1s;
+s&1sc
 s&1so
+s&1v
+s&1v;
+s&1vc
 s&1vo
 s&E((
 s&E(1
@@ -2653,6 +2664,7 @@ s&son
 s&soo
 s&sos
 s&sov
+s&sv
 s&svo
 s&v
 s&v&(
@@ -2687,6 +2699,9 @@ s&von
 s&voo
 s&vos
 s&vov
+s&vs
+s&vs;
+s&vsc
 s&vso
 s((((
 s(((E
@@ -3902,7 +3917,11 @@ v&1of
 v&1oo
 v&1os
 v&1ov
+v&1s
+v&1s;
+v&1sc
 v&1so
+v&1v
 v&1vo
 v&E((
 v&E(1
@@ -4047,6 +4066,7 @@ v&von
 v&voo
 v&vos
 v&vov
+v&vs
 v&vso
 v((((
 v(((E

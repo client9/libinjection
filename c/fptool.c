@@ -37,20 +37,20 @@ int main(int argc, const char* argv[])
      */
     libinjection_sqli_fingerprint(&sf, argv[offset], slen,
                                   CHAR_NULL, COMMENTS_ANSI);
-    ok = libinjection_sqli_check_fingerprint(&sf, NULL);
+    ok = libinjection_sqli_check_fingerprint(&sf);
     fprintf(stdout, "plain-asni\t%s\t%s\n", sf.pat, ok ? "true": "false");
 
     if (sf.stats_comment_ddx) {
         libinjection_sqli_fingerprint(&sf, argv[offset], slen,
                                       CHAR_NULL, COMMENTS_MYSQL);
-        ok = libinjection_sqli_check_fingerprint(&sf, NULL);
+        ok = libinjection_sqli_check_fingerprint(&sf);
         fprintf(stdout, "plain-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
     }
 
     if (memchr(argv[offset], CHAR_SINGLE, slen)) {
         libinjection_sqli_fingerprint(&sf, argv[offset], slen,
                                       CHAR_SINGLE, COMMENTS_ANSI);
-        ok = libinjection_sqli_check_fingerprint(&sf, NULL);
+        ok = libinjection_sqli_check_fingerprint(&sf);
         fprintf(stdout, "single-ansi\t%s\t%s\n", sf.pat, ok ? "true": "false");
     }
 
@@ -58,7 +58,7 @@ int main(int argc, const char* argv[])
         if (memchr(argv[offset], CHAR_SINGLE, slen)) {
             libinjection_sqli_fingerprint(&sf, argv[offset], slen,
                                           CHAR_SINGLE, COMMENTS_MYSQL);
-            ok = libinjection_sqli_check_fingerprint(&sf, NULL);
+            ok = libinjection_sqli_check_fingerprint(&sf);
             fprintf(stdout, "single-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
         }
     }
@@ -66,7 +66,7 @@ int main(int argc, const char* argv[])
     if (memchr(argv[offset], CHAR_DOUBLE, slen)) {
         libinjection_sqli_fingerprint(&sf, argv[offset], slen,
                                       CHAR_DOUBLE, COMMENTS_MYSQL);
-        ok = libinjection_sqli_check_fingerprint(&sf, NULL);
+        ok = libinjection_sqli_check_fingerprint(&sf);
         fprintf(stdout, "double-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
     }
 

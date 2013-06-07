@@ -20,13 +20,16 @@ void testIsSQL(void)
     };
     const int imax = 1000000;
     int i, j;
+    size_t slen;
     sfilter sf;
     clock_t t0 = clock();
     for (i = imax, j=0; i != 0; --i, ++j) {
         if (s[j] == NULL) {
             j = 0;
         }
-        libinjection_is_sqli(&sf, s[j], strlen(s[j]), NULL, NULL);
+        slen = strlen(s[j]);
+        libinjection_sqli_init(&sf, s[j], slen, CHAR_NULL, COMMENTS_ANSI);
+        libinjection_is_sqli(&sf, s[j], slen);
     }
     clock_t t1 = clock();
     double total = (double) (t1 - t0) / (double) CLOCKS_PER_SEC;

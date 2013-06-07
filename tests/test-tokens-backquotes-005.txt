@@ -4,7 +4,7 @@ name using backquotes
 SELECT `foo`.bar;
 --EXPECTED--
 E SELECT
-n foo
+s `foo`
 n .
 n bar
 ; ;

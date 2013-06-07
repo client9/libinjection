@@ -201,7 +201,7 @@ KEYWORDS = {
 'CHOOSE'                      : 'f',
 'CHR'                         : 'f',
 'CLOCK_TIMESTAMP'             : 'f',
-'COALESCE'                    : 'k',
+'COALESCE'                    : 'f',
 'COERCIBILITY'                : 'f',
 'COL_LENGTH'                  : 'f',
 'COL_NAME'                    : 'f',

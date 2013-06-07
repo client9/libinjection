@@ -5,4 +5,4 @@ SELECT @a`from 1`
 --EXPECTED--
 E SELECT
 v @a
-n from 1
+s `from 1`

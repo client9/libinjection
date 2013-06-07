@@ -574,7 +574,7 @@ static size_t parse_operator2(sfilter * sf)
         return pos + 3;
     }
 
-    ch = is_keyword(cs + pos, 2);
+    ch = sf->lookup(sf, 'o', cs + pos, 2);
     if (ch != CHAR_NULL) {
         st_assign(sf->current, ch, pos, 2, cs+pos);
         return pos + 2;
@@ -730,7 +730,7 @@ static size_t parse_underscore(sfilter *sf)
         return parse_word(sf);
     }
     st_assign(sf->current, TYPE_BAREWORD, pos, xlen, cs + pos);
-    ch = is_keyword(sf->current->val, sf->current->len);
+    ch = sf->lookup(sf, 't', sf->current->val, sf->current->len);
     if (ch == TYPE_SQLTYPE) {
         sf->current->type = TYPE_SQLTYPE;
         return xlen + 1;
@@ -837,7 +837,7 @@ static size_t parse_word(sfilter * sf)
     for (i =0; i < sf->current->len; ++i) {
         delim = sf->current->val[i];
         if (delim == '.' || delim == '`') {
-            ch = is_keyword(sf->current->val, i);
+            ch = sf->lookup(sf, 'k', sf->current->val, i);
             if (ch == TYPE_KEYWORD || ch == TYPE_OPERATOR || ch == TYPE_EXPRESSION) {
                 /* needed for swig */
                 st_clear(sf->current);
@@ -856,7 +856,7 @@ static size_t parse_word(sfilter * sf)
      */
     if (wlen < ST_MAX_SIZE) {
 
-        ch = is_keyword(sf->current->val, wlen);
+        ch = sf->lookup(sf, 'k', sf->current->val, wlen);
 
         if (ch == CHAR_NULL) {
             ch = TYPE_BAREWORD;
@@ -883,7 +883,7 @@ static size_t parse_tick(sfilter* sf)
     /* check value of string to see if it's a keyword,
      * function, operator, etc
      */
-    char ch = is_keyword(sf->current->val, sf->current->len);
+    char ch = sf->lookup(sf, 'k', sf->current->val, sf->current->len);
     if (ch == TYPE_FUNCTION) {
         /* if it's a function, then convert token */
         sf->current->type = TYPE_FUNCTION;
@@ -891,7 +891,7 @@ static size_t parse_tick(sfilter* sf)
         /* otherwise it's a 'n' type -- mysql treats
          * everything as a bare word
          */
-        sf->current->type = TYPE_BAREWORD;
+        sf->current->type = TYPE_STRING;
     }
     return pos;
 }
@@ -1156,7 +1156,21 @@ void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, char delim,
     sf->slen = len;
     sf->delim = delim;
     sf->comment_style = comment_style;
+    sf->lookup = libinjection_sqli_lookup_word;
 }
+
+void libinjection_sqli_callback(sfilter * sf, ptr_lookup_fn fn, void* userdata)
+{
+    if (fn == NULL) {
+        sf->lookup = libinjection_sqli_lookup_word;
+        sf->userdata = (void*)(NULL);
+    } else {
+        sf->lookup = libinjection_sqli_lookup_word;
+        sf->userdata = userdata;
+    }
+}
+
+
 
 /** See if two tokens can be merged since they are compound SQL phrases.
  *
@@ -1402,9 +1416,9 @@ int filter_fold(sfilter * sf)
             // select - 1
             st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
             pos -= 1;
-        } else if (sf->tokenvec[left].type == TYPE_BAREWORD &&
-                   sf->tokenvec[left+1].type == TYPE_BAREWORD  && sf->tokenvec[left+1].val[0] == '.' &&
-                   sf->tokenvec[left+2].type == TYPE_BAREWORD) {
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)&&
+                   (sf->tokenvec[left+1].type == TYPE_BAREWORD  && sf->tokenvec[left+1].val[0] == '.') &&
+                   (sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)) {
             /* ignore the '.n'
              * typically is this dabasename.table
              */
@@ -1500,12 +1514,20 @@ libinjection_sqli_fingerprint(sfilter * sql_state,
  */
 #define UNUSED(x) (void)(x)
 
-int libinjection_sqli_check_fingerprint(sfilter* sql_state, void* callbackarg)
+int libinjection_sqli_check_fingerprint(sfilter* sql_state)
 {
-    UNUSED(callbackarg);
-
     return libinjection_sqli_blacklist(sql_state) &&
         libinjection_sqli_not_whitelist(sql_state);
+}
+
+char libinjection_sqli_lookup_word(sfilter *sql_state, char lookup_type,
+                                   const char* str, size_t len)
+{
+    if (lookup_type == 'X') {
+        return libinjection_sqli_check_fingerprint(sql_state) ? 'X' : '\0';
+    } else {
+        return bsearch_keyword_type(str, len, sql_keywords, sql_keywords_sz);
+    }
 }
 
 int libinjection_sqli_blacklist(sfilter* sql_state)
@@ -1722,8 +1744,7 @@ static int reparse_as_mysql(sfilter * sql_state)
         sql_state->stats_comment_hash;
 }
 
-int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
-                         ptr_fingerprints_fn fn, void* callbackarg)
+int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen)
 {
     /*
      * no input? not sqli
@@ -1732,19 +1753,15 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
         return FALSE;
     }
 
-    if (fn == NULL) {
-        fn = libinjection_sqli_check_fingerprint;
-    }
-
     /*
      * test input "as-is"
      */
     libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_ANSI);
-    if (fn(sql_state, callbackarg)) {
+    if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
         return TRUE;
     } else if (reparse_as_mysql(sql_state)) {
       libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_MYSQL);
-      if (fn(sql_state, callbackarg)) {
+      if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
         return TRUE;
       }
     }
@@ -1759,11 +1776,11 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
      */
     if (memchr(s, CHAR_SINGLE, slen)) {
       libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_ANSI);
-      if (fn(sql_state, callbackarg)) {
+      if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
         return TRUE;
       } else if (reparse_as_mysql(sql_state)) {
         libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_MYSQL);
-        if (fn(sql_state, callbackarg)) {
+        if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
           return TRUE;
         }
       }
@@ -1774,7 +1791,7 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen,
      */
     if (memchr(s, CHAR_DOUBLE, slen)) {
       libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_DOUBLE, COMMENTS_MYSQL);
-        if (fn(sql_state, callbackarg)) {
+      if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
             return TRUE;
         }
     }

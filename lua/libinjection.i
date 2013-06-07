@@ -3,9 +3,9 @@
 %{
 #include "libinjection.h"
 
-static int libinjection_lua_check_fingerprint(sfilter* sf, void* luaptr)
+static char libinjection_lua_check_fingerprint(sfilter* sf, char ch, const char* s, size_t len)
 {
-    lua_State* L = (lua_State*) luaptr;
+    lua_State* L = (lua_State*) sf->userdata;
 #if 1
     int i;
     int top = lua_gettop(L);
@@ -35,14 +35,14 @@ static int libinjection_lua_check_fingerprint(sfilter* sf, void* luaptr)
     printf("\n");  /* end the listing */
 
 #endif
-    char* luafunc = (char *)lua_tostring(L, 4);
+    char* luafunc = (char *)lua_tostring(L, 2);
     lua_getglobal(L, (char*) luafunc);
-    SWIG_NewPointerObj(L, (void*)sf, SWIGTYPE_p_sfilter, 0);
+    SWIG_NewPointerObj(L, (void*)sf, SWIGTYPE_p_libinjection_sqli_state, 0);
     if (lua_pcall(L, 1, 1, 0)) {
         printf("Something bad happened");
     }
-    int issqli = lua_tonumber(L, -1);
-    return issqli;
+    //int issqli = lua_tonumber(L, -1);
+    return 'X';
 }
 %}
 %include "typemaps.i"
@@ -54,13 +54,13 @@ static int libinjection_lua_check_fingerprint(sfilter* sf, void* luaptr)
  //
 %rename("%(strip:[libinjection_])s") "";
 
-%typemap(in) (ptr_fingerprints_fn fn, void* callbackarg) {
-    if (lua_isnil(L, 4)) {
-        arg4 = NULL;
-        arg5 = NULL;
+%typemap(in) (ptr_lookup_fn fn, void* userdata) {
+    if (lua_isnil(L, 0)) {
+        arg2 = NULL;
+        arg3 = NULL;
     } else {
-        arg4 = libinjection_lua_check_fingerprint;
-        arg5 = (void *) L;
+        arg2 = libinjection_lua_check_fingerprint;
+        arg3 = (void *) L;
     }
  }
 

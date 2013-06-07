@@ -123,7 +123,7 @@ int main(int argc, const char* argv[])
     memcpy(copy, argv[offset], slen);
 
     if (detect == 1) {
-        issqli = libinjection_is_sqli(&sf, copy, slen, NULL, NULL);
+        issqli = libinjection_is_sqli(&sf, copy, slen);
         if (issqli) {
             printf("%s\n", sf.pat);
         }
