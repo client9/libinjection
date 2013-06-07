@@ -1008,45 +1008,40 @@ KEYWORDS = {
 'ZEROFILL'                    : 'k',
 'DBMS_LOCK.SLEEP'             : 'f',
 'USER_LOCK.SLEEP'             : 'f',
-}
 
-# special in that single char is a valid operator
-# special case in that '<=' might also be '<=>'
-# ":" isn't an operator in mysql, but other dialects
-#   use it.
-OPERATORS2 = (
-    '!=',   # oracle
-    '||',
-    '&&',
-    '>=',
-    '>>',
-    '<=',
-    '<>',
-    ':=',
-    '::',
-    '<<',
-    '!<', # http://msdn.microsoft.com/en-us/library/ms188074.aspx
-    '!>', # http://msdn.microsoft.com/en-us/library/ms188074.aspx
-    '+=',
-    '-=',
-    '*=',
-    '/=',
-    '%=',
-    '|=',
-    '&=',
-    '^=',
-    '|/', # http://www.postgresql.org/docs/9.1/static/functions-math.html
-    '!!', # http://www.postgresql.org/docs/9.1/static/functions-math.html
-    '~*', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
+#
+    '!=': 'o',   # oracle
+    '||': '&',
+    '&&': '&',
+    '>=': 'o',
+    '>>': 'o',
+    '<=': 'o',
+    '<>': 'o',
+    ':=': 'o',
+    '::': 'o',
+    '<<': 'o',
+    '!<': 'o',  # http://msdn.microsoft.com/en-us/library/ms188074.aspx
+    '!>': 'o',  # http://msdn.microsoft.com/en-us/library/ms188074.aspx
+    '+=': 'o',
+    '-=': 'o',
+    '*=': 'o',
+    '/=': 'o',
+    '%=': 'o',
+    '|=': 'o',
+    '&=': 'o',
+    '^=': 'o',
+    '|/': 'o',  # http://www.postgresql.org/docs/9.1/static/functions-math.html
+    '!!': 'o',  # http://www.postgresql.org/docs/9.1/static/functions-math.html
+    '~*': 'o',  # http://www.postgresql.org/docs/9.1/static/functions-matching.html
 
 # problematic since ! and ~ are both unary operators in other db engines
 # converting to one unary operator is probably ok
 #    '!~', # http://www.postgresql.org/docs/9.1/static/functions-matching.html
 
-    '@>',
-    '<@'
+    '@>': 'o',
+    '<@': 'o'
     # '!~*'
-    )
+}
 
 CHARMAP = [
     'CHAR_WHITE', # 0
@@ -1280,7 +1275,6 @@ def dump():
     objs = {
         'keywords': KEYWORDS,
         'charmap': CHARMAP,
-        'operators2': OPERATORS2,
         'phrases': PHRASES,
         'fingerprints': get_fingerprints()
         }

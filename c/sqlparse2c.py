@@ -45,14 +45,6 @@ static size_t parse_nqstring(sfilter * sf);
 static size_t parse_hash(sfilter * sf);
 """
 
-    print 'static const char* operators2[] = {'
-    for  k in sorted(list(obj[u'operators2'])):
-        print '    "%s",' % (k,)
-    print '};'
-    dlen = len(obj['operators2'])
-    print 'static const size_t operators2_sz = %d;' % (dlen,)
-    print
-
     # keywords
     #
     keywords = obj['keywords']

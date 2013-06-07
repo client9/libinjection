@@ -30,6 +30,30 @@
 
 #include "libinjection_sqli_data.h"
 
+/*
+ * not making public just yet
+ */
+typedef enum {
+    TYPE_NONE        = 0,
+    TYPE_KEYWORD     = (int)'k',
+    TYPE_UNION       = (int)'U',
+    TYPE_EXPRESSION  = (int)'E',
+    TYPE_SQLTYPE     = (int)'t',
+    TYPE_FUNCTION    = (int)'f',
+    TYPE_BAREWORD    = (int)'n',
+    TYPE_NUMBER      = (int)'1',
+    TYPE_VARIABLE    = (int)'v',
+    TYPE_STRING      = (int)'s',
+    TYPE_OPERATOR    = (int)'o',
+    TYPE_LOGIC_OPERATOR = (int)'&',
+    TYPE_COMMENT     = (int)'c',
+    TYPE_LEFTPARENS  = (int)'(',
+    TYPE_RIGHTPARENS = (int)')',
+    TYPE_COMMA       = (int)',',
+    TYPE_COLON       = (int)':',
+    TYPE_FINGERPRINT = (int)'X',
+} sqli_token_types;
+
 /* memchr2 finds a string of 2 characters inside another string
  * This a specialized version of "memmem" or "memchr".
  * 'memmem' doesn't exist on all platforms
@@ -134,28 +158,35 @@ static int char_is_white(char ch) {
     return strchr(" \t\n\v\f\r\240", ch) != NULL;
 }
 
-/*
- * ASCII half-case-insenstive compare!
+/* DANGER DANGER
+ * This is -very specialized function-
  *
- * DANGER: this assume arg0 is *always upper case*
- *  and arg1 is mixed case!!
+ * this compares a ALL_UPPER CASE C STRING
+ * with a *arbitrary memory* + length
+ *
+ * Sane people would just make a copy, up-case
+ * and use a hash table.
  *
  * Required since libc version uses the current locale
  * and is much slower.
  */
-static int cstrcasecmp(const char *a, const char *b)
+static int cstrcasecmp(const char *a, const char *b, size_t n)
 {
-    char ca, cb;
+    char cb;
 
-    do {
-        ca = *a++;
-        cb = *b++;
-        assert(ca < 'a' || ca > 'z');
-        if (cb >= 'a' && cb <= 'z')
+    for (; n > 0; a++, b++, n--) {
+        cb = *b;
+        if (cb >= 'a' && cb <= 'z') {
             cb -= 0x20;
-    } while (ca == cb && ca != '\0');
-
-    return ca - cb;
+        }
+        if (*a != cb) {
+            return *a - cb;
+        } else if (*a == '\0') {
+            return -1;
+        }
+    }
+    //printf("off the edge\n");
+    return (*a == 0) ? 0 : 1;
 }
 
 /**
@@ -207,7 +238,7 @@ static int bsearch_cstr(const char *key, const char *base[], size_t nmemb)
  * Case-insensitive binary search
  *
  */
-static int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
+static int bsearch_cstrcase(const char *key, size_t len, const char *base[], size_t nmemb)
 {
     size_t pos;
     size_t left = 0;
@@ -216,13 +247,13 @@ static int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
     while (left < right) {
         pos = (left + right) >> 1;
         /* arg0 = upper case only, arg1 = mixed case */
-        if (cstrcasecmp(base[pos], key) < 0) {
+        if (cstrcasecmp(base[pos], key, len) < 0) {
             left = pos + 1;
         } else {
             right = pos;
         }
     }
-    if ((left == right) && cstrcasecmp(base[left], key) == 0) {
+    if ((left == right) && cstrcasecmp(base[left], key, len) == 0) {
         return TRUE;
     } else {
         return FALSE;
@@ -239,8 +270,8 @@ static int bsearch_cstrcase(const char *key, const char *base[], size_t nmemb)
  *    typecode = mapping[key.upper()]
  */
 
-static char bsearch_keyword_type(const char *key, const keyword_t * keywords,
-                                 size_t numb)
+static char bsearch_keyword_type(const char *key, size_t len,
+                                 const keyword_t * keywords, size_t numb)
 {
     size_t pos;
     size_t left = 0;
@@ -250,22 +281,22 @@ static char bsearch_keyword_type(const char *key, const keyword_t * keywords,
         pos = (left + right) >> 1;
 
         /* arg0 = upper case only, arg1 = mixed case */
-        if (cstrcasecmp(keywords[pos].word, key) < 0) {
+        if (cstrcasecmp(keywords[pos].word, key, len) < 0) {
             left = pos + 1;
         } else {
             right = pos;
         }
     }
-    if ((left == right) && cstrcasecmp(keywords[left].word, key) == 0) {
+    if ((left == right) && cstrcasecmp(keywords[left].word, key, len) == 0) {
         return keywords[left].type;
     } else {
         return CHAR_NULL;
     }
 }
 
-static char is_keyword(const char* key)
+static char is_keyword(const char* key, size_t len)
 {
-    return bsearch_keyword_type(key, sql_keywords, sql_keywords_sz);
+    return bsearch_keyword_type(key, len, sql_keywords, sql_keywords_sz);
 }
 
 /* st_token methods
@@ -303,7 +334,7 @@ static void st_copy(stoken_t * dest, const stoken_t * src)
 
 static int st_is_multiword_start(const stoken_t * st)
 {
-    return bsearch_cstrcase(st->val,
+    return bsearch_cstrcase(st->val, strlen(st->val),
                             multikeywords_start,
                             multikeywords_start_sz);
 }
@@ -315,7 +346,7 @@ static int st_is_unary_op(const stoken_t * st)
                                  strcmp(st->val, "!") &&
                                  strcmp(st->val, "!!") &&
                                  /* arg0 = upper case only, arg1 = mixed case */
-                                 cstrcasecmp("NOT", st->val) &&
+                                 cstrcasecmp("NOT", st->val, strlen(st->val)) &&
                                  strcmp(st->val, "~")));
 }
 
@@ -574,28 +605,38 @@ static size_t parse_backslash(sfilter * sf)
     }
 }
 
-/** Is input a 2-char operator?
- *
- */
-static int is_operator2(const char *key)
-{
-    return bsearch_cstr(key, operators2, operators2_sz);
-}
-
 static size_t parse_operator2(sfilter * sf)
 {
+    char ch;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
-    char op2[3];
 
     if (pos + 1 >= slen) {
         return parse_operator1(sf);
     }
 
-    op2[0] = cs[pos];
-    op2[1] = cs[pos + 1];
-    op2[2] = CHAR_NULL;
+    if (pos + 2 < slen &&
+        cs[pos] == '<' &&
+        cs[pos + 1] == '=' &&
+        cs[pos + 2] == '>') {
+        /*
+         * special 3-char operator
+         */
+        st_assign(sf->current, TYPE_OPERATOR, cs+pos, 3);
+        return pos + 3;
+    }
+
+    ch = is_keyword(cs + pos, 2);
+    if (ch != CHAR_NULL) {
+        st_assign(sf->current, ch, cs+pos, 2);
+        return pos + 2;
+    }
+
+    /*
+     * not an operator.. what to do with the two
+     * characters we got?
+     */
 
     /*
      * Special Hack for MYSQL style comments
@@ -603,30 +644,13 @@ static size_t parse_operator2(sfilter * sf)
      * /x! FOO x/  into FOO by rewriting the string, we
      * turn it into FOO x/ and ignore the ending comment
      */
-    if (sf->in_comment && op2[0] == '*' && op2[1] == '/') {
+    if (sf->in_comment && cs[pos] == '*' && cs[pos+1] == '/') {
         sf->in_comment = FALSE;
         st_clear(sf->current);
         return pos + 2;
-    } else if (pos + 2 < slen && op2[0] == '<' && op2[1] == '='
-               && cs[pos + 2] == '>') {
-        /*
-         * special 3-char operator
-         */
-        st_assign(sf->current, 'o', "<=>", 3);
-        return pos + 3;
-    } else if (is_operator2(op2)) {
-        if (streq(op2, "&&") || streq(op2, "||")) {
-            st_assign(sf->current, '&', op2, 2);
-        } else {
-            /*
-             * normal 2 char operator
-             */
-            st_assign(sf->current, 'o', op2, 2);
-        }
-        return pos + 2;
-    } else if (op2[0] == ':') {
+    } else if (cs[pos] == ':') {
         /* ':' is not an operator */
-        st_assign_char(sf->current, ':', ':');
+        st_assign(sf->current, TYPE_COLON, cs+pos, 1);
         return pos + 1;
     } else {
         /*
@@ -759,7 +783,7 @@ static size_t parse_underscore(sfilter *sf)
         return parse_word(sf);
     }
     st_assign(sf->current, 'n', cs + pos, xlen);
-    ch = is_keyword(sf->current->val);
+    ch = is_keyword(sf->current->val, strlen(sf->current->val));
     if (ch == 't') {
         sf->current->type = 't';
         return xlen + 1;
@@ -866,8 +890,7 @@ static size_t parse_word(sfilter * sf)
     for (i =0; i < strlen(sf->current->val); ++i) {
         delim = sf->current->val[i];
         if (delim == '.' || delim == '`') {
-            sf->current->val[i] = CHAR_NULL;
-            ch = is_keyword(sf->current->val);
+            ch = is_keyword(sf->current->val, i);
             if (ch == 'k' || ch == 'o' || ch == 'E') {
                 /* needed for swig */
                 st_clear(sf->current);
@@ -877,9 +900,6 @@ static size_t parse_word(sfilter * sf)
                  */
                 st_assign(sf->current, ch, cs + pos, i);
                 return pos + i;
-            } else {
-                /* restore character */
-                sf->current->val[i] = delim;
             }
         }
     }
@@ -889,7 +909,7 @@ static size_t parse_word(sfilter * sf)
      */
     if (wlen < ST_MAX_SIZE) {
 
-        ch = is_keyword(sf->current->val);
+        ch = is_keyword(sf->current->val, wlen);
 
         if (ch == CHAR_NULL) {
             ch = 'n';
@@ -916,7 +936,7 @@ static size_t parse_tick(sfilter* sf)
     /* check value of string to see if it's a keyword,
      * function, operator, etc
      */
-    char ch = is_keyword(sf->current->val);
+    char ch = is_keyword(sf->current->val, strlen(sf->current->val));
     if (ch == 'f') {
         /* if it's a function, then convert token */
         sf->current->type = 'f';
@@ -1239,7 +1259,7 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
     memcpy(tmp + sz1 + 1, b->val, sz2);
     tmp[sz3] = CHAR_NULL;
 
-    ch = bsearch_keyword_type(tmp, multikeywords, multikeywords_sz);
+    ch = bsearch_keyword_type(tmp, sz3, multikeywords, multikeywords_sz);
     if (ch != CHAR_NULL) {
         st_assign(a, ch, tmp, sz3);
         return TRUE;
@@ -1337,12 +1357,11 @@ int filter_fold(sfilter * sf)
             continue;
         } else if (sf->tokenvec[left].type == 'n' &&
                    sf->tokenvec[left+1].type == '(' && (
-                       cstrcasecmp("IN", sf->tokenvec[left].val) == 0 ||
-                       cstrcasecmp("DATABASE", sf->tokenvec[left].val) == 0 ||
-                       cstrcasecmp("USER", sf->tokenvec[left].val) == 0 ||
-                       cstrcasecmp("PASSWORD", sf->tokenvec[left].val) == 0
-                       )
-            ) {
+                       cstrcasecmp("IN", sf->tokenvec[left].val, strlen( sf->tokenvec[left].val)) == 0 ||
+                       cstrcasecmp("DATABASE", sf->tokenvec[left].val, strlen(sf->tokenvec[left].val)) == 0 ||
+                       cstrcasecmp("USER", sf->tokenvec[left].val,strlen(sf->tokenvec[left].val)) == 0 ||
+                       cstrcasecmp("PASSWORD", sf->tokenvec[left].val, strlen(sf->tokenvec[left].val)) == 0
+                       )) {
 
             // pos is the same
             // other conversions need to go here... for instance
@@ -1613,7 +1632,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
         if (sql_state->tokenvec[0].type == 'o' &&
             sql_state->tokenvec[1].type == 'c' &&
             sql_state->tokenvec[1].val[0] == '/' &&
-            cstrcasecmp("CASE", sql_state->tokenvec[0].val) != 0)
+            cstrcasecmp("CASE", sql_state->tokenvec[0].val, strlen(sql_state->tokenvec[0].val)) != 0)
         {
             sql_state->reason = __LINE__;
             return FALSE;
@@ -1695,7 +1714,9 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
-        } else if ((sql_state->tokenvec[1].type == 'k') && cstrcasecmp("INTO OUTFILE", sql_state->tokenvec[1].val)) {
+        } else if ((sql_state->tokenvec[1].type == 'k') && cstrcasecmp("INTO OUTFILE",
+                                                                       sql_state->tokenvec[1].val,
+                                                                       strlen(sql_state->tokenvec[1].val))) {
             sql_state->reason = __LINE__;
             return FALSE;
         }

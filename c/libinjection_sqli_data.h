@@ -30,36 +30,27 @@ static size_t parse_qstring(sfilter * sf);
 static size_t parse_nqstring(sfilter * sf);
 static size_t parse_hash(sfilter * sf);
 
-static const char* operators2[] = {
-    "!!",
-    "!<",
-    "!=",
-    "!>",
-    "%=",
-    "&&",
-    "&=",
-    "*=",
-    "+=",
-    "-=",
-    "/=",
-    "::",
-    ":=",
-    "<<",
-    "<=",
-    "<>",
-    "<@",
-    ">=",
-    ">>",
-    "@>",
-    "^=",
-    "|/",
-    "|=",
-    "||",
-    "~*",
-};
-static const size_t operators2_sz = 25;
-
 static const keyword_t sql_keywords[] = {
+    {"!!", 'o'},
+    {"!<", 'o'},
+    {"!=", 'o'},
+    {"!>", 'o'},
+    {"%=", 'o'},
+    {"&&", '&'},
+    {"&=", 'o'},
+    {"*=", 'o'},
+    {"+=", 'o'},
+    {"-=", 'o'},
+    {"/=", 'o'},
+    {"::", 'o'},
+    {":=", 'o'},
+    {"<<", 'o'},
+    {"<=", 'o'},
+    {"<>", 'o'},
+    {"<@", 'o'},
+    {">=", 'o'},
+    {">>", 'o'},
+    {"@>", 'o'},
     {"ABORT", 'k'},
     {"ABS", 'f'},
     {"ACCESSIBLE", 'k'},
@@ -843,6 +834,7 @@ static const keyword_t sql_keywords[] = {
     {"YEAR_MONTH", 'k'},
     {"ZEROBLOB", 'f'},
     {"ZEROFILL", 'k'},
+    {"^=", 'o'},
     {"_ARMSCII8", 't'},
     {"_ASCII", 't'},
     {"_BIG5", 't'},
@@ -878,8 +870,12 @@ static const keyword_t sql_keywords[] = {
     {"_UJIS", 't'},
     {"_USC2", 't'},
     {"_UTF8", 't'},
+    {"|/", 'o'},
+    {"|=", 'o'},
+    {"||", '&'},
+    {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 818;
+static const size_t sql_keywords_sz = 843;
 static const char* multikeywords_start[] = {
     "ALTER",
     "AT",
