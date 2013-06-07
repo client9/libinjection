@@ -1288,6 +1288,7 @@ E((vo
 E((vs
 E(1))
 E(1),
+E(1)o
 E(1f(
 E(1of
 E(1os
@@ -1307,6 +1308,7 @@ E(n))
 E(n),
 E(s))
 E(s),
+E(s)o
 E(s1)
 E(s1o
 E(sf(
@@ -1319,6 +1321,7 @@ E(sv)
 E(svo
 E(v))
 E(v),
+E(v)o
 E(vf(
 E(vo1
 E(vof
