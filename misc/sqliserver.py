@@ -68,7 +68,7 @@ def alltokens(val, context, comments):
         'quote': contextstr
     }
     args = []
-    sqlstate = libinjection.sfilter()
+    sqlstate = libinjection.sqli_state()
     atoken = libinjection.stoken_t()
     libinjection.sqli_init(sqlstate, val, context, comments)
     count = 0
