@@ -308,13 +308,23 @@ static void st_copy(stoken_t * dest, const stoken_t * src)
 
 static int st_is_unary_op(const stoken_t * st)
 {
-    return (st->type == TYPE_OPERATOR && !(strcmp(st->val, "+") &&
-                                 strcmp(st->val, "-") &&
-                                 strcmp(st->val, "!") &&
-                                 strcmp(st->val, "!!") &&
-                                 /* arg0 = upper case only, arg1 = mixed case */
-                                 cstrcasecmp("NOT", st->val, strlen(st->val)) &&
-                                 strcmp(st->val, "~")));
+    const char* str = st->val;
+    const size_t len = strlen(st->val);
+
+    if (st->type != TYPE_OPERATOR) {
+        return FALSE;
+    }
+
+    switch (len) {
+    case 1:
+        return *str == '+' || *str == '-' || *str == '!' || *str == '~';
+    case 2:
+        return str[0] == '!' && str[1] == '!';
+    case 3:
+        return cstrcasecmp("NOT", str, len) == 0;
+    default:
+        return FALSE;
+    }
 }
 
 /* Parsers
