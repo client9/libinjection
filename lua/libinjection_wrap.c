@@ -1909,6 +1909,54 @@ fail:
 }
 
 
+static int _wrap_stoken_t_pos_get(lua_State* L) {
+  int SWIG_arg = 0;
+  stoken_t *arg1 = (stoken_t *) 0 ;
+  size_t result;
+  
+  SWIG_check_num_args("stoken_t::pos",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("stoken_t::pos",1,"stoken_t *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_stoken_t,0))){
+    SWIG_fail_ptr("stoken_t_pos_get",1,SWIGTYPE_p_stoken_t);
+  }
+  
+  result =  ((arg1)->pos);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_stoken_t_len_get(lua_State* L) {
+  int SWIG_arg = 0;
+  stoken_t *arg1 = (stoken_t *) 0 ;
+  size_t result;
+  
+  SWIG_check_num_args("stoken_t::len",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("stoken_t::len",1,"stoken_t *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_stoken_t,0))){
+    SWIG_fail_ptr("stoken_t_len_get",1,SWIGTYPE_p_stoken_t);
+  }
+  
+  result =  ((arg1)->len);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_stoken_t_count_get(lua_State* L) {
   int SWIG_arg = 0;
   stoken_t *arg1 = (stoken_t *) 0 ;
@@ -1985,6 +2033,8 @@ static swig_lua_attribute swig_stoken_t_attributes[] = {
     { "type", _wrap_stoken_t_type_get, SWIG_Lua_set_immutable},
     { "str_open", _wrap_stoken_t_str_open_get, SWIG_Lua_set_immutable},
     { "str_close", _wrap_stoken_t_str_close_get, SWIG_Lua_set_immutable},
+    { "pos", _wrap_stoken_t_pos_get, SWIG_Lua_set_immutable},
+    { "len", _wrap_stoken_t_len_get, SWIG_Lua_set_immutable},
     { "count", _wrap_stoken_t_count_get, SWIG_Lua_set_immutable},
     { "val", _wrap_stoken_t_val_get, SWIG_Lua_set_immutable},
     {0,0,0}
@@ -2338,6 +2388,30 @@ fail:
 }
 
 
+static int _wrap_sfilter_stats_comment_hash_get(lua_State* L) {
+  int SWIG_arg = 0;
+  sfilter *arg1 = (sfilter *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("sfilter::stats_comment_hash",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("sfilter::stats_comment_hash",1,"sfilter *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sfilter,0))){
+    SWIG_fail_ptr("sfilter_stats_comment_hash_get",1,SWIGTYPE_p_sfilter);
+  }
+  
+  result = (int) ((arg1)->stats_comment_hash);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_sfilter_stats_folds_get(lua_State* L) {
   int SWIG_arg = 0;
   sfilter *arg1 = (sfilter *) 0 ;
@@ -2401,6 +2475,7 @@ static swig_lua_attribute swig_sfilter_attributes[] = {
     { "stats_comment_ddx", _wrap_sfilter_stats_comment_ddx_get, SWIG_Lua_set_immutable},
     { "stats_comment_c", _wrap_sfilter_stats_comment_c_get, SWIG_Lua_set_immutable},
     { "stats_comment_mysql", _wrap_sfilter_stats_comment_mysql_get, SWIG_Lua_set_immutable},
+    { "stats_comment_hash", _wrap_sfilter_stats_comment_hash_get, SWIG_Lua_set_immutable},
     { "stats_folds", _wrap_sfilter_stats_folds_get, SWIG_Lua_set_immutable},
     {0,0,0}
 };
@@ -2649,7 +2724,7 @@ static swig_lua_var_info swig_variables[] = {
 };
 
 static swig_lua_const_info swig_constants[] = {
-    {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.0.0-pre8")},
+    {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.0.0-pre11")},
     {SWIG_LUA_CONSTTAB_INT("ST_MAX_SIZE", 32)},
     {SWIG_LUA_CONSTTAB_INT("MAX_TOKENS", 5)},
     {SWIG_LUA_CONSTTAB_CHAR("CHAR_NULL", '\0')},
