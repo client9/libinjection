@@ -250,14 +250,14 @@ static void st_clear(stoken_t * st)
     memset(st, 0, sizeof(stoken_t));
 }
 
-static void st_assign_char(stoken_t * st, sqli_token_types stype, const char value)
+static void st_assign_char(stoken_t * st, const char stype, const char value)
 {
     st->type = (char) stype;
     st->val[0] = value;
     st->val[1] = CHAR_NULL;
 }
 
-static void st_assign(stoken_t * st, sqli_token_types stype,
+static void st_assign(stoken_t * st, const char stype,
                       const char *value, size_t len)
 {
     size_t last = len < ST_MAX_SIZE ? len : (ST_MAX_SIZE - 1);
