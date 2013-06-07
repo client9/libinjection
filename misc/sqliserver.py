@@ -149,7 +149,7 @@ class NullHandler(tornado.web.RequestHandler):
         extra = {}
         qssqli = False
 
-        sqlstate = libinjection.sfilter()
+        sqlstate = libinjection.sqli_state()
 
         allfp = {}
         for name,values in self.request.arguments.iteritems():
@@ -198,7 +198,7 @@ class NullHandler(tornado.web.RequestHandler):
                     continue
 
                 # swig returns 1/0, convert to True False
-                issqli = bool(libinjection.is_sqli(sqlstate, val, None))
+                issqli = bool(libinjection.is_sqli(sqlstate, val))
 
                 # True if any issqli values are true
                 qssqli = qssqli or issqli
