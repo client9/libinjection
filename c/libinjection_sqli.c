@@ -48,7 +48,7 @@ typedef enum {
     TYPE_LOGIC_OPERATOR = (int)'&',
     TYPE_COMMENT     = (int)'c',
     TYPE_LEFTPARENS  = (int)'(',
-    TYPE_RIGHTPARENS = (int)')',
+    TYPE_RIGHTPARENS = (int)')',  /* not used? */
     TYPE_COMMA       = (int)',',
     TYPE_COLON       = (int)':',
     TYPE_FINGERPRINT = (int)'X',
@@ -308,7 +308,7 @@ static void st_copy(stoken_t * dest, const stoken_t * src)
 
 static int st_is_unary_op(const stoken_t * st)
 {
-    return (st->type == 'o' && !(strcmp(st->val, "+") &&
+    return (st->type == TYPE_OPERATOR && !(strcmp(st->val, "+") &&
                                  strcmp(st->val, "-") &&
                                  strcmp(st->val, "!") &&
                                  strcmp(st->val, "!!") &&
@@ -332,7 +332,7 @@ static size_t parse_operator1(sfilter * sf)
     const char *cs = sf->s;
     size_t pos = sf->pos;
 
-    st_assign_char(sf->current, 'o', cs[pos]);
+    st_assign_char(sf->current, TYPE_OPERATOR, cs[pos]);
     return pos + 1;
 }
 
@@ -363,10 +363,10 @@ static size_t parse_eol_comment(sfilter * sf)
     const char *endpos =
         (const char *) memchr((const void *) (cs + pos), '\n', slen - pos);
     if (endpos == NULL) {
-        st_assign(sf->current, 'c', cs + pos, slen - pos);
+        st_assign(sf->current, TYPE_COMMENT, cs + pos, slen - pos);
         return slen;
     } else {
-        st_assign(sf->current, 'c', cs + pos, endpos - cs - pos);
+        st_assign(sf->current, TYPE_COMMENT, cs + pos, endpos - cs - pos);
         return (endpos - cs) + 1;
     }
 }
@@ -378,7 +378,7 @@ static size_t parse_hash(sfilter * sf)
 {
     sf->stats_comment_hash += 1;
     if (sf->comment_style == COMMENTS_ANSI) {
-        st_assign_char(sf->current, 'o', '#');
+        st_assign_char(sf->current, TYPE_OPERATOR, '#');
         return sf->pos + 1;
     } else {
         sf->stats_comment_hash += 1;
@@ -412,7 +412,7 @@ static size_t parse_dash(sfilter * sf)
         sf->stats_comment_ddx += 1;
         return parse_eol_comment(sf);
     } else {
-        st_assign_char(sf->current, 'o', '-');
+        st_assign_char(sf->current, TYPE_OPERATOR, '-');
         return pos + 1;
     }
 }
@@ -534,7 +534,7 @@ static size_t parse_slash(sfilter * sf)
             /*
              * unterminated comment
              */
-            st_assign(sf->current, 'c', cs + pos, slen - pos);
+            st_assign(sf->current, TYPE_COMMENT, cs + pos, slen - pos);
             return slen;
         } else {
             /*
@@ -543,7 +543,7 @@ static size_t parse_slash(sfilter * sf)
              * if we find a '/x' inside the coment, then
              * make a new token.
              */
-            char ctype = 'c';
+            char ctype = TYPE_COMMENT;
             const size_t clen = (ptr + 2) - (cur);
             if (memchr2(cur + 2, ptr - (cur + 1), '/', '*') !=  NULL) {
                 ctype = 'X';
@@ -565,7 +565,7 @@ static size_t parse_backslash(sfilter * sf)
      * Weird MySQL alias for NULL, "\N" (capital N only)
      */
     if (pos + 1 < slen && cs[pos + 1] == 'N') {
-        st_assign(sf->current, '1', "NULL", 4);
+        st_assign(sf->current, TYPE_NUMBER, "NULL", 4);
         return pos + 2;
     } else {
         return parse_other(sf);
@@ -689,7 +689,7 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
              * string ended with no trailing quote
              * assign what we have
              */
-            st_assign(st, 's', cs + pos + offset, len - pos - offset);
+            st_assign(st, TYPE_STRING, cs + pos + offset, len - pos - offset);
             st->str_close = CHAR_NULL;
             return len;
         } else if ( is_backslash_escaped(qpos - 1, cs + pos + offset)) {
@@ -706,7 +706,7 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
             continue;
         } else {
             /* hey it's a normal string */
-            st_assign(st, 's', cs + pos + offset,
+            st_assign(st, TYPE_STRING, cs + pos + offset,
                       qpos - (cs + pos + offset));
             st->str_close = delim;
             return qpos - cs + 1;
@@ -749,10 +749,10 @@ static size_t parse_underscore(sfilter *sf)
     if (xlen == 0) {
         return parse_word(sf);
     }
-    st_assign(sf->current, 'n', cs + pos, xlen);
+    st_assign(sf->current, TYPE_BAREWORD, cs + pos, xlen);
     ch = is_keyword(sf->current->val, strlen(sf->current->val));
-    if (ch == 't') {
-        sf->current->type = 't';
+    if (ch == TYPE_SQLTYPE) {
+        sf->current->type = TYPE_SQLTYPE;
         return xlen + 1;
     }
     return parse_word(sf);
@@ -811,12 +811,12 @@ static size_t parse_qstring_core(sfilter * sf, int offset)
 
     strend = memchr2(cs + pos + 3, slen - pos - 3, ch, '\'');
     if (strend == NULL) {
-        st_assign(sf->current, 's', cs + pos + 3, slen - pos - 3);
+        st_assign(sf->current, TYPE_STRING, cs + pos + 3, slen - pos - 3);
         sf->current->str_open = 'q';
         sf->current->str_close = CHAR_NULL;
         return slen;
     } else {
-        st_assign(sf->current, 's', cs + pos + 3, strend - cs - pos -  3);
+        st_assign(sf->current, TYPE_STRING, cs + pos + 3, strend - cs - pos -  3);
         sf->current->str_open = 'q';
         sf->current->str_close = 'q';
         return (strend - cs) + 2;
@@ -849,7 +849,7 @@ static size_t parse_word(sfilter * sf)
     size_t wlen = strlencspn(cs + pos, sf->slen - pos,
                              " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"");
 
-    st_assign(sf->current, 'n', cs + pos, wlen);
+    st_assign(sf->current, TYPE_BAREWORD, cs + pos, wlen);
 
     /* now we need to look inside what we good for "." and "`"
      * and see if what is before is a keyword or not
@@ -858,7 +858,7 @@ static size_t parse_word(sfilter * sf)
         delim = sf->current->val[i];
         if (delim == '.' || delim == '`') {
             ch = is_keyword(sf->current->val, i);
-            if (ch == 'k' || ch == 'o' || ch == 'E') {
+            if (ch == TYPE_KEYWORD || ch == TYPE_OPERATOR || ch == TYPE_EXPRESSION) {
                 /* needed for swig */
                 st_clear(sf->current);
                 /*
@@ -879,7 +879,7 @@ static size_t parse_word(sfilter * sf)
         ch = is_keyword(sf->current->val, wlen);
 
         if (ch == CHAR_NULL) {
-            ch = 'n';
+            ch = TYPE_BAREWORD;
         }
         sf->current->type = ch;
     }
@@ -904,14 +904,14 @@ static size_t parse_tick(sfilter* sf)
      * function, operator, etc
      */
     char ch = is_keyword(sf->current->val, strlen(sf->current->val));
-    if (ch == 'f') {
+    if (ch == TYPE_FUNCTION) {
         /* if it's a function, then convert token */
-        sf->current->type = 'f';
+        sf->current->type = TYPE_FUNCTION;
     } else {
         /* otherwise it's a 'n' type -- mysql treats
          * everything as a bare word
          */
-        sf->current->type = 'n';
+        sf->current->type = TYPE_BAREWORD;
     }
     return pos;
 }
@@ -946,12 +946,12 @@ static size_t parse_var(sfilter * sf)
         if (cs[pos] == '`') {
             sf->pos = pos;
             pos = parse_tick(sf);
-            sf->current->type = 'v';
+            sf->current->type = TYPE_VARIABLE;
             return pos;
         } else if (cs[pos] == CHAR_SINGLE || cs[pos] == CHAR_DOUBLE) {
             sf->pos = pos;
             pos = parse_string(sf);
-            sf->current->type = 'v';
+            sf->current->type = TYPE_VARIABLE;
             return pos;
         }
     }
@@ -960,10 +960,10 @@ static size_t parse_var(sfilter * sf)
     xlen = strlencspn(cs + pos, slen - pos,
                      " <>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r'`\"");
     if (xlen == 0) {
-        st_assign(sf->current, 'v', cs + pos, 0);
+        st_assign(sf->current, TYPE_VARIABLE, cs + pos, 0);
         return pos;
     } else {
-        st_assign(sf->current, 'v', cs + pos, xlen);
+        st_assign(sf->current, TYPE_VARIABLE, cs + pos, xlen);
         return pos + xlen;
     }
 }
@@ -978,7 +978,7 @@ static size_t parse_money(sfilter *sf)
 
     if (pos + 1 == slen) {
         /* end of line */
-        st_assign_char(sf->current, 'n', '$');
+        st_assign_char(sf->current, TYPE_BAREWORD, '$');
         return slen;
     }
 
@@ -994,12 +994,12 @@ static size_t parse_money(sfilter *sf)
             strend = memchr2(cs + pos + 2, slen - pos -2, '$', '$');
             if (strend == NULL) {
                 /* fell off edge */
-                st_assign(sf->current, 's', cs + pos + 2, slen - (pos + 2));
+                st_assign(sf->current, TYPE_STRING, cs + pos + 2, slen - (pos + 2));
                 sf->current->str_open = '$';
                 sf->current->str_close = CHAR_NULL;
                 return slen;
             } else {
-                st_assign(sf->current, 's', cs + pos + 2, strend - (cs + pos + 2));
+                st_assign(sf->current, TYPE_STRING, cs + pos + 2, strend - (cs + pos + 2));
                 sf->current->str_open = '$';
                 sf->current->str_close = '$';
                 return strend - cs + 2;
@@ -1009,14 +1009,14 @@ static size_t parse_money(sfilter *sf)
             xlen = strlenspn(cs + pos + 1, slen - pos - 1, "abcdefghjiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
             if (xlen == 0) {
                 /* hmm it's "$" _something_ .. just add $ and keep going*/
-                st_assign_char(sf->current, 'n', '$');
+                st_assign_char(sf->current, TYPE_BAREWORD, '$');
                 return pos + 1;
             }
             /* we have $foobar????? */
             /* is it $foobar$ */
             if (pos + xlen + 1 == slen || cs[pos+xlen+1] != '$') {
                 /* not $foobar$, or fell off edge */
-                st_assign_char(sf->current, 'n', '$');
+                st_assign_char(sf->current, TYPE_BAREWORD, '$');
                 return pos + 1;
             }
 
@@ -1025,20 +1025,20 @@ static size_t parse_money(sfilter *sf)
 
             if (strend == NULL) {
                 /* fell off edge */
-                st_assign(sf->current, 's', cs+pos+xlen+2, slen - pos - xlen - 2);
+                st_assign(sf->current, TYPE_STRING, cs+pos+xlen+2, slen - pos - xlen - 2);
                 sf->current->str_open = '$';
                 sf->current->str_close = CHAR_NULL;
                 return slen;
             } else {
                 /* got one */
-                st_assign(sf->current, 's', cs+pos+xlen+2, strend - (cs + pos + xlen + 2));
+                st_assign(sf->current, TYPE_STRING, cs+pos+xlen+2, strend - (cs + pos + xlen + 2));
                 sf->current->str_open = '$';
                 sf->current->str_close = '$';
                 return (strend + xlen + 2) - cs;
             }
         }
     } else {
-        st_assign(sf->current, '1', cs + pos, 1 + xlen);
+        st_assign(sf->current, TYPE_NUMBER, cs + pos, 1 + xlen);
         return pos + 1 + xlen;
     }
 }
@@ -1058,10 +1058,10 @@ static size_t parse_number(sfilter * sf)
         xlen =
             strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEFabcdef");
         if (xlen == 0) {
-            st_assign(sf->current, 'n', "0X", 2);
+            st_assign(sf->current, TYPE_BAREWORD, "0X", 2);
             return pos + 2;
         } else {
-            st_assign(sf->current, '1', cs + pos, 2 + xlen);
+            st_assign(sf->current, TYPE_NUMBER, cs + pos, 2 + xlen);
             return pos + 2 + xlen;
         }
     }
@@ -1076,7 +1076,7 @@ static size_t parse_number(sfilter * sf)
             pos += 1;
         }
         if (pos - start == 1) {
-            st_assign_char(sf->current, 'n', '.');
+            st_assign_char(sf->current, TYPE_BAREWORD, '.');
             return pos;
         }
     }
@@ -1097,12 +1097,12 @@ static size_t parse_number(sfilter * sf)
              * the number part and leave the rest to be
              * parsed later
              */
-            st_assign(sf->current, '1', cs + start, pos - start);
+            st_assign(sf->current, TYPE_NUMBER, cs + start, pos - start);
             return pos;
         }
     }
 
-    st_assign(sf->current, '1', cs + start, pos - start);
+    st_assign(sf->current, TYPE_NUMBER, cs + start, pos - start);
     return pos;
 }
 
@@ -1215,12 +1215,6 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
         return CHAR_NULL;
     }
 
-    if (!
-        (a->type == 'k' || a->type == 'n' || a->type == 'o'
-         || a->type == 'U' || a->type == 'E' || a->type == 't')) {
-        return FALSE;
-    }
-
     sz1 = strlen(a->val);
     sz2 = strlen(b->val);
     sz3 = sz1 + sz2 + 1; /* +1 for space in the middle */
@@ -1271,7 +1265,7 @@ int filter_fold(sfilter * sf)
     current = &(sf->tokenvec[0]);
     while (more) {
         more = libinjection_sqli_tokenize(sf, current);
-        if ( ! (current->type == 'c' || current->type == '(' || st_is_unary_op(current))) {
+        if ( ! (current->type == TYPE_COMMENT || current->type == TYPE_LEFTPARENS || st_is_unary_op(current))) {
             break;
         }
     }
@@ -1291,7 +1285,7 @@ int filter_fold(sfilter * sf)
             current = &(sf->tokenvec[pos]);
             more = libinjection_sqli_tokenize(sf, current);
             if (more) {
-                if (current->type == 'c') {
+                if (current->type == TYPE_COMMENT) {
                     st_copy(&last_comment, current);
                 } else {
                     last_comment.type = CHAR_NULL;
@@ -1310,18 +1304,18 @@ int filter_fold(sfilter * sf)
          * "foo" "bar" is valid SQL
          * just ignore second string
          */
-        if (sf->tokenvec[left].type == 's' && sf->tokenvec[left+1].type == 's') {
+        if (sf->tokenvec[left].type == TYPE_STRING && sf->tokenvec[left+1].type == TYPE_STRING) {
             pos -= 1;
             sf->stats_folds += 1;
             continue;
-        } else if (sf->tokenvec[left].type =='o' && st_is_unary_op(&sf->tokenvec[left+1])) {
+        } else if (sf->tokenvec[left].type ==TYPE_OPERATOR && st_is_unary_op(&sf->tokenvec[left+1])) {
             pos -= 1;
             sf->stats_folds += 1;
             if (left > 0) {
                 left -= 1;
             }
             continue;
-        } else if (sf->tokenvec[left].type =='(' && st_is_unary_op(&sf->tokenvec[left+1])) {
+        } else if (sf->tokenvec[left].type ==TYPE_LEFTPARENS && st_is_unary_op(&sf->tokenvec[left+1])) {
             pos -= 1;
             sf->stats_folds += 1;
             if (left > 0) {
@@ -1331,8 +1325,8 @@ int filter_fold(sfilter * sf)
         } else if (syntax_merge_words(&sf->tokenvec[left], &sf->tokenvec[left+1])) {
             pos -= 1;
             continue;
-        } else if (sf->tokenvec[left].type == 'n' &&
-                   sf->tokenvec[left+1].type == '(' && (
+        } else if (sf->tokenvec[left].type == TYPE_BAREWORD &&
+                   sf->tokenvec[left+1].type == TYPE_LEFTPARENS && (
                        cstrcasecmp("IN", sf->tokenvec[left].val, strlen( sf->tokenvec[left].val)) == 0 ||
                        cstrcasecmp("DATABASE", sf->tokenvec[left].val, strlen(sf->tokenvec[left].val)) == 0 ||
                        cstrcasecmp("USER", sf->tokenvec[left].val,strlen(sf->tokenvec[left].val)) == 0 ||
@@ -1342,19 +1336,19 @@ int filter_fold(sfilter * sf)
             // pos is the same
             // other conversions need to go here... for instance
             // password CAN be a function, coalese CAN be a function
-            sf->tokenvec[left].type = 'f';
+            sf->tokenvec[left].type = TYPE_FUNCTION;
             continue;
 #if 0
-        } else if (sf->tokenvec[left].type == 'o' && cstrcasecmp("LIKE", sf->tokenvec[left].val) == 0
-                   && sf->tokenvec[left+1].type == '(') {
+        } else if (sf->tokenvec[left].type == TYPE_OPERATOR && cstrcasecmp("LIKE", sf->tokenvec[left].val) == 0
+                   && sf->tokenvec[left+1].type == TYPE_LEFTPARENS) {
             // two use cases   "foo" LIKE "BAR" (normal operator)
             // "foo" = LIKE(1,2)
-            sf->tokenvec[left].type = 'f';
+            sf->tokenvec[left].type = TYPE_FUNCTION;
             continue;
 #endif
-        } else if (sf->tokenvec[left].type == 't' &&
-                   (sf->tokenvec[left+1].type == 'n' || sf->tokenvec[left+1].type == '1' ||
-                    sf->tokenvec[left+1].type == 'v' || sf->tokenvec[left+1].type == 's'))  {
+        } else if (sf->tokenvec[left].type == TYPE_SQLTYPE &&
+                   (sf->tokenvec[left+1].type == TYPE_BAREWORD || sf->tokenvec[left+1].type == TYPE_NUMBER ||
+                    sf->tokenvec[left+1].type == TYPE_VARIABLE || sf->tokenvec[left+1].type == TYPE_STRING))  {
             st_copy(&sf->tokenvec[left], &sf->tokenvec[left+1]);
             pos -= 1;
             sf->stats_folds += 1;
@@ -1369,7 +1363,7 @@ int filter_fold(sfilter * sf)
             current = &(sf->tokenvec[pos]);
             more = libinjection_sqli_tokenize(sf, current);
             if (more) {
-                if (current->type == 'c') {
+                if (current->type == TYPE_COMMENT) {
                     st_copy(&last_comment, current);
                 } else {
                     last_comment.type = CHAR_NULL;
@@ -1387,50 +1381,50 @@ int filter_fold(sfilter * sf)
         /*
          * now look for three token folding
          */
-        if (sf->tokenvec[left].type == '1' &&
-            sf->tokenvec[left+1].type == 'o' &&
-            sf->tokenvec[left+2].type == '1') {
+        if (sf->tokenvec[left].type == TYPE_NUMBER &&
+            sf->tokenvec[left+1].type == TYPE_OPERATOR &&
+            sf->tokenvec[left+2].type == TYPE_NUMBER) {
             pos -= 2;
             continue;
-        } else if (sf->tokenvec[left].type == 'o' &&
-                   sf->tokenvec[left+1].type != '(' &&
-                   sf->tokenvec[left+2].type == 'o') {
+        } else if (sf->tokenvec[left].type == TYPE_OPERATOR &&
+                   sf->tokenvec[left+1].type != TYPE_LEFTPARENS &&
+                   sf->tokenvec[left+2].type == TYPE_OPERATOR) {
             if (left > 0) {
                 left -= 1;
             }
             pos -= 2;
             continue;
-        } else if (sf->tokenvec[left].type == '&' &&
-                   sf->tokenvec[left+2].type == '&') {
+        } else if (sf->tokenvec[left].type == TYPE_LOGIC_OPERATOR &&
+                   sf->tokenvec[left+2].type == TYPE_LOGIC_OPERATOR) {
             pos -= 2;
             continue;
-        } else if ((sf->tokenvec[left].type == 'n' || sf->tokenvec[left].type == '1' ) &&
-                   sf->tokenvec[left+1].type == 'o' &&
-                   (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n')) {
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER ) &&
+                   sf->tokenvec[left+1].type == TYPE_OPERATOR &&
+                   (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD)) {
             pos -= 2;
             continue;
-        } else if ((sf->tokenvec[left].type == 'n' || sf->tokenvec[left].type == '1' ||
-                    sf->tokenvec[left].type == 'v' || sf->tokenvec[left].type == 's') &&
-                   sf->tokenvec[left+1].type == 'o' &&
-                   sf->tokenvec[left+2].type == 't') {
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER ||
+                    sf->tokenvec[left].type == TYPE_VARIABLE || sf->tokenvec[left].type == TYPE_STRING) &&
+                   sf->tokenvec[left+1].type == TYPE_OPERATOR &&
+                   sf->tokenvec[left+2].type == TYPE_SQLTYPE) {
             pos -= 2;
             sf->stats_folds += 2;
             continue;
-        } else if ((sf->tokenvec[left].type == 'n' || sf->tokenvec[left].type == '1' || sf->tokenvec[left].type == 's') &&
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER || sf->tokenvec[left].type == TYPE_STRING) &&
                    sf->tokenvec[left+1].type == ',' &&
-                   (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n' || sf->tokenvec[left+2].type == 's')) {
+                   (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING)) {
             pos -= 2;
             continue;
-        } else if ((sf->tokenvec[left].type == 'k' || sf->tokenvec[left].type == 'E') &&
+        } else if ((sf->tokenvec[left].type == TYPE_KEYWORD || sf->tokenvec[left].type == TYPE_EXPRESSION) &&
                    st_is_unary_op(&sf->tokenvec[left+1]) &&
-                   (sf->tokenvec[left+2].type == '1' || sf->tokenvec[left+2].type == 'n' || sf->tokenvec[left+2].type == 'v' || sf->tokenvec[left+2].type == 's' || sf->tokenvec[left+2].type == 'f' )) {
+                   (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_VARIABLE || sf->tokenvec[left+2].type == TYPE_STRING || sf->tokenvec[left+2].type == TYPE_FUNCTION )) {
             // remove unary operators
             // select - 1
             st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
             pos -= 1;
-        } else if (sf->tokenvec[left].type == 'n' &&
-                   sf->tokenvec[left+1].type == 'n'  && sf->tokenvec[left+1].val[0] == '.' &&
-                   sf->tokenvec[left+2].type == 'n') {
+        } else if (sf->tokenvec[left].type == TYPE_BAREWORD &&
+                   sf->tokenvec[left+1].type == TYPE_BAREWORD  && sf->tokenvec[left+1].val[0] == '.' &&
+                   sf->tokenvec[left+2].type == TYPE_BAREWORD) {
             /* ignore the '.n'
              * typically is this dabasename.table
              */
@@ -1452,7 +1446,7 @@ int filter_fold(sfilter * sf)
      * at the end, add it back
      */
 
-    if (left < MAX_TOKENS && last_comment.type == 'c') {
+    if (left < MAX_TOKENS && last_comment.type == TYPE_COMMENT) {
         st_copy(&sf->tokenvec[left], &last_comment);
         left += 1;
     }
@@ -1584,8 +1578,8 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          * for fingerprint like 'nc', only comments of /x are treated
          * as SQL... ending comments of "--" and "#" are not sqli
          */
-        if (sql_state->tokenvec[0].type == 'n' &&
-            sql_state->tokenvec[1].type == 'c' &&
+        if (sql_state->tokenvec[0].type == TYPE_BAREWORD &&
+            sql_state->tokenvec[1].type == TYPE_COMMENT &&
             sql_state->tokenvec[1].val[0] != '/') {
                 sql_state->reason = __LINE__;
                 return FALSE;
@@ -1594,8 +1588,8 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
         /*
          * if '1c' ends with '/x' then it's sqli
          */
-        if (sql_state->tokenvec[0].type == '1' &&
-            sql_state->tokenvec[1].type == 'c' &&
+        if (sql_state->tokenvec[0].type == TYPE_NUMBER &&
+            sql_state->tokenvec[1].type == TYPE_COMMENT &&
             sql_state->tokenvec[1].val[0] == '/') {
             return TRUE;
         }
@@ -1604,8 +1598,8 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          * if 'oc' then input must be 'CASE/x'
          * used in HPP attack
          */
-        if (sql_state->tokenvec[0].type == 'o' &&
-            sql_state->tokenvec[1].type == 'c' &&
+        if (sql_state->tokenvec[0].type == TYPE_OPERATOR &&
+            sql_state->tokenvec[1].type == TYPE_COMMENT &&
             sql_state->tokenvec[1].val[0] == '/' &&
             cstrcasecmp("CASE", sql_state->tokenvec[0].val, strlen(sql_state->tokenvec[0].val)) != 0)
         {
@@ -1625,7 +1619,8 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          *
          * Note: evasion: 1*1--
          */
-        if (sql_state->tokenvec[0].type == '1'&& sql_state->tokenvec[1].type == 'c') {
+        if (sql_state->tokenvec[0].type == TYPE_NUMBER &&
+            sql_state->tokenvec[1].type == TYPE_COMMENT) {
             /*
              * we check that next character after the number is either whitespace,
              * or '/' or a '-' ==> sqli.
@@ -1689,7 +1684,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
-        } else if ((sql_state->tokenvec[1].type == 'k') && cstrcasecmp("INTO OUTFILE",
+        } else if ((sql_state->tokenvec[1].type == TYPE_KEYWORD) && cstrcasecmp("INTO OUTFILE",
                                                                        sql_state->tokenvec[1].val,
                                                                        strlen(sql_state->tokenvec[1].val))) {
             sql_state->reason = __LINE__;
