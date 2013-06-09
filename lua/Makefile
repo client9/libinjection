@@ -15,8 +15,8 @@ LUA_FLAGS=-I/opt/local/include/luajit-2.0 -L/opt/local/lib -lluajit-5.1.2
 LUA=luajit
 
 # MAC OS X - "port" for lua
-LUA_FLAGS=-I/opt/local/include -L/opt/local/lib/ -llua
-LUA=lua
+#LUA_FLAGS=-I/opt/local/include -L/opt/local/lib/ -llua
+#LUA=lua
 
 
 SHARED=-shared -Wl,-soname,libinjection.so
@@ -67,6 +67,8 @@ sample: sqlifingerprints.lua
 lua-TestMore:
 	git clone --depth 1 https://github.com/fperrad/lua-TestMore.git
 
+speed:
+	${LUA} luatest.lua
 clean:
 	rm -f *~
 	rm -rf *.dSYM *.so *.dylib

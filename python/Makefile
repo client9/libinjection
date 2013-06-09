@@ -15,6 +15,9 @@ test-unit: copy
 test: test-unit
 .PHONY: test
 
+speed:
+	./speedtest.py
+
 libinjection/libinjection.h: ../c/libinjection.h
 	cp ../c/libinjection.h libinjection/libinjection.h
 

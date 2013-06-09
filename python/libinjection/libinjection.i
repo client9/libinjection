@@ -6,32 +6,34 @@
 /* This is the callback function that runs a python function
  *
  */
-static char libinjection_python_check_fingerprint(sfilter* sf, char lookuptype, const char* word, size_t len)
+static char libinjection_python_check_fingerprint(sfilter* sf, int lookuptype, const char* word, size_t len)
 {
-    int sqli;
+    PyObject *fp;
     PyObject *arglist;
     PyObject *result;
+    const char* strtype;
+    char ch;
+
     // get sfilter->pattern
     // convert to python string
-    PyObject* fp = SWIG_NewPointerObj((void*)sf, SWIGTYPE_p_libinjection_sqli_state,0);
-    arglist = Py_BuildValue("(N)", fp);
+    fp = SWIG_InternalNewPointerObj((void*)sf, SWIGTYPE_p_libinjection_sqli_state,0);
+
+    arglist = Py_BuildValue("(Nis#)", fp, lookuptype, word, len);
     // call pyfunct with string arg
     result = PyObject_CallObject((PyObject*) sf->userdata, arglist);
     Py_DECREF(arglist);
-    Py_DECREF(fp);
     if (result == NULL) {
         printf("GOT NULL\n");
         // python call has an exception
         // pass it back
-        //return NULL;
+        ch = '\0';
+    } else {
+        // convert value of python call to a char
+        strtype =  PyString_AsString(result);
+        ch = strtype[0];
+        Py_DECREF(result);
     }
-    // convert value of python call to a char
-    sqli = PyObject_IsTrue(result);
-    if (sqli == -1) {
-        //return NULL;
-    }
-    Py_DECREF(result);
-    return sqli;
+    return ch;
 }
 
 %}

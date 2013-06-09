@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <assert.h>
+#include <stddef.h>
 
 #ifndef TRUE
 #define TRUE 1
@@ -21,6 +22,12 @@
 #ifndef FALSE
 #define FALSE 0
 #endif
+
+#define CHAR_NULL    '\0'
+#define CHAR_SINGLE  '\''
+#define CHAR_DOUBLE  '"'
+
+
 
 #if 0
 #define FOLD_DEBUG printf("%d \t more=%d  pos=%d left=%d\n", __LINE__, more, (int)pos, (int)left);
@@ -54,6 +61,23 @@ typedef enum {
     TYPE_UNKNOWN     = (int)'?',
     TYPE_FINGERPRINT = (int)'X',
 } sqli_token_types;
+
+/**
+ * Initializes parsing state
+ *
+ */
+static char flag2delim(int flag)
+{
+    if (flag & FLAG_QUOTE_SINGLE) {
+        return CHAR_SINGLE;
+    } else if (flag & FLAG_QUOTE_DOUBLE) {
+        return CHAR_DOUBLE;
+    } else {
+        return CHAR_NULL;
+    }
+}
+
+
 
 /* memchr2 finds a string of 2 characters inside another string
  * This a specialized version of "memmem" or "memchr".
@@ -357,12 +381,12 @@ static size_t parse_eol_comment(sfilter * sf)
 static size_t parse_hash(sfilter * sf)
 {
     sf->stats_comment_hash += 1;
-    if (sf->comment_style == COMMENTS_ANSI) {
-        st_assign_char(sf->current, TYPE_OPERATOR, sf->pos, 1, '#');
-        return sf->pos + 1;
-    } else {
+    if (sf->flags & FLAG_SQL_MYSQL) {
         sf->stats_comment_hash += 1;
         return parse_eol_comment(sf);
+    } else {
+        st_assign_char(sf->current, TYPE_OPERATOR, sf->pos, 1, '#');
+        return sf->pos + 1;
     }
 }
 
@@ -385,7 +409,7 @@ static size_t parse_dash(sfilter * sf)
         return parse_eol_comment(sf);
     } else if (pos +2 == slen && cs[pos + 1] == '-') {
         return parse_eol_comment(sf);
-    } else if (pos + 1 < slen && cs[pos + 1] == '-' && sf->comment_style == COMMENTS_ANSI) {
+    } else if (pos + 1 < slen && cs[pos + 1] == '-' && (sf->flags & FLAG_SQL_ANSI)) {
         /* --[not-white] not-white case:
          *
          */
@@ -493,7 +517,7 @@ static size_t parse_slash(sfilter * sf)
         /* yes, mark it */
         sf->stats_comment_mysql += 1;
 
-        if (sf->comment_style == COMMENTS_MYSQL) {
+        if (sf->flags & FLAG_SQL_MYSQL) {
             /*
              * MySQL Comment (which is actually not a comment)
              */
@@ -574,7 +598,7 @@ static size_t parse_operator2(sfilter * sf)
         return pos + 3;
     }
 
-    ch = sf->lookup(sf, 'o', cs + pos, 2);
+    ch = sf->lookup(sf, LOOKUP_OPERATOR, cs + pos, 2);
     if (ch != CHAR_NULL) {
         st_assign(sf->current, ch, pos, 2, cs+pos);
         return pos + 2;
@@ -730,7 +754,7 @@ static size_t parse_underscore(sfilter *sf)
         return parse_word(sf);
     }
     st_assign(sf->current, TYPE_BAREWORD, pos, xlen, cs + pos);
-    ch = sf->lookup(sf, 't', sf->current->val, sf->current->len);
+    ch = sf->lookup(sf, LOOKUP_TYPE, sf->current->val, sf->current->len);
     if (ch == TYPE_SQLTYPE) {
         sf->current->type = TYPE_SQLTYPE;
         return xlen + 1;
@@ -837,7 +861,7 @@ static size_t parse_word(sfilter * sf)
     for (i =0; i < sf->current->len; ++i) {
         delim = sf->current->val[i];
         if (delim == '.' || delim == '`') {
-            ch = sf->lookup(sf, 'k', sf->current->val, i);
+            ch = sf->lookup(sf, LOOKUP_WORD, sf->current->val, i);
             if (ch == TYPE_KEYWORD || ch == TYPE_OPERATOR || ch == TYPE_EXPRESSION) {
                 /* needed for swig */
                 st_clear(sf->current);
@@ -856,7 +880,7 @@ static size_t parse_word(sfilter * sf)
      */
     if (wlen < ST_MAX_SIZE) {
 
-        ch = sf->lookup(sf, 'k', sf->current->val, wlen);
+        ch = sf->lookup(sf, LOOKUP_WORD, sf->current->val, wlen);
 
         if (ch == CHAR_NULL) {
             ch = TYPE_BAREWORD;
@@ -883,7 +907,7 @@ static size_t parse_tick(sfilter* sf)
     /* check value of string to see if it's a keyword,
      * function, operator, etc
      */
-    char ch = sf->lookup(sf, 'k', sf->current->val, sf->current->len);
+    char ch = sf->lookup(sf, LOOKUP_WORD, sf->current->val, sf->current->len);
     if (ch == TYPE_FUNCTION) {
         /* if it's a function, then convert token */
         sf->current->type = TYPE_FUNCTION;
@@ -1086,12 +1110,13 @@ static size_t parse_number(sfilter * sf)
     return pos;
 }
 
-int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
+int libinjection_sqli_tokenize(sfilter * sf)
 {
     const char *s = sf->s;
     const size_t slen = sf->slen;
     size_t *pos = &sf->pos;
     pt2Function fnptr;
+    stoken_t *current = sf->current;
 
     if (slen == 0) {
         return FALSE;
@@ -1105,8 +1130,8 @@ int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
      *  and in single-quote or double quote mode
      *  then pretend the input starts with a quote
      */
-    if (*pos == 0 && sf->delim != CHAR_NULL) {
-        *pos = parse_string_core(s, slen, 0, current, sf->delim, 0);
+    if (*pos == 0 && (sf->flags & (FLAG_QUOTE_SINGLE | FLAG_QUOTE_DOUBLE))) {
+        *pos = parse_string_core(s, slen, 0, current, flag2delim(sf->flags), 0);
         return TRUE;
     }
 
@@ -1145,18 +1170,24 @@ int libinjection_sqli_tokenize(sfilter * sf, stoken_t *current)
     return FALSE;
 }
 
-/**
- * Initializes parsing state
- *
- */
-void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, char delim, int comment_style)
+void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, int flags)
 {
     memset(sf, 0, sizeof(sfilter));
-    sf->s = s;
-    sf->slen = len;
-    sf->delim = delim;
-    sf->comment_style = comment_style;
-    sf->lookup = libinjection_sqli_lookup_word;
+    sf->s        = s;
+    sf->slen     = len;
+    sf->lookup   = libinjection_sqli_lookup_word;
+    sf->userdata = 0;
+    sf->flags    = flags;
+    sf->current  = &(sf->tokenvec[0]);
+}
+
+void libinjection_sqli_reset(sfilter * sf, int flags)
+{
+    ptr_lookup_fn lookup = sf->lookup;
+    void* userdata = sf->userdata;
+    libinjection_sqli_init(sf, sf->s, sf->slen, flags);
+    sf->lookup = lookup;
+    sf->userdata = userdata;
 }
 
 void libinjection_sqli_callback(sfilter * sf, ptr_lookup_fn fn, void* userdata)
@@ -1165,12 +1196,10 @@ void libinjection_sqli_callback(sfilter * sf, ptr_lookup_fn fn, void* userdata)
         sf->lookup = libinjection_sqli_lookup_word;
         sf->userdata = (void*)(NULL);
     } else {
-        sf->lookup = libinjection_sqli_lookup_word;
+        sf->lookup = fn;
         sf->userdata = userdata;
     }
 }
-
-
 
 /** See if two tokens can be merged since they are compound SQL phrases.
  *
@@ -1240,8 +1269,6 @@ int filter_fold(sfilter * sf)
 {
     stoken_t last_comment;
 
-    stoken_t * current;
-
     /* POS is the positive of where the NEXT token goes */
     size_t pos = 0;
 
@@ -1256,10 +1283,10 @@ int filter_fold(sfilter * sf)
     /* Skip all initial comments, right-parens ( and unary operators
      *
      */
-    current = &(sf->tokenvec[0]);
+    sf->current = &(sf->tokenvec[0]);
     while (more) {
-        more = libinjection_sqli_tokenize(sf, current);
-        if ( ! (current->type == TYPE_COMMENT || current->type == TYPE_LEFTPARENS || st_is_unary_op(current))) {
+        more = libinjection_sqli_tokenize(sf);
+        if ( ! (sf->current->type == TYPE_COMMENT || sf->current->type == TYPE_LEFTPARENS || st_is_unary_op(sf->current))) {
             break;
         }
     }
@@ -1276,11 +1303,11 @@ int filter_fold(sfilter * sf)
         FOLD_DEBUG
         /* get up to two tokens */
         while (more && pos <= MAX_TOKENS && (pos - left) < 2) {
-            current = &(sf->tokenvec[pos]);
-            more = libinjection_sqli_tokenize(sf, current);
+            sf->current = &(sf->tokenvec[pos]);
+            more = libinjection_sqli_tokenize(sf);
             if (more) {
-                if (current->type == TYPE_COMMENT) {
-                    st_copy(&last_comment, current);
+                if (sf->current->type == TYPE_COMMENT) {
+                    st_copy(&last_comment, sf->current);
                 } else {
                     last_comment.type = CHAR_NULL;
                     pos += 1;
@@ -1354,11 +1381,11 @@ int filter_fold(sfilter * sf)
         */
         FOLD_DEBUG
         while (more && pos <= MAX_TOKENS && pos - left < 3) {
-            current = &(sf->tokenvec[pos]);
-            more = libinjection_sqli_tokenize(sf, current);
+            sf->current = &(sf->tokenvec[pos]);
+            more = libinjection_sqli_tokenize(sf);
             if (more) {
-                if (current->type == TYPE_COMMENT) {
-                    st_copy(&last_comment, current);
+                if (sf->current->type == TYPE_COMMENT) {
+                    st_copy(&last_comment, sf->current);
                 } else {
                     last_comment.type = CHAR_NULL;
                     pos += 1;
@@ -1465,15 +1492,12 @@ int filter_fold(sfilter * sf)
  *          double quote.
  *
  */
-const char*
-libinjection_sqli_fingerprint(sfilter * sql_state,
-                              const char *s, size_t slen,
-                              char delim, int comment_style)
+const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags)
 {
     int i;
     int tlen = 0;
 
-    libinjection_sqli_init(sql_state, s, slen, delim, comment_style);
+    libinjection_sqli_reset(sql_state, flags);
 
     tlen = filter_fold(sql_state);
     for (i = 0; i < tlen; ++i) {
@@ -1520,10 +1544,10 @@ int libinjection_sqli_check_fingerprint(sfilter* sql_state)
         libinjection_sqli_not_whitelist(sql_state);
 }
 
-char libinjection_sqli_lookup_word(sfilter *sql_state, char lookup_type,
+char libinjection_sqli_lookup_word(sfilter *sql_state, int lookup_type,
                                    const char* str, size_t len)
 {
-    if (lookup_type == 'X') {
+    if (lookup_type == LOOKUP_FINGERPRINT) {
         return libinjection_sqli_check_fingerprint(sql_state) ? 'X' : '\0';
     } else {
         return bsearch_keyword_type(str, len, sql_keywords, sql_keywords_sz);
@@ -1744,8 +1768,11 @@ static int reparse_as_mysql(sfilter * sql_state)
         sql_state->stats_comment_hash;
 }
 
-int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen)
+int libinjection_is_sqli(sfilter * sql_state)
 {
+    const char *s = sql_state->s;
+    size_t slen = sql_state->slen;
+
     /*
      * no input? not sqli
      */
@@ -1756,15 +1783,18 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen)
     /*
      * test input "as-is"
      */
-    libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_ANSI);
-    if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
+    libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_NONE | FLAG_SQL_ANSI);
+    if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
+                          sql_state->pat, strlen(sql_state->pat))) {
         return TRUE;
     } else if (reparse_as_mysql(sql_state)) {
-      libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_NULL, COMMENTS_MYSQL);
-      if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
-        return TRUE;
-      }
+        libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_NONE | FLAG_SQL_MYSQL);
+        if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
+                              sql_state->pat, strlen(sql_state->pat))) {
+            return TRUE;
+        }
     }
+
     /*
      * if input has a single_quote, then
      * test as if input was actually '
@@ -1775,23 +1805,26 @@ int libinjection_is_sqli(sfilter * sql_state, const char *s, size_t slen)
      *
      */
     if (memchr(s, CHAR_SINGLE, slen)) {
-      libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_ANSI);
-      if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
-        return TRUE;
-      } else if (reparse_as_mysql(sql_state)) {
-        libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_SINGLE, COMMENTS_MYSQL);
-        if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
-          return TRUE;
+        libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_SINGLE | FLAG_SQL_ANSI);
+        if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
+                              sql_state->pat, strlen(sql_state->pat))) {
+            return TRUE;
+        } else if (reparse_as_mysql(sql_state)) {
+            libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_SINGLE | FLAG_SQL_MYSQL);
+            if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
+                                  sql_state->pat, strlen(sql_state->pat))) {
+                return TRUE;
+            }
         }
-      }
     }
 
     /*
      * same as above but with a double-quote "
      */
     if (memchr(s, CHAR_DOUBLE, slen)) {
-      libinjection_sqli_fingerprint(sql_state, s, slen, CHAR_DOUBLE, COMMENTS_MYSQL);
-      if (sql_state->lookup(sql_state, 'X', sql_state->pat, strlen(sql_state->pat))) {
+        libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_DOUBLE | FLAG_SQL_MYSQL);
+        if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
+                              sql_state->pat, strlen(sql_state->pat))) {
             return TRUE;
         }
     }

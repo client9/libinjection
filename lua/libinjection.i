@@ -3,46 +3,26 @@
 %{
 #include "libinjection.h"
 
-static char libinjection_lua_check_fingerprint(sfilter* sf, char ch, const char* s, size_t len)
+static char libinjection_lua_lookup_word(sfilter* sf, int lookup_type,
+                                         const char* s, size_t len)
 {
     lua_State* L = (lua_State*) sf->userdata;
-#if 1
-    int i;
-    int top = lua_gettop(L);
-    for (i = 1; i <= top; i++) {  /* repeat for each level */
-        int t = lua_type(L, i);
-        switch (t) {
-
-        case LUA_TSTRING:  /* strings */
-            printf("%d `%s'\n", i,lua_tostring(L, i));
-            break;
-
-        case LUA_TBOOLEAN:  /* booleans */
-            printf("%d %s\n", i, lua_toboolean(L, i) ? "true" : "false");
-            break;
-
-        case LUA_TNUMBER:  /* numbers */
-            printf("%d %g\n", i, lua_tonumber(L, i));
-            break;
-
-        default:  /* other values */
-            printf("%d, %s\n", i, lua_typename(L, t));
-            break;
-
-        }
-        printf("  ");  /* put a separator */
-    }
-    printf("\n");  /* end the listing */
-
-#endif
-    char* luafunc = (char *)lua_tostring(L, 2);
-    lua_getglobal(L, (char*) luafunc);
+    //char* luafunc = (char *)lua_tostring(L, 2);
+    lua_getglobal(L, "lookup_word");
     SWIG_NewPointerObj(L, (void*)sf, SWIGTYPE_p_libinjection_sqli_state, 0);
-    if (lua_pcall(L, 1, 1, 0)) {
+    lua_pushnumber(L, lookup_type);
+    lua_pushlstring(L, s, len);
+
+    if (lua_pcall(L, 3, 1, 0)) {
         printf("Something bad happened");
     }
-    //int issqli = lua_tonumber(L, -1);
-    return 'X';
+
+    const char* result = lua_tostring(L, -1);
+    if (result == NULL) {
+        return 0;
+    } else {
+        return result[0];
+    }
 }
 %}
 %include "typemaps.i"
@@ -55,11 +35,11 @@ static char libinjection_lua_check_fingerprint(sfilter* sf, char ch, const char*
 %rename("%(strip:[libinjection_])s") "";
 
 %typemap(in) (ptr_lookup_fn fn, void* userdata) {
-    if (lua_isnil(L, 0)) {
+    if (lua_isnil(L, 1)) {
         arg2 = NULL;
         arg3 = NULL;
     } else {
-        arg2 = libinjection_lua_check_fingerprint;
+        arg2 = libinjection_lua_lookup_word;
         arg3 = (void *) L;
     }
  }

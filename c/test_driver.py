@@ -7,7 +7,6 @@ import subprocess
 import os
 import glob
 
-
 def toascii(data):
     """
     Converts a utf-8 string to ascii.   needed since nosetests xunit is not UTF-8 safe
@@ -105,7 +104,6 @@ def runtest(testname, flags=None):
         print
         print "GOT: \n" + toascii(actual)
         assert actual == data[2]
-
 
 def run_tokens(testname):
     runtest(testname, [ '-q0', '-ca'])

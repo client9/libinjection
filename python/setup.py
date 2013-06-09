@@ -10,7 +10,7 @@ from distutils.core import setup, Extension
 
 MODULE = Extension(
     '_libinjection', [ 'libinjection/libinjection.i', 'libinjection/libinjection_sqli.c' ],
-    swig_opts=['-Wextra'],
+    swig_opts=['-Wextra', '-builtin'],
     define_macros = [],
     include_dirs = [],
     libraries = [],

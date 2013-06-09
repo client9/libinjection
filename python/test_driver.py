@@ -6,6 +6,7 @@ Runs off plain text files, similar to how PHP's test harness works
 import os
 import glob
 from libinjection import *
+from words import *
 
 print LIBINJECTION_VERSION
 
@@ -14,10 +15,10 @@ def print_token_string(tok):
     returns the value of token, handling opening and closing quote characters
     """
     out = ''
-    if tok.str_open != CHAR_NULL:
+    if tok.str_open != "\0":
         out += tok.str_open
     out += tok.val
-    if tok.str_close != CHAR_NULL:
+    if tok.str_close != "\0":
         out += tok.str_close
     return out
 
@@ -74,27 +75,27 @@ def readtestdata(filename):
 
     return (info['--TEST--'], info['--INPUT--'].strip(), info['--EXPECTED--'].strip())
 
-def runtest(testname, flag, style_quote=None, style_comments=None):
+def runtest(testname, flag, sqli_flags):
     """
     runs a test, optionally with valgrind
     """
     data =  readtestdata(os.path.join('../tests', testname))
 
     sql_state = sqli_state()
+    sqli_init(sql_state, data[1], sqli_flags)
+    sqli_callback(sql_state, lookup)
     actual = ''
 
     if flag == 'tokens':
-        atoken = stoken_t()
-        sqli_init(sql_state, data[1], style_quote, style_comments);
-        while sqli_tokenize(sql_state, atoken):
-            actual += print_token(atoken) + '\n';
+        while sqli_tokenize(sql_state):
+            actual += print_token(sql_state.current) + '\n';
         actual = actual.strip()
     elif flag == 'folding':
-        sqli_fingerprint(sql_state, data[1], style_quote, style_comments);
+        sqli_fingerprint(sql_state, sqli_flags)
         for i in range(len(sql_state.pat)):
             actual += print_token(sql_state.tokenvec[i]) + '\n';
     elif flag == 'fingerprints':
-        ok = is_sqli(sql_state, data[1])
+        ok = is_sqli(sql_state)
         if ok:
             actual = sql_state.pat
     else:
@@ -112,7 +113,7 @@ def runtest(testname, flag, style_quote=None, style_comments=None):
 
 def test_tokens():
     def run_tokens(testname):
-        runtest(testname, 'tokens', libinjection.CHAR_NULL, libinjection.COMMENTS_ANSI)
+        runtest(testname, 'tokens', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
 
     for testname in sorted(glob.glob('../tests/test-tokens-*.txt')):
         testname = os.path.basename(testname)
@@ -120,7 +121,7 @@ def test_tokens():
 
 def test_tokens_mysql():
     def run_tokens(testname):
-        runtest(testname, 'tokens', libinjection.CHAR_NULL, libinjection.COMMENTS_MYSQL)
+        runtest(testname, 'tokens', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_MYSQL)
 
     for testname in sorted(glob.glob('../tests/test-tokens_mysql-*.txt')):
         testname = os.path.basename(testname)
@@ -128,7 +129,7 @@ def test_tokens_mysql():
 
 def test_folding():
     def run_folding(testname):
-        runtest(testname, 'folding', libinjection.CHAR_NULL, libinjection.COMMENTS_ANSI)
+        runtest(testname, 'folding', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
 
     for testname in sorted(glob.glob('../tests/test-folding-*.txt')):
         testname = os.path.basename(testname)
@@ -136,7 +137,7 @@ def test_folding():
 
 def test_fingerprints():
     def run_fingerprints(testname):
-        runtest(testname, 'fingerprints')
+        runtest(testname, 'fingerprints', 0)
 
 
     for testname in sorted(glob.glob('../tests/test-sqli-*.txt')):

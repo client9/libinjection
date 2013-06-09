@@ -170,7 +170,8 @@ void test_positive(FILE * fd, const char *fname,
         }
 
         len =  modp_url_decode(linebuf, linebuf, len);
-        bool issqli = libinjection_is_sqli(&sf, linebuf, len);
+        libinjection_sqli_init(&sf, linebuf, len, 0);
+        bool issqli = libinjection_is_sqli(&sf);
         if (issqli) {
             g_test_ok += 1;
         } else {

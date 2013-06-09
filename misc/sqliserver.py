@@ -20,10 +20,10 @@ def print_token_string(tok):
     returns the value of token, handling opening and closing quote characters
     """
     out = ''
-    if tok.str_open != libinjection.CHAR_NULL:
+    if tok.str_open != '\0':
         out += tok.str_open
     out += tok.val
-    if tok.str_close != libinjection.CHAR_NULL:
+    if tok.str_close != '\0':
         out += tok.str_close
     return out
 
@@ -45,20 +45,18 @@ def print_token(tok):
         out += tok.val
     return (tok.type, out)
 
-def alltokens(val, context, comments):
+def alltokens(val, flags):
 
-    if context == libinjection.CHAR_NULL:
-        contextstr = 'no'
-    elif context == libinjection.CHAR_SINGLE:
+    if flags & libinjection.FLAG_QUOTE_SINGLE:
         contextstr = 'single'
-    elif context == libinjection.CHAR_DOUBLE:
+    elif flags & libinjection.FLAG_QUOTE_DOUBLE:
         contextstr = 'double'
     else:
-        raise RuntimeException("bad quote context")
+        contextstr = 'none'
 
-    if comments == libinjection.COMMENTS_ANSI:
+    if flags & libinjection.FLAG_SQL_ANSI:
         commentstr = 'ansi'
-    elif comments == libinjection.COMMENTS_MYSQL:
+    elif flags & libinjection.FLAG_SQL_MYSQL:
         commentstr = 'mysql'
     else:
         raise RuntimeException("bad quote context")
@@ -69,21 +67,20 @@ def alltokens(val, context, comments):
     }
     args = []
     sqlstate = libinjection.sqli_state()
-    atoken = libinjection.stoken_t()
-    libinjection.sqli_init(sqlstate, val, context, comments)
+    libinjection.sqli_init(sqlstate, val, flags)
     count = 0
     while count < 25:
         count += 1
-        ok = libinjection.sqli_tokenize(sqlstate, atoken)
+        ok = libinjection.sqli_tokenize(sqlstate)
         if ok == 0:
             break
-        args.append(print_token(atoken))
+        args.append(print_token(sqlstate.current))
 
 
     parse['tokens'] = args
 
     args = []
-    fingerprint = libinjection.sqli_fingerprint(sqlstate, val, context, comments)
+    fingerprint = libinjection.sqli_fingerprint(sqlstate, flags)
     vec = sqlstate.tokenvec
     for i in range(len(sqlstate.pat)):
         args.append(print_token(vec[i]))
@@ -122,11 +119,11 @@ class NullHandler(tornado.web.RequestHandler):
 
         val = urllib.unquote(formvalue)
         parsed = []
-        parsed.append(alltokens(val, libinjection.CHAR_NULL,   libinjection.COMMENTS_ANSI))
-        parsed.append(alltokens(val, libinjection.CHAR_NULL,   libinjection.COMMENTS_MYSQL))
-        parsed.append(alltokens(val, libinjection.CHAR_SINGLE, libinjection.COMMENTS_ANSI))
-        parsed.append(alltokens(val, libinjection.CHAR_SINGLE, libinjection.COMMENTS_MYSQL))
-        parsed.append(alltokens(val, libinjection.CHAR_DOUBLE, libinjection.COMMENTS_MYSQL))
+        parsed.append(alltokens(val, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI))
+        parsed.append(alltokens(val, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_MYSQL))
+        parsed.append(alltokens(val, libinjection.FLAG_QUOTE_SINGLE | libinjection.FLAG_SQL_ANSI))
+        parsed.append(alltokens(val, libinjection.FLAG_QUOTE_SINGLE | libinjection.FLAG_SQL_MYSQL))
+        parsed.append(alltokens(val, libinjection.FLAG_QUOTE_DOUBLE | libinjection.FLAG_SQL_MYSQL))
 
         self.render("tokens.html",
                     title='libjection sqli token parsing diagnositcs',
@@ -162,24 +159,24 @@ class NullHandler(tornado.web.RequestHandler):
             val = urllib.unquote(val)
             if len(val) == 0:
                 continue
-
-            pat = libinjection.sqli_fingerprint(sqlstate, val, libinjection.CHAR_NULL, libinjection.COMMENTS_ANSI)
+            libinjection.sqli_init(sqlstate, val, 0)
+            pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
             issqli = bool(libinjection.sqli_blacklist(sqlstate))
             fps.append(['unquoted', 'ansi', issqli, pat])
 
-            pat = libinjection.sqli_fingerprint(sqlstate, val, libinjection.CHAR_NULL, libinjection.COMMENTS_MYSQL)
+            pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_MYSQL)
             issqli = bool(libinjection.sqli_blacklist(sqlstate))
             fps.append(['unquoted', 'mysql', issqli, pat])
 
-            pat =libinjection.sqli_fingerprint(sqlstate, val, libinjection.CHAR_SINGLE, libinjection.COMMENTS_ANSI)
+            pat =libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_SINGLE | libinjection.FLAG_SQL_ANSI)
             issqli = bool(libinjection.sqli_blacklist(sqlstate))
             fps.append(['single', 'ansi', issqli, pat])
 
-            pat = libinjection.sqli_fingerprint(sqlstate, val, libinjection.CHAR_SINGLE, libinjection.COMMENTS_MYSQL)
+            pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_SINGLE | libinjection.FLAG_SQL_MYSQL)
             issqli = bool(libinjection.sqli_blacklist(sqlstate))
             fps.append(['single', 'mysql', issqli, pat])
 
-            pat = libinjection.sqli_fingerprint(sqlstate, val, libinjection.CHAR_DOUBLE, libinjection.COMMENTS_MYSQL)
+            pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_DOUBLE | libinjection.FLAG_SQL_MYSQL)
             issqli = bool(libinjection.sqli_blacklist(sqlstate))
             fps.append(['double', 'mysql', issqli, pat])
 
@@ -198,7 +195,8 @@ class NullHandler(tornado.web.RequestHandler):
                     continue
 
                 # swig returns 1/0, convert to True False
-                issqli = bool(libinjection.is_sqli(sqlstate, val))
+                libinjection.sqli_init(sqlstate, val, 0)
+                issqli = bool(libinjection.is_sqli(sqlstate))
 
                 # True if any issqli values are true
                 qssqli = qssqli or issqli

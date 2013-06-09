@@ -63,9 +63,7 @@ void print_token(stoken_t *t) {
 
 int main(int argc, const char* argv[])
 {
-    char comment_style = COMMENTS_ANSI;
-    char quote_style = CHAR_NULL;
-
+    int flags = 0;
     int fold = 0;
     int detect = 0;
 
@@ -84,7 +82,7 @@ int main(int argc, const char* argv[])
     }
     while (1) {
         if (strcmp(argv[offset], "-m") == 0) {
-            comment_style = COMMENTS_MYSQL;
+            flags |= FLAG_SQL_MYSQL;
             offset += 1;
         }
         else if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
@@ -94,19 +92,19 @@ int main(int argc, const char* argv[])
             detect = 1;
             offset += 1;
         } else if (strcmp(argv[offset], "-ca") == 0) {
-            comment_style = COMMENTS_ANSI;
+            flags |= FLAG_SQL_ANSI;
             offset += 1;
         } else if (strcmp(argv[offset], "-cm") == 0) {
-            comment_style = COMMENTS_MYSQL;
+            flags |= FLAG_SQL_MYSQL;
             offset += 1;
         } else if (strcmp(argv[offset], "-q0") == 0) {
-            quote_style = CHAR_NULL;
+            flags |= FLAG_QUOTE_NONE;
             offset += 1;
         } else if (strcmp(argv[offset], "-q1") == 0) {
-            quote_style = CHAR_SINGLE;
+            flags |= FLAG_QUOTE_SINGLE;
             offset += 1;
         } else if (strcmp(argv[offset], "-q2") == 0) {
-            quote_style = CHAR_DOUBLE;
+            flags |= FLAG_QUOTE_DOUBLE;
             offset += 1;
         } else {
             break;
@@ -121,14 +119,14 @@ int main(int argc, const char* argv[])
     size_t slen = strlen(argv[offset]);
     char* copy = (char* ) malloc(slen);
     memcpy(copy, argv[offset], slen);
+    libinjection_sqli_init(&sf, copy, slen, flags);
 
     if (detect == 1) {
-        issqli = libinjection_is_sqli(&sf, copy, slen);
+        issqli = libinjection_is_sqli(&sf);
         if (issqli) {
             printf("%s\n", sf.pat);
         }
     } else if (fold == 1) {
-        libinjection_sqli_init(&sf, copy, slen, quote_style, comment_style);
         count = filter_fold(&sf);
         // printf("count = %d\n", count);
         for (i = 0; i < count; ++i) {
@@ -136,9 +134,8 @@ int main(int argc, const char* argv[])
             print_token(&(sf.tokenvec[i]));
         }
     } else {
-        libinjection_sqli_init(&sf, copy, slen, quote_style, comment_style);
-        while (libinjection_sqli_tokenize(&sf, &current)) {
-            print_token(&current);
+        while (libinjection_sqli_tokenize(&sf)) {
+            print_token(sf.current);
         }
     }
 

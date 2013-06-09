@@ -35,33 +35,32 @@ end
 
 function test_tokens(input)
     local out = ''
-    local sql_state = libinjection.sfilter()
-    local atoken = libinjection.stoken_t()
+    local sql_state = libinjection.sqli_state()
     libinjection.sqli_init(sql_state, input, input:len(),
-                           libinjection.CHAR_NULL, libinjection.COMMENTS_ANSI)
-    while (libinjection.sqli_tokenize(sql_state, atoken) == 1) do
-        out = out .. print_token(atoken)
+                           libinjection.FLAG_QUOTE_NONE + libinjection.FLAG_SQL_ANSI)
+    while (libinjection.sqli_tokenize(sql_state) == 1) do
+        out = out .. print_token(sql_state.current)
     end
     return(out)
 end
 
 function test_tokens_mysql(input)
     local out = ''
-    local sql_state = libinjection.sfilter()
-    local atoken = libinjection.stoken_t()
+    local sql_state = libinjection.sqli_state()
     libinjection.sqli_init(sql_state, input, input:len(),
-                           libinjection.CHAR_NULL, libinjection.COMMENTS_MYSQL)
-    while (libinjection.sqli_tokenize(sql_state, atoken) == 1) do
-        out = out .. print_token(atoken)
+                           libinjection.FLAG_QUOTE_NONE +  libinjection.FLAG_SQL_MYSQL)
+    while (libinjection.sqli_tokenize(sql_state) == 1) do
+        out = out .. print_token(sql_state.current)
     end
     return(out)
 end
 
 function test_folding(input)
     local out = ''
-    local sql_state = libinjection.sfilter()
-    libinjection.sqli_fingerprint(sql_state, input, input:len(),
-                 libinjection.CHAR_NULL, libinjection.COMMENTS_ANSI)
+    local sql_state = libinjection.sqli_state()
+    libinjection.sqli_init(sql_state, input, input:len(), 0)
+    libinjection.sqli_fingerprint(sql_state,
+                     libinjection.FLAG_QUOTE_NONE + libinjection.FLAG_SQL_ANSI)
     local vec = sql_state.tokenvec
     for i = 1, sql_state.pat:len() do
         out = out .. print_token(vec[i])
@@ -76,8 +75,9 @@ end
 
 function test_fingerprints(input)
     local out = ''
-    local sql_state = libinjection.sfilter()
-    local issqli = libinjection.is_sqli(sql_state, input, input:len(), nil)
+    local sql_state = libinjection.sqli_state()
+    libinjection.sqli_init(sql_state, input, input:len(), 0)
+    local issqli = libinjection.is_sqli(sql_state)
     if issqli == 1 then
         out = sql_state.pat
     end

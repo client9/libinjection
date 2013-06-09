@@ -1609,7 +1609,7 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_f_p_struct_libinjection_sqli_state_char_p_q_const__char_size_t__char swig_types[0]
+#define SWIGTYPE_p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char swig_types[0]
 #define SWIGTYPE_p_libinjection_sqli_state swig_types[1]
 #define SWIGTYPE_p_stoken_t swig_types[2]
 #define SWIGTYPE_p_void swig_types[3]
@@ -1628,46 +1628,26 @@ static swig_module_info swig_module = {swig_types, 4, 0, 0, 0, 0};
 
 #include "libinjection.h"
 
-static char libinjection_lua_check_fingerprint(sfilter* sf, char ch, const char* s, size_t len)
+static char libinjection_lua_lookup_word(sfilter* sf, int lookup_type,
+                                         const char* s, size_t len)
 {
     lua_State* L = (lua_State*) sf->userdata;
-#if 1
-    int i;
-    int top = lua_gettop(L);
-    for (i = 1; i <= top; i++) {  /* repeat for each level */
-        int t = lua_type(L, i);
-        switch (t) {
-
-        case LUA_TSTRING:  /* strings */
-            printf("%d `%s'\n", i,lua_tostring(L, i));
-            break;
-
-        case LUA_TBOOLEAN:  /* booleans */
-            printf("%d %s\n", i, lua_toboolean(L, i) ? "true" : "false");
-            break;
-
-        case LUA_TNUMBER:  /* numbers */
-            printf("%d %g\n", i, lua_tonumber(L, i));
-            break;
-
-        default:  /* other values */
-            printf("%d, %s\n", i, lua_typename(L, t));
-            break;
-
-        }
-        printf("  ");  /* put a separator */
-    }
-    printf("\n");  /* end the listing */
-
-#endif
-    char* luafunc = (char *)lua_tostring(L, 2);
-    lua_getglobal(L, (char*) luafunc);
+    //char* luafunc = (char *)lua_tostring(L, 2);
+    lua_getglobal(L, "lookup_word");
     SWIG_NewPointerObj(L, (void*)sf, SWIGTYPE_p_libinjection_sqli_state, 0);
-    if (lua_pcall(L, 1, 1, 0)) {
+    lua_pushnumber(L, lookup_type);
+    lua_pushlstring(L, s, len);
+
+    if (lua_pcall(L, 3, 1, 0)) {
         printf("Something bad happened");
     }
-    //int issqli = lua_tonumber(L, -1);
-    return 'X';
+
+    const char* result = lua_tostring(L, -1);
+    if (result == NULL) {
+        return 0;
+    } else {
+        return result[0];
+    }
 }
 
 
@@ -2092,54 +2072,6 @@ fail:
 }
 
 
-static int _wrap_sqli_state_delim_get(lua_State* L) {
-  int SWIG_arg = 0;
-  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
-  char result;
-  
-  SWIG_check_num_args("libinjection_sqli_state::delim",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_state::delim",1,"struct libinjection_sqli_state *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
-    SWIG_fail_ptr("sqli_state_delim_get",1,SWIGTYPE_p_libinjection_sqli_state);
-  }
-  
-  result = (char) ((arg1)->delim);
-  lua_pushfstring(L,"%c",result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_sqli_state_comment_style_get(lua_State* L) {
-  int SWIG_arg = 0;
-  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
-  int result;
-  
-  SWIG_check_num_args("libinjection_sqli_state::comment_style",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_state::comment_style",1,"struct libinjection_sqli_state *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
-    SWIG_fail_ptr("sqli_state_comment_style_get",1,SWIGTYPE_p_libinjection_sqli_state);
-  }
-  
-  result = (int) ((arg1)->comment_style);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_sqli_state_lookup_get(lua_State* L) {
   int SWIG_arg = 0;
   struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
@@ -2153,7 +2085,7 @@ static int _wrap_sqli_state_lookup_get(lua_State* L) {
   }
   
   result = (ptr_lookup_fn) ((arg1)->lookup);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_libinjection_sqli_state_char_p_q_const__char_size_t__char,0); SWIG_arg++; 
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -2178,6 +2110,30 @@ static int _wrap_sqli_state_userdata_get(lua_State* L) {
   
   result = (void *) ((arg1)->userdata);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_void,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_sqli_state_flags_get(lua_State* L) {
+  int SWIG_arg = 0;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("libinjection_sqli_state::flags",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_state::flags",1,"struct libinjection_sqli_state *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
+    SWIG_fail_ptr("sqli_state_flags_get",1,SWIGTYPE_p_libinjection_sqli_state);
+  }
+  
+  result = (int) ((arg1)->flags);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -2512,10 +2468,9 @@ static swig_lua_method swig_libinjection_sqli_state_methods[] = {
 static swig_lua_attribute swig_libinjection_sqli_state_attributes[] = {
     { "s", _wrap_sqli_state_s_get, SWIG_Lua_set_immutable},
     { "slen", _wrap_sqli_state_slen_get, SWIG_Lua_set_immutable},
-    { "delim", _wrap_sqli_state_delim_get, SWIG_Lua_set_immutable},
-    { "comment_style", _wrap_sqli_state_comment_style_get, SWIG_Lua_set_immutable},
     { "lookup", _wrap_sqli_state_lookup_get, SWIG_Lua_set_immutable},
     { "userdata", _wrap_sqli_state_userdata_get, SWIG_Lua_set_immutable},
+    { "flags", _wrap_sqli_state_flags_get, SWIG_Lua_set_immutable},
     { "pos", _wrap_sqli_state_pos_get, SWIG_Lua_set_immutable},
     { "in_comment", _wrap_sqli_state_in_comment_get, SWIG_Lua_set_immutable},
     { "tokenvec", _wrap_sqli_state_tokenvec_get, SWIG_Lua_set_immutable},
@@ -2534,88 +2489,18 @@ static swig_lua_class *swig_libinjection_sqli_state_bases[] = {0};
 static const char *swig_libinjection_sqli_state_base_names[] = {0};
 static swig_lua_class _wrap_class_libinjection_sqli_state = { "sqli_state", &SWIGTYPE_p_libinjection_sqli_state,_wrap_new_sqli_state, swig_delete_sqli_state, swig_libinjection_sqli_state_methods, swig_libinjection_sqli_state_attributes, swig_libinjection_sqli_state_bases, swig_libinjection_sqli_state_base_names };
 
-static int _wrap_is_sqli(lua_State* L) {
-  int SWIG_arg = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
-  char *arg2 = (char *) 0 ;
-  size_t arg3 ;
-  int result;
-  
-  SWIG_check_num_args("libinjection_is_sqli",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_is_sqli",1,"sfilter *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("libinjection_is_sqli",2,"char const *");
-  if(!lua_isnumber(L,3)) SWIG_fail_arg("libinjection_is_sqli",3,"size_t");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
-    SWIG_fail_ptr("is_sqli",1,SWIGTYPE_p_libinjection_sqli_state);
-  }
-  
-  arg2 = (char *)lua_tostring(L, 2);
-  SWIG_contract_assert((lua_tonumber(L,3)>=0),"number must not be negative")
-  arg3 = (size_t)lua_tonumber(L, 3);
-  result = (int)libinjection_is_sqli(arg1,(char const *)arg2,arg3);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_sqli_fingerprint(lua_State* L) {
-  int SWIG_arg = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
-  char *arg2 = (char *) 0 ;
-  size_t arg3 ;
-  char arg4 ;
-  int arg5 ;
-  char *result = 0 ;
-  
-  SWIG_check_num_args("libinjection_sqli_fingerprint",5,5)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_fingerprint",1,"sfilter *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("libinjection_sqli_fingerprint",2,"char const *");
-  if(!lua_isnumber(L,3)) SWIG_fail_arg("libinjection_sqli_fingerprint",3,"size_t");
-  if(!SWIG_lua_isnilstring(L,4)) SWIG_fail_arg("libinjection_sqli_fingerprint",4,"char");
-  if(!lua_isnumber(L,5)) SWIG_fail_arg("libinjection_sqli_fingerprint",5,"int");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
-    SWIG_fail_ptr("sqli_fingerprint",1,SWIGTYPE_p_libinjection_sqli_state);
-  }
-  
-  arg2 = (char *)lua_tostring(L, 2);
-  SWIG_contract_assert((lua_tonumber(L,3)>=0),"number must not be negative")
-  arg3 = (size_t)lua_tonumber(L, 3);
-  arg4 = (lua_tostring(L, 4))[0];
-  arg5 = (int)lua_tonumber(L, 5);
-  result = (char *)libinjection_sqli_fingerprint(arg1,(char const *)arg2,arg3,arg4,arg5);
-  lua_pushstring(L,(const char *)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_sqli_init(lua_State* L) {
   int SWIG_arg = 0;
   sfilter *arg1 = (sfilter *) 0 ;
   char *arg2 = (char *) 0 ;
   size_t arg3 ;
-  char arg4 ;
-  int arg5 ;
+  int arg4 ;
   
-  SWIG_check_num_args("libinjection_sqli_init",5,5)
+  SWIG_check_num_args("libinjection_sqli_init",4,4)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_init",1,"sfilter *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("libinjection_sqli_init",2,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("libinjection_sqli_init",3,"size_t");
-  if(!SWIG_lua_isnilstring(L,4)) SWIG_fail_arg("libinjection_sqli_init",4,"char");
-  if(!lua_isnumber(L,5)) SWIG_fail_arg("libinjection_sqli_init",5,"int");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("libinjection_sqli_init",4,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
     SWIG_fail_ptr("sqli_init",1,SWIGTYPE_p_libinjection_sqli_state);
@@ -2624,10 +2509,33 @@ static int _wrap_sqli_init(lua_State* L) {
   arg2 = (char *)lua_tostring(L, 2);
   SWIG_contract_assert((lua_tonumber(L,3)>=0),"number must not be negative")
   arg3 = (size_t)lua_tonumber(L, 3);
-  arg4 = (lua_tostring(L, 4))[0];
-  arg5 = (int)lua_tonumber(L, 5);
-  libinjection_sqli_init(arg1,(char const *)arg2,arg3,arg4,arg5);
+  arg4 = (int)lua_tonumber(L, 4);
+  libinjection_sqli_init(arg1,(char const *)arg2,arg3,arg4);
   
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_is_sqli(lua_State* L) {
+  int SWIG_arg = 0;
+  sfilter *arg1 = (sfilter *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("libinjection_is_sqli",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_is_sqli",1,"sfilter *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
+    SWIG_fail_ptr("is_sqli",1,SWIGTYPE_p_libinjection_sqli_state);
+  }
+  
+  result = (int)libinjection_is_sqli(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -2652,11 +2560,11 @@ static int _wrap_sqli_callback(lua_State* L) {
   }
   
   {
-    if (lua_isnil(L, 0)) {
+    if (lua_isnil(L, 1)) {
       arg2 = NULL;
       arg3 = NULL;
     } else {
-      arg2 = libinjection_lua_check_fingerprint;
+      arg2 = libinjection_lua_lookup_word;
       arg3 = (void *) L;
     }
   }
@@ -2672,27 +2580,49 @@ fail:
 }
 
 
-static int _wrap_sqli_tokenize(lua_State* L) {
+static int _wrap_sqli_reset(lua_State* L) {
   int SWIG_arg = 0;
   sfilter *arg1 = (sfilter *) 0 ;
-  stoken_t *arg2 = (stoken_t *) 0 ;
-  int result;
+  int arg2 ;
   
-  SWIG_check_num_args("libinjection_sqli_tokenize",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_tokenize",1,"sfilter *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("libinjection_sqli_tokenize",2,"stoken_t *");
+  SWIG_check_num_args("libinjection_sqli_reset",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_reset",1,"sfilter *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("libinjection_sqli_reset",2,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
-    SWIG_fail_ptr("sqli_tokenize",1,SWIGTYPE_p_libinjection_sqli_state);
+    SWIG_fail_ptr("sqli_reset",1,SWIGTYPE_p_libinjection_sqli_state);
   }
   
+  arg2 = (int)lua_tonumber(L, 2);
+  libinjection_sqli_reset(arg1,arg2);
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_stoken_t,0))){
-    SWIG_fail_ptr("sqli_tokenize",2,SWIGTYPE_p_stoken_t);
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_sqli_fingerprint(lua_State* L) {
+  int SWIG_arg = 0;
+  sfilter *arg1 = (sfilter *) 0 ;
+  int arg2 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("libinjection_sqli_fingerprint",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_fingerprint",1,"sfilter *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("libinjection_sqli_fingerprint",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
+    SWIG_fail_ptr("sqli_fingerprint",1,SWIGTYPE_p_libinjection_sqli_state);
   }
   
-  result = (int)libinjection_sqli_tokenize(arg1,arg2);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  arg2 = (int)lua_tonumber(L, 2);
+  result = (char *)libinjection_sqli_fingerprint(arg1,arg2);
+  lua_pushstring(L,(const char *)result); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -2706,14 +2636,14 @@ fail:
 static int _wrap_sqli_lookup_word(lua_State* L) {
   int SWIG_arg = 0;
   sfilter *arg1 = (sfilter *) 0 ;
-  char arg2 ;
+  int arg2 ;
   char *arg3 = (char *) 0 ;
   size_t arg4 ;
   char result;
   
   SWIG_check_num_args("libinjection_sqli_lookup_word",4,4)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_lookup_word",1,"sfilter *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("libinjection_sqli_lookup_word",2,"char");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("libinjection_sqli_lookup_word",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("libinjection_sqli_lookup_word",3,"char const *");
   if(!lua_isnumber(L,4)) SWIG_fail_arg("libinjection_sqli_lookup_word",4,"size_t");
   
@@ -2721,12 +2651,36 @@ static int _wrap_sqli_lookup_word(lua_State* L) {
     SWIG_fail_ptr("sqli_lookup_word",1,SWIGTYPE_p_libinjection_sqli_state);
   }
   
-  arg2 = (lua_tostring(L, 2))[0];
+  arg2 = (int)lua_tonumber(L, 2);
   arg3 = (char *)lua_tostring(L, 3);
   SWIG_contract_assert((lua_tonumber(L,4)>=0),"number must not be negative")
   arg4 = (size_t)lua_tonumber(L, 4);
   result = (char)libinjection_sqli_lookup_word(arg1,arg2,(char const *)arg3,arg4);
   lua_pushfstring(L,"%c",result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_sqli_tokenize(lua_State* L) {
+  int SWIG_arg = 0;
+  sfilter *arg1 = (sfilter *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("libinjection_sqli_tokenize",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_tokenize",1,"sfilter *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
+    SWIG_fail_ptr("sqli_tokenize",1,SWIGTYPE_p_libinjection_sqli_state);
+  }
+  
+  result = (int)libinjection_sqli_tokenize(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -2814,12 +2768,13 @@ fail:
 #endif
 
 static const struct luaL_Reg swig_commands[] = {
-    { "is_sqli", _wrap_is_sqli},
-    { "sqli_fingerprint", _wrap_sqli_fingerprint},
     { "sqli_init", _wrap_sqli_init},
+    { "is_sqli", _wrap_is_sqli},
     { "sqli_callback", _wrap_sqli_callback},
-    { "sqli_tokenize", _wrap_sqli_tokenize},
+    { "sqli_reset", _wrap_sqli_reset},
+    { "sqli_fingerprint", _wrap_sqli_fingerprint},
     { "sqli_lookup_word", _wrap_sqli_lookup_word},
+    { "sqli_tokenize", _wrap_sqli_tokenize},
     { "sqli_check_fingerprint", _wrap_sqli_check_fingerprint},
     { "sqli_blacklist", _wrap_sqli_blacklist},
     { "sqli_not_whitelist", _wrap_sqli_not_whitelist},
@@ -2831,38 +2786,43 @@ static swig_lua_var_info swig_variables[] = {
 };
 
 static swig_lua_const_info swig_constants[] = {
-    {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.0.0-pre11")},
+    {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.0.0-pre12")},
     {SWIG_LUA_CONSTTAB_INT("ST_MAX_SIZE", 32)},
     {SWIG_LUA_CONSTTAB_INT("MAX_TOKENS", 5)},
-    {SWIG_LUA_CONSTTAB_CHAR("CHAR_NULL", '\0')},
-    {SWIG_LUA_CONSTTAB_CHAR("CHAR_SINGLE", '\'')},
-    {SWIG_LUA_CONSTTAB_CHAR("CHAR_DOUBLE", '\"')},
-    {SWIG_LUA_CONSTTAB_INT("COMMENTS_ANSI", 0)},
-    {SWIG_LUA_CONSTTAB_INT("COMMENTS_MYSQL", 1)},
+    {SWIG_LUA_CONSTTAB_INT("FLAG_NONE", FLAG_NONE)},
+    {SWIG_LUA_CONSTTAB_INT("FLAG_QUOTE_NONE", FLAG_QUOTE_NONE)},
+    {SWIG_LUA_CONSTTAB_INT("FLAG_QUOTE_SINGLE", FLAG_QUOTE_SINGLE)},
+    {SWIG_LUA_CONSTTAB_INT("FLAG_QUOTE_DOUBLE", FLAG_QUOTE_DOUBLE)},
+    {SWIG_LUA_CONSTTAB_INT("FLAG_SQL_ANSI", FLAG_SQL_ANSI)},
+    {SWIG_LUA_CONSTTAB_INT("FLAG_SQL_MYSQL", FLAG_SQL_MYSQL)},
+    {SWIG_LUA_CONSTTAB_INT("LOOKUP_WORD", LOOKUP_WORD)},
+    {SWIG_LUA_CONSTTAB_INT("LOOKUP_TYPE", LOOKUP_TYPE)},
+    {SWIG_LUA_CONSTTAB_INT("LOOKUP_OPERATOR", LOOKUP_OPERATOR)},
+    {SWIG_LUA_CONSTTAB_INT("LOOKUP_FINGERPRINT", LOOKUP_FINGERPRINT)},
     {0,0,0,0,0,0}
 };
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static swig_type_info _swigt__p_f_p_struct_libinjection_sqli_state_char_p_q_const__char_size_t__char = {"_p_f_p_struct_libinjection_sqli_state_char_p_q_const__char_size_t__char", "ptr_lookup_fn|char (*)(struct libinjection_sqli_state *,char,char const *,size_t)", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char = {"_p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char", "ptr_lookup_fn|char (*)(struct libinjection_sqli_state *,int,char const *,size_t)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_libinjection_sqli_state = {"_p_libinjection_sqli_state", "sfilter *|struct libinjection_sqli_state *|libinjection_sqli_state *", 0, 0, (void*)&_wrap_class_libinjection_sqli_state, 0};
 static swig_type_info _swigt__p_stoken_t = {"_p_stoken_t", "stoken_t *", 0, 0, (void*)&_wrap_class_stoken_t, 0};
 static swig_type_info _swigt__p_void = {"_p_void", "void *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
-  &_swigt__p_f_p_struct_libinjection_sqli_state_char_p_q_const__char_size_t__char,
+  &_swigt__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char,
   &_swigt__p_libinjection_sqli_state,
   &_swigt__p_stoken_t,
   &_swigt__p_void,
 };
 
-static swig_cast_info _swigc__p_f_p_struct_libinjection_sqli_state_char_p_q_const__char_size_t__char[] = {  {&_swigt__p_f_p_struct_libinjection_sqli_state_char_p_q_const__char_size_t__char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char[] = {  {&_swigt__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_libinjection_sqli_state[] = {  {&_swigt__p_libinjection_sqli_state, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_stoken_t[] = {  {&_swigt__p_stoken_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_void[] = {  {&_swigt__p_void, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
-  _swigc__p_f_p_struct_libinjection_sqli_state_char_p_q_const__char_size_t__char,
+  _swigc__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char,
   _swigc__p_libinjection_sqli_state,
   _swigc__p_stoken_t,
   _swigc__p_void,

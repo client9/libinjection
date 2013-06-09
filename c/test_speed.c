@@ -27,9 +27,10 @@ void testIsSQL(void)
         if (s[j] == NULL) {
             j = 0;
         }
+
         slen = strlen(s[j]);
-        libinjection_sqli_init(&sf, s[j], slen, CHAR_NULL, COMMENTS_ANSI);
-        libinjection_is_sqli(&sf, s[j], slen);
+        libinjection_sqli_init(&sf, s[j], slen, FLAG_QUOTE_NONE | FLAG_SQL_ANSI);
+        libinjection_is_sqli(&sf);
     }
     clock_t t1 = clock();
     double total = (double) (t1 - t0) / (double) CLOCKS_PER_SEC;
