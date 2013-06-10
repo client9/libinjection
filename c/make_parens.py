@@ -162,6 +162,9 @@ class PermuteFingerprints(object):
                 self.insert(fp[0:i] + 'vos'  + fp[i+1:])
                 self.insert(fp[0:i] + 'von'  + fp[i+1:])
                 self.insert(fp[0:i] + '(v)'  + fp[i+1:])
+            elif fp[i] == 'E':
+                # Select top, select distinct, case when
+                self.insert(fp[0:i] + 'Ek'   + fp[i+1:])
             elif fp[i] == ')':
                 self.insert(fp[0:i] + '))'   + fp[i+1:])
                 self.insert(fp[0:i] + ')))'  + fp[i+1:])
