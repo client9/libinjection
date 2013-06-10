@@ -50,6 +50,7 @@ KEYWORDS = {
 
 'AUTOINCREMENT'              : 'k',
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',
+'UTL_INADDR.GET_HOST_NAME'   : 'f',
 'UTL_HTTP.REQUEST'           : 'f',
 # ORACLE
 # http://blog.red-database-security.com/
@@ -60,6 +61,7 @@ KEYWORDS = {
 'SYS.FN_BUILTIN_PERMISSIONS'  : 'f',
 'SYS.FN_GET_AUDIT_FILE'       : 'f',
 'SYS.FN_MY_PERMISSIONS'       : 'f',
+'SYS.DATABASE_NAME'           : 'n',
 'ABORT'                       : 'k',
 'ABS'                         : 'f',
 'ACCESSIBLE'                  : 'k',

