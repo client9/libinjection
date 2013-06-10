@@ -112,7 +112,7 @@ class PermuteFingerprints(object):
             return False
 
         # bogus
-        if s in ('E1n', 'sns', '1&n', 's1s', '1n1', '1o1', '1os'):
+        if s in ('E1n', 'sns', '1&n', 's1s', '1n1', '1o1', '1os', 'sn1', 'sonc'):
             return False
 
         # unlikely to be sqli but case FP
