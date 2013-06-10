@@ -1217,7 +1217,7 @@ void libinjection_sqli_callback(sfilter * sf, ptr_lookup_fn fn, void* userdata)
  *  This is just:  multikeywords[token.value + ' ' + token2.value]
  *
  */
-static int syntax_merge_words(stoken_t * a, stoken_t * b)
+static int syntax_merge_words(sfilter * sf,stoken_t * a, stoken_t * b)
 {
     size_t sz1;
     size_t sz2;
@@ -1252,7 +1252,8 @@ static int syntax_merge_words(stoken_t * a, stoken_t * b)
     memcpy(tmp + sz1 + 1, b->val, sz2);
     tmp[sz3] = CHAR_NULL;
 
-    ch = is_keyword(tmp, sz3);
+    ch = sf->lookup(sf, LOOKUP_WORD, tmp, sz3);
+
     if (ch != CHAR_NULL) {
         st_assign(a, ch, a->pos, sz3, tmp);
         return TRUE;
@@ -1343,7 +1344,7 @@ int filter_fold(sfilter * sf)
                 left -= 1;
             }
             continue;
-        } else if (syntax_merge_words(&sf->tokenvec[left], &sf->tokenvec[left+1])) {
+        } else if (syntax_merge_words(sf, &sf->tokenvec[left], &sf->tokenvec[left+1])) {
             pos -= 1;
             continue;
         } else if (sf->tokenvec[left].type == TYPE_BAREWORD &&
