@@ -7731,6 +7731,7 @@ static const keyword_t sql_keywords[] = {
     {"UTC_DATE", 'k'},
     {"UTC_TIME", 'k'},
     {"UTC_TIMESTAMP", 'k'},
+    {"UTL_HTTP.REQUEST", 'f'},
     {"UTL_INADDR.GET_HOST_ADDRESS", 'f'},
     {"UUID", 'f'},
     {"UUID_SHORT", 'f'},
@@ -7823,5 +7824,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 7658;
+static const size_t sql_keywords_sz = 7659;
 #endif

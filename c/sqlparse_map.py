@@ -50,7 +50,7 @@ KEYWORDS = {
 
 'AUTOINCREMENT'              : 'k',
 'UTL_INADDR.GET_HOST_ADDRESS': 'f',
-
+'UTL_HTTP.REQUEST'           : 'f',
 # ORACLE
 # http://blog.red-database-security.com/
 #  /2009/01/17/tutorial-oracle-sql-injection-in-webapps-part-i/print/
