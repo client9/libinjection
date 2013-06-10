@@ -3689,6 +3689,7 @@ static const keyword_t sql_keywords[] = {
     {"0NUEF(", 'X'},
     {"0NUEN,", 'X'},
     {"0NUENK", 'X'},
+    {"0NUENO", 'X'},
     {"0NUES,", 'X'},
     {"0NUESC", 'X'},
     {"0NUESK", 'X'},
@@ -7822,5 +7823,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 7657;
+static const size_t sql_keywords_sz = 7658;
 #endif
