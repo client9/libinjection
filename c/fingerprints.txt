@@ -1662,6 +1662,7 @@
 1o((o
 1o((s
 1o((v
+1o(1&
 1o(1)
 1o(1o
 1o(E(
@@ -1678,8 +1679,10 @@
 1o(of
 1o(os
 1o(ov
+1o(s&
 1o(s)
 1o(so
+1o(v&
 1o(v)
 1o(vo
 1oE((
@@ -4743,6 +4746,7 @@ so((n
 so((o
 so((s
 so((v
+so(1&
 so(1)
 so(1o
 so(E(
@@ -4759,8 +4763,10 @@ so(o1
 so(of
 so(os
 so(ov
+so(s&
 so(s)
 so(so
+so(v&
 so(v)
 so(vo
 so1
@@ -6318,6 +6324,7 @@ vo((n
 vo((o
 vo((s
 vo((v
+vo(1&
 vo(1)
 vo(1o
 vo(E(
@@ -6334,8 +6341,10 @@ vo(o1
 vo(of
 vo(os
 vo(ov
+vo(s&
 vo(s)
 vo(so
+vo(v&
 vo(v)
 vo(vo
 vo1
