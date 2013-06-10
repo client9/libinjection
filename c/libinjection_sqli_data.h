@@ -2339,6 +2339,7 @@ static const keyword_t sql_keywords[] = {
     {"0E1K1O", 'X'},
     {"0E1KF(", 'X'},
     {"0E1KN", 'X'},
+    {"0E1KN)", 'X'},
     {"0E1KN;", 'X'},
     {"0E1KNC", 'X'},
     {"0E1KNK", 'X'},
@@ -2349,6 +2350,7 @@ static const keyword_t sql_keywords[] = {
     {"0E1N;", 'X'},
     {"0E1N;C", 'X'},
     {"0E1NC", 'X'},
+    {"0E1NKN", 'X'},
     {"0E1O((", 'X'},
     {"0E1O(1", 'X'},
     {"0E1O(F", 'X'},
@@ -2572,6 +2574,7 @@ static const keyword_t sql_keywords[] = {
     {"0ESK1O", 'X'},
     {"0ESKF(", 'X'},
     {"0ESKN", 'X'},
+    {"0ESKN)", 'X'},
     {"0ESKN;", 'X'},
     {"0ESKNC", 'X'},
     {"0ESKNK", 'X'},
@@ -2583,6 +2586,7 @@ static const keyword_t sql_keywords[] = {
     {"0ESN;", 'X'},
     {"0ESN;C", 'X'},
     {"0ESNC", 'X'},
+    {"0ESNKN", 'X'},
     {"0ESO((", 'X'},
     {"0ESO(1", 'X'},
     {"0ESO(F", 'X'},
@@ -2682,6 +2686,7 @@ static const keyword_t sql_keywords[] = {
     {"0EVK1O", 'X'},
     {"0EVKF(", 'X'},
     {"0EVKN", 'X'},
+    {"0EVKN)", 'X'},
     {"0EVKN;", 'X'},
     {"0EVKNC", 'X'},
     {"0EVKNK", 'X'},
@@ -2693,6 +2698,7 @@ static const keyword_t sql_keywords[] = {
     {"0EVN;", 'X'},
     {"0EVN;C", 'X'},
     {"0EVNC", 'X'},
+    {"0EVNKN", 'X'},
     {"0EVO((", 'X'},
     {"0EVO(1", 'X'},
     {"0EVO(F", 'X'},
@@ -7144,7 +7150,7 @@ static const keyword_t sql_keywords[] = {
     {"DOUBLE PRECISION", 't'},
     {"DROP", 'E'},
     {"DSUM", 'f'},
-    {"DUAL", 'k'},
+    {"DUAL", 'n'},
     {"EACH", 'k'},
     {"ELSE", 'k'},
     {"ELSEIF", 'k'},
@@ -7800,5 +7806,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 7635;
+static const size_t sql_keywords_sz = 7641;
 #endif

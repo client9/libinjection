@@ -2162,6 +2162,7 @@ E1k1k
 E1k1o
 E1kf(
 E1kn
+E1kn)
 E1kn;
 E1knc
 E1knk
@@ -2172,6 +2173,7 @@ E1kvo
 E1n;
 E1n;c
 E1nc
+E1nkn
 E1o((
 E1o(1
 E1o(f
@@ -2395,6 +2397,7 @@ Esk1k
 Esk1o
 Eskf(
 Eskn
+Eskn)
 Eskn;
 Esknc
 Esknk
@@ -2406,6 +2409,7 @@ Esn
 Esn;
 Esn;c
 Esnc
+Esnkn
 Eso((
 Eso(1
 Eso(f
@@ -2505,6 +2509,7 @@ Evk1k
 Evk1o
 Evkf(
 Evkn
+Evkn)
 Evkn;
 Evknc
 Evknk
@@ -2516,6 +2521,7 @@ Evn
 Evn;
 Evn;c
 Evnc
+Evnkn
 Evo((
 Evo(1
 Evo(f

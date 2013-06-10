@@ -320,7 +320,7 @@ KEYWORDS = {
 'DIV'                         : 'o',
 'DOUBLE'                      : 't',
 'DROP'                        : 'E',
-'DUAL'                        : 'k',
+'DUAL'                        : 'n',
 'EACH'                        : 'k',
 'ELSE'                        : 'k',
 'ELSEIF'                      : 'k',

@@ -325,3 +325,10 @@ true is not unknown for update union select table_name from information_schema.t
 @x) OR (@y) UNION ALL SELECT name,email,password FROM users-- 
 @x OR (@y) UNION ALL SELECT name,email,password FROM users--
 
+(SELECT 1 FROM DUAL)
+(SELECT (1) FROM DUAL)
+(select @version from dual)
+(select (@version - 1) from dual)
+(select ('foo' - 1) from dual)
+(select 'foo' from dual)
+(select 1 foobar from dual)
