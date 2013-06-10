@@ -1346,6 +1346,10 @@ int filter_fold(sfilter * sf)
             continue;
         } else if (syntax_merge_words(sf, &sf->tokenvec[left], &sf->tokenvec[left+1])) {
             pos -= 1;
+            sf->stats_folds += 1;
+            if (left > 0) {
+                left -= 1;
+            }
             continue;
         } else if (sf->tokenvec[left].type == TYPE_BAREWORD &&
                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS && (
