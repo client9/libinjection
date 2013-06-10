@@ -114,7 +114,7 @@ KEYWORDS = {
 'BEFORE'                      : 'k',
 'BEGIN'                       : 'E',
 'BENCHMARK'                   : 'f',
-'BETWEEN'                     : 'k',
+'BETWEEN'                     : 'o',
 'BIGINT'                      : 't',
 'BIGSERIAL'                   : 't',
 'BIN'                         : 'f',
