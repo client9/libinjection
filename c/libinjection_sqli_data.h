@@ -7568,6 +7568,7 @@ static const keyword_t sql_keywords[] = {
     {"SERIAL2", 't'},
     {"SERIAL4", 't'},
     {"SERIAL8", 't'},
+    {"SERVERPROPERTY", 'f'},
     {"SESSION_USER", 'f'},
     {"SET", 'E'},
     {"SETATTR", 'f'},
@@ -7824,5 +7825,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 7659;
+static const size_t sql_keywords_sz = 7660;
 #endif

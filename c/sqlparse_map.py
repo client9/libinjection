@@ -755,6 +755,7 @@ KEYWORDS = {
 'SERIAL2'                     : 't',
 'SERIAL4'                     : 't',
 'SERIAL8'                     : 't',
+'SERVERPROPERTY'              : 'f',
 'SESSION_USER'                : 'f',
 'SET'                         : 'E',
 'SETSEED'                     : 'f',
