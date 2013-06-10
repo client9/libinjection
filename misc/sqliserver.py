@@ -15,6 +15,11 @@ import tornado.web
 import tornado.wsgi
 import wsgiref.simple_server
 
+def breakapart(s):
+    """ attempts to add spaces in a SQLi so it renders nicely on the webpage
+    """
+    return s.replace(',', ', ').replace('/*',' /*')
+
 def print_token_string(tok):
     """
     returns the value of token, handling opening and closing quote characters
@@ -181,7 +186,7 @@ class NullHandler(tornado.web.RequestHandler):
             fps.append(['double', 'mysql', issqli, pat])
 
             allfp[name] = {
-                'value': val,
+                'value': breakapart(val),
                 'fingerprints': fps
             }
 
@@ -200,7 +205,7 @@ class NullHandler(tornado.web.RequestHandler):
 
                 # True if any issqli values are true
                 qssqli = qssqli or issqli
-                val = val.replace(',', ', ')
+                val = breakapart(val)
 
                 pat = sqlstate.pat
                 if not issqli:
