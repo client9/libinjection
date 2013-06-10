@@ -1742,14 +1742,15 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
-        } else if ((sql_state->tokenvec[1].type == TYPE_KEYWORD) &&
-                   (sql_state->tokenvec[1].len > 5) &&
-                   cstrcasecmp("INTO", sql_state->tokenvec[1].val, 4)) {
-            /* if it's not "INTO OUTFILE", or "INTO DUMPFILE" (MySQL)
-             * then treat as safe
-             */
-            sql_state->reason = __LINE__;
-            return FALSE;
+        } else if (sql_state->tokenvec[1].type == TYPE_KEYWORD) {
+            if ((sql_state->tokenvec[1].len < 5) ||
+                cstrcasecmp("INTO", sql_state->tokenvec[1].val, 4)) {
+                /* if it's not "INTO OUTFILE", or "INTO DUMPFILE" (MySQL)
+                 * then treat as safe
+                 */
+                sql_state->reason = __LINE__;
+                return FALSE;
+            }
         }
         break;
     }  /* case 3 */
