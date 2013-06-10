@@ -308,9 +308,11 @@ version() union select table_name from information_schema.tables
 true is not unknown for update union select table_name from information_schema.tables
 1 for update union select 1
 
+# ht/ TK
 (true)-(true)union select table_name from information_schema.tables
 (@a)-(@a)union select table_name from information_schema.tables
 
+# ht/ @stamparm
 1 OR (1 OR 1)--
 (1) OR (1 OR 1)--
 ((1) OR (1 OR 1))--
@@ -318,6 +320,7 @@ true is not unknown for update union select table_name from information_schema.t
 1 OR ((1 OR 1)) --
 1 OR ((1) OR 1) --
 
+# ht/ @stamparm
 (@x OR @y) UNION ALL SELECT name,email,password FROM users-- 
 (@x OR (@y)) UNION ALL SELECT name,email,password FROM users-- 
 ((@x) OR @y) UNION ALL SELECT name,email,password FROM users-- 
@@ -325,10 +328,22 @@ true is not unknown for update union select table_name from information_schema.t
 @x) OR (@y) UNION ALL SELECT name,email,password FROM users-- 
 @x OR (@y) UNION ALL SELECT name,email,password FROM users--
 
+# ht/ @stamparm
 (SELECT 1 FROM DUAL)
+(SELECT @a FROM DUAL) UNION ALL SELECT 1, 2, 3--
 (SELECT (1) FROM DUAL)
 (select @version from dual)
 (select (@version - 1) from dual)
 (select ('foo' - 1) from dual)
 (select 'foo' from dual)
 (select 1 foobar from dual)
+
+# previously had problems with operators made from two words
+# ht/@stamparm
+1 and 1 not between 0 and 1
+1 AND 1 SOUNDS LIKE 1
+1 AND 1 NOT LIKE 0
+
+(1 AND 1) OR 2>1--
+
+
