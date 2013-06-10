@@ -629,6 +629,7 @@
 1&1&n
 1&1&s
 1&1&v
+1&1)&
 1&1))
 1&1)U
 1&1;
@@ -756,6 +757,7 @@
 1&s&n
 1&s&s
 1&s&v
+1&s)&
 1&s))
 1&s)U
 1&s1
@@ -801,6 +803,7 @@
 1&v&n
 1&v&s
 1&v&v
+1&v)&
 1&v))
 1&v)U
 1&v;
@@ -3652,6 +3655,7 @@ s&1&f
 s&1&n
 s&1&s
 s&1&v
+s&1)&
 s&1))
 s&1)U
 s&1;
@@ -3780,6 +3784,7 @@ s&s&f
 s&s&n
 s&s&s
 s&s&v
+s&s)&
 s&s))
 s&s)U
 s&s1
@@ -3825,6 +3830,7 @@ s&v&f
 s&v&n
 s&v&s
 s&v&v
+s&v)&
 s&v))
 s&v)U
 s&v;
@@ -4687,7 +4693,6 @@ sn))U
 sn))n
 sn)UE
 sn,f(
-sn1
 sn1;
 sn1;c
 sn1c
@@ -4954,7 +4959,6 @@ sonUn
 sonUo
 sonUs
 sonUv
-sonc
 sonf(
 sonk(
 sonk)
@@ -5251,6 +5255,7 @@ v&1&f
 v&1&n
 v&1&s
 v&1&v
+v&1)&
 v&1))
 v&1)U
 v&1;
@@ -5379,6 +5384,7 @@ v&s&f
 v&s&n
 v&s&s
 v&s&v
+v&s)&
 v&s))
 v&s)U
 v&s1
@@ -5424,6 +5430,7 @@ v&v&f
 v&v&n
 v&v&s
 v&v&v
+v&v)&
 v&v))
 v&v)U
 v&v;
