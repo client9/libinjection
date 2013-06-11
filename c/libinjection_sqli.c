@@ -1650,6 +1650,20 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
         }
 
         /*
+         * if ending comment is contains 'sp_password' then it's sqli!
+         * MS Audit log appearantly ignores anything with
+         * 'sp_password' in it. Unable to find primary refernece to
+         * this "feature" of SQL Server but seems to be known sqli
+         * technique
+         */
+        if (sql_state->tokenvec[1].type == TYPE_COMMENT &&
+            my_memmem(sql_state->tokenvec[1].val, sql_state->tokenvec[1].len,
+                      "sp_password", strlen("sp_password"))) {
+            sql_state->reason = __LINE__;
+            return TRUE;
+        }
+
+        /*
          * for fingerprint like 'nc', only comments of /x are treated
          * as SQL... ending comments of "--" and "#" are not sqli
          */
