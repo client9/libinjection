@@ -1355,12 +1355,19 @@ int filter_fold(sfilter * sf)
                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS && (
                        cstrcasecmp("IN", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
 
+                       /* TSQL functions but common enough to be collumn names */
+                       cstrcasecmp("USER_ID", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("USER_NAME", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+
                        /* Function in MYSQL */
                        cstrcasecmp("DATABASE", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("PASSWORD", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
 
                        /* Mysql words that act as a variable and are a function */
+
+                       /* TSQL current_users is fake-variable */
+                       /* http://msdn.microsoft.com/en-us/library/ms176050.aspx */
                        cstrcasecmp("CURRENT_USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("CURRENT_DATE", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("CURRENT_TIME", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
