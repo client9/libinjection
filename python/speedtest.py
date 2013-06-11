@@ -3,18 +3,18 @@ from libinjection import *
 from words import *
 import time
 
-def lookup(state, stype, keyword):
-    keyword = keyword.upper()
-    if stype == 'v':
-        keyword = '0' + keyword
-    ch = words.get(keyword, '')
-    return ch
+def lookup_null(state, style, keyword):
+    return ''
+
+def lookup_c(state, style, keyword):
+    return ''
+    #return sqli_lookup_word(state, style, keyword)
 
 def lookup_upcase(state, stype, keyword):
-    if stype == 'v':
-        keyword = '0' + keyword.upper()
-    ch = words.get(keyword, '')
-    return ch
+    if stype == libinjection.LOOKUP_FINGERPRINT:
+        return words.get('0' + keyword.upper(), '')
+    else:
+        return words.get(keyword.upper(), '')
 
 def main():
 
@@ -37,7 +37,41 @@ def main():
         is_sqli(sfilter)
     t1 = time.clock()
     total = imax / (t1 - t0)
-    print("is_sqli TPS = {0}".format(total))
+    print("python->c TPS            = {0}".format(total))
+
+    t0 = time.clock()
+    sfilter = sqli_state()
+    for i in xrange(imax):
+        s = inputs[i % 7]
+        sqli_init(sfilter, s, 0)
+        sqli_callback(sfilter, lookup_null)
+        is_sqli(sfilter)
+    t1 = time.clock()
+    total = imax / (t1 - t0)
+    print("python lookup_null TPS    = {0}".format(total))
+
+    t0 = time.clock()
+    sfilter = sqli_state()
+    for i in xrange(imax):
+        s = inputs[i % 7]
+        sqli_init(sfilter, s, 0)
+        sqli_callback(sfilter, lookup_upcase)
+        is_sqli(sfilter)
+    t1 = time.clock()
+    total = imax / (t1 - t0)
+    print("python lookup_upcase TPS    = {0}".format(total))
+
+    t0 = time.clock()
+    sfilter = sqli_state()
+    for i in xrange(imax):
+        s = inputs[i % 7]
+        sqli_init(sfilter, s, 0)
+        sqli_callback(sfilter, lookup_c)
+        is_sqli(sfilter)
+    t1 = time.clock()
+    total = imax / (t1 - t0)
+    print("python lookup_c TPS    = {0}".format(total))
+
 
     t0 = time.clock()
     sfilter = sqli_state()
@@ -48,30 +82,7 @@ def main():
         is_sqli(sfilter)
     t1 = time.clock()
     total = imax / (t1 - t0)
-    print("is_sqli TPS = {0}".format(total))
-
-    t0 = time.clock()
-    sfilter = sqli_state()
-    for i in xrange(imax):
-        s = inputs[i % 7].upper()
-        sqli_init(sfilter, s, 0)
-        sqli_callback(sfilter, lookup_upcase)
-        is_sqli(sfilter)
-    t1 = time.clock()
-    total = imax / (t1 - t0)
-    print("is_sqli TPS = {0}".format(total))
-
-
-    t0 = time.clock()
-    for i in xrange(imax):
-        s = inputs[i % 7].upper()
-        sfilter = sqli_state()
-        sqli_init(sfilter, s, 0)
-        sqli_callback(sfilter, lookup_upcase)
-        is_sqli(sfilter)
-    t1 = time.clock()
-    total = imax / (t1 - t0)
-    print("is_sqli TPS = {0}".format(total))
+    print("python lookup TPS = {0}".format(total))
 
 
 if __name__ == '__main__':

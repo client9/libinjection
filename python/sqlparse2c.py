@@ -13,14 +13,18 @@ def toc(obj):
     """ main routine """
 
     print """
+import libinjection
 def lookup(state, stype, keyword):
-    print "GOt {0} {1}".format(stype, keyword)
+    #print "GOt {0} {1}".format(stype, keyword)
     keyword = keyword.upper()
     if stype == libinjection.LOOKUP_FINGERPRINT:
         keyword = "0" + keyword
-    ch = words.get(keyword, chr(0))
-    return ch
-
+        ch = words.get(keyword, chr(0))
+        if ch == 'X' and libinjection.sqli_not_whitelist(state):
+            return 'X'
+        else:
+            return chr(0)
+    return words.get(keyword, chr(0))
 """
 
     words = {}

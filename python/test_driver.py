@@ -83,7 +83,7 @@ def runtest(testname, flag, sqli_flags):
 
     sql_state = sqli_state()
     sqli_init(sql_state, data[1], sqli_flags)
-    #sqli_callback(sql_state, lookup)
+    sqli_callback(sql_state, lookup)
     actual = ''
 
     if flag == 'tokens':
