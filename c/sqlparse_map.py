@@ -120,6 +120,7 @@ KEYWORDS = {
 'BIGINT'                      : 't',
 'BIGSERIAL'                   : 't',
 'BIN'                         : 'f',
+# TBD -- might be Type
 'BINARY'                      : 'k',
 'BINARY_DOUBLE_INFINITY'      : '1',
 'BINARY_DOUBLE_NAN'           : '1',
@@ -239,14 +240,14 @@ KEYWORDS = {
 'CROSS'                       : 'n',
 'CUME_DIST'                   : 'f',
 'CURDATE'                     : 'f',
-
-# TBD
-'CURRENT_DATE'                : 'k',
 'CURRENT_DATABASE'            : 'f',
-# TBD
-'CURRENT_TIME'                : 'k',
-# TBD
-'CURRENT_TIMESTAMP'           : 'k',
+
+
+# MYSQL Dual, function or variable-like
+'CURRENT_DATE'                : 'v',
+'CURRENT_TIME'                : 'v',
+'CURRENT_TIMESTAMP'           : 'v',
+
 'CURRENT_QUERY'               : 'f',
 'CURRENT_SCHEMA'              : 'f',
 'CURRENT_SCHEMAS'             : 'f',
@@ -523,8 +524,11 @@ KEYWORDS = {
 'LOAD'                        : 'k',
 'LOAD_EXTENSION'              : 'f',
 'LOAD_FILE'                   : 'f',
-'LOCALTIME'                   : 'k',
-'LOCALTIMESTAMP'              : 'k',
+
+# MYSQL function vs. variable
+'LOCALTIME'                   : 'v',
+'LOCALTIMESTAMP'              : 'v',
+
 'LOCATE'                      : 'f',
 'LOCK'                        : 'n',
 'LOG'                         : 'f',

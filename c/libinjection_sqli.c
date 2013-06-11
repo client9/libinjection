@@ -1354,10 +1354,19 @@ int filter_fold(sfilter * sf)
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_VARIABLE) &&
                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS && (
                        cstrcasecmp("IN", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+
+                       /* Function in MYSQL */
                        cstrcasecmp("DATABASE", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("PASSWORD", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+
+                       /* Mysql words that act as a variable and are a function */
                        cstrcasecmp("CURRENT_USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
-                       cstrcasecmp("PASSWORD", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0
+                       cstrcasecmp("CURRENT_DATE", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("CURRENT_TIME", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("CURRENT_TIMESTAMP", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("LOCALTIME", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("LOCALTIMESTAMP", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0
                        )) {
 
             // pos is the same
