@@ -7494,7 +7494,7 @@ static const keyword_t sql_keywords[] = {
     {"CURRENT_SETTING", 'p'},
     {"CURRENT_TIME", 'k'},
     {"CURRENT_TIMESTAMP", 'k'},
-    {"CURRENT_USER", 'k'},
+    {"CURRENT_USER", 'v'},
     {"CURRVAL", 'f'},
     {"CURSOR", 'k'},
     {"CURSOR_STATUS", 'f'},

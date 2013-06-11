@@ -251,8 +251,13 @@ KEYWORDS = {
 'CURRENT_SCHEMA'              : 'f',
 'CURRENT_SCHEMAS'             : 'f',
 'CURRENT_SETTING'             : 'p',
-# TBD
-'CURRENT_USER'                : 'k',
+# current_user sometimes acts like a variable
+# other times it acts like a function depending
+# on database.  This is converted in the right
+# type in the folding code
+# mysql = function
+# ??    = variable
+'CURRENT_USER'                : 'v',
 'CURRENTUSER'                 : 'f',
 # pgsql
 'CURRVAL'                     : 'f',

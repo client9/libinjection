@@ -1351,7 +1351,7 @@ int filter_fold(sfilter * sf)
                 left -= 1;
             }
             continue;
-        } else if (sf->tokenvec[left].type == TYPE_BAREWORD &&
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_VARIABLE) &&
                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS && (
                        cstrcasecmp("IN", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("DATABASE", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
