@@ -246,7 +246,7 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags);
 
 
 char libinjection_sqli_lookup_word(sfilter *sql_state, int lookup_type,
-                                   const char* str, size_t len);
+                                   const char* s, size_t slen);
 
 int  libinjection_sqli_tokenize(sfilter * sql_state);
 
