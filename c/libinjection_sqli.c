@@ -1356,6 +1356,7 @@ int filter_fold(sfilter * sf)
                        cstrcasecmp("IN", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("DATABASE", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("CURRENT_USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("PASSWORD", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0
                        )) {
 
