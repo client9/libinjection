@@ -1781,6 +1781,7 @@
 1of(1
 1of(E
 1of(f
+1of(n
 1of(s
 1of(v
 1ok&(
@@ -5195,6 +5196,7 @@ sof()
 sof(1
 sof(E
 sof(f
+sof(n
 sof(s
 sof(v
 sok&(
@@ -6855,6 +6857,7 @@ vof()
 vof(1
 vof(E
 vof(f
+vof(n
 vof(s
 vof(v
 vok&(

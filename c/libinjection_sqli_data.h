@@ -1788,6 +1788,7 @@ static const keyword_t sql_keywords[] = {
     {"01OF(1", 'X'},
     {"01OF(E", 'X'},
     {"01OF(F", 'X'},
+    {"01OF(N", 'X'},
     {"01OF(S", 'X'},
     {"01OF(V", 'X'},
     {"01OK&(", 'X'},
@@ -5110,6 +5111,7 @@ static const keyword_t sql_keywords[] = {
     {"0SOF(1", 'X'},
     {"0SOF(E", 'X'},
     {"0SOF(F", 'X'},
+    {"0SOF(N", 'X'},
     {"0SOF(S", 'X'},
     {"0SOF(V", 'X'},
     {"0SOK&(", 'X'},
@@ -6861,6 +6863,7 @@ static const keyword_t sql_keywords[] = {
     {"0VOF(1", 'X'},
     {"0VOF(E", 'X'},
     {"0VOF(F", 'X'},
+    {"0VOF(N", 'X'},
     {"0VOF(S", 'X'},
     {"0VOF(V", 'X'},
     {"0VOK&(", 'X'},
@@ -7585,6 +7588,7 @@ static const keyword_t sql_keywords[] = {
     {"ENUM_LAST", 'f'},
     {"ENUM_RANGE", 'f'},
     {"EOMONTH", 'f'},
+    {"EQV", 'o'},
     {"ESCAPED", 'k'},
     {"EVENTDATA", 'f'},
     {"EXEC", 'E'},
@@ -8024,6 +8028,7 @@ static const keyword_t sql_keywords[] = {
     {"STDDEV_SAMP", 'f'},
     {"STRAIGHT_JOIN", 'k'},
     {"STRCMP", 'f'},
+    {"STRCOMP", 'f'},
     {"STRCONV", 'f'},
     {"STRING_AGG", 'f'},
     {"STRING_TO_ARRAY", 'f'},
@@ -8229,5 +8234,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 8064;
+static const size_t sql_keywords_sz = 8069;
 #endif

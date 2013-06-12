@@ -400,3 +400,6 @@ x' AND 1=0; DROP TABLE TMP_DB;
 # the bizarre sp_password hackery
 1-- foo sp_password
 1'--sp_password
+
+# nice ms-access, courtesy mod-security
+foo' Eqv StrComp(username, 0x12+0x34+0xab+0xcd,0) Imp 'a

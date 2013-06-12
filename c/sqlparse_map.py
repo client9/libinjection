@@ -350,6 +350,10 @@ KEYWORDS = {
 'ENUM_LAST'                   : 'f',
 'ENUM_RANGE'                  : 'f',
 
+# special MS-ACCESS operator
+# http://office.microsoft.com/en-001/access-help/table-of-operators-HA010235862.aspx
+'EQV'                         : 'o',
+
 'ESCAPED'                     : 'k',
 
 # TBD
@@ -820,6 +824,8 @@ KEYWORDS = {
 'STDDEV_SAMP'                 : 'f',
 'STRAIGHT_JOIN'               : 'k',
 'STRCMP'                      : 'f',
+# STRCOMP: MS ACCESS
+'STRCOMP'                     : 'f',
 'STRCONV'                     : 'f',
 # pgsql
 'STRING_AGG'                  : 'f',

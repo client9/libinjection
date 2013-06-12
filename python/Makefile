@@ -33,6 +33,7 @@ copy: libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/
 clean:
 	rm -rf build dist
 	rm -f *.pyc *~ _libinjection.so
+	rm -f nosetests.xml
 	(cd libinjection; rm -f *.pyc *~)
 	(cd libinjection; rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h)
 
