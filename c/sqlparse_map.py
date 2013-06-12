@@ -1023,7 +1023,7 @@ KEYWORDS = {
 'XML_IS_WELL_FORMED'          : 'f',
 'XPATH'                       : 'f',
 'XPATH_EXISTS'                : 'f',
-'XOR'                         : 'o',
+'XOR'                         : '&',
 'XP_EXECRESULTSET'            : 'k',
 'YEAR'                        : 'f',
 'YEARWEEK'                    : 'f',

@@ -11,9 +11,10 @@ class PermuteFingerprints(object):
             'nkn&n', '1sn', 'n&nkn', 's1n', 'n&nEn', 's&sn', '1os1o',
             'sU', 'nU', 'n,(n)', 'n&n&n', 'Enkn', 'nk1;',
             '1os1o', '1n1;', 's*1s', '1s1', 'nknEn', 'n&sn',
-            'so1', 'nkn;', 'n&n;', 'von', 's&1s', 'n&nc',
-            'n)o1','Enn;', 'nBn', 'Ennc'
+            'so1', 'nkn;', 'n&n;', 'von', 'n&nc',
+            'n)o1','Enn;', 'nBn', 'Ennc', 'n&En'
             ])
+
     def aslist(self):
         return sorted(list(self.fingerprints))
 
@@ -24,6 +25,10 @@ class PermuteFingerprints(object):
             self.fingerprints.add(s)
 
     def validate(self, s):
+        if s == 's&1s':
+            # special case of magic ending quote in php
+            return True
+
         if len(s) == 0:
             return False
 

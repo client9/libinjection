@@ -1462,6 +1462,15 @@ int filter_fold(sfilter * sf)
                    (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING)) {
             pos -= 2;
             continue;
+        } else if ((sf->tokenvec[left].type == TYPE_EXPRESSION) &&
+                   st_is_unary_op(&sf->tokenvec[left+1]) &&
+                   sf->tokenvec[left+2].type == TYPE_LEFTPARENS) {
+            /* got something like SELECT + (
+             * remove unary operator
+             */
+            st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
+            pos -= 1;
+            continue;
         } else if ((sf->tokenvec[left].type == TYPE_KEYWORD || sf->tokenvec[left].type == TYPE_EXPRESSION) &&
                    st_is_unary_op(&sf->tokenvec[left+1]) &&
                    (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_VARIABLE || sf->tokenvec[left+2].type == TYPE_STRING || sf->tokenvec[left+2].type == TYPE_FUNCTION )) {
@@ -1832,6 +1841,19 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
         }
         break;
     }  /* case 3 */
+    case 4:
+        if (streq(sql_state->pat, "s&1s")) {
+            /* look for   ...foo" and 1=1 `
+             * where the ending string is actually a comment in
+             * php mysql magic land.  This check is needed
+             * since normal non sqli text often folds to
+             * s&1s.. this check figures that out
+             */
+            if (sql_state->stats_tokens == 4) {
+                sql_state->reason = __LINE__;
+                return FALSE;
+            }
+        }
     case 5: {
         /* nothing right now */
         break;
