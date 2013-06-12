@@ -4,7 +4,7 @@
 #
 #
 
-
+import datetime
 import sys
 import logging
 import urllib
@@ -105,8 +105,25 @@ class PageHandler(tornado.web.RequestHandler):
         except IOError:
             self.set_status(404)
 
-class NullHandler(tornado.web.RequestHandler):
+class DaysSinceHandler(tornado.web.RequestHandler):
+    def get(self):
+        lastevasion = datetime.date(2013, 6, 11)
+        today       = datetime.date.today()
+        daynum = (today - lastevasion).days
+        if daynum < 10:
+            days = "00" + str(daynum)
+        elif daynum < 100:
+            days = "0" + str(daynum)
+        else:
+            days = str(daynum)
 
+        self.render(
+            "days-since-last-evasion.html",
+            title='libinjection: Days Since Last Evasion',
+            days=days
+        )
+
+class NullHandler(tornado.web.RequestHandler):
     def get(self):
         arg = self.request.arguments.get('type', [])
         if len(arg) > 0 and arg[0] == 'tokens':
@@ -231,6 +248,7 @@ settings = {
 
 application = tornado.wsgi.WSGIApplication([
     (r"/diagnostics", NullHandler),
+    (r"/days-since-last-evasion", DaysSinceHandler),
     (r"/([a-z]*)", PageHandler)
     ], **settings)
 
