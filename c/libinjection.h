@@ -192,6 +192,11 @@ typedef struct libinjection_sqli_state {
      */
     int stats_folds;
 
+    /*
+     * total tokens reads
+     */
+    int stats_tokens;
+
 } sfilter;
 
 /**
