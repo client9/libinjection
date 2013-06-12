@@ -49,6 +49,9 @@ class PermuteFingerprints(object):
             return False
 
         # folded away
+        if '&o' in s:
+            return False
+
         if '1,1' in s:
             return False
         if '1,s' in s:

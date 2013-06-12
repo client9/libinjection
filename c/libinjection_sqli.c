@@ -1330,7 +1330,8 @@ int filter_fold(sfilter * sf)
             pos -= 1;
             sf->stats_folds += 1;
             continue;
-        } else if (sf->tokenvec[left].type ==TYPE_OPERATOR && st_is_unary_op(&sf->tokenvec[left+1])) {
+        } else if ((sf->tokenvec[left].type ==TYPE_OPERATOR || sf->tokenvec[left].type ==TYPE_LOGIC_OPERATOR) &&
+                   st_is_unary_op(&sf->tokenvec[left+1])) {
             pos -= 1;
             sf->stats_folds += 1;
             if (left > 0) {
