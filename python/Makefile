@@ -8,7 +8,7 @@ python: copy
 	python setup.py --verbose build --force
 	sudo python setup.py --verbose install
 
-test-unit: words.py
+test-unit: copy
 	./sqlparse2c.py < ../c/sqlparse_data.json > words.py
 	python setup.py build_ext --inplace
 	PYTHON_PATH='.' nosetests -v test_driver.py
