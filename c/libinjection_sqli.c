@@ -1132,10 +1132,12 @@ int libinjection_sqli_tokenize(sfilter * sf)
      */
     if (*pos == 0 && (sf->flags & (FLAG_QUOTE_SINGLE | FLAG_QUOTE_DOUBLE))) {
         *pos = parse_string_core(s, slen, 0, current, flag2delim(sf->flags), 0);
+        sf->stats_tokens += 1;
         return TRUE;
     }
 
     while (*pos < slen) {
+
         /*
          * get current character
          */
@@ -1164,6 +1166,7 @@ int libinjection_sqli_tokenize(sfilter * sf)
          *
          */
         if (current->type != CHAR_NULL) {
+            sf->stats_tokens += 1;
             return TRUE;
         }
     }
@@ -1642,9 +1645,31 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          * hard to tell from normal input...
          */
 
+        if (sql_state->pat[1] == TYPE_UNION) {
+            if (sql_state->stats_tokens == 2) {
+                /* not sure why but 1U comes up in Sqli attack
+                 * likely part of parameter splitting/etc.
+                 * lots of reasons why "1 union" might be normal
+                 * input, so beep only if other SQLi things are present
+                 */
+                /* it really is a number and 'union'
+                 * other wise it has folding or comments
+                 */
+                sql_state->reason = __LINE__;
+                return FALSE;
+            } else {
+                sql_state->reason = __LINE__;
+                return TRUE;
+            }
+        }
         /*
          * if 'comment' is '#' ignore.. too many FP
          */
+        if (sql_state->tokenvec[1].val[0] == '#') {
+            sql_state->reason = __LINE__;
+            return FALSE;
+        }
+
         if (sql_state->tokenvec[1].val[0] == '#') {
             sql_state->reason = __LINE__;
             return FALSE;
@@ -1711,6 +1736,11 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          */
         if (sql_state->tokenvec[0].type == TYPE_NUMBER &&
             sql_state->tokenvec[1].type == TYPE_COMMENT) {
+            if (sql_state->stats_tokens > 2) {
+                /* we have some folding going on, highly likely sqli */
+                sql_state->reason = __LINE__;
+                return TRUE;
+            }
             /*
              * we check that next character after the number is either whitespace,
              * or '/' or a '-' ==> sqli.
@@ -1752,22 +1782,38 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          * no opening quote, no closing quote
          * and each string has data
          */
+
         if (streq(sql_state->pat, "sos")
             || streq(sql_state->pat, "s&s")) {
+
                 if ((sql_state->tokenvec[0].str_open == CHAR_NULL)
                     && (sql_state->tokenvec[2].str_close == CHAR_NULL)
                     && (sql_state->tokenvec[0].str_close == sql_state->tokenvec[2].str_open)) {
                     /*
                      * if ....foo" + "bar....
                      */
+                    sql_state->reason = __LINE__;
                     return TRUE;
-                } else {
-                    /*
-                     * not sqli
-                     */
+                }
+                if (sql_state->stats_tokens == 3) {
                     sql_state->reason = __LINE__;
                     return FALSE;
                 }
+
+                /*
+                 * not sqli
+                 */
+                sql_state->reason = __LINE__;
+                return FALSE;
+        } else if (streq(sql_state->pat, "s&n") || streq(sql_state->pat, "n&1") || streq(sql_state->pat, "1&1") ||
+                   streq(sql_state->pat, "1&v") || streq(sql_state->pat, "1&s")) {
+            /* 'sexy and 17' not sqli
+             * 'sexy and 17<18'  sqli
+             */
+            if (sql_state->stats_tokens == 3) {
+                sql_state->reason = __LINE__;
+                return FALSE;
+            }
         } else if (streq(sql_state->pat, "so1")) {
             if (sql_state->tokenvec[0].str_open != CHAR_NULL) {
                 /* "foo" -1 is ok, foo"-1 is not */

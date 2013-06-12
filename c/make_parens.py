@@ -5,7 +5,15 @@ import sys
 class PermuteFingerprints(object):
     def __init__(self):
         self.fingerprints = set()
-
+        self.blacklist = set([
+            'E1n', 'sns', '1&n', 's1s', '1n1', '1o1', '1os', 'sn1',
+            'sonc', 'so1', 'n&n', 'son','nov', 'n&s','E1s', 'nos',
+            'nkn&n', '1sn', 'n&nkn', 's1n', 'n&nEn', 's&sn', '1os1o',
+            'sU', 'nU', 'n,(n)', 'n&n&n', 'Enkn', 'nk1;',
+            '1os1o', '1n1;', 's*1s', '1s1', 'nknEn', 'n&sn',
+            'so1', 'nkn;', 'n&n;', 'von', 's&1s', 'n&nc',
+            'n)o1','Enn;', 'nBn', 'Ennc'
+            ])
     def aslist(self):
         return sorted(list(self.fingerprints))
 
@@ -19,6 +27,13 @@ class PermuteFingerprints(object):
         if len(s) == 0:
             return False
 
+        if s in self.blacklist:
+            return False
+
+        # not sure how these got in
+        if ':' in s:
+            return False
+
         if '11' in s:
             return False
 
@@ -26,6 +41,11 @@ class PermuteFingerprints(object):
             return False
 
         if 'nv' in s:
+            return False
+
+        # select @version foo is legit
+        # but unlikely anywhere else
+        if 'vn' in s and 'Evn' not in s:
             return False
 
         # all 'ns' in union statements
@@ -42,13 +62,48 @@ class PermuteFingerprints(object):
         if 'ss' in s:
             return False
 
+        if 'ff' in s:
+            return False
+
+        if 'kno' in s:
+            return False
+
+        if 'nEk' in s:
+            return False
+
+        if 'n(n' in s:
+            return False
+        if '1so' in s:
+            return False
+        if '1s1' in s:
+            return False
+        if 'noo' in s:
+            return False
         if 'ooo' in s:
             return False
 
         if 'vvv' in s:
             return False
 
+        if 'vsn' in s:
+            return False
+        if '1vn' in s:
+            return False
+        if '1n1' in s:
+            return False
+        if '&1n' in s:
+            return False
+        if '&1v' in s:
+            return False
+        if '&1s' in s:
+            return False
+        if 'nnk' in s:
+            return False
+
         # folded away
+        if s.startswith('('):
+            return False
+
         if '&o' in s:
             return False
 
@@ -114,10 +169,6 @@ class PermuteFingerprints(object):
         if 'vv' in s and s != 'E(vv)':
             return False
 
-        # bogus
-        if s in ('E1n', 'sns', '1&n', 's1s', '1n1', '1o1', '1os', 'sn1', 'sonc'):
-            return False
-
         # unlikely to be sqli but case FP
         if s in ('so1n)', 'sonoE'):
             return False
@@ -139,6 +190,7 @@ class PermuteFingerprints(object):
 
         for i in range(len(fp)):
             if fp[i] == '1':
+                self.insert(fp[0:i] + 'n'    + fp[i+1:])
                 self.insert(fp[0:i] + 'v'    + fp[i+1:])
                 self.insert(fp[0:i] + 's'    + fp[i+1:])
                 self.insert(fp[0:i] + 'f(1)' + fp[i+1:])

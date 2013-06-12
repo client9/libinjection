@@ -1005,7 +1005,10 @@ KEYWORDS = {
 'WHILE'                       : 'E',
 # pgsql
 'WIDTH_BUCKET'                : 'f',
-'WITH'                        : 'k',
+
+# it's a keyword, but it's too ordinary in English
+'WITH'                        : 'n',
+
 # XML... oracle, pgsql
 'XMLAGG'                      : 'f',
 'XMLELEMENT'                  : 'f',

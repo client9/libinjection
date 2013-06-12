@@ -4437,6 +4437,27 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_sqli_state_stats_tokens_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int result;
+  
+  if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_state_stats_tokens_get" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
+  }
+  arg1 = (struct libinjection_sqli_state *)(argp1);
+  result = (int) ((arg1)->stats_tokens);
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN int _wrap_new_sqli_state(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct libinjection_sqli_state *result = 0 ;
@@ -4996,6 +5017,7 @@ SWIGPY_DESTRUCTOR_CLOSURE(_wrap_delete_sqli_state)
 static SwigPyGetSet sqli_state_stats_comment_hash_getset = { _wrap_sqli_state_stats_comment_hash_get, 0 };
 static SwigPyGetSet sqli_state_pos_getset = { _wrap_sqli_state_pos_get, 0 };
 static SwigPyGetSet sqli_state_stats_folds_getset = { _wrap_sqli_state_stats_folds_get, 0 };
+static SwigPyGetSet sqli_state_stats_tokens_getset = { _wrap_sqli_state_stats_tokens_get, 0 };
 static SwigPyGetSet sqli_state_tokenvec_getset = { _wrap_sqli_state_tokenvec_get, 0 };
 static SwigPyGetSet sqli_state_lookup_getset = { _wrap_sqli_state_lookup_get, 0 };
 static SwigPyGetSet sqli_state_stats_comment_mysql_getset = { _wrap_sqli_state_stats_comment_mysql_get, 0 };
@@ -5016,6 +5038,8 @@ SWIGINTERN PyGetSetDef SwigPyBuiltin__libinjection_sqli_state_getset[] = {
     { (char*) "pos", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.pos", (void*) &sqli_state_pos_getset }
 ,
     { (char*) "stats_folds", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.stats_folds", (void*) &sqli_state_stats_folds_getset }
+,
+    { (char*) "stats_tokens", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.stats_tokens", (void*) &sqli_state_stats_tokens_getset }
 ,
     { (char*) "tokenvec", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.tokenvec", (void*) &sqli_state_tokenvec_getset }
 ,
@@ -5953,7 +5977,7 @@ SWIG_init(void) {
   
   SWIG_InstallConstants(d,swig_const_table);
   
-  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_VERSION",SWIG_FromCharPtr("3.0.0-pre13"));
+  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_VERSION",SWIG_FromCharPtr("3.0.0-pre14"));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "ST_MAX_SIZE",SWIG_From_int((int)(32)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "MAX_TOKENS",SWIG_From_int((int)(5)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "FLAG_NONE",SWIG_From_int((int)(FLAG_NONE)));
