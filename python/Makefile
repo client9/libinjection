@@ -34,6 +34,5 @@ clean:
 	rm -rf build dist
 	rm -f *.pyc *~ _libinjection.so
 	(cd libinjection; rm -f *.pyc *~)
-	(cd libinjection; rm -f libinjection_wrap.c  libinjection.py)
 	(cd libinjection; rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h)
 
