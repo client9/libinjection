@@ -5,6 +5,7 @@
 
 Libinjection: advanced sqli detection.  Try it now on the <a href="/diagnostics">diagnostics</a> page.
 
+
 <h2>About</h2>
 <ul>
 <li>Open source, code is at <a href="https://github.com/client9/libinjection/">github</a></li>
@@ -12,7 +13,7 @@ Libinjection: advanced sqli detection.  Try it now on the <a href="/diagnostics"
 <li>Standard C code, compiles on Linux/Unix/BSD, Mac and Windows, and <a href="https://libinjection.client9.com/jenkins/job/libinjection-build-g++/">compiles as C++</a></li>
 <li>Over 500k inspections per second on commodity hardware</li>
 <li>No threads and no memory allocation - only 500 bytes of state used (stack or heap)</li>
-<li>Small - under 1000 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
+<li>Small - about 1000 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
 <li>No external library dependencies</li>
 </ul>
 
@@ -29,11 +30,14 @@ Tests include:
 <ul>
 <li> Built and tested using gcc, clang, and g++ (windows tested via modsecurity)</li>
 <li> Static analysis using <a href="http://cppcheck.sourceforge.net">cppcheck</a> and <a href="http://clang-analyzer.llvm.org">clang's static analyzer</a></li>
-<li> Tested against <a href="https://libinjection.client9.com/jenkins/job/libinjection-samples-positive/">50,000 sqli samples</a></li>
+<li> Tested against <a href="https://libinjection.client9.com/jenkins/job/libinjection-samples-positive/">80,000 sqli samples</a></li>
 <li> Tested against previous and current <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-samples-negative/">false positives</a></li>
-<li> Over 250+ <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, run under <a href="https://libinjection.client9.com/jenkins/job/libinjection-valgrind/valgrindResult">valgrind</a> for memory problems</li>
+<li> Over 300 <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, and run under <a href="https://libinjection.client9.com/jenkins/job/libinjection-valgrind/valgrindResult">valgrind</a> to detect memory problems</li>
 <li> Code coverage generated from <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-unittest/">unit tests</a> and <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-samples/">sqli samples</a></li>
 </ul>
+<p>
+When this isn't enough, <a href="/days-since-last-evasion">full disclosure of evasions</a> is provided, along with remediations.
+</p>
 
 <h2>Presentations</h2>
 <ul>
