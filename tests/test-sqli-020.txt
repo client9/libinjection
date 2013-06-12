@@ -3,5 +3,5 @@ sqli test
 --INPUT--
 foo' + 1
 --EXPECTED--
-so1
+
 
