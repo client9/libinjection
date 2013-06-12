@@ -69,6 +69,10 @@ unused:
 	diff /tmp/junk fingerprints.txt  | grep '>'
 
 
+testq: reader
+	./reader ../data/sqli-*.txt > /dev/null
+	./reader -i ../data/false_*.txt > /dev/null
+
 # fail if any input is 'safe', e.g. not SQLi
 test_positive: reader
 	./reader ../data/sqli-*.txt
