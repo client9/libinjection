@@ -1,0 +1,10 @@
+--TEST--
+smoke
+--INPUT--
+SELECT $.foo;
+--EXPECTED--
+E SELECT
+n $
+n .
+n foo
+; ;

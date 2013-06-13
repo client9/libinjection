@@ -1041,6 +1041,10 @@ static size_t parse_money(sfilter *sf)
                 return (strend + xlen + 2) - cs;
             }
         }
+    } else if (xlen == 1 && cs[pos + 1] == '.') {
+        /* $. should parsed as '$' + '.' .. */
+        st_assign_char(sf->current, TYPE_BAREWORD, pos, 1, '$');
+        return pos + 1;
     } else {
         st_assign(sf->current, TYPE_NUMBER, pos, 1 + xlen, cs + pos);
         return pos + 1 + xlen;
