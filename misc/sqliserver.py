@@ -249,8 +249,8 @@ settings = {
 application = tornado.wsgi.WSGIApplication([
     (r"/diagnostics", NullHandler),
     (r"/days-since-last-evasion", DaysSinceHandler),
-    (r'/robots.txt', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static"}),
-    (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static"}),
+    (r'/robots.txt', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
+    (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
     (r"/([a-z]*)", PageHandler)
     ], **settings)
 
