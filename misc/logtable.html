@@ -1,3 +1,4 @@
+{% autoescape xhtml_escape %}
 {% extends "base.html" %}
 {% block title %} Recent Queries {% end %}
 {% block body %}
@@ -9,9 +10,9 @@
 {% else %}
 <tr class="green">
 {% end %}
-<td><a href="/diagnostics?id={{ log[0] }}">{{ log[0] }}</a></td>
-<td>{{ log[1] }}</td>
+<td><a href="{{ log[0] }}">{{ log[1] }}</a></td>
 <td>{{ log[2] }}</td>
+<td>{{ log[3] }}</td>
 </tr>
 {% end %}
 </table>
