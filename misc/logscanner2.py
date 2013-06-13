@@ -50,6 +50,9 @@ if __name__ == '__main__':
     table = []
     for line in fh:
         parts = doline(line.strip())
+        if parts is None:
+            continue
+
         # help it render in HTML
         if parts[0] in targets:
             continue
