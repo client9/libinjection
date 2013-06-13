@@ -403,3 +403,8 @@ x' AND 1=0; DROP TABLE TMP_DB;
 
 # nice ms-access, courtesy mod-security
 foo' Eqv StrComp(username, 0x12+0x34+0xab+0xcd,0) Imp 'a
+
+# mysql and pgsql string litterals
+b'1' UNION SELECT 1
+x'1' UNION SELECT 1
+n'1' UNION SELECT 1

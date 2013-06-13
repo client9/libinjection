@@ -42,7 +42,9 @@ static size_t parse_underscore(sfilter * sf);
 static size_t parse_ustring(sfilter * sf);
 static size_t parse_qstring(sfilter * sf);
 static size_t parse_nqstring(sfilter * sf);
-
+static size_t parse_xstring(sfilter * sf);
+static size_t parse_bstring(sfilter * sf);
+static size_t parse_estring(sfilter * sf);
 """
 
     #
@@ -67,7 +69,10 @@ static size_t parse_nqstring(sfilter * sf);
         'CHAR_UNDERSCORE': 'parse_underscore',
         'CHAR_USTRING'   : 'parse_ustring',
         'CHAR_QSTRING'   : 'parse_qstring',
-        'CHAR_NQSTRING'  : 'parse_nqstring'
+        'CHAR_NQSTRING'  : 'parse_nqstring',
+        'CHAR_XSTRING'   : 'parse_xstring',
+        'CHAR_BSTRING'   : 'parse_bstring',
+        'CHAR_ESTRING'   : 'parse_estring'
         }
     print
     print "typedef size_t (*pt2Function)(sfilter *sf);"

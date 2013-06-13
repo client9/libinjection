@@ -1214,12 +1214,12 @@ CHARMAP = [
     'CHAR_OP2',   # 61 =
     'CHAR_OP2',   # 62 >
     'CHAR_OTHER', # 63 ?   BEEP BEEP
-    'CHAR_VAR',   # 64 @
+    'CHAR_VAR',             # 64  @
     'CHAR_WORD',            # 65  A
-    'CHAR_WORD',            # 66  B
+    'CHAR_BSTRING',         # 66  B
     'CHAR_WORD',            # 67  C
     'CHAR_WORD',            # 68  D
-    'CHAR_WORD',            # 69  E
+    'CHAR_ESTRING',         # 69  E
     'CHAR_WORD',            # 70  F
     'CHAR_WORD',            # 71  G
     'CHAR_WORD',            # 72  H
@@ -1238,7 +1238,7 @@ CHARMAP = [
     'CHAR_USTRING',         # 85  U special pgsql unicode
     'CHAR_WORD',            # 86  V
     'CHAR_WORD',            # 87  W
-    'CHAR_WORD',            # 88  X
+    'CHAR_XSTRING',         # 88  X
     'CHAR_WORD',            # 89  Y
     'CHAR_WORD',            # 90  Z
     'CHAR_OTHER',           # 91  [
@@ -1248,10 +1248,10 @@ CHARMAP = [
     'CHAR_UNDERSCORE',      # 95  _ underscore
     'CHAR_TICK',            # 96  ` backtick
     'CHAR_WORD',            # 97  a
-    'CHAR_WORD',            # 98  b
+    'CHAR_BSTRING',         # 98  b
     'CHAR_WORD',            # 99  c
     'CHAR_WORD',            # 100 d
-    'CHAR_WORD',            # 101 e
+    'CHAR_ESTRING',         # 101 e
     'CHAR_WORD',            # 102 f
     'CHAR_WORD',            # 103 g
     'CHAR_WORD',            # 104 h
@@ -1270,7 +1270,7 @@ CHARMAP = [
     'CHAR_USTRING',         # 117 u  special pgsql unicode
     'CHAR_WORD',            # 118 v
     'CHAR_WORD',            # 119 w
-    'CHAR_WORD',            # 120 x
+    'CHAR_XSTRING',         # 120 x
     'CHAR_WORD',            # 121 y
     'CHAR_WORD',            # 122 z
     'CHAR_OTHER',           # 123 { left brace

@@ -733,6 +733,23 @@ static size_t parse_string(sfilter * sf)
     return parse_string_core(cs, slen, pos, sf->current, cs[pos], 1);
 }
 
+/**
+ * Used when first char is:
+ *    N or n:  mysql "National Character set"
+ *    E     :  psql  "Escaped String"
+ */
+static size_t parse_estring(sfilter * sf)
+{
+    const char *cs = sf->s;
+    const size_t slen = sf->slen;
+    size_t pos = sf->pos;
+
+    if (pos + 2 >= slen || cs[pos+1] != CHAR_SINGLE) {
+        return parse_word(sf);
+    }
+    return parse_string_core(cs, slen, pos, sf->current, CHAR_SINGLE, 2);
+}
+
 /** MySQL ad-hoc character encoding
  *
  * if something starts with a underscore
@@ -836,11 +853,73 @@ static size_t parse_qstring(sfilter * sf)
 }
 
 /*
- * Oracle's nq string
+ * mysql's N'STRING' or
+ * ...  Oracle's nq string
  */
 static size_t parse_nqstring(sfilter * sf)
 {
+    size_t slen = sf->slen;
+    size_t pos = sf->pos;
+    if (pos + 2 < slen && sf->s[pos+1] == CHAR_SINGLE) {
+        return parse_estring(sf);
+    }
     return parse_qstring_core(sf, 1);
+}
+
+/*
+ * binary literal string
+ * re: [bB]'[01]*'
+ */
+static size_t parse_bstring(sfilter *sf)
+{
+    size_t wlen;
+    const char *cs = sf->s;
+    size_t pos = sf->pos;
+    size_t slen = sf->slen;
+
+    /* need at least 2 more characters
+     * if next char isn't a single quote, then
+     * continue as normal word
+     */
+    if (pos + 2 >= slen || cs[pos+1] !=  '\'') {
+        return parse_word(sf);
+    }
+
+    wlen = strlenspn(cs + pos + 2, sf->slen - pos - 2, "01");
+    if (pos + 2 + wlen  >= slen || cs[pos + 2 + wlen] != '\'') {
+        return parse_word(sf);
+    }
+    st_assign(sf->current, TYPE_NUMBER, pos, wlen + 3, cs + pos);
+    return pos + 2 + wlen + 1;
+}
+
+/*
+ * hex literal string
+ * re: [XX]'[0123456789abcdefABCDEF]*'
+ * mysql has requirement of having EVEN number of chars,
+ *  but pgsql does not
+ */
+static size_t parse_xstring(sfilter *sf)
+{
+    size_t wlen;
+    const char *cs = sf->s;
+    size_t pos = sf->pos;
+    size_t slen = sf->slen;
+
+    /* need at least 2 more characters
+     * if next char isn't a single quote, then
+     * continue as normal word
+     */
+    if (pos + 2 >= slen || cs[pos+1] !=  '\'') {
+        return parse_word(sf);
+    }
+
+    wlen = strlenspn(cs + pos + 2, sf->slen - pos - 2, "0123456789ABCDEFabcdef");
+    if (pos + 2 + wlen  >= slen || cs[pos + 2 + wlen] != '\'') {
+        return parse_word(sf);
+    }
+    st_assign(sf->current, TYPE_NUMBER, pos, wlen + 3, cs + pos);
+    return pos + 2 + wlen + 1;
 }
 
 static size_t parse_word(sfilter * sf)

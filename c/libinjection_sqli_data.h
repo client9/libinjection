@@ -28,7 +28,9 @@ static size_t parse_underscore(sfilter * sf);
 static size_t parse_ustring(sfilter * sf);
 static size_t parse_qstring(sfilter * sf);
 static size_t parse_nqstring(sfilter * sf);
-
+static size_t parse_xstring(sfilter * sf);
+static size_t parse_bstring(sfilter * sf);
+static size_t parse_estring(sfilter * sf);
 
 
 typedef size_t (*pt2Function)(sfilter *sf);
@@ -99,10 +101,10 @@ static const pt2Function char_parse_map[] = {
    &parse_other, /* 63 */
    &parse_var, /* 64 */
    &parse_word, /* 65 */
-   &parse_word, /* 66 */
+   &parse_bstring, /* 66 */
    &parse_word, /* 67 */
    &parse_word, /* 68 */
-   &parse_word, /* 69 */
+   &parse_estring, /* 69 */
    &parse_word, /* 70 */
    &parse_word, /* 71 */
    &parse_word, /* 72 */
@@ -121,7 +123,7 @@ static const pt2Function char_parse_map[] = {
    &parse_ustring, /* 85 */
    &parse_word, /* 86 */
    &parse_word, /* 87 */
-   &parse_word, /* 88 */
+   &parse_xstring, /* 88 */
    &parse_word, /* 89 */
    &parse_word, /* 90 */
    &parse_other, /* 91 */
@@ -131,10 +133,10 @@ static const pt2Function char_parse_map[] = {
    &parse_underscore, /* 95 */
    &parse_tick, /* 96 */
    &parse_word, /* 97 */
-   &parse_word, /* 98 */
+   &parse_bstring, /* 98 */
    &parse_word, /* 99 */
    &parse_word, /* 100 */
-   &parse_word, /* 101 */
+   &parse_estring, /* 101 */
    &parse_word, /* 102 */
    &parse_word, /* 103 */
    &parse_word, /* 104 */
@@ -153,7 +155,7 @@ static const pt2Function char_parse_map[] = {
    &parse_ustring, /* 117 */
    &parse_word, /* 118 */
    &parse_word, /* 119 */
-   &parse_word, /* 120 */
+   &parse_xstring, /* 120 */
    &parse_word, /* 121 */
    &parse_word, /* 122 */
    &parse_other, /* 123 */
