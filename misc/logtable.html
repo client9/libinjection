@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %} Recent Queries {% end %}
+{% block body %}
+
+<table>
+{% for log in table %}
+{% if log[1] %}
+<tr class="red">
+{% else %}
+<tr class="green">
+{% end %}
+<td><a href="/diagnostics?id={{ log[0] }}">{{ log[0] }}</a></td>
+<td>{{ log[1] }}</td>
+<td>{{ log[2] }}</td>
+</tr>
+{% end %}
+</table>
+
+{% end %}
