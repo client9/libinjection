@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import datetime
 import json
 import sys
 from urlparse import *
@@ -76,7 +77,8 @@ if __name__ == '__main__':
     loader = template.Loader(".")
 
     txt = loader.load("logtable.html").generate(
-        table=table
+        table=table,
+        now = str(datetime.datetime.now())
         )
 
     print txt
