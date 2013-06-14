@@ -10,6 +10,23 @@ import libinjection
 from tornado import template
 from tornado.escape import *
 
+# http://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks-in-python
+def chunks(l, n):
+    """
+    Yield successive n-sized chunks from l.
+    """
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
+
+
+def breakify(s):
+    output = ""
+    for c in chunks(s, 20):
+        output += c
+        if ' ' not in c:
+            output += ' '
+    return output
+
 def doline(line):
 
     data = json.loads(line)
@@ -66,7 +83,7 @@ if __name__ == '__main__':
             # fingerprint
             table.append( (
                 "/diagnostics?id=" + url_escape(parts[0]),
-                parts[0].replace(',', ', '),
+                breakify(parts[0].replace(',', ', ').replace('/*', ' /*')),
                 parts[1],
                 parts[2]
                 )
