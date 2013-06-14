@@ -28,7 +28,7 @@ int main(int argc, const char* argv[])
     libinjection_sqli_init(&state, input, slen, FLAG_NONE);
     issqli = libinjection_is_sqli(&state);
     if (issqli) {
-        fprintf(sterr, "sqli detected with with fingerprint of '%s'\n", state.pat);
+        fprintf(sterr, "sqli detected with fingerprint of '%s'\n", state.pat);
     }
     return issqli;
 }
@@ -37,7 +37,7 @@ int main(int argc, const char* argv[])
 ```
 $ gcc examples.c libinjection_sqli.c
 $ ./a.out "-1' and 1=1 union/* foo */select load_file('/etc/passwd')--"
-sqli detected with with fingerprint of 's&1UE'
+sqli detected with fingerprint of 's&1UE'
 ```
 
 VERSION INFORMATION
