@@ -21,7 +21,7 @@ def chunks(l, n):
 
 def breakify(s):
     output = ""
-    for c in chunks(s, 20):
+    for c in chunks(s, 40):
         output += c
         if ' ' not in c:
             output += ' '
@@ -40,7 +40,7 @@ def doline(line):
     qs = parse_qs(urlparts.query)
 
     if u'id' not in qs:
-        print "no 'id'"
+        #print "no 'id'"
         return None
 
     # part one, normal decode
@@ -53,7 +53,7 @@ def doline(line):
     libinjection.sqli_init(sstate, target.encode('utf-8'), 0)
     sqli = bool(libinjection.is_sqli(sstate))
 
-    return (target, sqli, sstate.pat)
+    return (target, sqli, sstate.pat, data['remote_ip'])
 
 
 if __name__ == '__main__':
@@ -85,7 +85,8 @@ if __name__ == '__main__':
                 "/diagnostics?id=" + url_escape(parts[0]),
                 breakify(parts[0].replace(',', ', ').replace('/*', ' /*')),
                 parts[1],
-                parts[2]
+                parts[2],
+                parts[3]
                 )
             )
 

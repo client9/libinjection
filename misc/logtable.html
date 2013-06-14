@@ -5,11 +5,12 @@
 
 <table>
 {% for log in table %}
-{% if log[1] %}
-<tr class="red">
+{% if log[2] %}
+<tr>
 {% else %}
 <tr class="green">
 {% end %}
+<td>{{ log[4] }}</td>
 <td><a href="{{ log[0] }}">{{ log[1] }}</a></td>
 <td>{{ log[3] }}</td>
 <td>{{ log[2] }}</td>
