@@ -454,7 +454,7 @@ KEYWORDS = {
 
 # IN is a special case.. sometimes a function, sometimes a keyword
 # corrected inside the folding code
-'IN'                          : 'n',
+'IN'                          : 'k',
 
 'INDEX'                       : 'k',
 'INDEX_COL'                   : 'f',
@@ -1114,7 +1114,7 @@ KEYWORDS = {
     'NOT RLIKE'         : 'o',
 
     'NOT REGEXP'        : 'o',
-    'NOT IN'            : 'o',
+    'NOT IN'            : 'k',
     'SIMILAR TO'        : 'o',
     'NOT SIMILAR TO'    : 'o',
     'UNION ALL'          : 'U',

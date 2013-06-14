@@ -675,7 +675,7 @@ static size_t parse_string_core(const char *cs, const size_t len, size_t pos,
     /*
      * then keep string open/close info
      */
-    if (offset == 1) {
+    if (offset > 0) {
         /*
          * this is real quote
          */
@@ -1439,8 +1439,6 @@ int filter_fold(sfilter * sf)
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_VARIABLE) &&
                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS && (
-                       cstrcasecmp("IN", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
-
                        /* TSQL functions but common enough to be collumn names */
                        cstrcasecmp("USER_ID", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
                        cstrcasecmp("USER_NAME", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
@@ -1467,14 +1465,34 @@ int filter_fold(sfilter * sf)
             // password CAN be a function, coalese CAN be a function
             sf->tokenvec[left].type = TYPE_FUNCTION;
             continue;
-#if 0
-        } else if (sf->tokenvec[left].type == TYPE_OPERATOR && cstrcasecmp("LIKE", sf->tokenvec[left].val) == 0
-                   && sf->tokenvec[left+1].type == TYPE_LEFTPARENS) {
-            // two use cases   "foo" LIKE "BAR" (normal operator)
-            // "foo" = LIKE(1,2)
-            sf->tokenvec[left].type = TYPE_FUNCTION;
+        } else if (sf->tokenvec[left].type == TYPE_KEYWORD && (
+                       cstrcasecmp("IN", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0 ||
+                       cstrcasecmp("NOT IN", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0
+                       )) {
+
+            if (sf->tokenvec[left+1].type == TYPE_LEFTPARENS) {
+                /* got .... IN ( ...  (or 'NOT IN')
+                 * it's an operator
+                 */
+                sf->tokenvec[left].type = TYPE_OPERATOR;
+            } else {
+                /*
+                 * it's a nothing
+                 */
+                sf->tokenvec[left].type = TYPE_BAREWORD;
+            }
+
+            /* "IN" can be used as "IN BOOLEAN MODE" for mysql
+             *  in which case merging of words can be done later
+             * other wise it acts as an equality operator __ IN (values..)
+             *
+             * here we got "IN" "(" so it's an operator.
+             * also back track to handle "NOT IN"
+             * might need to do the same with like
+             * two use cases   "foo" LIKE "BAR" (normal operator)
+             *  "foo" = LIKE(1,2)
+             */
             continue;
-#endif
         } else if (sf->tokenvec[left].type == TYPE_SQLTYPE &&
                    (sf->tokenvec[left+1].type == TYPE_BAREWORD || sf->tokenvec[left+1].type == TYPE_NUMBER ||
                     sf->tokenvec[left+1].type == TYPE_VARIABLE || sf->tokenvec[left+1].type == TYPE_STRING))  {
@@ -1483,6 +1501,8 @@ int filter_fold(sfilter * sf)
             sf->stats_folds += 1;
             continue;
         }
+
+
 
         /* all cases of handing 2 tokens is done
            and nothing matched.  Get one more token
@@ -1543,6 +1563,7 @@ int filter_fold(sfilter * sf)
                    sf->tokenvec[left+1].type == TYPE_COMMA &&
                    (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING)) {
             pos -= 2;
+            left -= 1;
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_EXPRESSION) &&
                    st_is_unary_op(&sf->tokenvec[left+1]) &&

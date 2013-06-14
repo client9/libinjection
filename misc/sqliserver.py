@@ -118,8 +118,8 @@ class DaysSinceHandler(tornado.web.RequestHandler):
             days = str(daynum)
 
         self.render(
-            "days-since-last-evasion.html",
-            title='libinjection: Days Since Last Evasion',
+            "days-since-last-bypass.html",
+            title='libinjection: Days Since Last Bypass',
             days=days
         )
 
@@ -248,7 +248,7 @@ settings = {
 
 application = tornado.wsgi.WSGIApplication([
     (r"/diagnostics", NullHandler),
-    (r"/days-since-last-evasion", DaysSinceHandler),
+    (r"/days-since-last-bypass", DaysSinceHandler),
     (r'/robots.txt', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
     (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
     (r"/([a-z]*)", PageHandler)
