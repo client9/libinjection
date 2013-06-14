@@ -11,31 +11,33 @@ To use:
 look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
 
 ```c
+#include <stdio.h>
+#include <strings.h>
 #include "libinjection.h"
 
-void doit() {
+int main(int argc, const char* argv[])
+{
+    sfilter state;
+    int issqli
 
-    // state data structure
-    sfilter sf;
+    const char* input = argv[1];
+    size_t slen = strlen(input);
 
-    // if you need to, normalize input.
-    // in the case of a raw query string, url-decode the input
-    // you can use this function (included in "modp_burl.h")
-    len = modp_urldecode(linebuf, len);
+    /* in real-world, you would url-decode the input, etc */
 
-    // test it.  1 = is sqli, 0 = benign
-    // input is const (not changed or written to)
-    //
-    // The last arg control how fingerprints are matched
-    // with SQLi.  The last args of "NULL, NULL"  means
-    //  use the default built-in list.
-    bool issqli = libinjection_is_sqli(&sf, linebuf, len, NULL, NULL);
-
-    // sfilter now also has interesting details
-    //   the fingerprint
-    //   tokens
-    //   etc
+    libinjection_sqli_init(&state, input, slen, FLAG_NONE);
+    issqli = libinjection_is_sqli(&state);
+    if (issqli) {
+        fprintf(sterr, "sqli detected with with fingerprint of '%s'\n", state.pat);
+    }
+    return issqli;
 }
+```
+
+```
+$ gcc examples.c libinjection_sqli.c
+$ ./a.out "-1' and 1=1 union/* foo */select load_file('/etc/passwd')--"
+sqli detected with with fingerprint of 's&1UE'
 ```
 
 VERSION INFORMATION
