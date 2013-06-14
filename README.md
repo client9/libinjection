@@ -4,11 +4,11 @@ libinjection
 SQL / SQLI tokenizer parser analyzer.
 
 See
-[http://www.client9.com/projects/libinjection/](http://www.client9.com/projects/libinjection/)
+[https://libinjection.client9.com/](https://libinjection.client9.com/)
 for details and presentations.
 
 To use:
-look at sqli_cli.cpp, reader.c as examples, but it's as simple as this:
+look at sqli_cli.c, reader.c as examples, but it's as simple as this:
 
 ```c
 #include <stdio.h>
@@ -43,7 +43,7 @@ sqli detected with fingerprint of 's&1UE'
 VERSION INFORMATION
 ===================
 
-Current version is 1.2.0 released on 2013-05-06.
+Current version is 3.0.0pre17 released on 2013-06-14.
 
 See [CHANGELOG](/CHANGELOG.md) for details.
 
@@ -76,7 +76,7 @@ a [Jenkin](http://jenkins-ci.org/) server showing automated testing:
 * results from cppcheck (static analysis on C code)
 * results from pylint and pyflake (static analysis on python helper scripts)
 * results from valgrind (memory errors)
-* performance tests using grof
+* performance tests using gprof
 * false negatives and positives reports
 
 LICENSE
