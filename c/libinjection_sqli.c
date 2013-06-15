@@ -44,6 +44,7 @@ typedef enum {
     TYPE_NONE        = 0,
     TYPE_KEYWORD     = (int)'k',
     TYPE_UNION       = (int)'U',
+    TYPE_GROUP       = (int)'B',
     TYPE_EXPRESSION  = (int)'E',
     TYPE_SQLTYPE     = (int)'t',
     TYPE_FUNCTION    = (int)'f',
@@ -1565,16 +1566,16 @@ int filter_fold(sfilter * sf)
             pos -= 2;
             left -= 1;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_EXPRESSION) &&
+        } else if ((sf->tokenvec[left].type == TYPE_EXPRESSION || sf->tokenvec[left].type == TYPE_GROUP ) &&
                    st_is_unary_op(&sf->tokenvec[left+1]) &&
                    sf->tokenvec[left+2].type == TYPE_LEFTPARENS) {
-            /* got something like SELECT + (
+            /* got something like SELECT + (, LIMIT + (
              * remove unary operator
              */
             st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
             pos -= 1;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_KEYWORD || sf->tokenvec[left].type == TYPE_EXPRESSION) &&
+        } else if ((sf->tokenvec[left].type == TYPE_KEYWORD || sf->tokenvec[left].type == TYPE_EXPRESSION || sf->tokenvec[left].type == TYPE_GROUP) &&
                    st_is_unary_op(&sf->tokenvec[left+1]) &&
                    (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_VARIABLE || sf->tokenvec[left+2].type == TYPE_STRING || sf->tokenvec[left+2].type == TYPE_FUNCTION )) {
             // remove unary operators

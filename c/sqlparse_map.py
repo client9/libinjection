@@ -426,7 +426,7 @@ KEYWORDS = {
 'HASHBYTES'                   : 'f',
 #
 # 'HAVING' - MSSQL
-'HAVING'                      : 'k',
+'HAVING'                      : 'B',
 
 'HEX'                         : 'f',
 'HIGH_PRIORITY'               : 'k',
@@ -521,7 +521,7 @@ KEYWORDS = {
 'LEFT'                        : 'n',
 'LENGTH'                      : 'f',
 'LIKE'                        : 'o',
-'LIMIT'                       : 'k',
+'LIMIT'                       : 'B',
 'LINEAR'                      : 'k',
 'LINES'                       : 'k',
 'LN'                          : 'f',
