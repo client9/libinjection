@@ -1146,7 +1146,14 @@ KEYWORDS = {
 
     # MYSQL
     # http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
-    'FOR UPDATE': 'k'
+    'FOR UPDATE': 'k',
+
+    # ORACLE
+    # http://www.shift-the-oracle.com/sql/select-for-update.html
+    'FOR UPDATE OF': 'k',
+    'FOR UPDATE SKIP': 'k',
+    'FOR UPDATE SKIP LOCKED': 'k'
+
 }
 
 CHARMAP = [
