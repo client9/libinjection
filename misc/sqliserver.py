@@ -20,6 +20,21 @@ def breakapart(s):
     """
     return s.replace(',', ', ').replace('/*',' /*')
 
+# http://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks-in-python
+def chunks(l, n):
+    """ Yield successive n-sized chunks from l.
+    """
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
+
+def breakify(s):
+    output = ""
+    for c in chunks(s, 20):
+        output += c
+        if ' ' not in c:
+            output += ' '
+    return output
+
 def print_token_string(tok):
     """
     returns the value of token, handling opening and closing quote characters
@@ -203,7 +218,7 @@ class NullHandler(tornado.web.RequestHandler):
             fps.append(['double', 'mysql', issqli, pat])
 
             allfp[name] = {
-                'value': breakapart(val),
+                'value': breakify(breakapart(val)),
                 'fingerprints': fps
             }
 
