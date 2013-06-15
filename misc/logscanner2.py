@@ -50,7 +50,16 @@ def doline(line):
     target = urllib.unquote(target)
 
     sstate = libinjection.sqli_state()
-    libinjection.sqli_init(sstate, target.encode('utf-8'), 0)
+    # BAD the string created by target.encode is stored in
+    #   sstate but not reference counted, so it can get
+    #   deleted by python
+    #    libinjection.sqli_init(sstate, target.encode('utf-8'), 0)
+
+    # instead make a temporary var in python
+    # with the same lifetime as sstate (above)
+    targetutf8 = target.encode('utf-8')
+    libinjection.sqli_init(sstate, targetutf8, 0)
+
     sqli = bool(libinjection.is_sqli(sstate))
 
     return (target, sqli, sstate.pat, data['remote_ip'])
