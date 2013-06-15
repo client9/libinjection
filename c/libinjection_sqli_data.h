@@ -9412,6 +9412,7 @@ static const keyword_t sql_keywords[] = {
     {"NOT SIMILAR TO", 'o'},
     {"NOTNULL", 'k'},
     {"NOW", 'f'},
+    {"NOWAIT", 'k'},
     {"NO_WRITE_TO_BINLOG", 'k'},
     {"NTH_VALUE", 'f'},
     {"NTILE", 'f'},
@@ -9753,6 +9754,7 @@ static const keyword_t sql_keywords[] = {
     {"VERIFYSIGNEDBYCERT", 'f'},
     {"VERSION", 'f'},
     {"VOID", 't'},
+    {"WAIT", 'k'},
     {"WAITFOR", 'n'},
     {"WAITFOR DELAY", 'E'},
     {"WAITFOR RECEIVE", 'E'},
@@ -9828,5 +9830,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9661;
+static const size_t sql_keywords_sz = 9663;
 #endif

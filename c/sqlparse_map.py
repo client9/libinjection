@@ -581,6 +581,8 @@ KEYWORDS = {
 'NOT'                         : 'o',
 'NOTNULL'                     : 'k',
 'NOW'                         : 'f',
+# oracle http://www.shift-the-oracle.com/sql/select-for-update.html
+'NOWAIT'                      : 'k',
 'NO_WRITE_TO_BINLOG'          : 'k',
 'NTH_VALUE'                   : 'f',
 'NTILE'                       : 'f',
@@ -995,6 +997,8 @@ KEYWORDS = {
 'VERIFYSIGNEDBYCERT'          : 'f',
 'VERSION'                     : 'f',
 'VOID'                        : 't',
+# oracle http://www.shift-the-oracle.com/sql/select-for-update.html
+'WAIT'                        : 'k',
 'WAITFOR'                     : 'n',
 'WEEK'                        : 'f',
 'WEEKDAY'                     : 'f',
