@@ -1744,6 +1744,7 @@
 1osk(
 1osk)
 1osk1
+1oskB
 1oskU
 1oskf
 1oskn
@@ -1837,6 +1838,7 @@
 1ovk(
 1ovk)
 1ovk1
+1ovkB
 1ovkU
 1ovkf
 1ovkn
@@ -4874,6 +4876,7 @@ nosf(
 nosk(
 nosk)
 nosk1
+noskB
 noskU
 noskf
 noskn
@@ -4966,6 +4969,7 @@ novf(
 novk(
 novk)
 novk1
+novkB
 novkU
 novkf
 novkn
@@ -6551,6 +6555,7 @@ so1f(
 so1k(
 so1k)
 so1k1
+so1kB
 so1kU
 so1kf
 so1kn
@@ -6711,6 +6716,7 @@ sonf(
 sonk(
 sonk)
 sonk1
+sonkB
 sonkU
 sonkf
 sonkn
@@ -6792,6 +6798,7 @@ sosf(
 sosk(
 sosk)
 sosk1
+soskB
 soskU
 soskf
 soskn
@@ -6885,6 +6892,7 @@ sovf(
 sovk(
 sovk)
 sovk1
+sovkB
 sovkU
 sovkf
 sovkn
@@ -8378,6 +8386,7 @@ vo1f(
 vo1k(
 vo1k)
 vo1k1
+vo1kB
 vo1kU
 vo1kf
 vo1kn
@@ -8540,6 +8549,7 @@ vonf(
 vonk(
 vonk)
 vonk1
+vonkB
 vonkU
 vonkf
 vonkn
@@ -8622,6 +8632,7 @@ vosf(
 vosk(
 vosk)
 vosk1
+voskB
 voskU
 voskf
 voskn
@@ -8715,6 +8726,7 @@ vovf(
 vovk(
 vovk)
 vovk1
+vovkB
 vovkU
 vovkf
 vovkn
