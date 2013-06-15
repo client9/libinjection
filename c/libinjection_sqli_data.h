@@ -9213,9 +9213,11 @@ static const keyword_t sql_keywords[] = {
     {"FN_VIRTUALFILESTATS", 'f'},
     {"FOR", 'n'},
     {"FOR UPDATE", 'k'},
+    {"FOR UPDATE NOWAIT", 'k'},
     {"FOR UPDATE OF", 'k'},
     {"FOR UPDATE SKIP", 'k'},
     {"FOR UPDATE SKIP LOCKED", 'k'},
+    {"FOR UPDATE WAIT", 'k'},
     {"FORCE", 'k'},
     {"FOREIGN", 'k'},
     {"FORMAT", 'f'},
@@ -9830,5 +9832,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9663;
+static const size_t sql_keywords_sz = 9665;
 #endif

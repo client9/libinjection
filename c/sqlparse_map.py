@@ -1155,6 +1155,8 @@ KEYWORDS = {
     # ORACLE
     # http://www.shift-the-oracle.com/sql/select-for-update.html
     'FOR UPDATE OF': 'k',
+    'FOR UPDATE WAIT': 'k',
+    'FOR UPDATE NOWAIT': 'k',
     'FOR UPDATE SKIP': 'k',
     'FOR UPDATE SKIP LOCKED': 'k'
 
