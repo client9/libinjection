@@ -35,8 +35,11 @@ class PermuteFingerprints(object):
         if s in self.blacklist:
             return False
 
-        # not sure how these got in
-        if ':' in s:
+        # only 1 special case for this
+        # 1;foo:goto foo
+        # 1;n:k
+        # the 'foo' can only be a 'n' type
+        if ':' in s and not 'n:' in s:
             return False
 
         if '11' in s:

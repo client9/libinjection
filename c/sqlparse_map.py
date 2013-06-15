@@ -688,6 +688,8 @@ KEYWORDS = {
 'POW'                         : 'f',
 'POWER'                       : 'f',
 'PRECISION'                   : 'k',
+# http://msdn.microsoft.com/en-us/library/ms176047.aspx
+'PRINT'                       : 'E',
 'PRIMARY'                     : 'k',
 'PROCEDURE'                   : 'k',
 'PUBLISHINGSERVERNAME'        : 'f',
@@ -706,7 +708,8 @@ KEYWORDS = {
 'RADIANS'                     : 'f',
 'RAND'                        : 'f',
 'RANDOM'                      : 'f',
-
+# http://msdn.microsoft.com/en-us/library/ms178592.aspx
+'RAISEERROR'                  : 'E',
 # 'RANDOMBLOB' - sqlite3
 'RANDOMBLOB'                  : 'f',
 'RANGE'                       : 'k',
