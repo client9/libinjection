@@ -359,10 +359,10 @@ KEYWORDS = {
 # TBD
 #'END'                         : 'k',
 
-# 'EXEC' - MSSQL
-#
+# 'EXEC', 'EXECUTE' - MSSQL
+#  http://msdn.microsoft.com/en-us/library/ms175046.aspx
 'EXEC'                        : 'E',
-'EXECUTE'                     : 'k',
+'EXECUTE'                     : 'E',
 'EXISTS'                      : 'k',
 'EXIT'                        : 'k',
 'EXP'                         : 'f',
@@ -471,12 +471,12 @@ KEYWORDS = {
 'INSERT'                      : 'E',
 'INSTR'                       : 'f',
 'INSTRREV'                    : 'f',
-'INT'                         : 'k',
-'INT1'                        : 'k',
-'INT2'                        : 'k',
-'INT3'                        : 'k',
-'INT4'                        : 'k',
-'INT8'                        : 'k',
+'INT'                         : 't',
+'INT1'                        : 't',
+'INT2'                        : 't',
+'INT3'                        : 't',
+'INT4'                        : 't',
+'INT8'                        : 't',
 'INTEGER'                     : 't',
 'INTERVAL'                    : 'k',
 'INTO'                        : 'k',
@@ -1151,6 +1151,11 @@ KEYWORDS = {
     # MYSQL
     # http://dev.mysql.com/doc/refman/5.1/en/innodb-locking-reads.html
     'FOR UPDATE': 'k',
+
+    # TSQL (MS)
+    # http://msdn.microsoft.com/en-us/library/ms175046.aspx
+    'EXECUTE AS': 'E',
+    'EXECUTE AS LOGIN': 'E',
 
     # ORACLE
     # http://www.shift-the-oracle.com/sql/select-for-update.html

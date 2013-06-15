@@ -59,6 +59,7 @@ typedef enum {
     TYPE_RIGHTPARENS = (int)')',  /* not used? */
     TYPE_COMMA       = (int)',',
     TYPE_COLON       = (int)':',
+    TYPE_SEMICOLON   = (int)';',
     TYPE_UNKNOWN     = (int)'?',
     TYPE_FINGERPRINT = (int)'X',
 } sqli_token_types;
@@ -1413,6 +1414,15 @@ int filter_fold(sfilter * sf)
          * just ignore second string
          */
         if (sf->tokenvec[left].type == TYPE_STRING && sf->tokenvec[left+1].type == TYPE_STRING) {
+            pos -= 1;
+            sf->stats_folds += 1;
+            continue;
+        } else if (sf->tokenvec[left].type == TYPE_SEMICOLON && sf->tokenvec[left+1].type == TYPE_SEMICOLON) {
+            /* not sure how various engines handle
+             * 'select 1;;drop table foo' or
+             * 'select 1; /x foo x/; drop table foo'
+             * to prevent surprises, just fold away repeated semicolons
+             */
             pos -= 1;
             sf->stats_folds += 1;
             continue;
