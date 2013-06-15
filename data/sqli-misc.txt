@@ -408,3 +408,31 @@ foo' Eqv StrComp(username, 0x12+0x34+0xab+0xcd,0) Imp 'a
 b'1' UNION SELECT 1
 x'1' UNION SELECT 1
 n'1' UNION SELECT 1
+
+# ending clauses
+1 having 1 limit 1 union select 1--
+1 having (1) limit 1 union select 1--
+1 having -(1) limit 1 union select 1--
+1 having sin(1) limit 1 union select 1--
+1 having 1 limit 2 group by 3 union select 1--
+1 group by 2 union select 1 --
+sin(1) group by 1 union select 1--
+@version group by 1 union select 1--
+@version group by (-1) union select 1--
+(@version) group by -1 union select 1--
+(@version) group by (-1) union select 1--
+(@version)) group by (-1) union select 1--
+(1)) group by (-1) union select 1--
+(@version) group by sin(-1) union select 1--
+1 group by sin(1) union select 1--
+1 group by 1 - sin(1) union select 1--
+1 group by (sin(1)) union select 1--
+-1 group by -(-sin(1)) union select 1--
+sin(1) group by (-sin(1)) union select 1--
+sin(1)-1 group by (-sin(1)) union select 1--
+sin(1)-1 group by 1 union select 1--
+1 group by ((1)) union select 1--
+1 group by (((1))) union select 1--
+((1)) group by (1) union select 1--
+(1) group by ((1)) union select 1--
+(1) group by (1) union select 1--
