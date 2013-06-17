@@ -424,7 +424,11 @@ static size_t parse_dash(sfilter * sf)
 }
 
 
-/** This only parses MySQL 5 "versioned comments" in
+/** This detects MySQL comments, comments that
+ * start with /x!   We just ban these now but
+ * previously we attempted to parse the inside
+ *
+ * For reference:
  * the form of /x![anything]x/ or /x!12345[anything] x/
  *
  * Mysql 3 (maybe 4), allowed this:
@@ -436,17 +440,9 @@ static size_t parse_dash(sfilter * sf)
  * It is unclear if the MySQL 3 syntax was allowed
  * in MySQL 4.  The last version of MySQL 4 was in 2008
  *
- * Both are EOL, but one can ban all forms of MySQL
- * comments by inspecting the sfilter object.
- * If stats_comment_mysql > 0, we've parsed on (perhaps
- * incorrectly using mysql3 rules) and you can explcity
- * ban it.
- *
  */
 static size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
 {
-    size_t i;
-
     /* so far...
      * cs[pos] == '/' && cs[pos+1] == '*'
      */
@@ -465,38 +461,7 @@ static size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
      * this is a mysql comment
      *  got "/x!"
      */
-
-    if (pos + 3 >= len) {
-        return 3;
-    }
-
-    /* ok here is where it gets interesting
-     * if the next 5 characters are all numbers
-     * ignore them (there are a mysql version number)
-     * and start using the 6th char.
-     * select 1, /x!123456x/ = "1,6" !!
-     *
-     * If the next 5 character are NOT all numbers
-     * then do nothing special
-     * select 1, /x!123,456x/ = "1,123,456"
-     *
-     */
-
-    /* /x!34567..... */
-    if (len < pos + 8) {
-        return 3;
-    }
-
-    for (i = pos + 3; i < pos + 8; ++i) {
-        if (!isdigit(cs[i])) {
-            return 3;
-        }
-    }
-
-    /* we got /x!34567?...
-     * skip over the first 7 characters and start using the 8th
-     */
-    return 8;
+    return 1;
 }
 
 static size_t parse_slash(sfilter * sf)
@@ -1957,7 +1922,6 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
 static int reparse_as_mysql(sfilter * sql_state)
 {
     return sql_state->stats_comment_ddx ||
-        sql_state->stats_comment_mysql ||
         sql_state->stats_comment_hash;
 }
 
