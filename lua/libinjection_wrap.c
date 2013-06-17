@@ -2168,30 +2168,6 @@ fail:
 }
 
 
-static int _wrap_sqli_state_in_comment_get(lua_State* L) {
-  int SWIG_arg = 0;
-  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
-  int result;
-  
-  SWIG_check_num_args("libinjection_sqli_state::in_comment",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_state::in_comment",1,"struct libinjection_sqli_state *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
-    SWIG_fail_ptr("sqli_state_in_comment_get",1,SWIGTYPE_p_libinjection_sqli_state);
-  }
-  
-  result = (int) ((arg1)->in_comment);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_sqli_state_tokenvec_get(lua_State* L) {
   int SWIG_arg = 0;
   struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
@@ -2496,7 +2472,6 @@ static swig_lua_attribute swig_libinjection_sqli_state_attributes[] = {
     { "userdata", _wrap_sqli_state_userdata_get, SWIG_Lua_set_immutable},
     { "flags", _wrap_sqli_state_flags_get, SWIG_Lua_set_immutable},
     { "pos", _wrap_sqli_state_pos_get, SWIG_Lua_set_immutable},
-    { "in_comment", _wrap_sqli_state_in_comment_get, SWIG_Lua_set_immutable},
     { "tokenvec", _wrap_sqli_state_tokenvec_get, SWIG_Lua_set_immutable},
     { "current", _wrap_sqli_state_current_get, SWIG_Lua_set_immutable},
     { "pat", _wrap_sqli_state_pat_get, SWIG_Lua_set_immutable},

