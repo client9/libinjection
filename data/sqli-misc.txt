@@ -471,3 +471,20 @@ sin(1)-1 group by 1 union select 1--
 
 1;EXECUTE sp_add_job @job_name = 'TestJob';
 1;print 'foo'; exec xp_cmdshell 'destroy';
+
+# nested sub-selects
+-1 - (select (1 - select (select 1))) union all select 2 --
+-1 - (select 1) - union all select 2 --
+(select 1) - 1 union all select 2 --
+((select 1) - 1) + (select 1) union all select 2 --
+(select (select (select 1))) union all select 2 --
+(select (select (select 1))) union all select 2 --
+(select ((select (select 1))) union all select 2 --
+(select (select ((select 1))) union all select 2 --
+(select ((select 1 - (select 1))) union all select 2 --
+(select (select (((select 1))) union all select 2 --
+(select ((select (select 1))) union all select 2 --
+(select (((select (select 1))) union all select 2 --
+(select (select (1 - select 1))) union all select 2 --
+(select (select 1 - (select 1))) union all select 2 --
+(select 1 - (select 1 - (select 1))) union all select 2 --
