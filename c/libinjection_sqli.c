@@ -881,7 +881,7 @@ static size_t parse_word(sfilter * sf)
         delim = sf->current->val[i];
         if (delim == '.' || delim == '`') {
             ch = sf->lookup(sf, LOOKUP_WORD, sf->current->val, i);
-            if (ch == TYPE_KEYWORD || ch == TYPE_OPERATOR || ch == TYPE_EXPRESSION || ch == TYPE_VARIABLE) {
+            if (ch != TYPE_NONE && ch != TYPE_BAREWORD) {
                 /* needed for swig */
                 st_clear(sf->current);
                 /*
