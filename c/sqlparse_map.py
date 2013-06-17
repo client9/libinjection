@@ -1124,8 +1124,10 @@ KEYWORDS = {
     'NOT IN'            : 'k',
     'SIMILAR TO'        : 'o',
     'NOT SIMILAR TO'    : 'o',
-    'UNION ALL'          : 'U',
-    'UNION ALL DISTINCT' : 'U',
+    'UNION ALL'         : 'U',
+    'UNION DISTINCT'    : 'U',
+    'UNION DISTINCT ALL'  : 'U',
+    'UNION ALL DISTINCT'  : 'U',
 # INTO..
 # http://dev.mysql.com/doc/refman/5.0/en/select.html
     'INTO OUTFILE'      : 'k',

@@ -9869,6 +9869,8 @@ static const keyword_t sql_keywords[] = {
     {"UNION", 'U'},
     {"UNION ALL", 'U'},
     {"UNION ALL DISTINCT", 'U'},
+    {"UNION DISTINCT", 'U'},
+    {"UNION DISTINCT ALL", 'U'},
     {"UNIQUE", 'n'},
     {"UNIX_TIMESTAMP", 'f'},
     {"UNI_ON", 'U'},
@@ -9985,5 +9987,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9818;
+static const size_t sql_keywords_sz = 9820;
 #endif

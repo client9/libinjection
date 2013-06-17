@@ -9835,6 +9835,8 @@
         "UNION": "U", 
         "UNION ALL": "U", 
         "UNION ALL DISTINCT": "U", 
+        "UNION DISTINCT": "U", 
+        "UNION DISTINCT ALL": "U", 
         "UNIQUE": "n", 
         "UNIX_TIMESTAMP": "f", 
         "UNI_ON": "U", 
