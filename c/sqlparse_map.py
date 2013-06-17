@@ -251,7 +251,7 @@ KEYWORDS = {
 'CURRENT_QUERY'               : 'f',
 'CURRENT_SCHEMA'              : 'f',
 'CURRENT_SCHEMAS'             : 'f',
-'CURRENT_SETTING'             : 'p',
+'CURRENT_SETTING'             : 'f',
 # current_user sometimes acts like a variable
 # other times it acts like a function depending
 # on database.  This is converted in the right
@@ -975,10 +975,10 @@ KEYWORDS = {
 # since 'user_id' is such a common column name
 # TBD
 'USER_ID'                     : 'n',
-'USER_NAME'                   : 'f',
-# 'USER' -- a MySQL function?
-#TBD
-#'USER'                       : 'n',
+'USER_NAME'                   : 'n',
+# 'USER' -- a MySQL function
+# handled in folding step
+'USER'                       : 'n',
 
 'USING'                       : 'f',
 # next 3 TBD

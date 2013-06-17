@@ -9260,7 +9260,7 @@ static const keyword_t sql_keywords[] = {
     {"CURRENT_QUERY", 'f'},
     {"CURRENT_SCHEMA", 'f'},
     {"CURRENT_SCHEMAS", 'f'},
-    {"CURRENT_SETTING", 'p'},
+    {"CURRENT_SETTING", 'f'},
     {"CURRENT_TIME", 'v'},
     {"CURRENT_TIMESTAMP", 'v'},
     {"CURRENT_USER", 'v'},
@@ -9911,9 +9911,10 @@ static const keyword_t sql_keywords[] = {
     {"UPPER_INF", 'f'},
     {"USAGE", 'k'},
     {"USE", 'E'},
+    {"USER", 'n'},
     {"USER_ID", 'n'},
     {"USER_LOCK.SLEEP", 'f'},
-    {"USER_NAME", 'f'},
+    {"USER_NAME", 'n'},
     {"USING", 'f'},
     {"UTC_DATE", 'k'},
     {"UTC_TIME", 'k'},
@@ -10013,5 +10014,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9846;
+static const size_t sql_keywords_sz = 9847;
 #endif
