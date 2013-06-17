@@ -121,12 +121,6 @@ typedef struct libinjection_sqli_state {
      */
     size_t pos;
 
-    /*
-     * true if we are inside a mysql-non-comment /x! .. x/
-     * during tokenization
-     */
-    int    in_comment;
-
     /* MAX TOKENS + 1 since we use one extra token
      * to determine the type of the previous token
      */

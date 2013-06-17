@@ -5,4 +5,4 @@ SELECT 1 /*!00,2
 --EXPECTED--
 E SELECT
 1 1
-c /*!00,2
+X /*!00,2

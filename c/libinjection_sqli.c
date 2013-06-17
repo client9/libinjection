@@ -505,61 +505,44 @@ static size_t parse_slash(sfilter * sf)
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
     const char* cur = cs + pos;
-    size_t inc = 0;
-
+    char ctype = TYPE_COMMENT;
+    size_t clen;
     size_t pos1 = pos + 1;
     if (pos1 == slen || cs[pos1] != '*') {
         return parse_operator1(sf);
     }
 
-    /* check if this looks like a mysql comment */
-    inc = is_mysql_comment(cs, slen, pos);
-
-    if (inc > 0) {
-        /* yes, mark it */
-        sf->stats_comment_mysql += 1;
-
-        if (sf->flags & FLAG_SQL_MYSQL) {
-            /*
-             * MySQL Comment (which is actually not a comment)
-             */
-            sf->in_comment = TRUE;
-            st_clear(sf->current);
-            return pos + inc;
-        }
+    /*
+     * skip over initial '/x'
+     */
+    const char *ptr = memchr2(cur + 2, slen - (pos + 2), '*', '/');
+    if (ptr == NULL) {
+        /* till end of line */
+        clen = slen - pos;
+    } else {
+        clen = (ptr +2) - cur;
     }
 
-    /* we didn't find a mysql comment or we don't care */
-    if (1) {
+    /*
+     * postgresql allows nested comments which makes
+     * this is incompatible with parsing so
+     * if we find a '/x' inside the coment, then
+     * make a new token.
+     *
+     * Also, Mysql's "conditional" comments for version
+     *  are an automatic black ban!
+     */
 
-        /*
-         * skip over initial '/x'
-         */
-        const char *ptr = memchr2(cur + 2, slen - (pos + 2), '*', '/');
-        if (ptr == NULL) {
-            /*
-             * unterminated comment
-             */
-            st_assign(sf->current, TYPE_COMMENT, pos, slen - pos, cs + pos);
-            return slen;
-        } else {
-            /*
-             * postgresql allows nested comments which makes
-             * this is incompatible with parsing so
-             * if we find a '/x' inside the coment, then
-             * make a new token.
-             */
-            char ctype = TYPE_COMMENT;
-            const size_t clen = (ptr + 2) - (cur);
-            if (memchr2(cur + 2, ptr - (cur + 1), '/', '*') !=  NULL) {
-                ctype = 'X';
-            }
-            st_assign(sf->current, ctype, pos, clen, cs + pos);
-
-            return pos + clen;
-        }
+    if (memchr2(cur + 2, ptr - (cur + 1), '/', '*') !=  NULL) {
+        ctype = 'X';
+    } else if (is_mysql_comment(cs, slen, pos)) {
+        ctype = 'X';
     }
+
+    st_assign(sf->current, ctype, pos, clen, cs + pos);
+    return pos + clen;
 }
+
 
 static size_t parse_backslash(sfilter * sf)
 {
@@ -611,17 +594,7 @@ static size_t parse_operator2(sfilter * sf)
      * characters we got?
      */
 
-    /*
-     * Special Hack for MYSQL style comments
-     *  instead of turning:
-     * /x! FOO x/  into FOO by rewriting the string, we
-     * turn it into FOO x/ and ignore the ending comment
-     */
-    if (sf->in_comment && cs[pos] == '*' && cs[pos+1] == '/') {
-        sf->in_comment = FALSE;
-        st_clear(sf->current);
-        return pos + 2;
-    } else if (cs[pos] == ':') {
+    if (cs[pos] == ':') {
         /* ':' is not an operator */
         st_assign(sf->current, TYPE_COLON, pos, 1, cs+pos);
         return pos + 1;

@@ -1,9 +1,0 @@
---TEST--
-Comments, C-style. MySQL dangling.  Not clear what right behavior is
---INPUT--
-SELECT 1, /*!123*/
---EXPECTED--
-E SELECT
-1 1
-, ,
-1 123
