@@ -12,7 +12,7 @@ class PermuteFingerprints(object):
             'sU', 'nU', 'n,(n)', 'n&n&n', 'Enkn', 'nk1;',
             '1os1o', '1n1;', 's*1s', '1s1', 'nknEn', 'n&sn',
             'so1', 'nkn;', 'n&n;', 'von', 'n&nc',
-            'n)o1','Enn;', 'nBn', 'Ennc', 'n&En'
+            'n)o1','Enn;', 'nBn', 'Ennc', 'n&En', 'nEnEn', 'Esn'
             ])
 
     def aslist(self):

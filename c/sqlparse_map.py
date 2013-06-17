@@ -689,7 +689,8 @@ KEYWORDS = {
 'POWER'                       : 'f',
 'PRECISION'                   : 'k',
 # http://msdn.microsoft.com/en-us/library/ms176047.aspx
-'PRINT'                       : 'E',
+'PRINT'                       : 'n',
+
 'PRIMARY'                     : 'k',
 'PROCEDURE'                   : 'k',
 'PUBLISHINGSERVERNAME'        : 'f',
