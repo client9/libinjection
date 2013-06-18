@@ -244,6 +244,8 @@ KEYWORDS = {
 
 
 # MYSQL Dual, function or variable-like
+# And IBM
+# http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Fsqlp%2Frbafykeyu.htm
 'CURRENT_DATE'                : 'v',
 'CURRENT_TIME'                : 'v',
 'CURRENT_TIMESTAMP'           : 'v',
@@ -260,6 +262,24 @@ KEYWORDS = {
 # ??    = variable
 'CURRENT_USER'                : 'v',
 'CURRENTUSER'                 : 'f',
+
+#
+# DB2 'Special Registers'
+# These act like variables
+# http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Fsqlp%2Frbafykeyu.htm
+'CURRENT DATE'         : 'v',
+'CURRENT DEGREE'       : 'v',
+'CURRENT_PATH'         : 'v',
+'CURRENT PATH'         : 'v',
+'CURRENT FUNCTION'     : 'v',
+'CURRENT SCHEMA'       : 'v',
+'CURRENT_SERVER'       : 'v',
+'CURRENT SERVER'       : 'v',
+'CURRENT TIME'         : 'v',
+'CURRENT_TIMEZONE'     : 'v',
+'CURRENT TIMEZONE'     : 'v',
+'CURRENT FUNCTION PATH': 'v',
+
 # pgsql
 'CURRVAL'                     : 'f',
 'CURSOR'                      : 'k',
@@ -355,6 +375,10 @@ KEYWORDS = {
 'EQV'                         : 'o',
 
 'ESCAPED'                     : 'k',
+
+# DB2, others..
+# http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Fsqlp%2Frbafykeyu.htm
+'EXCEPT'                       : 'U',
 
 # TBD
 #'END'                         : 'k',
@@ -478,6 +502,9 @@ KEYWORDS = {
 'INT4'                        : 't',
 'INT8'                        : 't',
 'INTEGER'                     : 't',
+# INTERSECT - IBM DB2, others
+# http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Fsqlp%2Frbafykeyu.htm
+'INTERSECT'                   : 'U',
 'INTERVAL'                    : 'k',
 'INTO'                        : 'k',
 'IS'                          : 'o',
@@ -647,7 +674,9 @@ KEYWORDS = {
 'OVERLAY'                     : 'f',
 'PARSENAME'                   : 'f',
 'PARTITION'                   : 'k',
-
+# 'PARTITION BY' IBM DB2
+# http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Fsqlp%2Frbafykeyu.htm
+'PARTITION BY'                : 'B',
 # keyword "SET PASSWORD", and a function
 'PASSWORD'                    : 'n',
 'PATINDEX'                    : 'f',
@@ -756,7 +785,7 @@ KEYWORDS = {
 'RIGHT'                       : 'n',
 'RLIKE'                       : 'o',
 'ROUND'                       : 'f',
-'ROW'                         : 'f',
+'ROW'                        : 'f',
 'ROW_COUNT'                   : 'f',
 'ROW_NUMBER'                  : 'f',
 'ROW_TO_JSON'                 : 'f',
@@ -1079,10 +1108,12 @@ KEYWORDS = {
     'AT TIME ZONE'      : 'k',
     'IN BOOLEAN'        : 'n',
     'IN BOOLEAN MODE'   : 'k',
-    'IS DISTINCT FROM'  : 'k',
-    'IS DISTINCT'       : 'n',
-    'IS NOT DISTINCT FROM' : 'k',
-    'IS NOT DISTINCT':     'n',
+# IS DISTINCT - IBM DB2
+# http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Fsqlp%2Frbafykeyu.htm
+    'IS DISTINCT FROM'     : 'o',
+    'IS DISTINCT'          : 'n',
+    'IS NOT DISTINCT FROM' : 'o',
+    'IS NOT DISTINCT'      : 'n',
     'CROSS JOIN'        : 'k',
     'ALTER DOMAIN'      : 'k',
     'ALTER TABLE'       : 'k',
@@ -1112,8 +1143,12 @@ KEYWORDS = {
     'NATURAL FULL'      : 'k',
     'SOUNDS LIKE'       : 'o',
     'IS NOT'            : 'o',
-    'NEXT VALUE'        : 'n',
-    'NEXT VALUE FOR'    : 'k',
+# IBM DB2
+# http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Fsqlp%2Frbafykeyu.htm
+    'NEXT VALUE'            : 'n',
+    'NEXT VALUE FOR'        : 'k',
+    'PREVIOUS VALUE'        : 'n',
+    'PREVIOUS VALUE FOR'    : 'k',
     'NOT LIKE'          : 'o',
     'NOT BETWEEN'       : 'o',
     'NOT SIMILAR'       : 'o',
@@ -1139,7 +1174,7 @@ KEYWORDS = {
     'WITH ROLLUP'       : 'k',
     'CREATE OR REPLACE' : 'E',
     # 'INTERSECT ALL' -- ORACLE
-    'INTERSECT ALL'     : 'o',
+    'INTERSECT ALL'     : 'U',
 
     # hacker mistake
     'SELECT ALL' : 'E',
