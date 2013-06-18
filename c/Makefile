@@ -35,10 +35,7 @@ reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_s
 
 reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	make clean
-	${CC} -g -O1 -pg -o reader libinjection_sqli.c reader.c
-
-extractor: Makefile extractor.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h libinjection_sqli_data.h
-	g++ ${STATIC} ${CFLAGS} -o extractor extractor.cpp libinjection_sqli.c
+	${CC} -g -O3 -pg -o reader libinjection_sqli.c reader.c
 
 is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h libinjection_sqli_data.h
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c
