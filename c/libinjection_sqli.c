@@ -1731,11 +1731,6 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
             return FALSE;
         }
 
-        if (sql_state->tokenvec[1].val[0] == '#') {
-            sql_state->reason = __LINE__;
-            return FALSE;
-        }
-
         /*
          * if ending comment is contains 'sp_password' then it's sqli!
          * MS Audit log appearantly ignores anything with
