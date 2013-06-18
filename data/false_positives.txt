@@ -386,3 +386,7 @@ I having true friends
 I was having true friends
 1 having
 
+"1--"
+'1--'
+"1--
+'1--
