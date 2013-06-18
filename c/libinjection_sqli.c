@@ -466,12 +466,12 @@ static size_t is_mysql_comment(const char *cs, const size_t len, size_t pos)
 
 static size_t parse_slash(sfilter * sf)
 {
+    size_t clen;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
     const char* cur = cs + pos;
     char ctype = TYPE_COMMENT;
-    size_t clen;
     size_t pos1 = pos + 1;
     if (pos1 == slen || cs[pos1] != '*') {
         return parse_operator1(sf);
@@ -700,10 +700,10 @@ static size_t parse_estring(sfilter * sf)
  */
 static size_t parse_underscore(sfilter *sf)
 {
+    char ch;
     const char *cs = sf->s;
     size_t slen = sf->slen;
     size_t pos = sf->pos;
-    char ch;
 
     size_t xlen = strlenspn(cs + pos + 1, slen - pos - 1,
                               "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -941,10 +941,10 @@ static size_t parse_tick(sfilter* sf)
 
 static size_t parse_var(sfilter * sf)
 {
+    size_t xlen;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos + 1;
-    size_t xlen;
 
     /*
      * var_count is only used to reconstruct
@@ -993,11 +993,11 @@ static size_t parse_var(sfilter * sf)
 
 static size_t parse_money(sfilter *sf)
 {
+    size_t xlen;
     const char* strend;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
-    size_t xlen;
 
     if (pos + 1 == slen) {
         /* end of line */
@@ -1071,11 +1071,11 @@ static size_t parse_money(sfilter *sf)
 
 static size_t parse_number(sfilter * sf)
 {
+    size_t xlen;
+    size_t start;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
-    size_t xlen;
-    size_t start;
 
     if (pos + 1 < slen && cs[pos] == '0' && (cs[pos + 1] == 'X' || cs[pos + 1] == 'x')) {
         /*
@@ -1134,11 +1134,11 @@ static size_t parse_number(sfilter * sf)
 
 int libinjection_sqli_tokenize(sfilter * sf)
 {
+    pt2Function fnptr;
+    size_t *pos = &sf->pos;
+    stoken_t *current = sf->current;
     const char *s = sf->s;
     const size_t slen = sf->slen;
-    size_t *pos = &sf->pos;
-    pt2Function fnptr;
-    stoken_t *current = sf->current;
 
     if (slen == 0) {
         return FALSE;
@@ -1208,11 +1208,9 @@ void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, int flags)
 
 void libinjection_sqli_reset(sfilter * sf, int flags)
 {
-    ptr_lookup_fn lookup = sf->lookup;
-    void* userdata = sf->userdata;
     libinjection_sqli_init(sf, sf->s, sf->slen, flags);
-    sf->lookup = lookup;
-    sf->userdata = userdata;
+    sf->lookup = sf->lookup;
+    sf->userdata = sf->userdata;
 }
 
 void libinjection_sqli_callback(sfilter * sf, ptr_lookup_fn fn, void* userdata)
@@ -1287,10 +1285,6 @@ static int syntax_merge_words(sfilter * sf,stoken_t * a, stoken_t * b)
     }
 }
 
-
-/*
- * My apologies, this code is a mess
- */
 int filter_fold(sfilter * sf)
 {
     stoken_t last_comment;
