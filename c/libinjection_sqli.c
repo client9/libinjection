@@ -27,7 +27,8 @@
 #define CHAR_SINGLE  '\''
 #define CHAR_DOUBLE  '"'
 
-
+/* faster than calling out to libc isdigit */
+#define ISDIGIT(a) ((unsigned)((a) - '0') <= 9)
 
 #if 0
 #define FOLD_DEBUG printf("%d \t more=%d  pos=%d left=%d\n", __LINE__, more, (int)pos, (int)left);
@@ -1077,7 +1078,10 @@ static size_t parse_number(sfilter * sf)
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
 
-    if (pos + 1 < slen && cs[pos] == '0' && (cs[pos + 1] == 'X' || cs[pos + 1] == 'x')) {
+    /* cs[pos] == '0' has 1/10 chance of being true,
+     * while pos+1< slen is almost always true
+     */
+    if (cs[pos] == '0' && pos + 1 < slen && (cs[pos + 1] == 'X' || cs[pos + 1] == 'x')) {
         /*
          * TBD compare if isxdigit
          */
@@ -1093,12 +1097,13 @@ static size_t parse_number(sfilter * sf)
     }
 
     start = pos;
-    while (pos < slen && isdigit(cs[pos])) {
+    while (pos < slen && ISDIGIT(cs[pos])) {
         pos += 1;
     }
+
     if (pos < slen && cs[pos] == '.') {
         pos += 1;
-        while (pos < slen && isdigit(cs[pos])) {
+        while (pos < slen && ISDIGIT(cs[pos])) {
             pos += 1;
         }
         if (pos - start == 1) {
@@ -1113,18 +1118,9 @@ static size_t parse_number(sfilter * sf)
             if (pos < slen && (cs[pos] == '+' || cs[pos] == '-')) {
                 pos += 1;
             }
-            while (pos < slen && isdigit(cs[pos])) {
+            while (pos < slen && ISDIGIT(cs[pos])) {
                 pos += 1;
             }
-        } else if (isalpha(cs[pos])) {
-            /*
-             * oh no, we have something like '6FOO'
-             * use microsoft style parsing and take just
-             * the number part and leave the rest to be
-             * parsed later
-             */
-            st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);
-            return pos;
         }
     }
 
