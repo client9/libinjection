@@ -2345,30 +2345,6 @@ fail:
 }
 
 
-static int _wrap_sqli_state_stats_comment_mysql_get(lua_State* L) {
-  int SWIG_arg = 0;
-  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
-  int result;
-  
-  SWIG_check_num_args("libinjection_sqli_state::stats_comment_mysql",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_state::stats_comment_mysql",1,"struct libinjection_sqli_state *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
-    SWIG_fail_ptr("sqli_state_stats_comment_mysql_get",1,SWIGTYPE_p_libinjection_sqli_state);
-  }
-  
-  result = (int) ((arg1)->stats_comment_mysql);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_sqli_state_stats_comment_hash_get(lua_State* L) {
   int SWIG_arg = 0;
   struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
@@ -2479,7 +2455,6 @@ static swig_lua_attribute swig_libinjection_sqli_state_attributes[] = {
     { "stats_comment_ddw", _wrap_sqli_state_stats_comment_ddw_get, SWIG_Lua_set_immutable},
     { "stats_comment_ddx", _wrap_sqli_state_stats_comment_ddx_get, SWIG_Lua_set_immutable},
     { "stats_comment_c", _wrap_sqli_state_stats_comment_c_get, SWIG_Lua_set_immutable},
-    { "stats_comment_mysql", _wrap_sqli_state_stats_comment_mysql_get, SWIG_Lua_set_immutable},
     { "stats_comment_hash", _wrap_sqli_state_stats_comment_hash_get, SWIG_Lua_set_immutable},
     { "stats_folds", _wrap_sqli_state_stats_folds_get, SWIG_Lua_set_immutable},
     { "stats_tokens", _wrap_sqli_state_stats_tokens_get, SWIG_Lua_set_immutable},
@@ -2787,8 +2762,8 @@ static swig_lua_var_info swig_variables[] = {
 
 static swig_lua_const_info swig_constants[] = {
     {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.0.0-pre19")},
-    {SWIG_LUA_CONSTTAB_INT("ST_MAX_SIZE", 32)},
-    {SWIG_LUA_CONSTTAB_INT("MAX_TOKENS", 5)},
+    {SWIG_LUA_CONSTTAB_INT("LIBINJECTION_SQLI_TOKEN_SIZE", 32)},
+    {SWIG_LUA_CONSTTAB_INT("LIBINJECTION_SQLI_MAX_TOKENS", 5)},
     {SWIG_LUA_CONSTTAB_INT("FLAG_NONE", FLAG_NONE)},
     {SWIG_LUA_CONSTTAB_INT("FLAG_QUOTE_NONE", FLAG_QUOTE_NONE)},
     {SWIG_LUA_CONSTTAB_INT("FLAG_QUOTE_SINGLE", FLAG_QUOTE_SINGLE)},

@@ -39,8 +39,21 @@ extern "C" {
  */
 #define LIBINJECTION_VERSION "3.0.0-pre19"
 
-#define ST_MAX_SIZE 32
-#define MAX_TOKENS 5
+/**
+ * Libinjection's sqli module makes a "normalized"
+ * value of the token.  This is the maximum size
+ * Token with values larger than this will be truncated
+ */
+#ifndef LIBINJECTION_SQLI_TOKEN_SIZE
+#define LIBINJECTION_SQLI_TOKEN_SIZE 32
+#endif
+
+/**
+ * Number of tokens used to create a fingerprint
+ */
+#ifndef LIBINJECTION_SQLI_MAX_TOKENS
+#define LIBINJECTION_SQLI_MAX_TOKENS 5
+#endif
 
 enum lookup_type {
     FLAG_NONE          = 0,
@@ -78,7 +91,7 @@ typedef struct {
      */
     int  count;
 
-    char val[ST_MAX_SIZE];
+    char val[LIBINJECTION_SQLI_TOKEN_SIZE];
 }  stoken_t;
 
 
@@ -124,7 +137,7 @@ typedef struct libinjection_sqli_state {
     /* MAX TOKENS + 1 since we use one extra token
      * to determine the type of the previous token
      */
-    stoken_t tokenvec[MAX_TOKENS + 1];
+    stoken_t tokenvec[LIBINJECTION_SQLI_MAX_TOKENS + 1];
 
     /*
      * Pointer to token position in tokenvec, above
@@ -135,7 +148,7 @@ typedef struct libinjection_sqli_state {
      * fingerprint pattern c-string
      * +1 for ending null
      */
-    char pat[MAX_TOKENS + 1];
+    char pat[LIBINJECTION_SQLI_MAX_TOKENS + 1];
 
     /*
      * Line number of code that said input was NOT sqli.
@@ -171,11 +184,6 @@ typedef struct libinjection_sqli_state {
      */
     int stats_comment_c;
 
-    /*
-     * mysql c-style not comments found /x! ... x/
-     */
-    int stats_comment_mysql;
-
     /* '#' operators or mysql EOL comments found
      *
      */
@@ -187,7 +195,7 @@ typedef struct libinjection_sqli_state {
     int stats_folds;
 
     /*
-     * total tokens reads
+     * total tokens processed
      */
     int stats_tokens;
 

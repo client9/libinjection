@@ -290,7 +290,8 @@ static void st_assign_char(stoken_t * st, const char stype, size_t pos, size_t l
 static void st_assign(stoken_t * st, const char stype,
                       size_t pos, size_t len, const char* value)
 {
-    size_t last = len < ST_MAX_SIZE ? len : (ST_MAX_SIZE - 1);
+    const size_t MSIZE = LIBINJECTION_SQLI_TOKEN_SIZE;
+    size_t last = len < MSIZE ? len : (MSIZE - 1);
     st->type = (char) stype;
     st->pos = pos;
     st->len = len;
@@ -898,7 +899,7 @@ static size_t parse_word(sfilter * sf)
     /*
      * do normal lookup with word including '.'
      */
-    if (wlen < ST_MAX_SIZE) {
+    if (wlen < LIBINJECTION_SQLI_TOKEN_SIZE) {
 
         ch = sf->lookup(sf, LOOKUP_WORD, sf->current->val, wlen);
 
@@ -1241,7 +1242,7 @@ static int syntax_merge_words(sfilter * sf,stoken_t * a, stoken_t * b)
     size_t sz1;
     size_t sz2;
     size_t sz3;
-    char tmp[ST_MAX_SIZE];
+    char tmp[LIBINJECTION_SQLI_TOKEN_SIZE];
     char ch;
 
     /* first token is of right type? */
@@ -1260,7 +1261,7 @@ static int syntax_merge_words(sfilter * sf,stoken_t * a, stoken_t * b)
     sz1 = a->len;
     sz2 = b->len;
     sz3 = sz1 + sz2 + 1; /* +1 for space in the middle */
-    if (sz3 >= ST_MAX_SIZE) { /* make sure there is room for ending null */
+    if (sz3 >= LIBINJECTION_SQLI_TOKEN_SIZE) { /* make sure there is room for ending null */
         return FALSE;
     }
     /*
@@ -1318,7 +1319,7 @@ int filter_fold(sfilter * sf)
     while (1) {
         FOLD_DEBUG
         /* get up to two tokens */
-        while (more && pos <= MAX_TOKENS && (pos - left) < 2) {
+        while (more && pos <= LIBINJECTION_SQLI_MAX_TOKENS && (pos - left) < 2) {
             sf->current = &(sf->tokenvec[pos]);
             more = libinjection_sqli_tokenize(sf);
             if (more) {
@@ -1447,7 +1448,7 @@ int filter_fold(sfilter * sf)
            and nothing matched.  Get one more token
         */
         FOLD_DEBUG
-        while (more && pos <= MAX_TOKENS && pos - left < 3) {
+        while (more && pos <= LIBINJECTION_SQLI_MAX_TOKENS && pos - left < 3) {
             sf->current = &(sf->tokenvec[pos]);
             more = libinjection_sqli_tokenize(sf);
             if (more) {
@@ -1544,7 +1545,7 @@ int filter_fold(sfilter * sf)
      * at the end, add it back
      */
 
-    if (left < MAX_TOKENS && last_comment.type == TYPE_COMMENT) {
+    if (left < LIBINJECTION_SQLI_MAX_TOKENS && last_comment.type == TYPE_COMMENT) {
         st_copy(&sf->tokenvec[left], &last_comment);
         left += 1;
     }
@@ -1552,8 +1553,8 @@ int filter_fold(sfilter * sf)
     /* sometimes we grab a 6th token to help
        determine the type of token 5.
     */
-    if (left > MAX_TOKENS) {
-        left = MAX_TOKENS;
+    if (left > LIBINJECTION_SQLI_MAX_TOKENS) {
+        left = LIBINJECTION_SQLI_MAX_TOKENS;
     }
 
     return (int)left;
@@ -1597,7 +1598,7 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags)
      */
     if (strchr(sql_state->pat, 'X')) {
         /*  needed for SWIG */
-        memset((void*)sql_state->pat, 0, MAX_TOKENS + 1);
+        memset((void*)sql_state->pat, 0, LIBINJECTION_SQLI_MAX_TOKENS + 1);
         sql_state->pat[0] = 'X';
 
         sql_state->tokenvec[0].type = 'X';
@@ -1633,7 +1634,7 @@ char libinjection_sqli_lookup_word(sfilter *sql_state, int lookup_type,
 
 int libinjection_sqli_blacklist(sfilter* sql_state)
 {
-    char fp2[MAX_TOKENS + 2];
+    char fp2[LIBINJECTION_SQLI_MAX_TOKENS + 2];
     char ch;
     size_t i;
     size_t len = strlen(sql_state->pat);
