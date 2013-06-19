@@ -2037,7 +2037,6 @@ E(1)o
 E(1)s
 E(1)v
 E(1,f
-E(1,o
 E(1f(
 E(1n)
 E(1no
@@ -2090,7 +2089,6 @@ E(n)o
 E(n)s
 E(n)v
 E(n,f
-E(n,o
 E(n1)
 E(n1o
 E(nf(
@@ -2110,7 +2108,6 @@ E(s)o
 E(s)s
 E(s)v
 E(s,f
-E(s,o
 E(s1)
 E(s1o
 E(sf(
@@ -2136,7 +2133,6 @@ E(v)o
 E(v)s
 E(v)v
 E(v,f
-E(v,o
 E(vf(
 E(vo(
 E(vo1

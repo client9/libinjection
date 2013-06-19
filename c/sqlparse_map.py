@@ -103,8 +103,7 @@ KEYWORDS = {
 'APPLOCK_MODE'                : 'f',
 'APPLOCK_TEST'                : 'f',
 'ASSEMBLYPROPERTY'            : 'f',
-# too ordinary to be a keyword
-'AS'                          : 'n',
+'AS'                          : 'k',
 'ASC'                         : 'k',
 'ASCII'                       : 'f',
 'ASENSITIVE'                  : 'k',
@@ -388,9 +387,9 @@ KEYWORDS = {
 
 # 'EXEC', 'EXECUTE' - MSSQL
 #  http://msdn.microsoft.com/en-us/library/ms175046.aspx
-'EXEC'                        : 'E',
+'EXEC'                        : 'T',
 'EXECUTE'                     : 'T',
-'EXISTS'                      : 'k',
+'EXISTS'                      : 'f',
 'EXIT'                        : 'k',
 'EXP'                         : 'f',
 'EXPLAIN'                     : 'k',

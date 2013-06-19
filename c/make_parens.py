@@ -67,6 +67,9 @@ class PermuteFingerprints(object):
         if 'nn' in s and 'Enn' not in s and ';T' not in s:
             return False
 
+        if ',o' in s:
+            return False
+
         if 'kk' in s:
             return False
 
