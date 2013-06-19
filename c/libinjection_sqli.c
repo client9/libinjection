@@ -61,6 +61,7 @@ typedef enum {
     TYPE_COMMA       = (int)',',
     TYPE_COLON       = (int)':',
     TYPE_SEMICOLON   = (int)';',
+    TYPE_TSQL        = (int)'T', /* TSQL start */
     TYPE_UNKNOWN     = (int)'?',
     TYPE_FINGERPRINT = (int)'X',
 } sqli_token_types;
@@ -1247,13 +1248,14 @@ static int syntax_merge_words(sfilter * sf,stoken_t * a, stoken_t * b)
 
     /* first token is of right type? */
     if (!
-        (a->type == TYPE_KEYWORD || a->type == TYPE_BAREWORD || a->type == TYPE_OPERATOR
-         || a->type == TYPE_UNION || a->type == TYPE_EXPRESSION || a->type == TYPE_SQLTYPE)) {
+        (a->type == TYPE_KEYWORD || a->type == TYPE_BAREWORD || a->type == TYPE_OPERATOR ||
+         a->type == TYPE_UNION || a->type == TYPE_EXPRESSION || a->type == TYPE_SQLTYPE)) {
         return CHAR_NULL;
     }
 
     if (b->type != TYPE_KEYWORD  && b->type != TYPE_BAREWORD &&
         b->type != TYPE_OPERATOR && b->type != TYPE_SQLTYPE &&
+        b->type != TYPE_LOGIC_OPERATOR &&
         b->type != TYPE_UNION    && b->type != TYPE_EXPRESSION) {
         return CHAR_NULL;
     }
@@ -1355,6 +1357,16 @@ int filter_fold(sfilter * sf)
             pos -= 1;
             sf->stats_folds += 1;
             continue;
+        } else if (sf->tokenvec[left].type == TYPE_SEMICOLON &&
+                   sf->tokenvec[left+1].type == TYPE_FUNCTION &&
+                   cstrcasecmp("IF", sf->tokenvec[left+1].val, sf->tokenvec[left+1].len) == 0) {
+            /* IF is normally a function, except in Transact-SQL where it can be used as a
+             * standalone control flow operator, e.g. ; IF 1=1 ...
+             * if found after a semicolon, convert from 'f' type to 'T' type
+             */
+            sf->tokenvec[left+1].type = TYPE_TSQL;
+            left += 2;
+            continue; /* reparse everything, but we probably can advance left, and pos */
         } else if ((sf->tokenvec[left].type ==TYPE_OPERATOR || sf->tokenvec[left].type ==TYPE_LOGIC_OPERATOR) &&
                    st_is_unary_op(&sf->tokenvec[left+1])) {
             pos -= 1;

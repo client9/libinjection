@@ -114,7 +114,7 @@ KEYWORDS = {
 'ATAN2'                       : 'f',
 'AVG'                         : 'f',
 'BEFORE'                      : 'k',
-'BEGIN'                       : 'E',
+'BEGIN'                       : 'T',
 'BENCHMARK'                   : 'f',
 'BETWEEN'                     : 'o',
 'BIGINT'                      : 't',
@@ -237,6 +237,8 @@ KEYWORDS = {
 'COUNT_BIG'                   : 'k',
 'CRC32'                       : 'f',
 'CREATE'                      : 'E',
+'CREATE OR'                   : 'n',
+'CREATE OR REPLACE'           : 'E',
 'CROSS'                       : 'n',
 'CUME_DIST'                   : 'f',
 'CURDATE'                     : 'f',
@@ -324,7 +326,8 @@ KEYWORDS = {
 'DB_NAME'                     : 'f',
 'DEC'                         : 'k',
 'DECIMAL'                     : 't',
-'DECLARE'                     : 'E',
+# can only be used after a ';'
+'DECLARE'                     : 'T',
 'DECODE'                      : 'f',
 'DECRYPTBYASMKEY'             : 'f',
 'DECRYPTBYCERT'               : 'f',
@@ -347,7 +350,7 @@ KEYWORDS = {
 'DISTINCT'                    : 'k',
 'DIV'                         : 'o',
 'DOUBLE'                      : 't',
-'DROP'                        : 'E',
+'DROP'                        : 'T',
 'DUAL'                        : 'n',
 'EACH'                        : 'k',
 'ELSE'                        : 'k',
@@ -386,7 +389,7 @@ KEYWORDS = {
 # 'EXEC', 'EXECUTE' - MSSQL
 #  http://msdn.microsoft.com/en-us/library/ms175046.aspx
 'EXEC'                        : 'E',
-'EXECUTE'                     : 'E',
+'EXECUTE'                     : 'T',
 'EXISTS'                      : 'k',
 'EXIT'                        : 'k',
 'EXP'                         : 'f',
@@ -421,6 +424,7 @@ KEYWORDS = {
 'FROM'                        : 'k',
 'FROM_DAYS'                   : 'f',
 'FROM_UNIXTIME'               : 'f',
+'FUNCTION'                    : 'k',
 'FULLTEXT'                    : 'k',
 'FULLTEXTCATALOGPROPERTY'     : 'f',
 'FULLTEXTSERVICEPROPERTY'     : 'f',
@@ -438,7 +442,8 @@ KEYWORDS = {
 'GET_BYTE'                    : 'f',
 'GET_FORMAT'                  : 'f',
 'GET_LOCK'                    : 'f',
-'GOTO'                        : 'k',
+'GO'                          : 'T',
+'GOTO'                        : 'T',
 'GRANT'                       : 'k',
 'GREATEST'                    : 'f',
 'GROUP'                       : 'n',
@@ -469,7 +474,9 @@ KEYWORDS = {
 
 # 'IF - if is normally a function, except in TSQL
 # http://msdn.microsoft.com/en-us/library/ms182717.aspx
-'IF'                          : 'E',
+'IF'                          : 'f',
+
+'IF EXISTS'                   : 'f',
 
 'IFF'                         : 'f',
 'IFNULL'                      : 'f',
@@ -718,7 +725,7 @@ KEYWORDS = {
 'POWER'                       : 'f',
 'PRECISION'                   : 'k',
 # http://msdn.microsoft.com/en-us/library/ms176047.aspx
-'PRINT'                       : 'n',
+'PRINT'                       : 'T',
 
 'PRIMARY'                     : 'k',
 'PROCEDURE'                   : 'k',
@@ -818,7 +825,7 @@ KEYWORDS = {
 'SHA1'                        : 'f',
 'SHA2'                        : 'f',
 'SHOW'                        : 'n',
-'SHUTDOWN'                    : 'E',
+'SHUTDOWN'                    : 'T',
 'SIGN'                        : 'f',
 'SIGNBYASMKEY'                : 'f',
 'SIGNBYCERT'                  : 'f',
@@ -997,7 +1004,7 @@ KEYWORDS = {
 'UPPER_INC'                   : 'f',
 'UPPER_INF'                   : 'f',
 'USAGE'                       : 'k',
-'USE'                         : 'E',
+'USE'                         : 'T',
 
 # transact-sql function
 # however treating as a 'none' type
@@ -1039,7 +1046,7 @@ KEYWORDS = {
 'WEEKOFYEAR'                  : 'f',
 'WHEN'                        : 'k',
 'WHERE'                       : 'k',
-'WHILE'                       : 'E',
+'WHILE'                       : 'T',
 # pgsql
 'WIDTH_BUCKET'                : 'f',
 
