@@ -37,7 +37,7 @@ extern "C" {
  * See python's normalized version
  * http://www.python.org/dev/peps/pep-0386/#normalizedversion
  */
-#define LIBINJECTION_VERSION "3.0.0-pre19"
+#define LIBINJECTION_VERSION "3.0.0-pre20"
 
 /**
  * Libinjection's sqli module makes a "normalized"

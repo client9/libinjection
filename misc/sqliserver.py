@@ -8,11 +8,14 @@ import datetime
 import sys
 import logging
 import urllib
+import urlparse
 import libinjection
+from tornado import template
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 import tornado.wsgi
+import tornado.escape
 import wsgiref.simple_server
 
 def breakapart(s):
@@ -119,6 +122,23 @@ class PageHandler(tornado.web.RequestHandler):
             self.render(pagename + ".html")
         except IOError:
             self.set_status(404)
+
+class XssTestHandler(tornado.web.RequestHandler):
+    def get(self):
+        settings = self.application.settings
+
+        ldr = template.Loader(".")
+
+        args = ['', '', '', '', '', '', '', '', '', '']
+
+        qsl = [ x.split('=', 1) for x in self.request.query.split('&') ]
+        for kv in qsl:
+            try:
+                index = int(kv[0])
+                args[index] = tornado.escape.url_unescape(kv[1])
+            except:
+                pass
+        self.write(ldr.load('xsstest.html').generate(args=args))
 
 class DaysSinceHandler(tornado.web.RequestHandler):
     def get(self):
@@ -264,6 +284,7 @@ settings = {
 application = tornado.wsgi.WSGIApplication([
     (r"/diagnostics", NullHandler),
     (r"/days-since-last-bypass", DaysSinceHandler),
+    (r"/xsstest", XssTestHandler),
     (r'/robots.txt', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
     (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
     (r"/([a-z]*)", PageHandler)
