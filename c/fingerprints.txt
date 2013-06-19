@@ -1262,7 +1262,6 @@
 1UEnc
 1UEnf
 1UEnk
-1UEnn
 1UEno
 1UEns
 1UEok
@@ -2583,12 +2582,6 @@ Enkso
 Enkv)
 Enkvk
 Enkvo
-Enn
-Enn;c
-Enno(
-Ennof
-Ennos
-Ennov
 Eno((
 Eno(1
 Eno(E
@@ -4807,7 +4800,6 @@ nUEnU
 nUEnc
 nUEnf
 nUEnk
-nUEnn
 nUEno
 nUEns
 nUEok
@@ -6492,7 +6484,6 @@ sUEnU
 sUEnc
 sUEnf
 sUEnk
-sUEnn
 sUEno
 sUEns
 sUEok
@@ -7123,7 +7114,6 @@ sonk1
 sonkB
 sonkU
 sonkf
-sonkn
 sonks
 sonkv
 sono(
@@ -8446,7 +8436,6 @@ vUEnU
 vUEnc
 vUEnf
 vUEnk
-vUEnn
 vUEno
 vUEns
 vUEok
