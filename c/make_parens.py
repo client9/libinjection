@@ -56,6 +56,9 @@ class PermuteFingerprints(object):
         if 'vn' in s and 'Evn' not in s:
             return False
 
+        if 'oE' in s:
+            return False
+
         # all 'ns' in union statements
         if 'U' not in s and 'ns' in s:
             return False
