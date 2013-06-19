@@ -1517,7 +1517,9 @@ int filter_fold(sfilter * sf)
             pos -= 2;
             left -= 1;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_EXPRESSION || sf->tokenvec[left].type == TYPE_GROUP ) &&
+        } else if ((sf->tokenvec[left].type == TYPE_EXPRESSION ||
+                    sf->tokenvec[left].type == TYPE_GROUP ||
+                    sf->tokenvec[left].type == TYPE_COMMA) &&
                    st_is_unary_op(&sf->tokenvec[left+1]) &&
                    sf->tokenvec[left+2].type == TYPE_LEFTPARENS) {
             /* got something like SELECT + (, LIMIT + (
@@ -1526,13 +1528,38 @@ int filter_fold(sfilter * sf)
             st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
             pos -= 1;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_KEYWORD || sf->tokenvec[left].type == TYPE_EXPRESSION || sf->tokenvec[left].type == TYPE_GROUP) &&
+        } else if ((sf->tokenvec[left].type == TYPE_KEYWORD ||
+                    sf->tokenvec[left].type == TYPE_EXPRESSION ||
+                    sf->tokenvec[left].type == TYPE_GROUP )  &&
                    st_is_unary_op(&sf->tokenvec[left+1]) &&
-                   (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_VARIABLE || sf->tokenvec[left+2].type == TYPE_STRING || sf->tokenvec[left+2].type == TYPE_FUNCTION )) {
+                   (sf->tokenvec[left+2].type == TYPE_NUMBER ||
+                    sf->tokenvec[left+2].type == TYPE_BAREWORD ||
+                    sf->tokenvec[left+2].type == TYPE_VARIABLE ||
+                    sf->tokenvec[left+2].type == TYPE_STRING ||
+                    sf->tokenvec[left+2].type == TYPE_FUNCTION )) {
             // remove unary operators
             // select - 1
             st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
             pos -= 1;
+            continue;
+        } else if (sf->tokenvec[left].type == TYPE_COMMA &&
+                   st_is_unary_op(&sf->tokenvec[left+1]) &&
+                   (sf->tokenvec[left+2].type == TYPE_NUMBER ||
+                    sf->tokenvec[left+2].type == TYPE_BAREWORD ||
+                    sf->tokenvec[left+2].type == TYPE_VARIABLE ||
+                    sf->tokenvec[left+2].type == TYPE_STRING ||
+                    sf->tokenvec[left+2].type == TYPE_FUNCTION )) {
+            /*
+             * interesting case    turn ", -1"  ->> ",1" PLUS we need to back up
+             * one token if possible to see if more folding can be done
+             * "1,-1" --> "1"
+             */
+            st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
+            if (left > 0) {
+                left -= 1;
+            }
+            pos -=3;
+            continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)&&
                    (sf->tokenvec[left+1].type == TYPE_BAREWORD  && sf->tokenvec[left+1].val[0] == '.') &&
                    (sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)) {
