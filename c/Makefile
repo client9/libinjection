@@ -59,7 +59,6 @@ valgrind: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libin
 	valgrind \
 		--gen-suppressions=no \
 		--read-var-info=yes \
-		--leak-check=full \
 		--error-exitcode=1 \
 		--track-origins=yes \
 		--xml=yes \

@@ -77,7 +77,6 @@ def runtest(testname, flags=None):
             'valgrind',
             '--gen-suppressions=no',
             '--read-var-info=yes',
-            '--leak-check=full',
             '--error-exitcode=1',
             '--track-origins=yes',
             '--xml=yes',
