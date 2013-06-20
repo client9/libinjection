@@ -1515,7 +1515,9 @@ int filter_fold(sfilter * sf)
                    sf->tokenvec[left+1].type == TYPE_COMMA &&
                    (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING)) {
             pos -= 2;
-            left -= 1;
+            if (left > 0) {
+                left -= 1;
+            }
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_EXPRESSION ||
                     sf->tokenvec[left].type == TYPE_GROUP ||
