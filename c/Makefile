@@ -104,6 +104,7 @@ sort:
 	mv /tmp/junk fingerprints.txt
 	wc -l fingerprints.txt
 	${MAKE} libinjection_sqli_data.h
+	${MAKE} allbin
 
 clean:
 	rm -f *~ *.pyc
