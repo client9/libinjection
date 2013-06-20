@@ -514,3 +514,25 @@ if(-(1), 1, 2) union select 3
 
 #
 1; if exists ( /* anything */
+
+# these aren't SQL but close enough
+union (select 1)--
+union all (select 1)--
+union all (select distinct 1)--
+union (select 1,2,3,4,5)--
+union (select -1,2,3,4,5)--
+union (select -(1),2,3,4,5)--
+union (select -sin(1),2,3,4,5)--
+1;call p(@version, @a)
+1;load data infile "foo"
+1;load xml infile "foo"
+1;load xml local infile "foo"
+1;load xml low_priority infile "foo"
+1;load xml concurrent infile "foo"
+1; delete from foo
+1; delete low_priority from foo
+1; delete quick from foo
+1; delete ignore from foo
+
+
+1;do (1=1)
