@@ -9615,7 +9615,7 @@ static const keyword_t sql_keywords[] = {
     {"DLOOKUP", 'f'},
     {"DMAX", 'f'},
     {"DMIN", 'f'},
-    {"DO", 'T'},
+    {"DO", 'n'},
     {"DOUBLE", 't'},
     {"DOUBLE PRECISION", 't'},
     {"DROP", 'T'},

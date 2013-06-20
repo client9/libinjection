@@ -173,7 +173,10 @@ KEYWORDS = {
 'DMAX'                        : 'f',
 'DMIN'                        : 'f',
 'DSUM'                        : 'f',
-'DO'                          : 'T',
+
+# TBD
+'DO'                          : 'n',
+
 'CALL'                        : 'T',
 'CASCADE'                     : 'k',
 'CASE'                        : 'E',
