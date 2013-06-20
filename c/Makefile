@@ -56,6 +56,15 @@ test_unit: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libi
 valgrind: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	rm -f valgrind-*.xml
 	${MAKE} VALGRIND=1 test_unit
+	valgrind \
+		--gen-suppressions=no \
+		--read-var-info=yes \
+		--leak-check=full \
+		--error-exitcode=1 \
+		--track-origins=yes \
+		--xml=yes \
+		--xml-file=valgrind-sammples.xml \
+		./reader -q ../data/*.txt
 
 cppcheck:
 	rm -f cppcheck-result.xml
