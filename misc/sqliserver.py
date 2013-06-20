@@ -142,7 +142,7 @@ class XssTestHandler(tornado.web.RequestHandler):
 
 class DaysSinceHandler(tornado.web.RequestHandler):
     def get(self):
-        lastevasion = datetime.date(2013, 6, 15)
+        lastevasion = datetime.date(2013, 6, 20)
         today       = datetime.date.today()
         daynum = (today - lastevasion).days
         if daynum < 10:
