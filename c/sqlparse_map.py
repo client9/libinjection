@@ -173,8 +173,8 @@ KEYWORDS = {
 'DMAX'                        : 'f',
 'DMIN'                        : 'f',
 'DSUM'                        : 'f',
-
-'CALL'                        : 'k',
+'DO'                          : 'T',
+'CALL'                        : 'T',
 'CASCADE'                     : 'k',
 'CASE'                        : 'E',
 'CAST'                        : 'f',
@@ -337,7 +337,7 @@ KEYWORDS = {
 'DEGREES'                     : 'f',
 'DELAY'                       : 'k',
 'DELAYED'                     : 'k',
-'DELETE'                      : 'k',
+'DELETE'                      : 'T',
 'DENSE_RANK'                  : 'f',
 'DESC'                        : 'k',
 'DESCRIBE'                    : 'k',
@@ -450,6 +450,9 @@ KEYWORDS = {
 'GROUPING_ID'                 : 'f',
 'GROUP_CONCAT'                : 'f',
 
+# MYSQL http://dev.mysql.com/doc/refman/5.6/en/handler.html
+'HANDLER'                     : 'T',
+
 'HAS_PERMS_BY_NAME'           : 'f',
 'HASHBYTES'                   : 'f',
 #
@@ -499,6 +502,15 @@ KEYWORDS = {
 'INOUT'                       : 'k',
 'INSENSITIVE'                 : 'k',
 'INSERT'                      : 'E',
+'INSERT INTO'                 : 'T',
+'INSERT IGNORE'               : 'E',
+'INSERT LOW_PRIORITY INTO'    : 'T',
+'INSERT LOW_PRIORITY'         : 'E',
+'INSERT DELAYED INTO'         : 'T',
+'INSERT DELAYED'              : 'E',
+'INSERT HIGH_PRIORITY INTO'   : 'T',
+'INSERT HIGH_PRIORITY'        : 'E',
+'INSERT IGNORE INTO'          : 'T',
 'INSTR'                       : 'f',
 'INSTRREV'                    : 'f',
 'INT'                         : 't',
@@ -562,6 +574,9 @@ KEYWORDS = {
 'LOAD_EXTENSION'              : 'f',
 'LOAD_FILE'                   : 'f',
 
+# MYSQL http://dev.mysql.com/doc/refman/5.6/en/load-data.html
+'LOAD DATA'                   : 'T',
+'LOAD XML'                    : 'T',
 # MYSQL function vs. variable
 'LOCALTIME'                   : 'v',
 'LOCALTIMESTAMP'              : 'v',
@@ -1166,6 +1181,7 @@ KEYWORDS = {
     'NOT IN'            : 'k',
     'SIMILAR TO'        : 'o',
     'NOT SIMILAR TO'    : 'o',
+    'SELECT DISTINCT'   : 'E',
     'UNION ALL'         : 'U',
     'UNION DISTINCT'    : 'U',
     'UNION DISTINCT ALL'  : 'U',
@@ -1178,7 +1194,7 @@ KEYWORDS = {
     'WAITFOR TIME'      : 'E',
     'WAITFOR RECEIVE'   : 'E',
     'WITH ROLLUP'       : 'k',
-    'CREATE OR REPLACE' : 'E',
+    'CREATE OR REPLACE' : 'T',
     # 'INTERSECT ALL' -- ORACLE
     'INTERSECT ALL'     : 'U',
 

@@ -74,7 +74,7 @@ class PermuteFingerprints(object):
         if ',o' in s:
             return False
 
-        if 'kk' in s:
+        if 'kk' in s and 'Tkk' not in s:
             return False
 
         if 'ss' in s:
