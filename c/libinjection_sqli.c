@@ -3,10 +3,8 @@
  * nickg@client9.com
  * BSD License -- see COPYING.txt for details
  *
- * (setq-default indent-tabs-mode nil)
- * (setq c-default-style "k&r"
- *     c-basic-offset 4)
- *  indent -kr -nut
+ * https://libinjection.client9.com/
+ *
  */
 
 #include <string.h>
@@ -63,7 +61,8 @@ typedef enum {
     TYPE_SEMICOLON   = (int)';',
     TYPE_TSQL        = (int)'T', /* TSQL start */
     TYPE_UNKNOWN     = (int)'?',
-    TYPE_FINGERPRINT = (int)'X',
+    TYPE_EVIL        = (int)'X', /* unparsable, abort  */
+    TYPE_FINGERPRINT = (int)'F'  /* not really a token */
 } sqli_token_types;
 
 /**
@@ -502,9 +501,9 @@ static size_t parse_slash(sfilter * sf)
      */
 
     if (memchr2(cur + 2, ptr - (cur + 1), '/', '*') !=  NULL) {
-        ctype = 'X';
+        ctype = TYPE_EVIL;
     } else if (is_mysql_comment(cs, slen, pos)) {
-        ctype = 'X';
+        ctype = TYPE_EVIL;
     }
 
     st_assign(sf->current, ctype, pos, clen, cs + pos);
@@ -1637,15 +1636,15 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags)
      * or other syntax that isn't consistent.
      * Should be very rare false positive
      */
-    if (strchr(sql_state->fingerprint, 'X')) {
+    if (strchr(sql_state->fingerprint, TYPE_EVIL)) {
         /*  needed for SWIG */
         memset((void*)sql_state->fingerprint, 0, LIBINJECTION_SQLI_MAX_TOKENS + 1);
         memset((void*)sql_state->tokenvec[0].val, 0, LIBINJECTION_SQLI_TOKEN_SIZE);
 
-        sql_state->fingerprint[0] = 'X';
+        sql_state->fingerprint[0] = TYPE_EVIL;
 
-        sql_state->tokenvec[0].type = 'X';
-        sql_state->tokenvec[0].val[0] = 'X';
+        sql_state->tokenvec[0].type = TYPE_EVIL;
+        sql_state->tokenvec[0].val[0] = TYPE_EVIL;
         sql_state->tokenvec[1].type = CHAR_NULL;
     }
 

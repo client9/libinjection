@@ -3,6 +3,8 @@
  * nickg@client9.com
  * BSD License -- see COPYING.txt for details
  *
+ * https://libinjection.client9.com/
+ *
  */
 
 #ifndef _LIBINJECTION_H

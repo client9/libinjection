@@ -25,7 +25,7 @@ def toc(obj):
 
     for  fp in list(obj[u'fingerprints']):
         fp = '0' + fp.upper()
-        words[str(fp)] = 'X';
+        words[str(fp)] = 'F';
 
     print 'words = {'
     for k in sorted(words.keys()):

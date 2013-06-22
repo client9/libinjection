@@ -20,8 +20,8 @@ def lookup(state, stype, keyword):
     if stype == libinjection.LOOKUP_FINGERPRINT:
         keyword = "0" + keyword
         ch = words.get(keyword, chr(0))
-        if ch == 'X' and libinjection.sqli_not_whitelist(state):
-            return 'X'
+        if ch == 'F' and libinjection.sqli_not_whitelist(state):
+            return 'F'
         else:
             return chr(0)
     return words.get(keyword, chr(0))
@@ -35,7 +35,7 @@ def lookup(state, stype, keyword):
 
     for  fp in list(obj[u'fingerprints']):
         fp = '0' + fp.upper()
-        words[str(fp)] = 'X';
+        words[str(fp)] = 'F';
 
     print 'words = {'
     for k in sorted(words.keys()):

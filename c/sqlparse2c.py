@@ -90,7 +90,7 @@ static size_t parse_estring(sfilter * sf);
 
     for  fp in list(obj[u'fingerprints']):
         fp = '0' + fp.upper()
-        keywords[fp] = 'X';
+        keywords[fp] = 'F';
 
     print "static const keyword_t sql_keywords[] = {"
     for k in sorted(keywords.keys()):
