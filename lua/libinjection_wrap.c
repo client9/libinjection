@@ -2225,19 +2225,19 @@ fail:
 }
 
 
-static int _wrap_sqli_state_pat_get(lua_State* L) {
+static int _wrap_sqli_state_fingerprint_get(lua_State* L) {
   int SWIG_arg = 0;
   struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   char *result = 0 ;
   
-  SWIG_check_num_args("libinjection_sqli_state::pat",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_state::pat",1,"struct libinjection_sqli_state *");
+  SWIG_check_num_args("libinjection_sqli_state::fingerprint",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("libinjection_sqli_state::fingerprint",1,"struct libinjection_sqli_state *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_libinjection_sqli_state,0))){
-    SWIG_fail_ptr("sqli_state_pat_get",1,SWIGTYPE_p_libinjection_sqli_state);
+    SWIG_fail_ptr("sqli_state_fingerprint_get",1,SWIGTYPE_p_libinjection_sqli_state);
   }
   
-  result = (char *)(char *) ((arg1)->pat);
+  result = (char *)(char *) ((arg1)->fingerprint);
   lua_pushstring(L,(const char *)result); SWIG_arg++;
   return SWIG_arg;
   
@@ -2450,7 +2450,7 @@ static swig_lua_attribute swig_libinjection_sqli_state_attributes[] = {
     { "pos", _wrap_sqli_state_pos_get, SWIG_Lua_set_immutable},
     { "tokenvec", _wrap_sqli_state_tokenvec_get, SWIG_Lua_set_immutable},
     { "current", _wrap_sqli_state_current_get, SWIG_Lua_set_immutable},
-    { "pat", _wrap_sqli_state_pat_get, SWIG_Lua_set_immutable},
+    { "fingerprint", _wrap_sqli_state_fingerprint_get, SWIG_Lua_set_immutable},
     { "reason", _wrap_sqli_state_reason_get, SWIG_Lua_set_immutable},
     { "stats_comment_ddw", _wrap_sqli_state_stats_comment_ddw_get, SWIG_Lua_set_immutable},
     { "stats_comment_ddx", _wrap_sqli_state_stats_comment_ddx_get, SWIG_Lua_set_immutable},

@@ -92,12 +92,12 @@ def runtest(testname, flag, sqli_flags):
         actual = actual.strip()
     elif flag == 'folding':
         sqli_fingerprint(sql_state, sqli_flags)
-        for i in range(len(sql_state.pat)):
+        for i in range(len(sql_state.fingerprint)):
             actual += print_token(sql_state.tokenvec[i]) + '\n';
     elif flag == 'fingerprints':
         ok = is_sqli(sql_state)
         if ok:
-            actual = sql_state.pat
+            actual = sql_state.fingerprint
     else:
         raise RuntimeException("unknown flag")
 

@@ -3,26 +3,6 @@
  * nickg@client9.com
  * BSD License -- see COPYING.txt for details
  *
- *
- * HOW TO USE:
- *
- *   #include "libinjection.h"
- *
- *   // Normalize query or postvar value
- *   // If it comes in urlencoded, then it's up to you
- *   // to urldecode it.  If it's in correct form already
- *   // then nothing to do!
- *
- *   sfilter s;
- *   int sqli = libinjection_is_sqli(&s, user_string, new_len,
- *                                   NULL, NULL);
- *
- *   // 0 = not sqli
- *   // 1 = is sqli
- *
- *   // That's it!  sfilter s has some data on how it matched or not
- *   // details to come!
- *
  */
 
 #ifndef _LIBINJECTION_H
@@ -148,13 +128,13 @@ typedef struct libinjection_sqli_state {
      * fingerprint pattern c-string
      * +1 for ending null
      */
-    char pat[LIBINJECTION_SQLI_MAX_TOKENS + 1];
+    char fingerprint[LIBINJECTION_SQLI_MAX_TOKENS + 1];
 
     /*
-     * Line number of code that said input was NOT sqli.
-     * Most of the time it's line that said "it's not a
-     * matching fingerprint" but there is other logic that
-     * sometimes approves an input. This is only useful for debugging.
+     * Line number of code that said decided if the input was SQLi or
+     * not.  Most of the time it's line that said "it's not a matching
+     * fingerprint" but there is other logic that sometimes approves
+     * an input. This is only useful for debugging.
      *
      */
     int reason;

@@ -124,7 +124,7 @@ int main(int argc, const char* argv[])
     if (detect == 1) {
         issqli = libinjection_is_sqli(&sf);
         if (issqli) {
-            printf("%s\n", sf.pat);
+            printf("%s\n", sf.fingerprint);
         }
     } else if (fold == 1) {
         count = filter_fold(&sf);

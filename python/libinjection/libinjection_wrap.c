@@ -4242,7 +4242,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_sqli_state_pat_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_sqli_state_fingerprint_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   void *argp1 = 0 ;
@@ -4252,10 +4252,10 @@ SWIGINTERN PyObject *_wrap_sqli_state_pat_get(PyObject *self, PyObject *args) {
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_state_pat_get" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_state_fingerprint_get" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
   arg1 = (struct libinjection_sqli_state *)(argp1);
-  result = (char *)(char *) ((arg1)->pat);
+  result = (char *)(char *) ((arg1)->fingerprint);
   {
     size_t size = 5+1;
     
@@ -4978,13 +4978,13 @@ static SwigPyGetSet sqli_state_stats_folds_getset = { _wrap_sqli_state_stats_fol
 static SwigPyGetSet sqli_state_stats_tokens_getset = { _wrap_sqli_state_stats_tokens_get, 0 };
 static SwigPyGetSet sqli_state_tokenvec_getset = { _wrap_sqli_state_tokenvec_get, 0 };
 static SwigPyGetSet sqli_state_lookup_getset = { _wrap_sqli_state_lookup_get, 0 };
+static SwigPyGetSet sqli_state_fingerprint_getset = { _wrap_sqli_state_fingerprint_get, 0 };
 static SwigPyGetSet sqli_state_flags_getset = { _wrap_sqli_state_flags_get, 0 };
 static SwigPyGetSet sqli_state_userdata_getset = { _wrap_sqli_state_userdata_get, 0 };
 static SwigPyGetSet sqli_state_reason_getset = { _wrap_sqli_state_reason_get, 0 };
 static SwigPyGetSet sqli_state_stats_comment_c_getset = { _wrap_sqli_state_stats_comment_c_get, 0 };
 static SwigPyGetSet sqli_state_current_getset = { _wrap_sqli_state_current_get, 0 };
 static SwigPyGetSet sqli_state_s_getset = { _wrap_sqli_state_s_get, 0 };
-static SwigPyGetSet sqli_state_pat_getset = { _wrap_sqli_state_pat_get, 0 };
 static SwigPyGetSet sqli_state_slen_getset = { _wrap_sqli_state_slen_get, 0 };
 static SwigPyGetSet sqli_state_stats_comment_ddw_getset = { _wrap_sqli_state_stats_comment_ddw_get, 0 };
 static SwigPyGetSet sqli_state_stats_comment_ddx_getset = { _wrap_sqli_state_stats_comment_ddx_get, 0 };
@@ -5001,6 +5001,8 @@ SWIGINTERN PyGetSetDef SwigPyBuiltin__libinjection_sqli_state_getset[] = {
 ,
     { (char*) "lookup", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.lookup", (void*) &sqli_state_lookup_getset }
 ,
+    { (char*) "fingerprint", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.fingerprint", (void*) &sqli_state_fingerprint_getset }
+,
     { (char*) "flags", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.flags", (void*) &sqli_state_flags_getset }
 ,
     { (char*) "userdata", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.userdata", (void*) &sqli_state_userdata_getset }
@@ -5012,8 +5014,6 @@ SWIGINTERN PyGetSetDef SwigPyBuiltin__libinjection_sqli_state_getset[] = {
     { (char*) "current", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.current", (void*) &sqli_state_current_getset }
 ,
     { (char*) "s", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.s", (void*) &sqli_state_s_getset }
-,
-    { (char*) "pat", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.pat", (void*) &sqli_state_pat_getset }
 ,
     { (char*) "slen", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.slen", (void*) &sqli_state_slen_getset }
 ,

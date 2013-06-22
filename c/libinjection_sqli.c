@@ -1620,13 +1620,13 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags)
 
     tlen = filter_fold(sql_state);
     for (i = 0; i < tlen; ++i) {
-        sql_state->pat[i] = sql_state->tokenvec[i].type;
+        sql_state->fingerprint[i] = sql_state->tokenvec[i].type;
     }
 
     /*
      * make the fingerprint pattern a c-string (null delimited)
      */
-    sql_state->pat[tlen] = CHAR_NULL;
+    sql_state->fingerprint[tlen] = CHAR_NULL;
 
     /*
      * check for 'X' in pattern, and then
@@ -1637,18 +1637,19 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags)
      * or other syntax that isn't consistent.
      * Should be very rare false positive
      */
-    if (strchr(sql_state->pat, 'X')) {
+    if (strchr(sql_state->fingerprint, 'X')) {
         /*  needed for SWIG */
-        memset((void*)sql_state->pat, 0, LIBINJECTION_SQLI_MAX_TOKENS + 1);
-        sql_state->pat[0] = 'X';
+        memset((void*)sql_state->fingerprint, 0, LIBINJECTION_SQLI_MAX_TOKENS + 1);
+        memset((void*)sql_state->tokenvec[0].val, 0, LIBINJECTION_SQLI_TOKEN_SIZE);
+
+        sql_state->fingerprint[0] = 'X';
 
         sql_state->tokenvec[0].type = 'X';
         sql_state->tokenvec[0].val[0] = 'X';
-        sql_state->tokenvec[0].val[1] = '\0';
         sql_state->tokenvec[1].type = CHAR_NULL;
     }
 
-    return sql_state->pat;
+    return sql_state->fingerprint;
 }
 
 
@@ -1678,7 +1679,7 @@ int libinjection_sqli_blacklist(sfilter* sql_state)
     char fp2[LIBINJECTION_SQLI_MAX_TOKENS + 2];
     char ch;
     size_t i;
-    size_t len = strlen(sql_state->pat);
+    size_t len = strlen(sql_state->fingerprint);
 
     if (len < 1) {
         sql_state->reason = __LINE__;
@@ -1694,7 +1695,7 @@ int libinjection_sqli_blacklist(sfilter* sql_state)
 
     fp2[0] = '0';
     for (i = 0; i < len; ++i) {
-        ch = sql_state->pat[i];
+        ch = sql_state->fingerprint[i];
         if (ch >= 'a' && ch <= 'z') {
             ch -= 0x20;
         }
@@ -1729,7 +1730,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
      *
      */
     char ch;
-    size_t tlen = strlen(sql_state->pat);
+    size_t tlen = strlen(sql_state->fingerprint);
 
     switch (tlen) {
     case 2:{
@@ -1738,7 +1739,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          * hard to tell from normal input...
          */
 
-        if (sql_state->pat[1] == TYPE_UNION) {
+        if (sql_state->fingerprint[1] == TYPE_UNION) {
             if (sql_state->stats_tokens == 2) {
                 /* not sure why but 1U comes up in Sqli attack
                  * likely part of parameter splitting/etc.
@@ -1871,8 +1872,8 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
          * and each string has data
          */
 
-        if (streq(sql_state->pat, "sos")
-            || streq(sql_state->pat, "s&s")) {
+        if (streq(sql_state->fingerprint, "sos")
+            || streq(sql_state->fingerprint, "s&s")) {
 
                 if ((sql_state->tokenvec[0].str_open == CHAR_NULL)
                     && (sql_state->tokenvec[2].str_close == CHAR_NULL)
@@ -1893,8 +1894,8 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                  */
                 sql_state->reason = __LINE__;
                 return FALSE;
-        } else if (streq(sql_state->pat, "s&n") || streq(sql_state->pat, "n&1") || streq(sql_state->pat, "1&1") ||
-                   streq(sql_state->pat, "1&v") || streq(sql_state->pat, "1&s")) {
+        } else if (streq(sql_state->fingerprint, "s&n") || streq(sql_state->fingerprint, "n&1") || streq(sql_state->fingerprint, "1&1") ||
+                   streq(sql_state->fingerprint, "1&v") || streq(sql_state->fingerprint, "1&s")) {
             /* 'sexy and 17' not sqli
              * 'sexy and 17<18'  sqli
              */
@@ -1902,7 +1903,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
-        } else if (streq(sql_state->pat, "so1")) {
+        } else if (streq(sql_state->fingerprint, "so1")) {
             if (sql_state->tokenvec[0].str_open != CHAR_NULL) {
                 /* "foo" -1 is ok, foo"-1 is not */
                 sql_state->reason = __LINE__;
@@ -1921,7 +1922,7 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
         break;
     }  /* case 3 */
     case 4:
-        if (streq(sql_state->pat, "s&1s")) {
+        if (streq(sql_state->fingerprint, "s&1s")) {
             /* look for   ...foo" and 1=1 `
              * where the ending string is actually a comment in
              * php mysql magic land.  This check is needed
@@ -1969,12 +1970,12 @@ int libinjection_is_sqli(sfilter * sql_state)
      */
     libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_NONE | FLAG_SQL_ANSI);
     if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
-                          sql_state->pat, strlen(sql_state->pat))) {
+                          sql_state->fingerprint, strlen(sql_state->fingerprint))) {
         return TRUE;
     } else if (reparse_as_mysql(sql_state)) {
         libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_NONE | FLAG_SQL_MYSQL);
         if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
-                              sql_state->pat, strlen(sql_state->pat))) {
+                              sql_state->fingerprint, strlen(sql_state->fingerprint))) {
             return TRUE;
         }
     }
@@ -1991,12 +1992,12 @@ int libinjection_is_sqli(sfilter * sql_state)
     if (memchr(s, CHAR_SINGLE, slen)) {
         libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_SINGLE | FLAG_SQL_ANSI);
         if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
-                              sql_state->pat, strlen(sql_state->pat))) {
+                              sql_state->fingerprint, strlen(sql_state->fingerprint))) {
             return TRUE;
         } else if (reparse_as_mysql(sql_state)) {
             libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_SINGLE | FLAG_SQL_MYSQL);
             if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
-                                  sql_state->pat, strlen(sql_state->pat))) {
+                                  sql_state->fingerprint, strlen(sql_state->fingerprint))) {
                 return TRUE;
             }
         }
@@ -2008,7 +2009,7 @@ int libinjection_is_sqli(sfilter * sql_state)
     if (memchr(s, CHAR_DOUBLE, slen)) {
         libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_DOUBLE | FLAG_SQL_MYSQL);
         if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
-                              sql_state->pat, strlen(sql_state->pat))) {
+                              sql_state->fingerprint, strlen(sql_state->fingerprint))) {
             return TRUE;
         }
     }

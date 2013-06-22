@@ -39,23 +39,23 @@ int main(int argc, const char* argv[])
 
     libinjection_sqli_fingerprint(&sf, FLAG_QUOTE_NONE | FLAG_SQL_ANSI);
     ok = libinjection_sqli_check_fingerprint(&sf);
-    fprintf(stdout, "plain-asni\t%s\t%s\n", sf.pat, ok ? "true": "false");
+    fprintf(stdout, "plain-asni\t%s\t%s\n", sf.fingerprint, ok ? "true": "false");
 
     libinjection_sqli_fingerprint(&sf, FLAG_QUOTE_NONE | FLAG_SQL_MYSQL);
     ok = libinjection_sqli_check_fingerprint(&sf);
-    fprintf(stdout, "plain-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
+    fprintf(stdout, "plain-mysql\t%s\t%s\n", sf.fingerprint, ok ? "true": "false");
 
     libinjection_sqli_fingerprint(&sf, FLAG_QUOTE_SINGLE | FLAG_SQL_ANSI);
     ok = libinjection_sqli_check_fingerprint(&sf);
-    fprintf(stdout, "single-ansi\t%s\t%s\n", sf.pat, ok ? "true": "false");
+    fprintf(stdout, "single-ansi\t%s\t%s\n", sf.fingerprint, ok ? "true": "false");
 
     libinjection_sqli_fingerprint(&sf, FLAG_QUOTE_SINGLE | FLAG_SQL_MYSQL);
     ok = libinjection_sqli_check_fingerprint(&sf);
-    fprintf(stdout, "single-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
+    fprintf(stdout, "single-mysql\t%s\t%s\n", sf.fingerprint, ok ? "true": "false");
 
     libinjection_sqli_fingerprint(&sf, FLAG_QUOTE_DOUBLE | FLAG_SQL_MYSQL);
     ok = libinjection_sqli_check_fingerprint(&sf);
-    fprintf(stdout, "double-mysql\t%s\t%s\n", sf.pat, ok ? "true": "false");
+    fprintf(stdout, "double-mysql\t%s\t%s\n", sf.fingerprint, ok ? "true": "false");
 
     return 0;
 }
