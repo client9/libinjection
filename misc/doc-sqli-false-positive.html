@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block body %}
+<h1 id='libinjection_sqli_false_positives'>libinjection SQLi False Positives</h1>
+
+<p>Due to the nature of SQL and how databases, some very benign looking queries are sometimes flagged as SQLi. As an example:</p>
+
+<pre><code>I &#39;LIKE&#39; YOU</code></pre>
+
+<p>While it looks benign, actually it will execute as a SQLi and can be used to scan the contents of a table (the <code>LIKE</code> operator with two strings).</p>
+
+<p>Fortunately, most false-positives like this are limited to a few fingerprints and can be turned off with out effecting detection of other SQLi attacks.</p>
+
+<h2 id='how_to_do_i_turn_off_a_particular_fingerprint'>How to do I turn off a particular fingerprint</h2>
+
+<p>TK</p>
+
+<h2 id='what_are_common_false_positives'>What are common False Positives</h2>
+
+<p>TK: Current False positives on Jenkins</p>
+
+<h2 id='how_do_i_report_a_false_positive'>How do I report a false positive?</h2>
+
+<p>The best way is filing a bug report on<a href='https://github.com/client9/libinjection/issues'>GitHub</a>, or a new message on <a href='https://groups.google.com/d/forum/libinjection'>Google Groups</a>.</p>
+
+<p>Please include:</p>
+
+<ul>
+<li>The WebServer and Platform you are using (some platforms alter characters)</li>
+
+<li>The full query string</li>
+
+<li>Any information you have on character encoding (is this UTF-8? or something else)</li>
+
+<li>Your twitter or other contact details if your want <a href='/bypass'>public credit</a>.</li>
+</ul>
+{% end %}

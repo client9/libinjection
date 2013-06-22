@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block body %}
+<h1 id='libinjection_false_negatives'>libinjection False Negatives</h1>
+
+<p>Here&#8217;s some common reasons why a &#8216;false negative&#8217; might be occuring:</p>
+
+<h3 id='input_isnt_valid_sql'>Input isn&#8217;t valid SQL</h3>
+
+<p>If the input does not, or is unlikely, to properly excute then libinjection will not mark it as SQLi. In other words, if it won&#8217;t successfully execute an attack, it&#8217;s not marked at SQLi. It will likely cause a syntax error or some other error in the database, and those can be detected in a different way.</p>
+
+<p>Many SQLi scanners emit invalid SQL or broken SQL, and it&#8217;s very easy to make invalid SQL if you are manually hacking.</p>
+
+<p>This may be unlike other WAFs you have that used that do &#8220;if it looks like SQLi, then it is SQLi&#8221;. libinjection actually checks to make sure it <em>is</em> sql.</p>
+
+<p>There are a few invalid SQLs inputs that are detected anyways, mostly as a preventative measure incase of mistakes or incomplete SQL parsing.</p>
+
+<h3 id='urldecoding_problems_and_use_of_'>URL-decoding problems and use of &#8217;+&#8217;</h3>
+
+<p>If modifying the query string directly, please check to make sure any &#8217;+&#8217; are being correctly being decoded into &#8217;+&#8217; and not a space character. When this happens, the SQL is frequently modified into something that will cause a syntax error and will not be detected. Try changing the use of &#8217;+&#8217; to &#8216;-&#8217; and see if this helps.</p>
+
+<h3 id='use_of_fancy_unicode_quotes'>Use of fancy unicode quotes</h3>
+
+<p>A SQLi example that is cut-n-paste from a wordpress site frequently has fancy unicode quotes instead of normal single or double quotes. For example <a href='http://penturalabs.wordpress.com/2013/06/18/oracle-sqli-advisory-cve-2013-2397/'>this report</a> has the SQLi <a href='/diagnostics?id=1′%29+UNION+ALL+SELECT+%0D%0ACHR%2858%29+%7C%7C+CHR%28112%29+%7C%7C+CHR%28111%29+%7C%7C+CHR%28109%29+%7C%7C+CHR%2858%29+%7C%7C+CHR%2875%29+%7C%7C+CHR%2876%29+%7C%7C+CHR%2890%29+%7C%7C+CHR%2877%29+%7C%7C+CHR%2868%29+%7C%7C+CHR%2883%29+%7C%7C+CHR%2899%29+%7C%7C+CHR%2888%29+%7C%7C+CHR%28104%29+%7C%7C+CHR%28103%29+%7C%7C+CHR%2858%29+%7C%7C+CHR%2897%29+%7C%7C+CHR%28108%29+%7C%7C+CHR%28117%29+%7C%7C+CHR%2858%29%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL+FROM+DUAL+--'>1</a>, <a href='/diagnostics?id=1′%29+UNION+ALL+SELECT+%0D%0ACHR%2858%29+%7C%7C+CHR%28112%29+%7C%7C+CHR%28111%29+%7C%7C+CHR%28109%29+%7C%7C+CHR%2858%29+%7C%7C+CHR%2875%29+%7C%7C+CHR%2876%29+%7C%7C+CHR%2890%29+%7C%7C+CHR%2877%29+%7C%7C+CHR%2868%29+%7C%7C+CHR%2883%29+%7C%7C+CHR%2899%29+%7C%7C+CHR%2888%29+%7C%7C+CHR%28104%29+%7C%7C+CHR%28103%29+%7C%7C+CHR%2858%29+%7C%7C+CHR%2897%29+%7C%7C+CHR%28108%29+%7C%7C+CHR%28117%29+%7C%7C+CHR%2858%29%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL+FROM+DUAL+--'>2</a> that start with:</p>
+
+<pre><code>1′) UNION ALL SELEC</code></pre>
+
+<p>Note the ′unicode character &#8211; that&#8217;snot a ASCII &#8221; or a &#8216;. These alternative quotes are not recoqnized by any SQL engine. Converting the unicode quotes to single or double quote normally allows detection to procede normally. For example, the corrected queries <a href='/diagnostics?id=1%27%29+UNION+ALL+SELECT+%0D%0ACHR%2858%29+%7C%7C+CHR%28112%29+%7C%7C+CHR%28111%29+%7C%7C+CHR%28109%29+%7C%7C+CHR%2858%29+%7C%7C+CHR%2875%29+%7C%7C+CHR%2876%29+%7C%7C+CHR%2890%29+%7C%7C+CHR%2877%29+%7C%7C+CHR%2868%29+%7C%7C+CHR%2883%29+%7C%7C+CHR%2899%29+%7C%7C+CHR%2888%29+%7C%7C+CHR%28104%29+%7C%7C+CHR%28103%29+%7C%7C+CHR%2858%29+%7C%7C+CHR%2897%29+%7C%7C+CHR%28108%29+%7C%7C+CHR%28117%29+%7C%7C+CHR%2858%29%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL%2C+NULL+FROM+DUAL+--'>1</a>, <a href='/diagnostics?id=1%27%29+AND+1684%3DDBMS_PIPE.RECEIVE_MESSAGE%28CHR%2875%29+%7C%7C+CHR%28106%29+%7C%7C+CHR%2890%29+%7C%7C+CHR%28100%29%2C5%29+AND+%28%27TGzC%27%3D%27TGzC%27'>2</a> are detected correctly.</p>
+
+<h3 id='the_sqli_is_really_short'>The SQLi is really short</h3>
+
+<p>A few really small SQLi might not be detected since due to high incidence of false positives, or inability to tell if the input is malicious or just normal input. Most of these SQLi examples are fairly benign and not interesting.</p>
+
+<h3 id='you_found_an_true_bypass'>You found an true bypass!</h3>
+
+<p>Congratulations. Please tell us more using the <a href='#how_do_i_report_a_bypass'>next section</a>.</p>
+
+<h2 id='how_do_i_report_a_bypass'>How do I report a bypass?</h2>
+
+<p>The best way is filing a bug report on<a href='https://github.com/client9/libinjection/issues'>GitHub</a>, or a new message on <a href='https://groups.google.com/d/forum/libinjection'>Google Groups</a>.</p>
+
+<p>Please include:</p>
+
+<ul>
+<li>The database and database version you think you are using.</li>
+
+<li>The full SQL query with your injection.</li>
+
+<li>Any information character encoding (is this UTF-8? or something else)</li>
+
+<li>Your twitter or other contact details if your want <a href='/bypass'>public credit</a>.</li>
+</ul>
+
+<p>Ideally you can cut and paste the output from the database.</p>
+
+<p>Thanks!</p>
+{% end %}
