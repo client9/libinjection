@@ -118,10 +118,11 @@ class PageHandler(tornado.web.RequestHandler):
     def get(self, pagename):
         if pagename == '':
             pagename = 'home'
-        try:
-            self.render(pagename + ".html")
-        except IOError:
-            self.set_status(404)
+
+        self.render(
+            pagename + '.html',
+            title = pagename.replace('-',' ')
+        )
 
 class XssTestHandler(tornado.web.RequestHandler):
     def get(self):
@@ -133,11 +134,14 @@ class XssTestHandler(tornado.web.RequestHandler):
 
         qsl = [ x.split('=', 1) for x in self.request.query.split('&') ]
         for kv in qsl:
+            print kv
             try:
                 index = int(kv[0])
-                args[index] = tornado.escape.url_unescape(kv[1])
-            except:
-                pass
+                val = tornado.escape.url_unescape(kv[1])
+                print "XXX", index, val
+                args[index] = val
+            except Exception,e:
+                print e
         self.write(ldr.load('xsstest.html').generate(args=args))
 
 class DaysSinceHandler(tornado.web.RequestHandler):
@@ -287,7 +291,7 @@ application = tornado.wsgi.WSGIApplication([
     (r"/xsstest", XssTestHandler),
     (r'/robots.txt', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
     (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
-    (r"/([a-z]*)", PageHandler)
+    (r"/([a-z-]*)", PageHandler)
     ], **settings)
 
 

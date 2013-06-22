@@ -9,8 +9,17 @@
 <input type="submit" name="type" value="tokens"></input>
 </form>
 {% if len(args) %}
-<h2>SQLi Detected: {{ is_sqli }}</h2>
-
+<div>
+<h2 style="float:left">SQLi Detected: {{ is_sqli }} </h2>
+<div style="float:right; font-size: large; margin: 10px; padding: 6px; border: 0px solid black; background-color: #eee">
+{% if is_sqli %}
+<a href="/doc-sqli-false-positive">Is this wrong?</a>
+{% else %}
+<a href="/doc-sqli-false-negative">Is this wrong?</a>
+{% end %}
+</div>
+</div>
+<br style="clear:both">
 <table>
 <tr><th>name</th><th>value</th><th>sqli?</th><th>fingerprint</th></tr>
 {% for arg in args %}
@@ -24,9 +33,9 @@
 </table>
 {% end %}
 
+
 <hr/>
 <h2>Fingerprints in all contexts</h2>
-
 
 {% for name, v in allfp.iteritems() %}
 

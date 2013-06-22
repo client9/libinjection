@@ -1,5 +1,5 @@
-libinjection False Negatives
-============================
+libinjection SQLi False Negatives
+=================================
 
 Here's some common reasons why a 'false negative' might be occuring:
 
