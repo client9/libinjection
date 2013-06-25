@@ -105,7 +105,7 @@ def alltokens(val, flags):
     args = []
     fingerprint = libinjection.sqli_fingerprint(sqlstate, flags)
     vec = sqlstate.tokenvec
-    for i in range(len(sqlstate.pat)):
+    for i in range(len(sqlstate.fingerprint)):
         args.append(print_token(vec[i]))
     parse['folds'] = args
     parse['sqli'] = bool(libinjection.sqli_blacklist(sqlstate) and libinjection.sqli_not_whitelist(sqlstate))
@@ -263,7 +263,7 @@ class NullHandler(tornado.web.RequestHandler):
                 qssqli = qssqli or issqli
                 val = breakapart(val)
 
-                pat = sqlstate.pat
+                pat = sqlstate.fingerprint
                 if not issqli:
                     pat = 'see below'
                 args.append([name, val, issqli, pat])
