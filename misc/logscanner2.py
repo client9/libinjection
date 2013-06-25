@@ -62,7 +62,7 @@ def doline(line):
 
     sqli = bool(libinjection.is_sqli(sstate))
 
-    return (target, sqli, sstate.pat, data['remote_ip'])
+    return (target, sqli, sstate.fingerprint, data['remote_ip'])
 
 
 if __name__ == '__main__':
@@ -70,8 +70,13 @@ if __name__ == '__main__':
 {"timestamp":1371091563,"remote_ip":"219.110.171.2","request":"/diagnostics?id=1+UNION+ALL+SELECT+1<<<&type=fingerprints","method":"GET","status":200,"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/536.30.1","referrer":"https://libinjection.client9.com/diagnostics","duration_usec":160518 }
 {"timestamp":1371091563,"remote_ip":"219.110.171.2","request":"/diagnostics?id=2+UNION+ALL+SELECT+1<<<&type=fingerprints","method":"GET","status":200,"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/536.30.1","referrer":"https://libinjection.client9.com/diagnostics","duration_usec":160518 }
 """
+    if len(sys.argv) == 1:
+        fname = '/var/log/apache2/access-json.log'
+    else:
+        fname = sys.argv[1]
+    
     #fh = s.strip().split("\n")
-    fh = open('/var/log/apache2/access-json.log', 'r')
+    fh = open(fname, 'r')
 
     targets = set()
     table = []
