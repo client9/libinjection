@@ -1,152 +1,142 @@
 {% extends "base.html" %}
 {% block body %}
-<p>The python API follows C API exactly and you have full access to all
-data structures.  It&#39;s not that complicated but it it is not very
+<h1>
+<a name="libinjection-python-api" class="anchor" href="#libinjection-python-api"><span class="octicon octicon-link"></span></a>libinjection python API</h1>
+
+<p>The python API follows C API exactly, and you have full access to all
+data structures.  It's not that complicated, but it is also not very
 pythonic. Future versions of the API will likely include some object
 wrapper to make it more simple and prevent bugs.</p>
 
 <p>You should get nearly 400,000 checks per second using the python API.</p>
 
-<h2>Install the python module</h2>
+<h2>
+<a name="install-the-python-module" class="anchor" href="#install-the-python-module"><span class="octicon octicon-link"></span></a>Install the python module</h2>
 
-<p><code>
-git clone https://github.com/client9/libinjection.git
+<pre><code>git clone https://github.com/client9/libinjection.git
 cd libinjection/python
 python setup.py install
-</code></p>
+</code></pre>
 
 <p>Note, if it complains about SWIG missing, then  TBD... you
-don&#39;t actually need SWIG installed but...  TBD.</p>
+don't actually need SWIG installed but...  TBD.</p>
 
-<h2>Using libinjection</h2>
+<h2>
+<a name="using-libinjection" class="anchor" href="#using-libinjection"><span class="octicon octicon-link"></span></a>Using libinjection</h2>
 
-<p>```python
-from libinjection import *</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">libinjection</span> <span class="kn">import</span> <span class="o">*</span>
 
-<h1>create the data object</h1>
+<span class="c"># create the data object</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">sqli_state</span><span class="p">()</span>
 
-<p>s = sqli_state()</p>
+<span class="c"># initialize it</span>
+<span class="c"># last arg should be 0 for now.</span>
+<span class="n">astr</span> <span class="o">=</span> <span class="s">"1 UNION ALL SELECT 1"</span>
+<span class="n">sqli_init</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">astr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-<h1>initialize it</h1>
+<span class="c"># check!  return 1 = is sql, 0 is not sqli</span>
+<span class="n">issqli</span> <span class="o">=</span> <span class="n">is_sqli</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
-<h1>last arg should be 0 for now.</h1>
+<span class="c"># you might wish to turn it into a bool by doing</span>
+<span class="c"># issqli = bool(is_sqli(s))</span>
 
-<p>astr = &quot;1 UNION ALL SELECT 1&quot;
-sqli_init(s, astr, 0)</p>
+<span class="c"># if it's true, then you can get the SQLi fingerprint</span>
+<span class="c"># by looking in the state object</span>
 
-<h1>check!  return 1 = is sql, 0 is not sqli</h1>
+<span class="k">print</span> <span class="n">s</span><span class="o">.</span><span class="n">fingerprint</span>
 
-<p>issqli = is_sqli(s)</p>
+<span class="c"># reset and do it again</span>
+<span class="c">#   again last argument should be 0</span>
+<span class="n">astr</span> <span class="o">=</span> <span class="s">"here's a new input"</span>
+<span class="n">sqli_reset</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">astr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-<h1>you might wish to turn it into a bool by doing</h1>
+<span class="n">is_sqli</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
-<h1>issqli = bool(is_sqli(s))</h1>
+</pre></div>
 
-<h1>if it&#39;s true, then you can get the SQLi fingerprint</h1>
-
-<h1>by looking in the state object</h1>
-
-<p>print s.fingerprint</p>
-
-<h1>reset and do it again</h1>
-
-<h1>again last argument should be 0</h1>
-
-<p>astr = &quot;here&#39;s a new input&quot;
-sqli_reset(s, astr, 0)</p>
-
-<p>is_sqli(s)</p>
-
-<p>```</p>
-
-<h2>warning</h2>
+<h2>
+<a name="warning" class="anchor" href="#warning"><span class="octicon octicon-link"></span></a>warning</h2>
 
 <p>This is probably a bug, but for now, the input string must not change
-or get destroyed between the sqli<em>init (or sqli</em>reset) call and when
-you call is_sqli.  While annoying, this prevents having to make a
-string copy, which would slow things down.</p>
+or get destroyed between the <code>sqli_init</code> (or <code>sqli_reset</code>) call and when
+you call <code>is_sqli</code>.  While annoying, this prevents libinjection from
+having to make an internal copy of the string, which would slow things down.</p>
 
-<p>For instance:</p>
+<p>The following example might crash:</p>
 
-<p>```python
-s = sqli_state()</p>
+<div class="highlight"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">sqli_state</span><span class="p">()</span>
 
-<p>astr = &quot;something&quot;
-sqli_init(s, astr, 0)</p>
+<span class="n">astr</span> <span class="o">=</span> <span class="s">"something"</span>
+<span class="n">sqli_init</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">astr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-<p>astr = None</p>
+<span class="n">astr</span> <span class="o">=</span> <span class="bp">None</span>
 
-<p>is_sqli(s)
-```</p>
+<span class="n">is_sqli</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
 
-<p>If python crashes when using libinjection, this is why.</p>
+<h2>
+<a name="advanced-callbacks" class="anchor" href="#advanced-callbacks"><span class="octicon octicon-link"></span></a>Advanced Callbacks</h2>
 
-<h2>Advanced Callbacks</h2>
-
-<p>By default, libinjection&#39;s SQLi module has a built-in list of
+<p>By default, libinjection's SQLi module has a built-in list of
 known-sql tokens and known SQLi fingerprints.  Using the callback
 functionality, you are able to replace and change this list.</p>
 
-<p>The main use-case is to rapidly update the SQL token and SQLi
-fingerprint list without having the end-user do a full libinjection
+<p>This allows an application to distribute a new SQL token and SQLi
+fingerprint list without the end-user doing a full libinjection
 upgrade.</p>
 
 <p>Unfortunately, by using the callbacks, the performance drops by over
-50%.  However it may be useful in some situations.</p>
+50%.  Still, it may be useful in some situations.</p>
 
-<p>The current unit-test driver uses this callback, and it&#39;s maybe
+<p>The current unit-test driver uses this callback, and it's maybe
 easiest explaining it with code.</p>
 
-<p>First a small program <code>json2python.py</code> coverts the raw JSON file
+<p>A small program <code>json2python.py</code> converts the raw JSON file
 containing all the data the C program uses into python.  To
-use it</p>
+use it:</p>
 
-<p><code>
-cd libinjection/python
+<pre><code>cd libinjection/python
 make words.py
-</code></p>
+</code></pre>
 
 <p>The output file <code>words.py</code> starts like this:</p>
 
-<p>```
-import libinjection</p>
+<pre><code>import libinjection
 
-<p>def lookup(state, stype, keyword):
+def lookup(state, stype, keyword):
     keyword = keyword.upper()
-    if stype == libinjection.LOOKUP<em>FINGERPRINT:
-        if keyword in fingerprints and libinjection.sqli</em>not_whitelist(state):
-            return &#39;F&#39;
+    if stype == libinjection.LOOKUP_FINGERPRINT:
+        if keyword in fingerprints and libinjection.sqli_not_whitelist(state):
+            return 'F'
         else:
             return chr(0)
     return words.get(keyword, chr(0))
-```</p>
+</code></pre>
 
 <p>The input is:</p>
 
 <ul>
-<li><code>sqli_state</code> object</li>
-<li>a lookup type.  The only value that matter is <code>libinjection.LOOKUP_FINGERPRINT</code></li>
+<li>
+<code>sqli_state</code> object</li>
+<li>a lookup type.  The only value that matter is <code>libinjection.LOOKUP_FINGERPRINT</code>
+</li>
 <li>the word to look-up</li>
-</ul>
+</ul><p>The output is a string of length 1 (a single character).  If it's "\0" (i.e. <code>chr(0)</code>), then
+it means "nothing matched" or "not found"</p>
 
-<p>The output is a string of length 1 (a single character).  If it&#39;s &quot;\0&quot; (i.e. <code>chr(0)</code>), then
-it means &quot;nothing matched&quot; or &quot;not found&quot;</p>
-
-<p>This is likely to change in V4 of libinjection to nicer but, today,
+<p>This is likely to change in version 4 of libinjection to be nicer but, today,
 this is what it is.</p>
 
 <p>Of note is this line:</p>
 
-<p><code>python
-if keyword in fingerprints and libinjection.sqli_not_whitelist(state):
-</code></p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">fingerprints</span> <span class="ow">and</span> <span class="n">libinjection</span><span class="o">.</span><span class="n">sqli_not_whitelist</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+</pre></div>
 
-<p>The C version of the code contains some logic to try and remove false
+<p>The C version of the code contains some logic that removes false
 positives from a few fingerprint types.  You can reuse this logic in
-python by calling <code>sqli_not_whitelist</code> which returns <code>true</code> if it&#39;s
-SQLi.  For more control it would be best to re-implement this logic in
-python (and probably faster too).</p>
+python by calling <code>sqli_not_whitelist</code> which returns <code>true</code> if it's
+SQLi.  For more control, it is best to re-implement this logic in
+python (and it is probably faster too).</p>
 
-<p>Also note: if your callback throws exceptions or doesn&#39;t follow the
-API exactly, python is likely to crash.</p>
-{% end %}
+<p>Also, if your callback raises exceptions or doesn't follow the
+API exactly, python is likely to crash.</p>{% end %}

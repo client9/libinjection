@@ -1,6 +1,8 @@
+libinjection python API
+=================================
 
-The python API follows C API exactly and you have full access to all
-data structures.  It's not that complicated but it it is not very
+The python API follows C API exactly, and you have full access to all
+data structures.  It's not that complicated, but it is also not very
 pythonic. Future versions of the API will likely include some object
 wrapper to make it more simple and prevent bugs.
 
@@ -57,11 +59,11 @@ warning
 ----------------------------
 
 This is probably a bug, but for now, the input string must not change
-or get destroyed between the sqli_init (or sqli_reset) call and when
-you call is_sqli.  While annoying, this prevents having to make a
-string copy, which would slow things down.
+or get destroyed between the `sqli_init` (or `sqli_reset`) call and when
+you call `is_sqli`.  While annoying, this prevents libinjection from
+having to make an internal copy of the string, which would slow things down.
 
-For instance:
+The following example might crash:
 
 ```python
 s = sqli_state()
@@ -74,9 +76,6 @@ astr = None
 is_sqli(s)
 ```
 
-If python crashes when using libinjection, this is why.
-
-
 Advanced Callbacks
 ----------------------------
 
@@ -84,19 +83,19 @@ By default, libinjection's SQLi module has a built-in list of
 known-sql tokens and known SQLi fingerprints.  Using the callback
 functionality, you are able to replace and change this list.
 
-The main use-case is to rapidly update the SQL token and SQLi
-fingerprint list without having the end-user do a full libinjection
+This allows an application to distribute a new SQL token and SQLi
+fingerprint list without the end-user doing a full libinjection
 upgrade.
 
 Unfortunately, by using the callbacks, the performance drops by over
-50%.  However it may be useful in some situations.
+50%.  Still, it may be useful in some situations.
 
 The current unit-test driver uses this callback, and it's maybe
 easiest explaining it with code.
 
-First a small program `json2python.py` coverts the raw JSON file
+A small program `json2python.py` converts the raw JSON file
 containing all the data the C program uses into python.  To
-use it
+use it:
 
 ```
 cd libinjection/python
@@ -127,7 +126,7 @@ The input is:
 The output is a string of length 1 (a single character).  If it's "\0" (i.e. `chr(0)`), then
 it means "nothing matched" or "not found"
 
-This is likely to change in V4 of libinjection to nicer but, today,
+This is likely to change in version 4 of libinjection to be nicer but, today,
 this is what it is.
 
 Of note is this line:
@@ -136,11 +135,11 @@ Of note is this line:
 if keyword in fingerprints and libinjection.sqli_not_whitelist(state):
 ```
 
-The C version of the code contains some logic to try and remove false
+The C version of the code contains some logic that removes false
 positives from a few fingerprint types.  You can reuse this logic in
 python by calling `sqli_not_whitelist` which returns `true` if it's
-SQLi.  For more control it would be best to re-implement this logic in
-python (and probably faster too).
+SQLi.  For more control, it is best to re-implement this logic in
+python (and it is probably faster too).
 
-Also note: if your callback throws exceptions or doesn't follow the
+Also, if your callback raises exceptions or doesn't follow the
 API exactly, python is likely to crash.

@@ -1,14 +1,14 @@
 libinjection SQLi False Negatives
 =================================
 
-Here's some common reasons why a 'false negative' might be occuring:
+Here are some common reasons why a 'false negative' might be occurring:
 
 ### Input isn't valid SQL
 
-If the input does not, or is unlikely, to properly excute then
+If the input is unlikely to be a valid SQL fragment, then
 libinjection will not mark it as SQLi.  In other words, if it won't
-successfully execute an attack, it's not marked at SQLi.  It will likely
-cause a syntax error or some other error in the database, and those
+successfully execute an attack, it's not marked as SQLi.  It will likely
+cause a syntax error or some other error in the database and those
 can be detected in a different way.
 
 Many SQLi scanners emit invalid SQL or broken SQL, and it's very easy
@@ -18,14 +18,14 @@ This may be unlike other WAFs you have that used that do "if it looks
 like SQLi, then it is SQLi".  libinjection actually checks to make
 sure it _is_ sql.
 
-There are a few invalid SQLs inputs that are detected anyways, mostly
-as a preventative measure incase of mistakes or incomplete SQL
+There are a few invalid SQLi inputs that are detected anyway, mostly
+as a preventative measure in case of coding mistakes or incomplete SQL
 parsing.
 
 
 ### URL-decoding problems and use of '+'
 
-If modifying the query string directly, please check to make sure any
+If modifying the query string directly, please check to make sure that
 '+' are being correctly being decoded into '+' and not a space
 character.  When this happens, the SQL is frequently modified into
 something that will cause a syntax error and will not be detected.
@@ -33,17 +33,17 @@ Try changing the use of '+' to '-' and see if this helps.
 
 ### Use of fancy unicode quotes
 
-A SQLi example that is cut-n-paste from a wordpress site frequently
+A SQLi example that is cut-n-paste from a Wordpress site frequently
 has fancy unicode quotes instead of normal single or double
-quotes. For example [this report][cve20132397] has the SQLi [1][bad1],
+quotes. For example, [this report][cve20132397] has the SQLi [1][bad1],
 [2][bad2] that start with:
 
-    1′) UNION ALL SELEC
+    1′) UNION ALL SELET
 
-Note the ′unicode character -- that'snot a ASCII " or a '. These
-alternative quotes are not recoqnized by any SQL engine.  Converting
-the unicode quotes to single or double quote normally allows detection
-to procede normally.  For example, the corrected queries [1][fix1],
+Note the Unicode character -- that's not a ASCII " or a '. These
+alternative quotes are not recognized by any SQL engine.  Converting
+the Unicode quotes to single or double quote normally allows detection
+to proceed normally.  For example, the corrected queries [1][fix1],
 [2][fix2] are detected correctly.
 
 [cve20132397]: http://penturalabs.wordpress.com/2013/06/18/oracle-sqli-advisory-cve-2013-2397/
@@ -58,19 +58,20 @@ to procede normally.  For example, the corrected queries [1][fix1],
 
 ### The SQLi is really short
 
-A few really small SQLi might not be detected since due to high
+A few very short SQLi might not be detected due to a high
 incidence of false positives, or inability to tell if the input is
 malicious or just normal input.  Most of these SQLi examples are
 fairly benign and not interesting.
 
-### You found an true bypass!
+### You found a true bypass!
 
 Congratulations.  Please tell us more using the [next section](#how_do_i_report_a_bypass).
 
 How do I report a bypass?
 -------------------------
 
-The best way is filing a bug report on[GitHub](https://github.com/client9/libinjection/issues), or a new message on [Google Groups](https://groups.google.com/d/forum/libinjection).
+The best way is filing a bug report on [GitHub](https://github.com/client9/libinjection/issues), or a new
+message on [Google Groups](https://groups.google.com/d/forum/libinjection).
 
 Please include:
 
@@ -79,6 +80,6 @@ Please include:
 * Any information character encoding (is this UTF-8? or something else)
 * Your twitter or other contact details if your want [public credit](/bypass).
 
-Ideally you can cut and paste the output from the database.
+Ideally you can cut-n-paste the output from the database.
 
 Thanks!

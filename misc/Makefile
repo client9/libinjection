@@ -1,9 +1,10 @@
 
 all:site
 
-PAGES = doc-sqli-false-negative.html doc-sqli-false-positive.html doc-sqli-references.html doc-sqli-python.html
+PAGES = doc-sqli-false-negative.html doc-sqli-false-positive.html doc-sqli-references.html \
+	doc-sqli-python.html doc.html
 
-%.html: %.md
+%.html: %.md base.html
 	echo $<
 	./mdgen.sh $< > $@
 
