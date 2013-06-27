@@ -8,8 +8,10 @@ python: copy
 	python setup.py --verbose build --force
 	sudo python setup.py --verbose install
 
-test-unit: copy
-	./sqlparse2c.py < ../c/sqlparse_data.json > words.py
+words.py: Makefile json2python.py ../c/sqlparse_data.json
+	./json2python.py < ../c/sqlparse_data.json > words.py
+
+test-unit: copy words.py
 	python setup.py build_ext --inplace
 	PYTHON_PATH='.' nosetests -v --with-xunit test_driver.py
 

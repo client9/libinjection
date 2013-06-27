@@ -1125,6 +1125,15 @@ static size_t parse_number(sfilter * sf)
         }
     }
 
+    /* oracle's ending float or double suffix
+     * http://docs.oracle.com/cd/B19306_01/server.102/b14200/sql_elements003.htm#i139891
+     */
+    if (pos < slen) {
+        if (cs[pos] == 'd' || cs[pos] == 'D' || cs[pos] == 'f' || cs[pos] == 'F') {
+            pos += 1;
+        }
+    }
+
     st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);
     return pos;
 }
