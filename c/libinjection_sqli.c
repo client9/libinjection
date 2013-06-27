@@ -181,9 +181,10 @@ static int char_is_white(char ch) {
        '\v' 0x0b \013 verical tab
        '\f' 0x0c \014 new page
        '\r' 0x0d \015 carriage return
+            0x00 \000 null (oracle)
             0xa0 \240 is latin1
     */
-    return strchr(" \t\n\v\f\r\240", ch) != NULL;
+    return strchr(" \t\n\v\f\r\240\000", ch) != NULL;
 }
 
 /* DANGER DANGER
