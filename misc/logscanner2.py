@@ -29,7 +29,14 @@ def breakify(s):
 
 def doline(line):
 
-    data = json.loads(line)
+    try:
+        line = line.replace("\\x", "%")
+        data = json.loads(line)
+    except ValueError, e:
+        sys.stderr.write("BAD LINE: " + line)
+        sys.stderr.write(e)
+        sys.exit(1)
+
     if  not data['request'].startswith("/diagnostics"):
         return None
 
