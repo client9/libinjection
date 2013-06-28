@@ -28,7 +28,10 @@ help:
 	@echo "make fptool -- a fingerprinting tool"
 	@echo ""
 
-allbin: reader sqli fptool
+allbin: reader sqli fptool example1
+
+example1: Makefile example1.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
+	${CC}  ${CFLAGS} -o example1 libinjection_sqli.c example1.c
 
 reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${CC}  ${CFLAGS} -o reader libinjection_sqli.c reader.c
