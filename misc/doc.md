@@ -6,5 +6,5 @@ libinjection documentation
 * lua api (TBD)
 * [false positives](/doc-sqli-false-positive)
 * [false negatives](/doc-sqli-false-negative)
-* [sqli references](/doc-sqli-references)
+* [references](/doc-references)
 
