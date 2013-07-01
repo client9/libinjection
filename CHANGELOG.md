@@ -1,5 +1,6 @@
 
-# v3.next 2013-06-28
+# v3.1.0 2013-07-02
+
 * Fix for parsing Oracle numeric literals
 * Fix for oracle whitespace with null char.
 * Add unusual SQL join types to keywords lists
