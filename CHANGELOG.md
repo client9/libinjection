@@ -1,3 +1,6 @@
+# v3.1.netx
+* Add fingerprints '1&EUE', '1&EkU' to work around ambiguous parsing rules
+  "-1.for" == '-1.f OR' vs. '-1. FOR'  CREDIT @LightOS
 
 # v3.1.0 2013-07-02
 
