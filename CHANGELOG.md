@@ -1,4 +1,5 @@
-# v3.1.netx
+# v3.1.next
+* Parse binary litterals "0b010101" used by at least mysql and pgsql
 * Add fingerprints '1&EUE', '1&EkU' to work around ambiguous parsing rules
   "-1.for" == '-1.f OR' vs. '-1. FOR'  CREDIT @LightOS
 

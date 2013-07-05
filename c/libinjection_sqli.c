@@ -1076,6 +1076,7 @@ static size_t parse_number(sfilter * sf)
 {
     size_t xlen;
     size_t start;
+    const char* digits = NULL;
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
@@ -1083,18 +1084,22 @@ static size_t parse_number(sfilter * sf)
     /* cs[pos] == '0' has 1/10 chance of being true,
      * while pos+1< slen is almost always true
      */
-    if (cs[pos] == '0' && pos + 1 < slen && (cs[pos + 1] == 'X' || cs[pos + 1] == 'x')) {
-        /*
-         * TBD compare if isxdigit
-         */
-        xlen =
-            strlenspn(cs + pos + 2, slen - pos - 2, "0123456789ABCDEFabcdef");
-        if (xlen == 0) {
-            st_assign(sf->current, TYPE_BAREWORD, pos, 2, cs + pos);
-            return pos + 2;
-        } else {
-            st_assign(sf->current, TYPE_NUMBER, pos, 2 + xlen, cs + pos);
-            return pos + 2 + xlen;
+    if (cs[pos] == '0' && pos + 1 < slen) {
+        if (cs[pos + 1] == 'X' || cs[pos + 1] == 'x') {
+            digits = "0123456789ABCDEFabcdef";
+        } else if (cs[pos + 1] == 'B' || cs[pos + 1] == 'b') {
+            digits = "01";
+        }
+
+        if (digits) {
+            xlen = strlenspn(cs + pos + 2, slen - pos - 2, digits);
+            if (xlen == 0) {
+                st_assign(sf->current, TYPE_BAREWORD, pos, 2, cs + pos);
+                return pos + 2;
+            } else {
+                st_assign(sf->current, TYPE_NUMBER, pos, 2 + xlen, cs + pos);
+                return pos + 2 + xlen;
+            }
         }
     }
 
