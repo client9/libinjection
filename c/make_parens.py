@@ -103,7 +103,7 @@ class PermuteFingerprints(object):
         if 'vvv' in s:
             return False
 
-        if 'vsn' in s:
+        if 'sn' in s:
             return False
         if '1vn' in s:
             return False
