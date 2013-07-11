@@ -542,3 +542,12 @@ binary _latin1 'true' COLLATE latin1_german2_ci is not unknown union select tabl
 binary true COLLATE latin1_german2_ci union select table_name from information_schema.tables
 1<binary 1>2 union select table_name from information_schema.tables limit 1
 binary 1 < binary 2 > binary 3 union select table_name from information_schema.tables limit 1
+
+binary (false) union select table_name from information_schema.tables limit 1
+1 - binary (false) union select table_name from information_schema.tables limit 1
+1 - (binary (false)) union select table_name from information_schema.tables limit 1
+binary binary 1 union select table_name from information_schema.tables
+binary -1 union select table_name from information_schema.tables
+binary -(1) union select table_name from information_schema.tables
+binary (binary 1) union select table_name from information_schema.tables
+binary (binary 1) union select table_name from information_schema.tables
