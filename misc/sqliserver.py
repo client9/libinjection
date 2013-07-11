@@ -16,7 +16,6 @@ import tornado.ioloop
 import tornado.web
 import tornado.wsgi
 import tornado.escape
-import wsgiref.simple_server
 
 def breakapart(s):
     """ attempts to add spaces in a SQLi so it renders nicely on the webpage
@@ -285,7 +284,7 @@ settings = {
     "gzip": False
 }
 
-application = tornado.wsgi.WSGIApplication([
+application = tornado.web.Application([
     (r"/diagnostics", NullHandler),
     (r"/days-since-last-bypass", DaysSinceHandler),
     (r"/xsstest", XssTestHandler),
@@ -301,6 +300,6 @@ if __name__ == "__main__":
     #tornado.options.parse_config_file("/etc/server.conf")
     tornado.options.parse_command_line()
 
-    server = wsgiref.simple_server.make_server('', 8888, application)
-    server.serve_forever()
+    application.listen(8888)
+    tornado.ioloop.IOLoop.instance().start()
 
