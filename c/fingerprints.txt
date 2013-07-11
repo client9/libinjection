@@ -1531,6 +1531,12 @@
 1kson
 1ksos
 1ksov
+1ktUE
+1kto(
+1kto1
+1ktof
+1ktos
+1ktov
 1kv
 1kv&(
 1kv&1
@@ -1785,6 +1791,7 @@
 1oskf
 1oskn
 1osks
+1oskt
 1oskv
 1oso(
 1oso1
@@ -1870,6 +1877,7 @@
 1ovkf
 1ovkn
 1ovks
+1ovkt
 1ovkv
 1ovo(
 1ovo1
@@ -3305,6 +3313,7 @@ f()kU
 f()kf
 f()kn
 f()ks
+f()kt
 f()kv
 f()n&
 f()n(
@@ -3548,7 +3557,6 @@ k1kf(
 k1knU
 k1ksU
 k1kso
-k1ktU
 k1kto
 k1kvU
 k1kvo
@@ -3613,7 +3621,6 @@ knkf(
 knknU
 knksU
 knkso
-knktU
 knkto
 knkvU
 knkvo
@@ -3638,7 +3645,6 @@ kskf(
 ksknU
 ksksU
 kskso
-ksktU
 kskto
 kskvU
 kskvo
@@ -3703,7 +3709,6 @@ kvkf(
 kvknU
 kvksU
 kvkso
-kvktU
 kvkto
 kvkvU
 kvkvo
@@ -5115,6 +5120,8 @@ nksof
 nkson
 nksos
 nksov
+nktUE
+nktov
 nkv
 nkv&(
 nkv&1
@@ -5299,6 +5306,7 @@ noskU
 noskf
 noskn
 nosks
+noskt
 noskv
 noso(
 noso1
@@ -5383,6 +5391,7 @@ novkU
 novkf
 novkn
 novks
+novkt
 novkv
 novo(
 novo1
@@ -6789,6 +6798,13 @@ sksof
 skson
 sksos
 sksov
+sktUE
+skto(
+skto1
+sktof
+skton
+sktos
+sktov
 skv
 skv&(
 skv&1
@@ -6928,6 +6944,7 @@ so1kU
 so1kf
 so1kn
 so1ks
+so1kt
 so1kv
 so1n&
 so1n(
@@ -7064,6 +7081,7 @@ sonkB
 sonkU
 sonkf
 sonks
+sonkt
 sonkv
 sono(
 sonoU
@@ -7147,6 +7165,7 @@ soskU
 soskf
 soskn
 sosks
+soskt
 soskv
 soso(
 soso1
@@ -7232,6 +7251,7 @@ sovkU
 sovkf
 sovkn
 sovks
+sovkt
 sovkv
 sovo(
 sovo1
@@ -8646,6 +8666,12 @@ vksof
 vkson
 vksos
 vksov
+vktUE
+vkto(
+vkto1
+vktof
+vktos
+vktov
 vkv
 vkv&(
 vkv&1
@@ -8786,6 +8812,7 @@ vo1kU
 vo1kf
 vo1kn
 vo1ks
+vo1kt
 vo1kv
 vo1n&
 vo1n(
@@ -8925,6 +8952,7 @@ vonkU
 vonkf
 vonkn
 vonks
+vonkt
 vonkv
 vono(
 vonoU
@@ -9008,6 +9036,7 @@ voskU
 voskf
 voskn
 vosks
+voskt
 voskv
 voso(
 voso1
@@ -9093,6 +9122,7 @@ vovkU
 vovkf
 vovkn
 vovks
+vovkt
 vovkv
 vovo(
 vovo1

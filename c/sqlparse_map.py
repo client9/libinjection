@@ -200,8 +200,8 @@ KEYWORDS = {
 'BIGINT'                      : 't',
 'BIGSERIAL'                   : 't',
 'BIN'                         : 'f',
-# TBD -- might be Type
-'BINARY'                      : 'k',
+# "select binary 1"  forward type operator
+'BINARY'                      : 't',
 'BINARY_DOUBLE_INFINITY'      : '1',
 'BINARY_DOUBLE_NAN'           : '1',
 'BINARY_FLOAT_INFINITY'       : '1',

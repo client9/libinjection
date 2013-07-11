@@ -1302,7 +1302,7 @@ int filter_fold(sfilter * sf)
 {
     stoken_t last_comment;
 
-    /* POS is the positive of where the NEXT token goes */
+    /* POS is the position of where the NEXT token goes */
     size_t pos = 0;
 
     /* LEFT is a count of how many tokens that are already
@@ -1349,7 +1349,7 @@ int filter_fold(sfilter * sf)
         }
         FOLD_DEBUG
         /* did we get 2 tokens? if not then we are done */
-        if (pos - left != 2) {
+        if (pos - left < 2) {
             left = pos;
             break;
         }
@@ -1465,10 +1465,9 @@ int filter_fold(sfilter * sf)
             st_copy(&sf->tokenvec[left], &sf->tokenvec[left+1]);
             pos -= 1;
             sf->stats_folds += 1;
+            left = 0;
             continue;
         }
-
-
 
         /* all cases of handing 2 tokens is done
            and nothing matched.  Get one more token
@@ -1488,7 +1487,7 @@ int filter_fold(sfilter * sf)
         }
 
         /* do we have three tokens? If not then we are done */
-        if (pos -left != 3) {
+        if (pos -left < 3) {
             left = pos;
             break;
         }
@@ -1520,7 +1519,7 @@ int filter_fold(sfilter * sf)
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER ||
                     sf->tokenvec[left].type == TYPE_VARIABLE || sf->tokenvec[left].type == TYPE_STRING) &&
-                   sf->tokenvec[left+1].type == TYPE_OPERATOR &&
+                   sf->tokenvec[left+1].type == TYPE_OPERATOR && streq(sf->tokenvec[left+1].val, "::") &&
                    sf->tokenvec[left+2].type == TYPE_SQLTYPE) {
             pos -= 2;
             sf->stats_folds += 2;
@@ -1574,7 +1573,9 @@ int filter_fold(sfilter * sf)
             if (left > 0) {
                 left -= 1;
             }
-            pos -=3;
+            /* pos is >= 3 so this is safe */
+            assert(pos >= 3);
+            pos -= 3;
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)&&
                    (sf->tokenvec[left+1].type == TYPE_BAREWORD  && sf->tokenvec[left+1].val[0] == '.') &&
