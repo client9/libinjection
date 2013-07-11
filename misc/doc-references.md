@@ -23,6 +23,9 @@ RSA USA: 2013-02-27:
 libinjection mentions
 ---------------------------
 
+[Reddit](http://www.reddit.com/r/netsec/comments/x5pmr/libinjection_c_library_to_detect_sqli_attacks/)
+sometime around 2012-07.
+
 [SQL Injection Obfuscation Libinjection](http://www.nsai.it/2012/11/21/sql-injection-obfuscation-libinjection/) in [National Security Alert Italia](http://www.nsai.it/), 2012-11-21
 
 
