@@ -64,7 +64,7 @@ when the proxy parses it becomes a syntax error.  In otherwords, the
 new query is effectively like this:
 
 ```
-SELECT * FROM atable WHERE id= 1 blah foo 1</code>
+SELECT * FROM atable WHERE id= 1 blah foo 1
 ```
 
 which won't execute.  The proxy then blocks this request.  Otherwise
