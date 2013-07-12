@@ -7,6 +7,7 @@
 * Reduce false positives by removing all fingerprints that contained "sn"
 * Improvement in handling MySQL 'binary' quasi-operator/type
 * Improvements in folding
+* Removed dependency on SWIG for installing python module
 
 # v3.1.0 2013-07-02
 
