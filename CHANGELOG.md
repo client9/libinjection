@@ -1,9 +1,12 @@
-# v3.1.next
+# v3.2.0 2013-07-12
+
 * Parse binary litterals "0b010101" used by at least mysql and pgsql
 * Add fingerprints '1&EUE', '1&EkU' to work around ambiguous parsing rules
   "-1.for" == '-1.f OR' vs. '-1. FOR'  CREDIT @LightOS
 * Add parsing rules for COLLATION in MySQL, CREDIT @LightOS
 * Reduce false positives by removing all fingerprints that contained "sn"
+* Improvement in handling MySQL 'binary' quasi-operator/type
+* Improvements in folding
 
 # v3.1.0 2013-07-02
 
