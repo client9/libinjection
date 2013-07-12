@@ -525,7 +525,8 @@ static size_t parse_backslash(sfilter * sf)
         st_assign(sf->current, TYPE_NUMBER, pos, 2, cs + pos);
         return pos + 2;
     } else {
-        return parse_other(sf);
+        /* just skip it */
+        return sf->pos + 1;
     }
 }
 

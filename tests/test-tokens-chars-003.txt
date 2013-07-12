@@ -1,7 +1,6 @@
 --TEST--
-Blackslash test
+Blackslash test.. skipped
 --INPUT--
 SELECT \
 --EXPECTED--
 E SELECT
-? \

@@ -1,9 +1,8 @@
 --TEST--
-Blackslash test
+Blackslash test, blackslash ignored
 --INPUT--
 SELECT \X;
 --EXPECTED--
 E SELECT
-? \
 n X
 ; ;
