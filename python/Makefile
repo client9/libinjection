@@ -1,12 +1,11 @@
 
 #
-# SWIG libinjection.i -> libinjection_wrap.c
-#  is done in 'setup.py'
 #
-python: copy
-	rm -f libinjection.py libinjection.pyc libinjection/libinjection_wrap.c
+python: copy libinjection/libinjection_wrap.c
+	rm -f libinjection.py libinjection.pyc
 	python setup.py --verbose build --force
 	sudo python setup.py --verbose install
+
 
 words.py: Makefile json2python.py ../c/sqlparse_data.json
 	./json2python.py < ../c/sqlparse_data.json > words.py
@@ -29,6 +28,9 @@ libinjection/libinjection_sqli.c: ../c/libinjection_sqli.c
 
 libinjection/libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection/libinjection_sqli_data.h
+
+libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libinjection.h
+	swig -python -builtin -Wextra libinjection/libinjection.i
 
 copy: libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
 
