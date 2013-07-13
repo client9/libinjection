@@ -16,6 +16,9 @@ class PermuteFingerprints(object):
             'n1s', 'n(1)s', 'En1', 'En(1)', 'n(1)n', 'n1v',
             'n(1)1', 'n&EUE', 'n&EkU', 's&EUE', 's&EkU', 'v&EUE', 'v&EkU'
             ])
+        self.whitelist = set([
+            'T(vv)', 'Tnvos'
+            ])
 
     def aslist(self):
         return sorted(list(self.fingerprints))
@@ -36,6 +39,8 @@ class PermuteFingerprints(object):
 
         if s in self.blacklist:
             return False
+        if s in self.whitelist:
+            return True
 
         # only 1 special case for this
         # 1;foo:goto foo
@@ -63,8 +68,17 @@ class PermuteFingerprints(object):
         if 'oE' in s:
             return False
 
-        # all 'ns' in union statements
-        if 'U' not in s and 'ns' in s:
+        if 'ns' in s:
+            if 'U' in s:
+                return True
+            if 'T' in s:
+                return True
+            return False
+
+        if 'sn' in s:
+            # that is... Tsn is ok
+            if s.find('T') != -1 and s.find('T') < s.find('sn'):
+                return True
             return False
 
         # select foo (as) bar is only nn type i know
@@ -103,8 +117,6 @@ class PermuteFingerprints(object):
         if 'vvv' in s:
             return False
 
-        if 'sn' in s:
-            return False
         if '1vn' in s:
             return False
         if '1n1' in s:
@@ -182,9 +194,9 @@ class PermuteFingerprints(object):
         if ')(' in s:
             return False
 
-        # need to investigate E(vv) to see
+        # need to investigate T(vv) to see
         # if it's correct
-        if 'vv' in s and s != 'E(vv)':
+        if 'vv' in s and s != 'T(vv)':
             return False
 
         # unlikely to be sqli but case FP
@@ -244,7 +256,9 @@ class PermuteFingerprints(object):
                 self.insert(fp[0:i] + '))))' + fp[i+1:])
         if ';E' in fp:
             self.insert(fp.replace(';E', ';T'))
-
+        if fp.startswith('T'):
+            self.insert('1;' + fp)
+            self.insert('1);' + fp)
         if '(' in fp:
 
             done = False

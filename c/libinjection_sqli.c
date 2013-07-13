@@ -54,6 +54,7 @@ typedef enum {
     TYPE_OPERATOR    = (int)'o',
     TYPE_LOGIC_OPERATOR = (int)'&',
     TYPE_COMMENT     = (int)'c',
+    TYPE_COLLATE     = (int)'C',
     TYPE_LEFTPARENS  = (int)'(',
     TYPE_RIGHTPARENS = (int)')',  /* not used? */
     TYPE_COMMA       = (int)',',
@@ -80,8 +81,6 @@ static char flag2delim(int flag)
         return CHAR_NULL;
     }
 }
-
-
 
 /* memchr2 finds a string of 2 characters inside another string
  * This a specialized version of "memmem" or "memchr".
@@ -1476,6 +1475,15 @@ int filter_fold(sfilter * sf)
             sf->stats_folds += 1;
             left = 0;
             continue;
+        } else if (sf->tokenvec[left].type == TYPE_COLLATE &&
+                   sf->tokenvec[left+1].type == TYPE_BAREWORD) {
+            /*
+             * there are too many collation types.. so if the bareword has a "_"
+             * then it's TYPE_SQLTYPE
+             */
+            if (strchr(sf->tokenvec[left+1].val, '_') != NULL) {
+                sf->tokenvec[left+1].type = TYPE_SQLTYPE;
+            }
         } else if (sf->tokenvec[left].type == TYPE_BACKSLASH) {
             if (st_is_arithmetic_op(&(sf->tokenvec[left+1]))) {
                 /* very weird case in TSQL where '\%1' is parsed as '0 % 1', etc */

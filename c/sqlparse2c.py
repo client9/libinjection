@@ -92,37 +92,6 @@ static size_t parse_estring(sfilter * sf);
         fp = '0' + fp.upper()
         keywords[fp] = 'F';
 
-    mysqlunicodecollations = (
-        '_bin',
-        '_czech_ci',
-        '_danish_ci',
-        '_esperanto_ci',
-        '_estonian_ci',
-        '_general_ci',
-        '_general_mysql500_ci',
-        '_hungarian_ci',
-        '_icelandic_ci',
-        '_latvian_ci',
-        '_lithuanian_ci',
-        '_persian_ci',
-        '_polish_ci',
-        '_roman_ci',
-        '_romanian_ci',
-        '_sinhala_ci',
-        '_slovak_ci',
-        '_slovenian_ci',
-        '_spanish_ci',
-        '_spanish2_ci',
-        '_swedish_ci',
-        '_turkish_ci',
-        '_unicode_ci')
-
-    unicodes = ('ucs2', 'utf16', 'utf32', 'utf8', 'utf8mb4')
-
-    for k in mysqlunicodecollations:
-        for j in unicodes:
-            keywords[j + k] = 't'
-
     needhelp = []
     for k,v in keywords.iteritems():
         if k != k.upper():
