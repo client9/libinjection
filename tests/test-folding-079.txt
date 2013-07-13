@@ -5,7 +5,7 @@ SELECT 1 COLLATE papers;
 --EXPECTED--
 E SELECT
 1 1
-C COLLATE
+A COLLATE
 n papers
 ; ;
 
