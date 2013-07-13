@@ -14,7 +14,8 @@ class PermuteFingerprints(object):
             'so1', 'nkn;', 'n&n;', 'von', 'n&nc', 'sonkn',
             'n)o1','Enn;', 'nBn', 'Ennc', 'n&En', 'nEnEn', 'Esn',
             'n1s', 'n(1)s', 'En1', 'En(1)', 'n(1)n', 'n1v',
-            'n(1)1', 'n&EUE', 'n&EkU', 's&EUE', 's&EkU', 'v&EUE', 'v&EkU'
+            'n(1)1', 'n&EUE', 'n&EkU', 's&EUE', 's&EkU', 'v&EUE', 'v&EkU',
+            'n&nTn', 'nA', 'nos;n'
             ])
         self.whitelist = set([
             'T(vv)', 'Tnvos', 's&1s', 'Tnv;'
@@ -36,7 +37,6 @@ class PermuteFingerprints(object):
             return True
         if s in self.blacklist:
             return False
-
 
         # only 1 special case for this
         # 1;foo:goto foo
@@ -64,11 +64,11 @@ class PermuteFingerprints(object):
         if 'oE' in s:
             return False
 
-        if 'C1' in s:
+        if 'A1' in s:
             return False
-        if 'Cn' in s:
+        if 'An' in s:
             return False
-        if 'C(1' in s:
+        if 'A(1' in s:
             return False
 
         if 'vov' in s:
@@ -270,8 +270,8 @@ class PermuteFingerprints(object):
             self.insert('1;' + fp)
             self.insert('1);' + fp)
 
-        if 'Ct' in fp:
-            self.insert(fp.replace('Ct', 'Cs'))
+        if 'At' in fp:
+            self.insert(fp.replace('At', 'As'))
 
         if '(' in fp:
 

@@ -1,7 +1,14 @@
 # v3.3.0 2013-07-13
+
 * change how backslash is handled to catch old MSSQL servers sqli
   See http://websec.ca/kb/sql_injection#MSSQL_Allowed_Intermediary_Chars_AND-OR
   for details
+* Reworking of COLLATE to handle MySQL, TSQL types automatically
+* Handle bizarro world TSQL '\%1' which is parsed as "0 % 1"
+* Better stacked query detection, fixing some regressions
+* Folding improvements
+* False positive improvements
+
 
 # v3.2.0 2013-07-12
 

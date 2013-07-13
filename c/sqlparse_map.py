@@ -210,7 +210,7 @@ KEYWORDS = {
 'COERCIBILITY'                : 'f',
 'COL_LENGTH'                  : 'f',
 'COL_NAME'                    : 'f',
-'COLLATE'                     : 'C',
+'COLLATE'                     : 'A',
 'COLLATION'                   : 'f',
 'COLLATIONPROPERTY'           : 'f',
 

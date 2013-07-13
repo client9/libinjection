@@ -54,7 +54,7 @@ typedef enum {
     TYPE_OPERATOR    = (int)'o',
     TYPE_LOGIC_OPERATOR = (int)'&',
     TYPE_COMMENT     = (int)'c',
-    TYPE_COLLATE     = (int)'C',
+    TYPE_COLLATE     = (int)'a',
     TYPE_LEFTPARENS  = (int)'(',
     TYPE_RIGHTPARENS = (int)')',  /* not used? */
     TYPE_COMMA       = (int)',',
