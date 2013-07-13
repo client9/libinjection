@@ -1541,6 +1541,12 @@ int filter_fold(sfilter * sf)
                    sf->tokenvec[left+2].type == TYPE_LOGIC_OPERATOR) {
             pos -= 2;
             continue;
+        } else if (sf->tokenvec[left].type == TYPE_VARIABLE &&
+                   sf->tokenvec[left+1].type == TYPE_OPERATOR &&
+                   (sf->tokenvec[left].type == TYPE_VARIABLE || sf->tokenvec[left].type == TYPE_NUMBER ||
+                    sf->tokenvec[left].type == TYPE_BAREWORD)) {
+            pos -= 2;
+            continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER ) &&
                    sf->tokenvec[left+1].type == TYPE_OPERATOR &&
                    (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD)) {

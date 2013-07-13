@@ -17,7 +17,7 @@ class PermuteFingerprints(object):
             'n(1)1', 'n&EUE', 'n&EkU', 's&EUE', 's&EkU', 'v&EUE', 'v&EkU'
             ])
         self.whitelist = set([
-            'T(vv)', 'Tnvos'
+            'T(vv)', 'Tnvos', 's&1s', 'Tnv;'
             ])
 
     def aslist(self):
@@ -30,17 +30,13 @@ class PermuteFingerprints(object):
             self.fingerprints.add(s)
 
     def validate(self, s):
-        if s == 's&1s':
-            # special case of magic ending quote in php
-            return True
-
         if len(s) == 0:
-            return False
-
-        if s in self.blacklist:
             return False
         if s in self.whitelist:
             return True
+        if s in self.blacklist:
+            return False
+
 
         # only 1 special case for this
         # 1;foo:goto foo
@@ -66,6 +62,20 @@ class PermuteFingerprints(object):
             return False
 
         if 'oE' in s:
+            return False
+
+        if 'C1' in s:
+            return False
+        if 'Cn' in s:
+            return False
+        if 'C(1' in s:
+            return False
+
+        if 'vov' in s:
+            return False
+        if 'vo1' in s:
+            return False
+        if 'von' in s:
             return False
 
         if 'ns' in s:
@@ -259,6 +269,10 @@ class PermuteFingerprints(object):
         if fp.startswith('T'):
             self.insert('1;' + fp)
             self.insert('1);' + fp)
+
+        if 'Ct' in fp:
+            self.insert(fp.replace('Ct', 'Cs'))
+
         if '(' in fp:
 
             done = False
