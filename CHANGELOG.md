@@ -1,5 +1,5 @@
-# v3.3.0 2013-07-12
-* change how backslash is handled to catch old MSSQL servers.
+# v3.3.0 2013-07-13
+* change how backslash is handled to catch old MSSQL servers sqli
   See http://websec.ca/kb/sql_injection#MSSQL_Allowed_Intermediary_Chars_AND-OR
   for details
 

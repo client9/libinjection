@@ -59,10 +59,11 @@ typedef enum {
     TYPE_COMMA       = (int)',',
     TYPE_COLON       = (int)':',
     TYPE_SEMICOLON   = (int)';',
-    TYPE_TSQL        = (int)'T', /* TSQL start */
+    TYPE_TSQL        = (int)'T',  /* TSQL start */
     TYPE_UNKNOWN     = (int)'?',
-    TYPE_EVIL        = (int)'X', /* unparsable, abort  */
-    TYPE_FINGERPRINT = (int)'F'  /* not really a token */
+    TYPE_EVIL        = (int)'X',  /* unparsable, abort  */
+    TYPE_FINGERPRINT = (int)'F',  /* not really a token */
+    TYPE_BACKSLASH   = (int)'\\'
 } sqli_token_types;
 
 /**
@@ -305,6 +306,13 @@ static void st_copy(stoken_t * dest, const stoken_t * src)
     memcpy(dest, src, sizeof(stoken_t));
 }
 
+static int st_is_arithmetic_op(const stoken_t* st)
+{
+    const char ch = st->val[0];
+    return (st->type == TYPE_OPERATOR && st->len == 1 &&
+            (ch == '*' || ch == '/' || ch == '-' || ch == '+' || ch == '%'));
+}
+
 static int st_is_unary_op(const stoken_t * st)
 {
     const char* str = st->val;
@@ -521,12 +529,12 @@ static size_t parse_backslash(sfilter * sf)
     /*
      * Weird MySQL alias for NULL, "\N" (capital N only)
      */
-    if (pos + 1 < slen && cs[pos + 1] == 'N') {
+    if (pos + 1 < slen && cs[pos +1] == 'N') {
         st_assign(sf->current, TYPE_NUMBER, pos, 2, cs + pos);
         return pos + 2;
     } else {
-        /* just skip it */
-        return sf->pos + 1;
+        st_assign_char(sf->current, TYPE_BACKSLASH, pos, 1, cs[pos]);
+        return pos + 1;
     }
 }
 
@@ -1466,6 +1474,18 @@ int filter_fold(sfilter * sf)
             st_copy(&sf->tokenvec[left], &sf->tokenvec[left+1]);
             pos -= 1;
             sf->stats_folds += 1;
+            left = 0;
+            continue;
+        } else if (sf->tokenvec[left].type == TYPE_BACKSLASH) {
+            if (st_is_arithmetic_op(&(sf->tokenvec[left+1]))) {
+                /* very weird case in TSQL where '\%1' is parsed as '0 % 1', etc */
+                sf->tokenvec[left].type = TYPE_NUMBER;
+            } else {
+                /* just ignore it.. Again T-SQL seems to parse \1 as "1" */
+                st_copy(&sf->tokenvec[left], &sf->tokenvec[left+1]);
+                pos -= 1;
+                sf->stats_folds += 1;
+            }
             left = 0;
             continue;
         }

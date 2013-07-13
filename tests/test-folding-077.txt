@@ -1,7 +1,10 @@
 --TEST--
-Blackslash test..
+weird TSQL bug
 --INPUT--
-SELECT \
+SELECT \ % 0 ;
 --EXPECTED--
 E SELECT
-\ \
+1 \
+; ;
+
+
