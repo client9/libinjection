@@ -145,8 +145,8 @@ size_t modp_xml_encode(char* dest, const char* src, size_t len)
     return count;
 }
 
-int test_positive(FILE * fd, const char *fname,
-                  bool flag_invert, bool output_xml, bool flag_quiet, bool flag_true)
+void test_positive(FILE * fd, const char *fname,
+                  bool flag_invert, bool output_xml, bool flag_true)
 {
     char linebuf[8192];
     char linecopy[8192];
@@ -158,7 +158,6 @@ int test_positive(FILE * fd, const char *fname,
 
     int linenum = 0;
     sfilter sf;
-    int count = 0;
 
     while (fgets(linebuf, sizeof(linebuf), fd)) {
         linenum += 1;
@@ -179,10 +178,6 @@ int test_positive(FILE * fd, const char *fname,
             g_test_fail += 1;
         }
 
-        if (flag_quiet) {
-            continue;
-        }
-
         if (output_xml) {
             modp_toprint(linebuf, len);
             modp_xml_encode(linecopy, linebuf, len);
@@ -192,7 +187,6 @@ int test_positive(FILE * fd, const char *fname,
                  * false negative
                  * did NOT detect a SQLI
                  */
-                count += 1;
                 fprintf(stdout,
                         "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
                         fname, linenum, patxml, "error", linecopy);
@@ -201,7 +195,6 @@ int test_positive(FILE * fd, const char *fname,
                  * false positive
                  * incorrect marked a benign input as SQLi
                  */
-                count += 1;
                 fprintf(stdout,
                         "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
                         fname, linenum, patxml, "error", linecopy);
@@ -211,15 +204,12 @@ int test_positive(FILE * fd, const char *fname,
                 (!issqli && flag_true && flag_invert) ||
                 !flag_true) {
                 modp_toprint(linebuf, len);
-                count += 1;
                 fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
                         fname, linenum,
                         (issqli ? "True" : "False"), sf.fingerprint, sf.reason, linebuf);
             }
         }
     }
-
-    return count;
 }
 
 int main(int argc, const char *argv[])
@@ -280,38 +270,43 @@ int main(int argc, const char *argv[])
     }
 
     if (offset == argc) {
-        count = test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet, flag_true);
+        test_positive(stdin, "stdin", flag_invert, flag_xml, flag_true);
     } else {
         for (j = 0; j < flag_slow; ++j) {
             for (i = offset; i < argc; ++i) {
                 FILE* fd = fopen(argv[i], "r");
                 if (fd) {
-                    count = test_positive(fd, argv[i], flag_invert, flag_xml, flag_quiet, flag_true);
+                    test_positive(fd, argv[i], flag_invert, flag_xml, flag_true);
                     fclose(fd);
                 }
             }
         }
     }
 
-    if (flag_xml && ! flag_quiet) {
+    if (flag_xml) {
         fprintf(stdout, "</results>\n");
     }
 
-    if (! flag_quiet) {
-        fprintf(stderr, "SQLI  : %d\n", g_test_ok);
-        fprintf(stderr, "SAFE  : %d\n", g_test_fail);
-        fprintf(stderr, "TOTAL : %d\n", g_test_ok + g_test_fail);
+    if (!flag_quiet) {
+        fprintf(stdout, "SQLI  : %d\n", g_test_ok);
+        fprintf(stdout, "SAFE  : %d\n", g_test_fail);
+        fprintf(stdout, "TOTAL : %d\n", g_test_ok + g_test_fail);
     }
 
     if (max == -1) {
         return 0;
     }
 
+    count = g_test_ok;
+    if (flag_invert) {
+        count = g_test_fail;
+    }
+
     if (count > max) {
-        printf("Theshold is %d, got %d, failing.", max, count);
+        printf("\nTheshold is %d, got %d, failing.\n", max, count);
         return 1;
     } else {
-        printf("Theshold is %d, got %d, passing.", max, count);
+        printf("\nTheshold is %d, got %d, passing.\n", max, count);
         return 0;
     }
 }
