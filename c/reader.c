@@ -303,9 +303,15 @@ int main(int argc, const char *argv[])
         fprintf(stderr, "TOTAL : %d\n", g_test_ok + g_test_fail);
     }
 
-    if (max != -1 && count > max) {
+    if (max == -1) {
+        return 0;
+    }
+
+    if (count > max) {
+        printf("Theshold is %d, got %d, failing.", max, count);
         return 1;
     } else {
+        printf("Theshold is %d, got %d, passing.", max, count);
         return 0;
     }
 }
