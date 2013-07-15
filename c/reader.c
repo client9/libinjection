@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-
+#include <stdlib.h>
 #include "libinjection.h"
 
 static int g_test_ok = 0;
@@ -145,8 +145,8 @@ size_t modp_xml_encode(char* dest, const char* src, size_t len)
     return count;
 }
 
-void test_positive(FILE * fd, const char *fname,
-                   bool flag_invert, bool output_xml, bool flag_quiet, bool flag_true)
+int test_positive(FILE * fd, const char *fname,
+                  bool flag_invert, bool output_xml, bool flag_quiet, bool flag_true)
 {
     char linebuf[8192];
     char linecopy[8192];
@@ -158,6 +158,7 @@ void test_positive(FILE * fd, const char *fname,
 
     int linenum = 0;
     sfilter sf;
+    int count = 0;
 
     while (fgets(linebuf, sizeof(linebuf), fd)) {
         linenum += 1;
@@ -191,7 +192,7 @@ void test_positive(FILE * fd, const char *fname,
                  * false negative
                  * did NOT detect a SQLI
                  */
-
+                count += 1;
                 fprintf(stdout,
                         "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
                         fname, linenum, patxml, "error", linecopy);
@@ -200,22 +201,25 @@ void test_positive(FILE * fd, const char *fname,
                  * false positive
                  * incorrect marked a benign input as SQLi
                  */
+                count += 1;
                 fprintf(stdout,
                         "<error file=\"%s\" line=\"%d\" id=\"%s\" severity=\"%s\" msg=\"%s\"/>\n",
                         fname, linenum, patxml, "error", linecopy);
             }
         } else {
-            if ((issqli && flag_true) ||
+            if ((issqli && flag_true && ! flag_invert) ||
                 (!issqli && flag_true && flag_invert) ||
                 !flag_true) {
                 modp_toprint(linebuf, len);
-
+                count += 1;
                 fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
                         fname, linenum,
                         (issqli ? "True" : "False"), sf.fingerprint, sf.reason, linebuf);
             }
         }
     }
+
+    return count;
 }
 
 int main(int argc, const char *argv[])
@@ -239,6 +243,8 @@ int main(int argc, const char *argv[])
     bool flag_true = false;
 
     int flag_slow = 1;
+    int count = 0;
+    int max = -1;
 
     int i, j;
     int offset = 1;
@@ -259,6 +265,10 @@ int main(int argc, const char *argv[])
         } else if (strcmp(argv[offset], "-s") == 0) {
             offset += 1;
             flag_slow = 100;
+        } else if (strcmp(argv[offset], "-m") == 0) {
+            offset += 1;
+            max = atoi(argv[offset]);
+            offset += 1;
         } else {
             break;
         }
@@ -293,5 +303,9 @@ int main(int argc, const char *argv[])
         fprintf(stderr, "TOTAL : %d\n", g_test_ok + g_test_fail);
     }
 
-    return 0;
+    if (max != -1 && count > max) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
