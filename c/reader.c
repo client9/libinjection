@@ -280,13 +280,13 @@ int main(int argc, const char *argv[])
     }
 
     if (offset == argc) {
-        test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet, flag_true);
+        count = test_positive(stdin, "stdin", flag_invert, flag_xml, flag_quiet, flag_true);
     } else {
         for (j = 0; j < flag_slow; ++j) {
             for (i = offset; i < argc; ++i) {
                 FILE* fd = fopen(argv[i], "r");
                 if (fd) {
-                    test_positive(fd, argv[i], flag_invert, flag_xml, flag_quiet, flag_true);
+                    count = test_positive(fd, argv[i], flag_invert, flag_xml, flag_quiet, flag_true);
                     fclose(fd);
                 }
             }
