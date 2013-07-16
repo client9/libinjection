@@ -72,6 +72,10 @@ import os.path
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    workspace = os.path.expanduser("~/libinjection-workspace")
+    if len(sys.argv) == 2:
+        workspace = sys.argv[1]
+    else:
+        workspace = os.path.expanduser("~/libinjection-cicada-workspace")
+
     pubspace = os.path.join(workspace, "cicada")
     cicada(workspace, pubspace, tests)
