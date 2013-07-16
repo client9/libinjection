@@ -27,17 +27,6 @@ tests = [
         'exec': ExecuteShell('make clean && cd python && make test'),
     },
     {
-        'name': 'libinjection-gprof',
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec' : ExecuteShell("""#!/bin/bash
-cd c
-make reader
-gcc -g -O3 -pg -o reader libinjection_sqli.c reader.c
-./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
-gprof ./reader gmon.out
-""")
-    },
-    {
         'name': 'libinjection-samples-positive',
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'   : ExecuteShell("""
@@ -56,6 +45,17 @@ cd c
 make clean
 make reader
 ./reader -t -m 24 ../data/false_positives.txt
+""")
+    },
+    {
+        'name': 'libinjection-gprof',
+        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec' : ExecuteShell("""#!/bin/bash
+cd c
+make reader
+gcc -g -O3 -pg -o reader libinjection_sqli.c reader.c
+./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
+gprof ./reader gmon.out
 """)
     },
     {
