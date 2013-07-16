@@ -79,8 +79,6 @@ def runtest(testname, flags=None):
             '--read-var-info=yes',
             '--error-exitcode=1',
             '--track-origins=yes',
-            '--xml=yes',
-            '--xml-file=valgrind-'+ testname.replace('.txt', '.xml')
             ]
     else:
         args = []
