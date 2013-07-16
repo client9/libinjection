@@ -13,7 +13,7 @@ Libinjection: advanced sqli detection.
 <ul>
 <li>Open source, code is at <a href="https://github.com/client9/libinjection/">github</a></li>
 <li><a href="https://github.com/client9/libinjection/blob/master/COPYING.txt">BSD License</a></li>
-<li>Standard C code, compiles on Linux/Unix/BSD, Mac and Windows, and <a href="https://libinjection.client9.com/jenkins/job/libinjection-build-g++/">compiles as C++</a></li>
+<li>Standard C code, compiles on Linux/Unix/BSD, Mac and Windows, and <a href="https://libinjection.client9.com/cicada/job/libinjection-build-g++/">compiles as C++</a></li>
 <li>Over 500k inspections per second on commodity hardware</li>
 <li>No threads and no memory allocation - only 500 bytes of state used (stack or heap)</li>
 <li>Small - about 1000 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
@@ -23,8 +23,8 @@ Libinjection: advanced sqli detection.
 <h2>Quality, Accuracy, Precision</h2>
 
 <p>
-Continuous integration using Jenkins is publically accessible at
-<a href="https://libinjection.client9.com/jenkins/view/libinjection/">https://libinjection.client9.com/jenkins/view/libinjection/</a>.
+Continuous integration is publically accessible at
+<a href="https://libinjection.client9.com/cicada/">https://libinjection.client9.com/cicada/</a>.
 </p>
 <p>
 Tests include:
@@ -33,10 +33,10 @@ Tests include:
 <ul>
 <li> Built and tested using gcc, clang, and g++ (windows tested via modsecurity)</li>
 <li> Static analysis using <a href="http://cppcheck.sourceforge.net">cppcheck</a> and <a href="http://clang-analyzer.llvm.org">clang's static analyzer</a></li>
-<li> Tested against <a href="https://libinjection.client9.com/jenkins/job/libinjection-samples-positive/">80,000 sqli samples</a></li>
-<li> Tested against previous and current <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-samples-negative/">false positives</a></li>
-<li> Over 300 <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, and run under <a href="https://libinjection.client9.com/jenkins/job/libinjection-valgrind/valgrindResult">valgrind</a> to detect memory problems</li>
-<li> Code coverage generated from <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-unittest/">unit tests</a> and <a href="https://libinjection.client9.com/jenkins/view/libinjection/job/libinjection-coverage-samples/">sqli samples</a></li>
+<li> Tested against <a href="https://libinjection.client9.com/cicada/libinjection-samples-positive.txt">80,000 sqli samples</a></li>
+<li> Tested against previous and current <a href="https://libinjection.client9.com/cicada/libinjection-samples-negative.txt">false positives</a></li>
+<li> Over 300 <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, and run under <a href="https://libinjection.client9.com/cicada/libinjection-valgrind.txt">valgrind</a> to detect memory problems</li>
+<li> Code coverage (under construction.. back soon.. right now it's > 90%)
 </ul>
 <p>
 When this isn't enough, a <a href="/days-since-last-bypass">full

@@ -22,7 +22,7 @@ TK
 What are common False Positives
 --------------------------------
 
-TK: Current False positives on Jenkins
+This needs more explanation, but check out https://libinjection.client9.com/cicada/libinjection-samples-negative.txt
 
 How do I report a false positive?
 ---------------------------------

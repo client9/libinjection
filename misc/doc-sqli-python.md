@@ -17,8 +17,8 @@ cd libinjection/python
 python setup.py install
 ```
 
-Note, if it complains about SWIG missing, then  TBD... you
-don't actually need SWIG installed but...  TBD.
+Note, if for some reason it does work for you, install
+[swig](http://www.swig.org), and type <code>make</code>
 
 Using libinjection
 --------------------------
