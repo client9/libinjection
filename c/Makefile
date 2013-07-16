@@ -1,10 +1,6 @@
 
-#
-# -Wcase-align works with gcc, but not clang on
-#  some of the modp_* files.  Remove for now.
-#
 
-CFLAGS=-g -O3 -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual
+CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual
 # -DNDEBUG
 
 help:
@@ -13,7 +9,7 @@ help:
 	@echo "      see one of the unit tests or 'reader' to see how to"
 	@echo "      compile"
 	@echo ""
-	@echo "make test_unit"
+	@echo "make test"
 	@echo "make test_speed"
 	@echo "make test_negative -- test false positives"
 	@echo "make test_positive -- test sqli"
@@ -53,8 +49,8 @@ test_speed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_spe
 	${CC} ${CFLAGS} -DNDEDBUG -o test_speed libinjection_sqli.c test_speed.c
 	./test_speed
 
-test_unit: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
-	nosetests --with-xunit test_driver.py
+test: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
+	nosetests -v test_driver.py
 
 valgrind: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	rm -f valgrind-*.xml
@@ -65,8 +61,6 @@ valgrind: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libin
 		--read-var-info=yes \
 		--error-exitcode=1 \
 		--track-origins=yes \
-		--xml=yes \
-		--xml-file=valgrind-sammples.xml \
 		./reader -q ../data/*.txt
 
 cppcheck:
@@ -76,11 +70,6 @@ cppcheck:
 unused:
 	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
 	diff /tmp/junk fingerprints.txt  | grep '>'
-
-
-testq: reader
-	./reader ../data/sqli-*.txt > /dev/null
-	./reader -i ../data/false_*.txt > /dev/null
 
 # fail if any input is 'safe', e.g. not SQLi
 test_positive: reader
@@ -138,7 +127,7 @@ gcovr-samples-xml:
 	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c
 	./reader ../data/*.txt > /dev/null
 	gcovr --version
-	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='.*modp_.*' --gcov-exclude='reader.*' --xml -r `pwd`
+	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='reader.*' --xml -r `pwd`
 
 lcov: sqli-gcov
 	lcov -b . --directory . --zerocounters
@@ -158,7 +147,6 @@ lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.
 	-./reader ../data/*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'modp_*' -o libinjection.info
 	lcov -b . --directory . --remove libinjection.info 'reader' -o libinjection.info
 	rm -rf lcov-html
 	mkdir lcov-html
