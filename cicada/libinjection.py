@@ -38,11 +38,6 @@ gprof ./reader gmon.out
 """)
     },
     {
-        'name': 'libinjection-valgrind',
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec' : ExecuteShell("cd c && make clean && nice make valgrind"),
-    },
-    {
         'name': 'libinjection-samples-positive',
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'   : ExecuteShell("""
@@ -62,6 +57,11 @@ make clean
 make reader
 ./reader -t -m 24 ../data/false_positives.txt
 """)
+    },
+    {
+        'name': 'libinjection-valgrind',
+        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec' : ExecuteShell("cd c && make clean && nice make valgrind"),
     }
 ]
 
