@@ -28,8 +28,9 @@ th { text-align: left }
 <TR>
 {% end %}
 <TD>{{ test['name'] }}</TD>
-<TD>{{ test['timestamp'] }}</TD>
 <TD>{{ test['status'] }}</TD>
+<TD>{{ test['timestamp'] }}</TD>
+<TD>{{ test['duration'] }}<?TD>
 <TD><A HREF="{{ test['name'] }}.txt">console</A></TD>
 </TR>
 {% end %}

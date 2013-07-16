@@ -114,10 +114,13 @@ def cicada(workspace, pubspace, tests):
     pubstatus.run(pubspace, tests)
 
     for t in tests:
+        t0 = time.time()
+
         output = []
 
         t['status']['timestamp'] = timestamp()
         t['status']['status']    = 'running'
+        t['status']['duration']  = 0;
 
         pubstatus.run(pubspace, tests)
 
@@ -144,6 +147,8 @@ def cicada(workspace, pubspace, tests):
                 t['status']['timestamp'] = timestamp()
                 t['status']['status'] = 'pass'
                 output.append("{0}: {1}: {2}\n".format(timestamp(), t['name'], "Pass"))
+
+        t['status']['duration'] = int(time.time - t0)
 
         # publish test console output and result
         pubcon = PublishConsole('\n'.join(output))
