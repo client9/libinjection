@@ -9895,6 +9895,7 @@
         "PRIMARY": "k", 
         "PRINT": "T", 
         "PROCEDURE": "k", 
+        "PROCEDURE ANALYSE": "f", 
         "PUBLISHINGSERVERNAME": "f", 
         "PURGE": "k", 
         "PWDCOMPARE": "f", 

@@ -746,6 +746,7 @@ KEYWORDS = {
 
 'PRIMARY'                     : 'k',
 'PROCEDURE'                   : 'k',
+'PROCEDURE ANALYSE'           : 'f',
 'PUBLISHINGSERVERNAME'        : 'f',
 'PURGE'                       : 'k',
 'PWDCOMPARE'                  : 'f',

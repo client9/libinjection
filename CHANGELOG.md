@@ -1,3 +1,10 @@
+
+# v3.4.0 2013-07-XX
+* Fix regression with COLLATE
+* Handle "procedure analyze" under MySQL
+* Makefile cleanups
+* Fired Jenkins!  Using in-house system.
+
 # v3.3.0 2013-07-13
 
 * change how backslash is handled to catch old MSSQL servers sqli

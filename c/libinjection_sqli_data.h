@@ -9870,6 +9870,7 @@ static const keyword_t sql_keywords[] = {
     {"PRIMARY", 'k'},
     {"PRINT", 'T'},
     {"PROCEDURE", 'k'},
+    {"PROCEDURE ANALYSE", 'f'},
     {"PUBLISHINGSERVERNAME", 'f'},
     {"PURGE", 'k'},
     {"PWDCOMPARE", 'f'},
@@ -10210,5 +10211,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 10043;
+static const size_t sql_keywords_sz = 10044;
 #endif
