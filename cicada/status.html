@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<TITLE>libinjection CI Status</TITLE>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width" />
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" type="image/gif" href="/static/favicon.gif" />
+<style>
+body { font-family: sans-serif; width: 640px; }
+textarea { width: 100% }
+table { width: 100% }
+td { font-family: monospace; vertical-align: top }
+th { text-align: left }
+.red { background-color: #FFaaaa; overflow: hidden }
+.green { background-color: #aaFFaa }
+</style>
+</HEAD>
+<BODY>
+<h1>libinjection CI Status</h1>
+<TABLE>
+{% for test in status %}
+{% if test['status'] == 'fail' %}
+<TR class='red'>
+{% elif test['status'] == 'pass' %}
+<TR class='green'>
+{% else %}
+<TR>
+{% end %}
+<TD>{{ test['name'] }}</TD>
+<TD>{{ test['timestamp'] }}</TD>
+<TD>{{ test['status'] }}</TD>
+<TD><A HREF="{{ test['name'] }}.txt">console</A></TD>
+</TR>
+{% end %}
+</TABLE>
+</BODY>
+</HTML>
