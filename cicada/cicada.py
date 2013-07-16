@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
 import datetime
-import os.path
-import os
-import subprocess
-import tornado.template
 import logging
+import os
+import os.path
+import subprocess
+import time
+
+import tornado.template
+
 
 def timestamp():
     # remove microseconds, use a space
@@ -109,6 +112,7 @@ def cicada(workspace, pubspace, tests):
             'name'        : t['name'],
             'status'      : 'pending',
             'timestamp'   : timestamp(),
+            'duration'    : 0
         }
 
     pubstatus.run(pubspace, tests)
@@ -148,7 +152,7 @@ def cicada(workspace, pubspace, tests):
                 t['status']['status'] = 'pass'
                 output.append("{0}: {1}: {2}\n".format(timestamp(), t['name'], "Pass"))
 
-        t['status']['duration'] = int(time.time - t0)
+        t['status']['duration'] = int(time.time() - t0)
 
         # publish test console output and result
         pubcon = PublishConsole('\n'.join(output))
