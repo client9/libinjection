@@ -170,7 +170,7 @@ def cicada(workspace, pubspace, tests):
         t['status']['duration'] = int(time.time() - t0)
 
         if 'publish' in t:
-            for pub in ['publish']:
+            for pub in t['publish']:
                 pub.run(pubspace, t['name'])
 
         # publish test console output and result
