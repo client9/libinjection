@@ -45,7 +45,7 @@ reader-lcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.
 testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${CC}  ${CFLAGS} -O1 -o testdriver libinjection_sqli.c testdriver.c
 
-testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sqli_data.c
+testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	rm -f sqli
 	gcc -g -fprofile-arcs -ftest-coverage -O0 -o testdriver-gcov testdriver.c libinjection_sqli.c
 
