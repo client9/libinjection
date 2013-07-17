@@ -32,6 +32,9 @@ example1: Makefile example1.c libinjection_sqli_data.h libinjection.h libinjecti
 reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${CC}  ${CFLAGS} -o reader libinjection_sqli.c reader.c
 
+testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
+	${CC}  ${CFLAGS} -O1 -o testdriver libinjection_sqli.c testdriver.c
+
 reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	make clean
 	${CC} -g -O3 -pg -o reader libinjection_sqli.c reader.c
@@ -40,7 +43,7 @@ is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjectio
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c
 
 sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
-	${CC} -g -O1 -o sqli sqli_cli.c
+	${CC} -g -O1 -o sqli sqli_cli.c libinjection_sqli.c
 
 fptool: Makefile fptool.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	${CC} ${CFLAGS} -o fptool fptool.c libinjection_sqli.c
