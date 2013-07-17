@@ -7,6 +7,7 @@
 * Add new all-C test driver to improve testing speed
 * Makefile cleanups
 * Fired Jenkins!  Using in-house system.
+* Fixed bypass reported by @FluxReiners
 
 # v3.3.0 2013-07-13
 

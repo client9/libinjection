@@ -1,5 +1,4 @@
 
-TESTDRIVER=../c/testdriver
 VALGRIND=valgrind --gen-suppressions=no \
 	--read-var-info=yes \
 	--error-exitcode=1 \
