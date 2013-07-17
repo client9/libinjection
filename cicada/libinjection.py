@@ -52,7 +52,7 @@ make reader
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'    : ExecuteShell("cd c && make coverage-testdriver"),
         'publish' : [
-            PublishArtifact('c/lcov-html')
+            PublishArtifact('c/lcov-html', 'lcov-html/c/libinjection_sqli.c.gcov.html', 'coverage')
             ]
     },
     {
@@ -63,9 +63,13 @@ make reader
     {
         'name'    : 'libinjection-gprof',
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'    : ExecuteShell("""
-make reader-gprof
-"""),
+        'exec'    : ExecuteShell("""#!/bin/bash
+cd c
+make reader
+gcc -g -O3 -pg -o reader libinjection_sqli.c reader.c
+./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
+gprof ./reader gmon.out
+""")
     },
 ]
 

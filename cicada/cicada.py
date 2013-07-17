@@ -66,26 +66,34 @@ class PublishConsole(object):
     def __init__(self, console):
         self.data = console
 
-    def run(self, rootdir, name):
-        fname = os.path.join(rootdir, name + '.txt')
+    def run(self, rootdir, test):
+        name = test['name']
+        link = name + '.txt'
+        linktext = 'console'
+        fname = os.path.join(rootdir, link)
         logging.debug("Writing console to {0}".format(fname))
         with open(fname, 'w') as fd:
             fd.write(self.data)
+        test['status']['artifacts'].append( [ link, linktext] )
 
 class PublishArtifact(object):
     """
     Publish console ouput
     """
 
-    def __init__(self, artifact):
+    def __init__(self, artifact, link, linktext):
         self.artifact = artifact
+        self.link = link
+        self.linktext = linktext
 
-    def run(self, pubdir, name):
+    def run(self, pubdir, test):
+        name = test['name']
         destdir = os.path.join(os.path.join(pubdir, name));
         if not os.path.exists(destdir):
             os.makedirs(destdir)
 
         subprocess.call(['cp', '-r', os.path.join(name, self.artifact), destdir])
+        test['status']['artifacts'].append( [link, linktext] )
 
 class PublishStatus(object):
     """
@@ -127,6 +135,7 @@ def cicada(workspace, pubspace, tests):
             'name'        : t['name'],
             'status'      : 'pending',
             'timestamp'   : timestamp(),
+            'artifacts'   : [],
             'duration'    : 0
         }
 
@@ -139,7 +148,8 @@ def cicada(workspace, pubspace, tests):
 
         t['status']['timestamp'] = timestamp()
         t['status']['status']    = 'running'
-        t['status']['duration']  = 0;
+        t['status']['duration']  = 0
+        t['status']['artifacts'] = []
 
         pubstatus.run(pubspace, tests)
 
@@ -169,13 +179,14 @@ def cicada(workspace, pubspace, tests):
 
         t['status']['duration'] = int(time.time() - t0)
 
-        if 'publish' in t:
-            for pub in t['publish']:
-                pub.run(pubspace, t['name'])
-
         # publish test console output and result
         pubcon = PublishConsole('\n'.join(output))
-        pubcon.run(pubspace, t['name'])
+        pubcon.run(pubspace, t)
+
+        if 'publish' in t:
+            for pub in t['publish']:
+                pub.run(pubspace, t)
+
 
 
     # publish final status

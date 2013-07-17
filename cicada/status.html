@@ -30,8 +30,12 @@ th { text-align: left }
 <TD>{{ test['name'] }}</TD>
 <TD>{{ test['status'] }}</TD>
 <TD>{{ test['timestamp'] }}</TD>
-<TD>{{ test['duration'] }}<?TD>
-<TD><A HREF="{{ test['name'] }}.txt">console</A></TD>
+<TD>{{ test['duration'] }}</TD>
+<TD>
+{% for link,text in test['artifacts'] %}
+<A HREF="{{ link }}">{{ text }}</A><BR/>
+{% end %}
+</TD>
 </TR>
 {% end %}
 </TABLE>
