@@ -52,8 +52,13 @@ test_speed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_spe
 	${CC} ${CFLAGS} -DNDEDBUG -o test_speed libinjection_sqli.c test_speed.c
 	./test_speed
 
-test: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
+testpy: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	nosetests -v test_driver.py
+
+test: testdriver sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
+	./testdriver -q0 -ca ../tests/test-tokens-*.txt
+	./testdriver -f -q0 -ca ../tests/test-folding-*.txt
+	./testdriver -d ../tests/test-sqli-*.txt
 
 valgrind: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	rm -f valgrind-*.xml
