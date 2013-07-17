@@ -111,7 +111,7 @@ sort:
 	${MAKE} libinjection_sqli_data.h
 	${MAKE} allbin
 
-coverage-testdriver: sqli-gcov testdriver-gcov
+coverage-testdriver: testdriver-gcov
 	lcov -b . --directory . --zerocounters
 	./testdriver-gcov ../tests/test-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
