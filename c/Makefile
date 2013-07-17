@@ -49,9 +49,6 @@ testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sq
 	rm -f sqli
 	gcc -g -fprofile-arcs -ftest-coverage -O0 -o testdriver-gcov testdriver.c libinjection_sqli.c
 
-
-
-
 is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h libinjection_sqli_data.h
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c
 
