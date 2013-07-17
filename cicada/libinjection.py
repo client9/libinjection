@@ -19,7 +19,7 @@ tests = [
     {
         'name': 'libinjection-pylint',
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('pylint -f parseable c/*.py')
+        'exec': ExecuteShell('pylint --include-ids=y -f parseable c/*.py')
     },
     {
         'name': 'libinjection-python-build-test',
