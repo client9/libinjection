@@ -50,7 +50,7 @@ make reader
     {
         'name'    : 'libinjection-coverage-unittest',
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'    : ExecuteShell("make coverage-testdriver"),
+        'exec'    : ExecuteShell("cd c && make coverage-testdriver"),
         'publish' : [
             PublishArtifact('c/lcov-html')
             ]
