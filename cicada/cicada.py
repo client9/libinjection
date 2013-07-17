@@ -85,7 +85,7 @@ class PublishArtifact(object):
         if not os.path.exists(destdir):
             os.makedirs(destdir)
 
-        subprocess.call(['cp', '-r', os.join(name, self.artifact), destdir])
+        subprocess.call(['cp', '-r', os.path.join(name, self.artifact), destdir])
 
 class PublishStatus(object):
     """
