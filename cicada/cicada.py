@@ -72,6 +72,21 @@ class PublishConsole(object):
         with open(fname, 'w') as fd:
             fd.write(self.data)
 
+class PublishArtifact(object):
+    """
+    Publish console ouput
+    """
+
+    def __init__(self, artifact):
+        self.data = artifact
+
+    def run(self, pubdir, name):
+        destdir = os.path.join(os.path.join(pubdir, name));
+        if not os.exists(destdir):
+            os.makedirs(name)
+
+        subprocess.call(['cp', '-r', self.artifact, destdir])
+
 class PublishStatus(object):
     """
     Publish project status
@@ -154,9 +169,13 @@ def cicada(workspace, pubspace, tests):
 
         t['status']['duration'] = int(time.time() - t0)
 
+        if 'publish' in t:
+            for pub in ['publish']:
+                pub.run(
         # publish test console output and result
         pubcon = PublishConsole('\n'.join(output))
         pubcon.run(pubspace, t['name'])
+
 
     # publish final status
     pubstatus.run(pubspace, tests)
