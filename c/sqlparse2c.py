@@ -90,10 +90,10 @@ static size_t parse_estring(sfilter * sf);
 
     for  fp in list(obj[u'fingerprints']):
         fp = '0' + fp.upper()
-        keywords[fp] = 'F';
+        keywords[fp] = 'F'
 
     needhelp = []
-    for k,v in keywords.iteritems():
+    for k, v in keywords.iteritems():
         if k != k.upper():
             needhelp.append(k)
 

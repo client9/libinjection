@@ -240,7 +240,7 @@ KEYWORDS = {
 'CRC32'                       : 'f',
 'CREATE'                      : 'E',
 'CREATE OR'                   : 'n',
-'CREATE OR REPLACE'           : 'E',
+'CREATE OR REPLACE'           : 'T',
 'CROSS'                       : 'n',
 'CUME_DIST'                   : 'f',
 'CURDATE'                     : 'f',
@@ -1146,7 +1146,6 @@ KEYWORDS = {
     'GROUP BY'          : 'B',
     'ORDER BY'          : 'B',
     'OWN3D BY'          : 'B',
-    'SELECT ALL'        : 'E',
     'READ WRITE'        : 'k',
 
     # 'LOCAL TABLE' pgsql/oracle
@@ -1204,7 +1203,6 @@ KEYWORDS = {
     'WAITFOR TIME'      : 'E',
     'WAITFOR RECEIVE'   : 'E',
     'WITH ROLLUP'       : 'k',
-    'CREATE OR REPLACE' : 'T',
     # 'INTERSECT ALL' -- ORACLE
     'INTERSECT ALL'     : 'U',
 

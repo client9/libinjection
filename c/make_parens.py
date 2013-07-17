@@ -24,7 +24,7 @@ class PermuteFingerprints(object):
     def aslist(self):
         return sorted(list(self.fingerprints))
 
-    def insert(self,s):
+    def insert(self, s):
         if len(s) > 5:
             s = s[0:5]
         if self.validate(s):
@@ -308,10 +308,6 @@ class PermuteFingerprints(object):
 
 
 if __name__ == '__main__':
-    """
-     this "doubles all parathensis"
-     to make new fingerprints
-     """
 
     mutator = PermuteFingerprints()
 
