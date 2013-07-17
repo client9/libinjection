@@ -4,12 +4,12 @@ tests = [
     {
         'name'    : 'libinjection-build-test',
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'    : ExecuteShell('gcc --version && cd c && make clean && make allbin && nosetests -v test_driver.py'),
+        'exec'    : ExecuteShell('gcc --version && cd c && make clean && make test'),
     },
     {
         'name': 'libinjection-build-test-g++',
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('g++ --version && cd c && make clean && CC=g++ make -e allbin && nosetests -v test_driver.py')
+        'exec': ExecuteShell('g++ --version && cd c && make clean && CC=g++ make test')
     },
     {
         'name': 'libinjection-pyflakes',
@@ -19,7 +19,7 @@ tests = [
     {
         'name': 'libinjection-pylint',
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('pylint -d 1143 -f parseable c/*.py')
+        'exec': ExecuteShell('pylint -f parseable c/*.py')
     },
     {
         'name': 'libinjection-python-build-test',
