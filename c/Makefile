@@ -17,13 +17,11 @@ help:
 	@echo "make test_speed"
 	@echo "make test_negative -- test false positives"
 	@echo "make test_positive -- test sqli"
-	@echo "make indent -- re-idents main c file"
 	@echo "make unused -- print unused fingerprints"
 	@echo "make sort -- resort fingerprints"
 	@echo "make clean  -- cleanup"
 	@echo "make lcov -- lcov"
 	@echo "make reader -- line by line analyzer"
-	@echo "make http -- runs mini-http server, handy for viewing lcov"
 	@echo "make sqli -- a CLI tokenizier (need renaming)"
 	@echo "make fptool -- a fingerprinting tool"
 	@echo ""
@@ -36,12 +34,23 @@ example1: Makefile example1.c libinjection_sqli_data.h libinjection.h libinjecti
 reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${CC}  ${CFLAGS} -o reader libinjection_sqli.c reader.c
 
-testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
-	${CC}  ${CFLAGS} -O1 -o testdriver libinjection_sqli.c testdriver.c
-
 reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	make clean
 	${CC} -g -O3 -pg -o reader libinjection_sqli.c reader.c
+
+reader-lcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-lcov libinjection_sqli.c reader.c
+
+
+testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
+	${CC}  ${CFLAGS} -O1 -o testdriver libinjection_sqli.c testdriver.c
+
+testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sqli_data.c
+	rm -f sqli
+	gcc -g -fprofile-arcs -ftest-coverage -O0 -o testdriver-gcov testdriver.c libinjection_sqli.c
+
+
+
 
 is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h libinjection_sqli_data.h
 	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c
@@ -102,6 +111,33 @@ sort:
 	${MAKE} libinjection_sqli_data.h
 	${MAKE} allbin
 
+coverage-testdriver: sqli-gcov testdriver-gcov
+	lcov -b . --directory . --zerocounters
+	./testdriver-gcov ../tests/test-*.txt
+	lcov -b . --directory . --capture --output-file libinjection.info
+	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'modp_*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'sqli' -o libinjection.info
+	rm -rf lcov-html
+	mkdir lcov-html
+	genhtml -o lcov-html libinjection.info
+
+coverage-reader: reader-lcov
+	lcov -b . --directory . --zerocounters
+	-./reader -q ../data/*.txt
+	lcov -b . --directory . --capture --output-file libinjection.info
+	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'reader' -o libinjection.info
+	rm -rf lcov-html
+	mkdir lcov-html
+	genhtml -o lcov-html libinjection.info
+
+.PHONY: coverage-reader coverage-testdriver
+
+test: allbin test_unit
+
+.PHONY: http test
+
 clean:
 	rm -f *~ *.pyc
 	rm -rf build
@@ -114,48 +150,3 @@ clean:
 	rm -f reader extractor is_sqli lcov-reader sqli fptool testdriver
 	rm -f fingerprints-orig.txt
 
-
-sqli-gcov:
-	rm -f sqli
-	gcc -g -fprofile-arcs -ftest-coverage -O0 -o sqli sqli_cli.c
-
-# for jenkins
-gcovr-unittest-xml: sqli-gcov
-	nosetests ./test_driver.py
-	gcovr -d -o libinjection-unittest-gcov.xml --gcov-exclude='.*modp_.*'  --gcov-exclude='reader*' --xml -r `pwd`
-
-# for jenkins
-gcovr-samples-xml:
-	rm -f reader libinjection-samples-gcov.xml
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c
-	./reader ../data/*.txt > /dev/null
-	gcovr --version
-	gcovr -d -o libinjection-samples-gcov.xml --gcov-exclude='reader.*' --xml -r `pwd`
-
-lcov: sqli-gcov
-	lcov -b . --directory . --zerocounters
-	./test_driver.py ../tests/test-*.txt
-	lcov -b . --directory . --capture --output-file libinjection.info
-	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'modp_*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'sqli' -o libinjection.info
-	rm -rf lcov-html
-	mkdir lcov-html
-	genhtml -o lcov-html libinjection.info
-.PHONY: lcov
-
-lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader libinjection_sqli.c reader.c
-	lcov -b . --directory . --zerocounters
-	-./reader ../data/*.txt
-	lcov -b . --directory . --capture --output-file libinjection.info
-	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'reader' -o libinjection.info
-	rm -rf lcov-html
-	mkdir lcov-html
-	genhtml -o lcov-html libinjection.info
-.PHONY: lcov-reader
-
-test: allbin test_unit
-
-.PHONY: http test
