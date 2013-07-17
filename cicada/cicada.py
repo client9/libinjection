@@ -78,7 +78,7 @@ class PublishArtifact(object):
     """
 
     def __init__(self, artifact):
-        self.data = artifact
+        self.artifact = artifact
 
     def run(self, pubdir, name):
         destdir = os.path.join(os.path.join(pubdir, name));
