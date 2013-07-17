@@ -93,7 +93,7 @@ class PublishArtifact(object):
             os.makedirs(destdir)
 
         subprocess.call(['cp', '-r', os.path.join(name, self.artifact), destdir])
-        test['status']['artifacts'].append( [link, linktext] )
+        test['status']['artifacts'].append( [self.link, self.linktext] )
 
 class PublishStatus(object):
     """
