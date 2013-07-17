@@ -1,4 +1,5 @@
 
+TESTDRIVER=../c/testdriver
 
 CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual
 # -DNDEBUG
@@ -55,13 +56,10 @@ test_speed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_spe
 testpy: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	nosetests -v test_driver.py
 
-test: testdriver sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
-	./testdriver -q0 -ca ../tests/test-tokens-*.txt
-	./testdriver -f -q0 -ca ../tests/test-folding-*.txt
-	./testdriver -d ../tests/test-sqli-*.txt
+test: testdriver libinjection_sqli_data.h libinjection_sqli.c libinjection.h
+	(cd ../tests; time ../c/testdriver test-*.txt)
 
 valgrind: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
-	rm -f valgrind-*.xml
 	${MAKE} VALGRIND=1 test_unit
 	${MAKE} reader
 	valgrind \
@@ -109,14 +107,13 @@ sort:
 clean:
 	rm -f *~ *.pyc
 	rm -rf build
-	rm -f fptool
 	rm -f test_tokens test_speed
 	rm -rf *.dSYM
 	rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
 	rm -rf lcov-html
 	rm -rf core* a.out
 	rm -f gmon.out nosetests.xml valgrind-*.txt
-	rm -f reader extractor is_sqli lcov-reader sqli
+	rm -f reader extractor is_sqli lcov-reader sqli fptool testdriver
 	rm -f fingerprints-orig.txt
 
 
@@ -160,7 +157,6 @@ lcov-reader: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.
 	mkdir lcov-html
 	genhtml -o lcov-html libinjection.info
 .PHONY: lcov-reader
-
 
 test: allbin test_unit
 

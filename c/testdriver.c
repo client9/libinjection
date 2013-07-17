@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <glob.h>
 #include "libinjection.h"
 
 char g_test[4096];
@@ -153,7 +154,7 @@ int main(int argc, char** argv)
     int count_fail = 0;
     int flags = 0;
     int testtype = 0;
-
+    const char* fname;
     while (1) {
         if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
             testtype = 2;
@@ -182,15 +183,32 @@ int main(int argc, char** argv)
     }
 
     for (i = offset; i < argc; ++i) {
+
+
+        fname = argv[i];
         count += 1;
-        //fprintf(stderr, "%s: ", argv[i]);
-        ok = read_file(argv[i], flags, testtype);
+        if (strstr(fname, "test-tokens-")) {
+            flags = FLAG_QUOTE_NONE | FLAG_SQL_ANSI;
+            testtype = 0;
+        } else if (strstr(fname, "test-folding-")) {
+            flags = FLAG_QUOTE_NONE | FLAG_SQL_ANSI;
+            testtype = 2;
+        } else if (strstr(fname, "test-sqli-")) {
+            flags = FLAG_NONE;
+            testtype = 1;
+        } else {
+            fprintf(stderr, "Unknown test type: %s, failing\n", fname);
+            count_fail += 1;
+            continue;
+        }
+
+        ok = read_file(fname, flags, testtype);
         if (ok) {
             count_ok += 1;
-            //fprintf(stderr, "ok\n");
+            fprintf(stderr, "%s: ok\n", fname);
         } else {
             count_fail += 1;
-            fprintf(stderr, "%s: fail\n", argv[i]);
+            fprintf(stderr, "%s: fail\n", fname);
         }
     }
     return count > 0 && count_fail > 0;
