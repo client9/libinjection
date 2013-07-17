@@ -83,7 +83,7 @@ class PublishArtifact(object):
     def run(self, pubdir, name):
         destdir = os.path.join(os.path.join(pubdir, name));
         if not os.path.exists(destdir):
-            os.makedirs(name)
+            os.makedirs(destdir)
 
         subprocess.call(['cp', '-r', self.artifact, destdir])
 
