@@ -48,11 +48,6 @@ make reader
 """)
     },
     {
-        'name': 'libinjection-coverage-1',
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-
-    },
-    {
         'name'    : 'libinjection-gprof',
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'    : ExecuteShell("make coverage-testdriver"),
