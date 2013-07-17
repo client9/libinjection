@@ -171,7 +171,8 @@ def cicada(workspace, pubspace, tests):
 
         if 'publish' in t:
             for pub in ['publish']:
-                pub.run(
+                pub.run(pubspace, pub['name'])
+
         # publish test console output and result
         pubcon = PublishConsole('\n'.join(output))
         pubcon.run(pubspace, t['name'])
