@@ -154,28 +154,12 @@ int main(int argc, char** argv)
     int count_fail = 0;
     int flags = 0;
     int testtype = 0;
+    int quiet = 0;
+
     const char* fname;
     while (1) {
-        if (strcmp(argv[offset], "-f") == 0 || strcmp(argv[offset], "--fold") == 0) {
-            testtype = 2;
-            offset += 1;
-        } else if (strcmp(argv[offset], "-d") == 0 || strcmp(argv[offset], "--detect") == 0) {
-            testtype = 1;
-            offset += 1;
-        } else if (strcmp(argv[offset], "-ca") == 0) {
-            flags |= FLAG_SQL_ANSI;
-            offset += 1;
-        } else if (strcmp(argv[offset], "-cm") == 0) {
-            flags |= FLAG_SQL_MYSQL;
-            offset += 1;
-        } else if (strcmp(argv[offset], "-q0") == 0) {
-            flags |= FLAG_QUOTE_NONE;
-            offset += 1;
-        } else if (strcmp(argv[offset], "-q1") == 0) {
-            flags |= FLAG_QUOTE_SINGLE;
-            offset += 1;
-        } else if (strcmp(argv[offset], "-q2") == 0) {
-            flags |= FLAG_QUOTE_DOUBLE;
+        if (strcmp(argv[offset], "-q") == 0 || strcmp(argv[offset], "--quiet") == 0) {
+            quiet = 1;
             offset += 1;
         } else {
             break;
@@ -183,8 +167,6 @@ int main(int argc, char** argv)
     }
 
     for (i = offset; i < argc; ++i) {
-
-
         fname = argv[i];
         count += 1;
         if (strstr(fname, "test-tokens-")) {
@@ -205,10 +187,14 @@ int main(int argc, char** argv)
         ok = read_file(fname, flags, testtype);
         if (ok) {
             count_ok += 1;
-            fprintf(stderr, "%s: ok\n", fname);
+            if (! quiet) {
+                fprintf(stderr, "%s: ok\n", fname);
+            }
         } else {
             count_fail += 1;
-            fprintf(stderr, "%s: fail\n", fname);
+            if (! quiet) {
+                fprintf(stderr, "%s: fail\n", fname);
+            }
         }
     }
     return count > 0 && count_fail > 0;

@@ -1,5 +1,9 @@
 
 TESTDRIVER=../c/testdriver
+VALGRIND=valgrind --gen-suppressions=no \
+	--read-var-info=yes \
+	--error-exitcode=1 \
+	--track-origins=yes
 
 CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual
 # -DNDEBUG
@@ -57,17 +61,12 @@ testpy: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinje
 	nosetests -v test_driver.py
 
 test: testdriver libinjection_sqli_data.h libinjection_sqli.c libinjection.h
-	(cd ../tests; time ../c/testdriver test-*.txt)
+	(cd ../tests; ../c/testdriver -q test-*.txt)
+	./reader -q ../data/*.txt
 
-valgrind: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
-	${MAKE} VALGRIND=1 test_unit
-	${MAKE} reader
-	valgrind \
-		--gen-suppressions=no \
-		--read-var-info=yes \
-		--error-exitcode=1 \
-		--track-origins=yes \
-		./reader -q ../data/*.txt
+valgrind: reader testdriver
+	(cd ../tests; ${VALGRIND} ../c/testdriver -q test-*.txt)
+	${VALGRIND} ./reader -q ../data/*.txt
 
 cppcheck:
 	rm -f cppcheck-result.xml
