@@ -48,7 +48,7 @@ make reader
 """)
     },
     {
-        'name'    : 'libinjection-gprof',
+        'name'    : 'libinjection-coverage-unittest',
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'    : ExecuteShell("make coverage-testdriver"),
         'publish' : [
@@ -59,7 +59,14 @@ make reader
         'name': 'libinjection-valgrind',
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec' : ExecuteShell("cd c && make clean && nice make valgrind"),
-    }
+    },
+    {
+        'name'    : 'libinjection-gprof',
+        'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec'    : ExecuteShell("""
+make reader-gprof
+"""),
+    },
 ]
 
 import sys
