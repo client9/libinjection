@@ -113,8 +113,7 @@ coverage-testdriver: testdriver-gcov
 	./testdriver-gcov ../tests/test-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'modp_*' -o libinjection.info
-	lcov -b . --directory . --remove libinjection.info 'sqli' -o libinjection.info
+	lcov -b . --directory . --remove libinjection.info 'testdriver' -o libinjection.info
 	rm -rf lcov-html
 	mkdir lcov-html
 	genhtml -o lcov-html libinjection.info
