@@ -12,17 +12,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/*
- * yeah we are including the whole file
- * we are doing this since some of the functions are 'private'
- * and this way we get access to them
- */
-#include "libinjection_sqli.c"
+#include "libinjection.h"
 
 void print_string(stoken_t* t)
 {
     /* print opening quote */
-    if (t->str_open != CHAR_NULL) {
+    if (t->str_open != '\0') {
         printf("%c", t->str_open);
     }
 
@@ -30,7 +25,7 @@ void print_string(stoken_t* t)
     printf("%s", t->val);
 
     /* print closing quote */
-    if (t->str_close != CHAR_NULL) {
+    if (t->str_close != '\0') {
         printf("%c", t->str_close);
     }
 }
@@ -127,7 +122,7 @@ int main(int argc, const char* argv[])
             printf("%s\n", sf.fingerprint);
         }
     } else if (fold == 1) {
-        count = filter_fold(&sf);
+        count = libinjection_sqli_fold(&sf);
         // printf("count = %d\n", count);
         for (i = 0; i < count; ++i) {
             //printf("token: %d :: ", i);

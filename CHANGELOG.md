@@ -2,6 +2,9 @@
 # v3.4.0 2013-07-XX
 * Fix regression with COLLATE
 * Handle "procedure analyze" under MySQL
+* Make API most robust when setting flags
+* Add folding API
+* Add new all-C test driver to improve testing speed
 * Makefile cleanups
 * Fired Jenkins!  Using in-house system.
 
