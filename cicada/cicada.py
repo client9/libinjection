@@ -15,7 +15,6 @@ import tornado.template
 EVENTS = {}
 STATUS = {}
 
-
 def timestamp():
     # remove microseconds, use a space
     s = datetime.datetime.utcnow().isoformat(' ')
@@ -121,7 +120,7 @@ class PublishConsole(object):
         logging.debug("Writing console to {0}".format(fname))
         with open(fname, 'w') as fd:
             fd.write(self.data)
-        status['artifacts'].append( [ "/artifacts/" + name + "/console.txt", linktext] )
+        status['artifacts'].append( [ "/cicada/artifacts/" + name + "/console.txt", linktext] )
 
 class PublishArtifact(object):
     """
@@ -140,7 +139,7 @@ class PublishArtifact(object):
             os.makedirs(destdir)
         link = os.path.join(name, self.link)
         subprocess.call(['cp', '-r', os.path.join(name, self.artifact), destdir])
-        status['artifacts'].append( [ "/artifacts/" + link, self.linktext] )
+        status['artifacts'].append( [  "/cicada/artifacts/" + link, self.linktext] )
 
 class PublishStatus(object):
     """
@@ -331,10 +330,10 @@ def make_tornado_application(pubspace):
     }
 
     handlers = [
-        (r'/hookshot', HookShotHandler),
-        (r'^/$', CicadaStatusHandler),
-        (r'/index.html', CicadaStatusHandler),
-        (r'/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
+        (r'/cicada/hookshot', HookShotHandler),
+        (r'/cicada/$', CicadaStatusHandler),
+        (r'/cicada/index.html', CicadaStatusHandler),
+        (r'/cicada/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
     ]
 
     return  tornado.web.Application(handlers, **settings)
