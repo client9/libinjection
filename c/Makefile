@@ -36,7 +36,7 @@ reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_s
 
 reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	make clean
-	${CC} -g -O3 -pg -o reader libinjection_sqli.c reader.c
+	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c
 
 reader-lcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
 	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-lcov libinjection_sqli.c reader.c
