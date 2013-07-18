@@ -1,4 +1,7 @@
 
+# v3.4.1 2013-07-18
+* Fingerprint update only HT @LightOS
+
 # v3.4.0 2013-07-18
 
 * Fix regression with COLLATE

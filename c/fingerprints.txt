@@ -1390,6 +1390,7 @@
 1f()s
 1f()v
 1f(1)
+1f(1n
 1f(1o
 1f(f(
 1f(n)
@@ -5056,6 +5057,7 @@ nf()o
 nf()s
 nf()v
 nf(1)
+nf(1n
 nf(1o
 nf(f(
 nf(n)
@@ -6777,6 +6779,7 @@ sf()o
 sf()s
 sf()v
 sf(1)
+sf(1n
 sf(1o
 sf(f(
 sf(n)
@@ -8775,6 +8778,7 @@ vf()o
 vf()s
 vf()v
 vf(1)
+vf(1n
 vf(1o
 vf(f(
 vf(n)
