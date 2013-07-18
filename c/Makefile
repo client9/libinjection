@@ -135,14 +135,14 @@ test: allbin test_unit
 .PHONY: http test
 
 clean:
-	rm -f *~ *.pyc
-	rm -rf build
-	rm -f test_tokens test_speed
-	rm -rf *.dSYM
-	rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
-	rm -rf lcov-html
-	rm -rf core* a.out
-	rm -f gmon.out nosetests.xml valgrind-*.txt
-	rm -f reader extractor is_sqli lcov-reader sqli fptool testdriver
-	rm -f fingerprints-orig.txt
+	@rm -f *~ *.pyc
+	@rm -rf build
+	@rm -f test_tokens test_speed
+	@rm -rf *.dSYM
+	@rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
+	@rm -rf lcov-html
+	@rm -rf core* a.out
+	@rm -f gmon.out nosetests.xml valgrind-*.txt
+	@rm -f reader extractor is_sqli lcov-reader sqli fptool testdriver
+	@rm -f fingerprints-orig.txt
 
