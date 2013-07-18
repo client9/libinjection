@@ -332,7 +332,8 @@ def make_tornado_application(pubspace):
 
     handlers = [
         (r'/hookshot', HookShotHandler),
-        (r'/status', CicadaStatusHandler),
+        (r'/$', CicadaStatusHandler),
+        (r'/index.html', CicadaStatusHandler),
         (r'/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
     ]
 
