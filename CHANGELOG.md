@@ -1,5 +1,6 @@
 
-# v3.4.0 2013-07-XX
+# v3.4.0 2013-07-18
+
 * Fix regression with COLLATE
 * Handle "procedure analyze" under MySQL
 * Make API most robust when setting flags
