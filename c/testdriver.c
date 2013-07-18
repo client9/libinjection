@@ -73,7 +73,7 @@ int read_file(const char* fname, int flags, int testtype)
     FILE *fp = NULL;
     char linebuf[4096];
     char g_actual[4096];
-    char* bufptr;
+    char* bufptr = NULL;
     sfilter sf;
     int ok = 1;
     int num_tokens;
