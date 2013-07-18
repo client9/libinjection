@@ -1,6 +1,6 @@
 LISTEN = [
     TestOnEvent('libinjection'),
-    TestOnTime(minute='60')
+    TestOnTime(minute='0', hour='23')
 ]
 
 tests = [
