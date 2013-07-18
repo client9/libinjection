@@ -771,7 +771,11 @@ static size_t parse_qstring_core(sfilter * sf, int offset)
     }
 
     ch = cs[pos + 2];
-    if (ch < 33 && ch > 127) {
+
+    /* the ch > 127 is un-needed since
+     * we assume char is signed
+     */
+    if (ch < 33 /* && ch > 127 */) {
         return parse_word(sf);
     }
     switch (ch) {
