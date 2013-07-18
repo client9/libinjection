@@ -140,7 +140,7 @@ class PublishArtifact(object):
             os.makedirs(destdir)
         link = os.path.join(name, self.link)
         subprocess.call(['cp', '-r', os.path.join(name, self.artifact), destdir])
-        status['artifacts'].append( [ link, self.linktext] )
+        status['artifacts'].append( [ "/artifacts/" + link, self.linktext] )
 
 class PublishStatus(object):
     """
@@ -332,7 +332,7 @@ def make_tornado_application(pubspace):
 
     handlers = [
         (r'/hookshot', HookShotHandler),
-        (r'/$', CicadaStatusHandler),
+        (r'^/$', CicadaStatusHandler),
         (r'/index.html', CicadaStatusHandler),
         (r'/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
     ]
