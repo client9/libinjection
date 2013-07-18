@@ -33,12 +33,6 @@ union%20%28select%20id%20from%20users%20limit%201%2C1%29
 %28select%20substr%28login%29
 %28select%20substr%28login%29%0D%0Afrom%20users%20limit%201%2C1%29
 %28select%20asd%28login%29%0D%0Afrom%20users%20limit%201%2C1%29
-select1%2C1%2C1from%0D%0A
-select1%2C1%2C1%2C1from
-select1%2C1%2C1%2C1%2C1%2C1from
-select%201%2C1%2C1%2C1%2C1%2C1from
-select%201%2C1%2C1%2C1%2C1%2C1%20from
-select-1%2C1%2C1%2C1%2C1%2C1%20from
 1a%20union%20%28select%20id%20from%20users%20limit%201%2C1%29
 %28select%20id%20from%20users%20limit%201%2C1%29
 %28select%20id%20from%20users%20limit%201%2C1%29
