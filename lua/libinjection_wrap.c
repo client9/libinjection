@@ -2786,7 +2786,7 @@ static swig_lua_var_info swig_variables[] = {
 };
 
 static swig_lua_const_info swig_constants[] = {
-    {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.4.0")},
+    {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.4.1")},
     {SWIG_LUA_CONSTTAB_INT("LIBINJECTION_SQLI_TOKEN_SIZE", 32)},
     {SWIG_LUA_CONSTTAB_INT("LIBINJECTION_SQLI_MAX_TOKENS", 5)},
     {SWIG_LUA_CONSTTAB_INT("FLAG_NONE", FLAG_NONE)},
