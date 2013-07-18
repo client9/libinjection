@@ -1,33 +1,42 @@
-#!/usr/bin/env python
-from cicada import *
+LISTEN = [
+    TestOnEvent('libinjection'),
+    TestOnTime(minute='60')
+]
+
 tests = [
     {
         'name'    : 'libinjection-build-test',
+        'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'    : ExecuteShell('gcc --version && cd c && make clean && make test'),
     },
     {
         'name': 'libinjection-build-test-g++',
+        'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec': ExecuteShell('g++ --version && cd c && make clean && CC=g++ make test')
     },
     {
         'name': 'libinjection-pyflakes',
+        'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec': ExecuteShell('cd c && pyflakes *.py')
     },
     {
         'name': 'libinjection-pylint',
+        'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec': ExecuteShell('pylint --include-ids=y -f parseable c/*.py')
     },
     {
         'name': 'libinjection-python-build-test',
+        'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec': ExecuteShell('make clean && cd python && make test'),
     },
     {
         'name': 'libinjection-samples-positive',
+        'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'   : ExecuteShell("""
 cd c
@@ -39,6 +48,7 @@ make reader
     },
     {
         'name': 'libinjection-samples-negative',
+        'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'   : ExecuteShell("""
 cd c
@@ -49,6 +59,7 @@ make reader
     },
     {
         'name'    : 'libinjection-coverage-unittest',
+        'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'    : ExecuteShell("cd c && make coverage-testdriver"),
         'publish' : [
@@ -57,11 +68,13 @@ make reader
     },
     {
         'name': 'libinjection-valgrind',
+        'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec' : ExecuteShell("cd c && make clean && nice make valgrind"),
     },
     {
         'name'    : 'libinjection-gprof',
+        'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'    : ExecuteShell("""#!/bin/bash
 cd c
@@ -72,18 +85,3 @@ gprof ./reader gmon.out
 """)
     },
 ]
-
-import sys
-import logging
-import os
-import os.path
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    if len(sys.argv) == 2:
-        workspace = sys.argv[1]
-    else:
-        workspace = os.path.expanduser("~/libinjection-cicada-workspace")
-
-    pubspace = os.path.join(workspace, "cicada")
-    cicada(workspace, pubspace, tests)
