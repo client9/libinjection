@@ -42,7 +42,7 @@ tests = [
 cd c
 make clean
 make reader
-./reader -t -i -m 37 ../data/sqli-*.txt
+./reader -t -i -m 24 ../data/sqli-*.txt
 """)
 
     },
@@ -78,8 +78,9 @@ make reader
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
         'exec'    : ExecuteShell("""#!/bin/bash
 cd c
+make clean
 make reader
-gcc -g -O3 -pg -o reader libinjection_sqli.c reader.c
+gcc -g -O2 -pg -o reader libinjection_sqli.c reader.c
 ./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
 gprof ./reader gmon.out
 """)
