@@ -1146,10 +1146,16 @@ static size_t parse_number(sfilter * sf)
     /* oracle's ending float or double suffix
      * http://docs.oracle.com/cd/B19306_01/server.102/b14200/sql_elements003.htm#i139891
      */
-    if (pos < slen) {
-        if (cs[pos] == 'd' || cs[pos] == 'D' || cs[pos] == 'f' || cs[pos] == 'F') {
+    if (pos < slen && (cs[pos] == 'd' || cs[pos] == 'D' || cs[pos] == 'f' || cs[pos] == 'F')) {
+        if (pos + 1 == slen) {
+            /* line ends evaluate "... 1.2f$" as '1.2f' */
+            pos += 1;
+        } else if (pos + 1 < slen && (char_is_white(cs[pos+1]) || cs[pos+1] == ';')) {
+            /* evaluate "... 1.2f ... as '1.2f' */
             pos += 1;
         }
+        /* it's like "123FROM" */
+        /* parse as "123" only */
     }
 
     st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);

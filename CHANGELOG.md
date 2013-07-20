@@ -1,4 +1,9 @@
 
+v3.NEXT
+* Non-critical parser fix for numbers with oracle's ending
+  suffix.  "SELECT 1FROM .." -> (SELECT, 1, FROM) not
+  (SELECT, 1F, ROM)
+
 # v3.4.1 2013-07-18
 * Fingerprint update only HT @LightOS
 
