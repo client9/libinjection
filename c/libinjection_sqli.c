@@ -1743,7 +1743,11 @@ char libinjection_sqli_lookup_word(sfilter *sql_state, int lookup_type,
 
 int libinjection_sqli_blacklist(sfilter* sql_state)
 {
-    char fp2[LIBINJECTION_SQLI_MAX_TOKENS + 2];
+    /*
+     * use minimum of 8 bytes to make sure gcc -fstack-protector
+     * works correctly
+     */
+    char fp2[LIBINJECTION_SQLI_MAX_TOKENS + 2 < 8 ? 8 : LIBINJECTION_SQLI_MAX_TOKENS + 2];
     char ch;
     size_t i;
     size_t len = strlen(sql_state->fingerprint);
