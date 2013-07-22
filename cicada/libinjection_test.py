@@ -61,10 +61,16 @@ make reader
         'name'    : 'libinjection-coverage-unittest',
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'    : ExecuteShell("cd c && make coverage-testdriver"),
+        'exec'    : ExecuteShell("cd c && nice make coverage-testdriver"),
         'publish' : [
             PublishArtifact('c/lcov-html', 'lcov-html/c/libinjection_sqli.c.gcov.html', 'coverage')
             ]
+    },
+    {
+        'name': 'libinjection-speed',
+        'listen'  : LISTEN,
+        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec' : ExecuteShell("cd c && make test_speed")
     },
     {
         'name': 'libinjection-valgrind',
