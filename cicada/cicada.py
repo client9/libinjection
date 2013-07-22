@@ -180,10 +180,12 @@ class CicadaStatusHandler(tornado.web.RequestHandler):
         )
 
 class Cicada(object):
-    def __init__(self, workspace, pubspace, tests):
+    def __init__(self, tests):
         global STATUS
 
         self.tests = tests
+        workspace = options.workspace
+        pubspace = options.artifacts
 
         if not os.path.exists(workspace):
             logging.debug('making directory ' + workspace)
@@ -196,7 +198,8 @@ class Cicada(object):
         self.workqueue = multiprocessing.Queue()
         self.statusqueue = multiprocessing.Queue()
 
-        num_workers = 2
+        num_workers = options.workers
+        logging.debug("NUM WORKERS " + str(num_workers))
         workers = [ multiprocessing.Process(target=buzz,
                                             args=(self.workqueue, self.statusqueue, workspace, pubspace))
                     for i in range(num_workers) ]
@@ -220,7 +223,7 @@ class Cicada(object):
         os.chdir(workspace)
 
         http_server = tornado.httpserver.HTTPServer(application)
-        http_server.listen(8889)
+        http_server.listen(options.port)
 
         self.poll()
 
@@ -326,24 +329,43 @@ def make_tornado_application(pubspace):
         "static_path": os.path.join(os.path.dirname(__file__),pubspace),
         "template_path": os.getcwd(),
         "xsrf_cookies": False,
-        "gzip": False,
+        "gzip": options.gzip,
         'debug': True
     }
 
     handlers = [
-        (r'/cicada/hookshot', HookShotHandler),
-        (r'/cicada/$', CicadaStatusHandler),
-        (r'/cicada/index.html', CicadaStatusHandler),
-        (r'/cicada/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
+        (options.urlprefix + '/hookshot', HookShotHandler),
+        (options.urlprefix + '/$', CicadaStatusHandler),
+        (options.urlprefix + '/index.html', CicadaStatusHandler),
+        (options.urlprefix + '/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
     ]
 
     return  tornado.web.Application(handlers, **settings)
 
+from tornado.options import define, options
+
+#
+# web related options
+#
+define("port", default=9000, help="HTTP port")
+define("gzip", default=False, help="gzip output, not needed if running behind a proxy")
+define("urlprefix", default="/cicada", help="url prefix")
+
+#
+# test related options
+#
+define("workers", default=2, help="Number of test workers processes")
+define("workspace", default= os.path.expanduser("~/cicada/workspace"),
+       help="where data is read (where source code is)")
+define("artifacts", default = os.path.expanduser("~/cicada/artifacts"),
+       help="where data is written (where results are published)")
+
+
 if __name__ == '__main__':
+    tornado.options.parse_command_line()
+
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(process)d %(message)s")
-    workspace = os.path.expanduser("~/libinjection-cicada-workspace")
-    pubspace = os.path.join(workspace, "cicada")
 
     execfile('libinjection_test.py')
 
-    c = Cicada(workspace, pubspace, tests)
+    c = Cicada(tests)
