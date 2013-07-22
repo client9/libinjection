@@ -187,6 +187,9 @@ class Cicada(object):
         workspace = options.workspace
         pubspace = options.artifacts
 
+        logging.info("Using workspace: " + workspace)
+        logging.info("Using artifacts: " + pubspace)
+
         if not os.path.exists(workspace):
             logging.debug('making directory ' + workspace)
             os.makedirs(workspace)
@@ -194,6 +197,7 @@ class Cicada(object):
         if not os.path.exists(pubspace):
             logging.debug('making directory ' + pubspace)
             os.makedirs(pubspace)
+
 
         self.workqueue = multiprocessing.Queue()
         self.statusqueue = multiprocessing.Queue()
@@ -326,7 +330,7 @@ def runtest(statusqueue, workspace, pubspace, t, statusmsg):
 
 def make_tornado_application(pubspace):
     settings = {
-        "static_path": os.path.join(os.path.dirname(__file__),pubspace),
+        "static_path": pubspace,
         "template_path": os.getcwd(),
         "xsrf_cookies": False,
         "gzip": options.gzip,
