@@ -45,6 +45,9 @@ int main()
 {
     const int mintps = 500000;
     int tps = testIsSQL();
+
+    printf("\nTPS : %d\n\n", tps);
+
     if (tps < 500000) {
         printf("FAIL: %d < %d\n", tps, mintps);
         /* FAIL */
