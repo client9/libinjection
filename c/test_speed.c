@@ -11,7 +11,7 @@
 
 int testIsSQL(void)
 {
-    const char* s[] = {
+    const char* const s[] = {
         "123 LIKE -1234.5678E+2;",
         "APPLE 19.123 'FOO' \"BAR\"",
         "/* BAR */ UNION ALL SELECT (2,3,4)",
@@ -19,6 +19,7 @@ int testIsSQL(void)
         "dog apple @cat banana bar",
         "dog apple cat \"banana \'bar",
         "102 TABLE CLOTH",
+        "(1001-'1') union select 1,2,3,4 from credit_cards",
         NULL
     };
     const int imax = 1000000;
