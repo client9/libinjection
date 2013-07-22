@@ -1,4 +1,7 @@
 /*
+ * A not very good test for performance.  This is mostly useful in
+ * testing performance -regressions-
+ *
  */
 #include <time.h>
 #include <string.h>
@@ -6,7 +9,7 @@
 
 #include "libinjection.h"
 
-void testIsSQL(void)
+int testIsSQL(void)
 {
     const char* s[] = {
         "123 LIKE -1234.5678E+2;",
@@ -34,11 +37,21 @@ void testIsSQL(void)
     }
     clock_t t1 = clock();
     double total = (double) (t1 - t0) / (double) CLOCKS_PER_SEC;
-    printf("IsSQLi TPS                    = %f\n", (double) imax / total);
+    int tps = (int)((double) imax / total);
+    return tps;
 }
 
 int main()
 {
-    testIsSQL();
-    return 0;
+    const int mintps = 500000;
+    int tps = testIsSQL();
+    if (tps < 500000) {
+        printf("FAIL: %d < %d\n", tps, mintps);
+        /* FAIL */
+        return 1;
+    } else {
+        printf("OK: %d > %d\n", tps, mintps);
+        /* OK */
+        return 0;
+    }
 }
