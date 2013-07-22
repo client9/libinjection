@@ -3,6 +3,11 @@ v3.NEXT
 * Non-critical parser fix for numbers with oracle's ending
   suffix.  "SELECT 1FROM .." -> (SELECT, 1, FROM) not
   (SELECT, 1F, ROM)
+* Change sizing of some static arrays to have a length >= 8
+  For GCC based applications, this allows -fstack-protector to work
+  and -Wstack-protector will now not emit errors.
+* Added '-fstack-protector -D_FORTIFY_SOURCE=2' to default CFLAGS.
+  No change in performance
 
 # v3.4.1 2013-07-18
 * Fingerprint update only HT @LightOS
