@@ -121,7 +121,7 @@ class PublishConsole(object):
         logging.debug("Writing console to {0}".format(fname))
         with open(fname, 'w') as fd:
             fd.write(self.data)
-        status['artifacts'].append( [ "/cicada/artifacts/" + tornado.escape.url_escape(name) + "/console.txt", linktext] )
+        status['artifacts'].append( [ options.urlprefix + "/artifacts/" + tornado.escape.url_escape(name) + "/console.txt", linktext] )
 
 class PublishArtifact(object):
     """
@@ -140,7 +140,7 @@ class PublishArtifact(object):
             os.makedirs(destdir)
         link = os.path.join(name, self.link)
         subprocess.call(['cp', '-r', os.path.join(name, self.artifact), destdir])
-        status['artifacts'].append( [  "/cicada/artifacts/" +  tornado.escape.url_escape(name) + "/" + link, self.linktext] )
+        status['artifacts'].append( [  options.urlprefix + '/artifacts/' +  tornado.escape.url_escape(name) + "/" + link, self.linktext] )
 
 class PublishStatus(object):
     """
