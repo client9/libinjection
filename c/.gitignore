@@ -4,7 +4,7 @@ extractor
 is_sqli
 fptool
 sqli
-test_speed
+testspeed
 build
 *~
 *.pyc
@@ -13,7 +13,6 @@ build
 *.gcda
 *.gcno
 *.info
-nosetests.xml
+*.xml
 gmon.out
-cobertura-coverage.xml
-valgrind-*.xml
+

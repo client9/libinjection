@@ -28,7 +28,7 @@ help:
 	@echo "make fptool -- a fingerprinting tool"
 	@echo ""
 
-allbin: reader sqli fptool example1
+allbin: reader sqli fptool example1 testspeed
 
 example1: Makefile example1.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${CC}  ${CFLAGS} -o example1 libinjection_sqli.c example1.c
@@ -60,9 +60,11 @@ sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_d
 fptool: Makefile fptool.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	${CC} ${CFLAGS} -o fptool fptool.c libinjection_sqli.c
 
-test_speed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_speed.c
-	${CC} ${CFLAGS} -DNDEDBUG -o test_speed libinjection_sqli.c test_speed.c
-	./test_speed
+testspeed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_speed.c
+	${CC} ${CFLAGS} -DNDEDBUG -o testspeed libinjection_sqli.c test_speed.c
+
+test_speed: testspeed
+	./testspeed
 
 testpy: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	nosetests -v test_driver.py
@@ -134,12 +136,12 @@ coverage-reader: reader-lcov
 
 test: allbin test_unit
 
-.PHONY: http test
+.PHONY: test
 
 clean:
 	@rm -f *~ *.pyc
 	@rm -rf build
-	@rm -f test_tokens test_speed
+	@rm -f test_tokens testspeed
 	@rm -rf *.dSYM
 	@rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
 	@rm -rf lcov-html
