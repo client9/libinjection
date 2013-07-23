@@ -175,6 +175,13 @@ class HookShotHandler(tornado.web.RequestHandler):
     def post(self):
         EVENTS['libinjection'] = True
 
+class KickHandler(tornado.web.RequestHandler):
+    """
+    hack to do everything
+    """
+    def get(self):
+        EVENTS['kick'] = True
+
 class CicadaStatusHandler(tornado.web.RequestHandler):
     def get(self):
         current = STATUS.values()
@@ -187,6 +194,11 @@ class CicadaStatusHandler(tornado.web.RequestHandler):
 class Cicada(object):
     def __init__(self, tests):
         global STATUS
+        global EVENTS
+
+        EVENTS = {
+            'kick': 1
+        }
 
         self.tests = tests
         workspace = options.workspace
@@ -272,7 +284,7 @@ class Cicada(object):
                     else:
                         pass
                         #logging.debug("{0} rejected".format(listener))
-            if run:
+            if run or 'kick' in EVENTS:
                 logging.debug("Adding {0} to be built".format(t['name']))
                 self.workqueue.put( (t, STATUS[t['name']] ))
         EVENTS = {}
@@ -344,6 +356,7 @@ def make_tornado_application(pubspace):
 
     handlers = [
         (options.urlprefix + '/hookshot', HookShotHandler),
+        (options.urlprefix + '/kick', KickHandler),
         (options.urlprefix + '/$', CicadaStatusHandler),
         (options.urlprefix + '/index.html', CicadaStatusHandler),
         (options.urlprefix + '/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
