@@ -95,6 +95,6 @@ gprof ./reader gmon.out
         'name'    : 'libinjection.client9.com-ssl',
         'listen'  : [  TestOnTime(minute='1') ],
         'source'  : CheckoutGit('https://github.com/client9/ssl-unit-tests.git'),
-        'exec'    : ExecuteShell("./recommendations-ssllabs.sh libinjection.client9.com:443")
+        'exec'    : ExecuteShell("./libinjection.client9.com.sh")
     }
 ]
