@@ -92,9 +92,9 @@ gprof ./reader gmon.out
 """)
     },
     {
-        'name'    : 'libinjection.client9.com-ssl',
+        'name'    : 'libinjection.client9.com-sslassert',
         'listen'  : [  TestOnTime(minute='1') ],
-        'source'  : CheckoutGit('https://github.com/client9/https-unit-tests.git'),
-        'exec'    : ExecuteShell("./libinjection.client9.com.sh")
+        'source'  : CheckoutGit('https://github.com/client9/sslassert.git'),
+        'exec'    : ExecuteShell("./example-libinjection.sh")
     }
 ]
