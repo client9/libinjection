@@ -8,6 +8,7 @@ v3.NEXT
   and -Wstack-protector will now not emit errors.
 * Added '-fstack-protector -D_FORTIFY_SOURCE=2' to default CFLAGS.
   No change in performance
+* Improvements in False Positive rejection
 
 # v3.4.1 2013-07-18
 * Fingerprint update only HT @LightOS
