@@ -15,7 +15,7 @@ class PermuteFingerprints(object):
             'n)o1','Enn;', 'nBn', 'Ennc', 'n&En', 'nEnEn', 'Esn',
             'n1s', 'n(1)s', 'En1', 'En(1)', 'n(1)n', 'n1v',
             'n(1)1', 'n&EUE', 'n&EkU', 's&EUE', 's&EkU', 'v&EUE', 'v&EkU',
-            'n&nTn', 'nA', 'nos;n', 'UEn'
+            'n&nTn', 'nA', 'nos;n', 'UEn', 'so1no'
             ])
         self.whitelist = set([
             'T(vv)', 'Tnvos', 's&1s', 'Tnv;'

@@ -7089,7 +7089,6 @@ so1n,
 so1nE
 so1nU
 so1nf
-so1no
 so1o(
 so1oU
 so1of
