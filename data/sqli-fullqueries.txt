@@ -5,7 +5,7 @@ select 1 from foo where
 select @version from foo where
 select 'foo' from bar where
 # select 1,1,1,1,1,1,1
-select @version,@version,@version
+# select @version,@version,@version
 # select 'foo','bar',1,2,3,4
 
 select sin(1),2 from bar where

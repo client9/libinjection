@@ -262,8 +262,11 @@ null%27%27null%27+find_in_set%28uname%2C+%27lightos%27+%29+and+%271
 1%27+and+0x31%3D%271+
 1%27+and+0x05%3D%28select+0-+-mid%28version%28%29%2F-+-1%2C+1%2C1%29+as+%27a%27+from+dual%29+and+%271+
 %27AND+1.-1LIKE.1+EXEC+xp_cmdshell+%27dir+
-SELECT+1%2C2%2C0xEF%60
-SELECT+1%2C2%2C3%60abc%60%60
+
+# skipping
+#SELECT+1%2C2%2C0xEF%60
+#SELECT+1%2C2%2C3%60abc%60%60
+
 1%27AND%23%0A++++++++++++++++++++++++0%23%0A++++++++++++++++++++++++UNION%23%0A++++++++++++++++++++++++SELECT%40a%3A%3Dtable_name+FROM%23%0A++++++++++++++++++++++++information_schema.tables+LIMIT+1%23
 1%27+and+0x43+%3D+%28select+all+mid%28table_name%2C+1%2C1%29as%27a%27from+%60information_schema%60.tables+limit+1%29+and+%271%0A++++++++++++++++++++++++%27AND+1.-1LIKE.1+INSERT+INTO+TMP_DB+EXEC+%22xp_cmdshell%22%27dir
 1%27+AND+0x35+%3D+%28SELECT+%40phpids%3A%3DMID%28%40%40version+FROM+1+FOR+1%29+FROM+dual%29+and+%271+

@@ -1358,7 +1358,47 @@ int libinjection_sqli_fold(sfilter * sf)
     }
 
     while (1) {
-        FOLD_DEBUG
+        FOLD_DEBUG;
+
+        /* do we have all the max number of tokens?  if so do
+         * some special cases for 5 tokens
+         */
+        if (pos >= LIBINJECTION_SQLI_MAX_TOKENS) {
+            if (
+                (
+                    sf->tokenvec[0].type == TYPE_NUMBER &&
+                    (sf->tokenvec[1].type == TYPE_OPERATOR || sf->tokenvec[1].type == TYPE_COMMA) &&
+                    sf->tokenvec[2].type == TYPE_LEFTPARENS &&
+                    sf->tokenvec[3].type == TYPE_NUMBER &&
+                    sf->tokenvec[4].type == TYPE_RIGHTPARENS
+                    ) ||
+                (
+                    sf->tokenvec[0].type == TYPE_BAREWORD &&
+                    sf->tokenvec[1].type == TYPE_OPERATOR &&
+                    sf->tokenvec[2].type == TYPE_LEFTPARENS &&
+                    (sf->tokenvec[3].type == TYPE_BAREWORD || sf->tokenvec[3].type == TYPE_NUMBER) &&
+                    sf->tokenvec[4].type == TYPE_RIGHTPARENS
+                    )
+                )
+            {
+                if (pos == LIBINJECTION_SQLI_MAX_TOKENS) {
+                    //printf("FOLDING\n");
+                    pos = 1;
+                    left = 0;
+                } else {
+                    st_copy(&(sf->tokenvec[1]), &(sf->tokenvec[5]));
+                    pos = 2;
+                    left = 0;
+                }
+            } else {
+                //printf("NOT FOLDING\n");
+            }
+        }
+
+        if (! more || left >= LIBINJECTION_SQLI_MAX_TOKENS) {
+            break;
+        }
+
         /* get up to two tokens */
         while (more && pos <= LIBINJECTION_SQLI_MAX_TOKENS && (pos - left) < 2) {
             sf->current = &(sf->tokenvec[pos]);
@@ -1372,11 +1412,11 @@ int libinjection_sqli_fold(sfilter * sf)
                 }
             }
         }
-        FOLD_DEBUG
+        FOLD_DEBUG;
         /* did we get 2 tokens? if not then we are done */
         if (pos - left < 2) {
             left = pos;
-            break;
+            continue;
         }
 
         /* FOLD: "ss" -> "s"
@@ -1417,9 +1457,10 @@ int libinjection_sqli_fold(sfilter * sf)
         } else if (sf->tokenvec[left].type ==TYPE_LEFTPARENS && st_is_unary_op(&sf->tokenvec[left+1])) {
             pos -= 1;
             sf->stats_folds += 1;
-            if (left > 0) {
-                left -= 1;
-            }
+            left = 0;
+            //if (left > 0) {
+            //    left -= 1;
+            //}
             continue;
         } else if (syntax_merge_words(sf, &sf->tokenvec[left], &sf->tokenvec[left+1])) {
             pos -= 1;
@@ -1513,12 +1554,20 @@ int libinjection_sqli_fold(sfilter * sf)
             }
             left = 0;
             continue;
+        } else if ( sf->tokenvec[left].type == '(' && sf->tokenvec[left+1].type == '(' ) {
+            pos -= 1;
+            sf->stats_folds += 1;
+            continue;
+        } else if ( sf->tokenvec[left].type == ')' && sf->tokenvec[left+1].type == ')' ) {
+            pos -= 1;
+            sf->stats_folds += 1;
+            continue;
         }
 
         /* all cases of handing 2 tokens is done
            and nothing matched.  Get one more token
         */
-        FOLD_DEBUG
+        FOLD_DEBUG;
         while (more && pos <= LIBINJECTION_SQLI_MAX_TOKENS && pos - left < 3) {
             sf->current = &(sf->tokenvec[pos]);
             more = libinjection_sqli_tokenize(sf);
@@ -1535,7 +1584,7 @@ int libinjection_sqli_fold(sfilter * sf)
         /* do we have three tokens? If not then we are done */
         if (pos -left < 3) {
             left = pos;
-            break;
+            continue;
         }
 
         /*
@@ -1576,9 +1625,9 @@ int libinjection_sqli_fold(sfilter * sf)
             pos -= 2;
             sf->stats_folds += 2;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER || sf->tokenvec[left].type == TYPE_STRING) &&
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER || sf->tokenvec[left].type == TYPE_STRING || sf->tokenvec[left].type == TYPE_VARIABLE) &&
                    sf->tokenvec[left+1].type == TYPE_COMMA &&
-                   (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING)) {
+                   (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING || sf->tokenvec[left+2].type == TYPE_VARIABLE)) {
             pos -= 2;
             if (left > 0) {
                 left -= 1;

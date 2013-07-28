@@ -401,7 +401,8 @@ Toronto, ON, Canada - (YYZ)
 (1)-x
 1 function (1)
 '/1x-
-x|x||1
+# technically x OR 1
+#x|x||1
 select 'and'
 x/void(1)
 select x from y where
