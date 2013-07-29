@@ -5,6 +5,12 @@ LISTEN = [
 
 tests = [
     {
+        'name'    : 'libinjection.client9.com-sslassert',
+        'listen'  : [  TestOnTime(minute='1') ],
+        'source'  : CheckoutGit('https://github.com/client9/sslassert.git'),
+        'exec'    : ExecuteShell("OPENSSL=/usr/local/ssl/bin/openssl ./example-libinjection.sh")
+    },
+    {
         'name'    : 'libinjection-build-test',
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
@@ -90,11 +96,5 @@ gcc -g -O2 -pg -o reader libinjection_sqli.c reader.c
 ./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
 gprof ./reader gmon.out
 """)
-    },
-    {
-        'name'    : 'libinjection.client9.com-sslassert',
-        'listen'  : [  TestOnTime(minute='1') ],
-        'source'  : CheckoutGit('https://github.com/client9/sslassert.git'),
-        'exec'    : ExecuteShell("./example-libinjection.sh")
     }
 ]
