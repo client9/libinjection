@@ -2076,6 +2076,7 @@ E1kso
 E1kv)
 E1kvk
 E1kvo
+E1n)U
 E1n;
 E1n;c
 E1nc
@@ -2211,6 +2212,7 @@ Ek1kn
 Ek1ks
 Ek1kv
 Ek1n
+Ek1n)
 Ek1n;
 Ek1nc
 Ek1nf
@@ -2629,6 +2631,7 @@ Evkv)
 Evkvk
 Evkvo
 Evn
+Evn)U
 Evn;
 Evn;c
 Evnc
