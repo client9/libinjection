@@ -188,7 +188,9 @@ class CicadaStatusHandler(tornado.web.RequestHandler):
         current = sorted(current, key=lambda x: x['order'])
         self.render(
             'status.html',
-            status=current
+            status=current,
+            ssl_protocol=self.request.headers.get('X-SSL-Protocol', ''),
+            ssl_cipher=self.request.headers.get('X-SSL-Cipher', '')
         )
 
 class Cicada(object):
