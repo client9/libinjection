@@ -120,7 +120,9 @@ class PageHandler(tornado.web.RequestHandler):
 
         self.render(
             pagename + '.html',
-            title = pagename.replace('-',' ')
+            title = pagename.replace('-',' '),
+            ssl_protocol=self.request.headers.get('X-SSL-Protocol', ''),
+            ssl_cipher=self.request.headers.get('X-SSL-Cipher', '')
         )
 
 class XssTestHandler(tornado.web.RequestHandler):
@@ -158,7 +160,9 @@ class DaysSinceHandler(tornado.web.RequestHandler):
         self.render(
             "days-since-last-bypass.html",
             title='libinjection: Days Since Last Bypass',
-            days=days
+            days=days,
+            ssl_protocol=self.request.headers.get('X-SSL-Protocol', ''),
+            ssl_cipher=self.request.headers.get('X-SSL-Cipher', '')
         )
 
 class NullHandler(tornado.web.RequestHandler):
@@ -189,7 +193,9 @@ class NullHandler(tornado.web.RequestHandler):
                     title='libjection sqli token parsing diagnositcs',
                     version = libinjection.LIBINJECTION_VERSION,
                     parsed=parsed,
-                    formvalue=val
+                    formvalue=val,
+                    ssl_protocol=self.request.headers.get('X-SSL-Protocol', ''),
+                    ssl_cipher=self.request.headers.get('X-SSL-Cipher', '')
                     )
 
     def get_fingerprints(self):
@@ -273,7 +279,9 @@ class NullHandler(tornado.web.RequestHandler):
                     is_sqli=qssqli,
                     args=args,
                     allfp = allfp,
-                    formvalue=formvalue
+                    formvalue=formvalue,
+                    ssl_protocol=self.request.headers.get('X-SSL-Protocol', ''),
+                    ssl_cipher=self.request.headers.get('X-SSL-Cipher', '')
                     )
 
 import os
