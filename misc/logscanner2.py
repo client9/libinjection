@@ -30,14 +30,14 @@ def breakify(s):
 def doline(line):
 
     try:
-        line = line.replace("\\x", "%")
+        #line = line.replace("\\x", "%")
         data = json.loads(line)
     except ValueError, e:
         sys.stderr.write("BAD LINE: " + line)
         sys.stderr.write(e)
         sys.exit(1)
 
-    if  not data['request'].startswith("/diagnostics"):
+    if  not data['request_uri'].startswith("/diagnostics"):
         return None
 
     urlparts = urlparse(data['request'])
@@ -78,10 +78,11 @@ if __name__ == '__main__':
 {"timestamp":1371091563,"remote_ip":"219.110.171.2","request":"/diagnostics?id=2+UNION+ALL+SELECT+1<<<&type=fingerprints","method":"GET","status":200,"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/536.30.1","referrer":"https://libinjection.client9.com/diagnostics","duration_usec":160518 }
 """
     if len(sys.argv) == 1:
-        fname = '/var/log/apache2/access-json.log'
+        fname = '/var/log/nginx/access.log'
+        #fname = '/var/log/apache2/access-json.log'
     else:
         fname = sys.argv[1]
-    
+
     #fh = s.strip().split("\n")
     fh = open(fname, 'r')
 
