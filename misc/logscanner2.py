@@ -34,13 +34,12 @@ def doline(line):
         data = json.loads(line)
     except ValueError, e:
         sys.stderr.write("BAD LINE: " + line)
-        sys.stderr.write(e)
-        sys.exit(1)
-
-    if  not data['request_uri'].startswith("/diagnostics"):
         return None
 
-    urlparts = urlparse(data['request'])
+    if  not data.get('request_uri','').startswith("/diagnostics"):
+        return None
+
+    urlparts = urlparse(data['request_uri'])
     if len(urlparts.query) == 0:
         return None
 
@@ -69,7 +68,7 @@ def doline(line):
 
     sqli = bool(libinjection.is_sqli(sstate))
 
-    return (target, sqli, sstate.fingerprint, data['remote_ip'])
+    return (target, sqli, sstate.fingerprint, data['remote_addr'])
 
 
 if __name__ == '__main__':
@@ -118,7 +117,9 @@ if __name__ == '__main__':
 
     txt = loader.load("logtable.html").generate(
         table=table,
-        now = str(datetime.datetime.now())
+        now = str(datetime.datetime.now()),
+	ssl_protocol='',
+	ssl_cipher=''
         )
 
     print txt
