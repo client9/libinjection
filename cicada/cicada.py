@@ -326,8 +326,8 @@ def runtest(statusqueue, workspace, pubspace, t, statusmsg):
         output.append("{0}: {1}: {2}\n".format(timestamp(), t['name'], "Execute"))
         (sout, serr, returncode) = t['exec'].run(t['name'])
         output.append(sout)
+        output.append("{0}: {1}: {2}\n".format(timestamp(), t['name'], "return code of " + str(returncode)))
         if returncode != 0:
-            output.append("{0}: {1}: {2}\n".format(timestamp(), t['name'], "return code of " + str(returncode)))
             statusmsg['status'] = 'fail'
             output.append("{0}: {1}: {2}\n".format(timestamp(), t['name'], "Fail"))
         else:
