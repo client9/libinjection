@@ -1242,12 +1242,15 @@ void libinjection_sqli_init(sfilter * sf, const char *s, size_t len, int flags)
 
 void libinjection_sqli_reset(sfilter * sf, int flags)
 {
+    ptr_lookup_fn lookup = sf->lookup;;
+    void *userdata = sf->userdata;
+
     if (flags == 0) {
         flags = FLAG_QUOTE_NONE | FLAG_SQL_ANSI;
     }
     libinjection_sqli_init(sf, sf->s, sf->slen, flags);
-    sf->lookup = sf->lookup;
-    sf->userdata = sf->userdata;
+    sf->lookup = lookup;
+    sf->userdata = userdata;
 }
 
 void libinjection_sqli_callback(sfilter * sf, ptr_lookup_fn fn, void* userdata)
