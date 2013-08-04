@@ -1,5 +1,7 @@
 
 v3.NEXT
+* Bug fix for libinjection_sqli_reset @brianrectanus
+  https://github.com/client9/libinjection/pull/50
 * Non-critical parser fix for numbers with oracle's ending
   suffix.  "SELECT 1FROM .." -> (SELECT, 1, FROM) not
   (SELECT, 1F, ROM)
