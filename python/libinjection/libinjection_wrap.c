@@ -2864,7 +2864,7 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
   PyObject *descr;
   PyObject *encoded_name;
   descrsetfunc f;
-  int res;
+  int res = 0;
 
 # ifdef Py_USING_UNICODE
   if (PyString_Check(name)) {
