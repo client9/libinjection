@@ -78,8 +78,8 @@ valgrind: reader testdriver
 
 cppcheck:
 	cppcheck --enable=all --inconclusive --std=posix --error-exitcode=2 \
-		 --check-config -I/usr/include -I/usr/include/linux \
-		  .
+		 -I/usr/include -I/usr/include/linux \
+		 .
 
 
 unused:
