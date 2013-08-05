@@ -138,7 +138,7 @@ def doline(line):
         #targetutf8 = target
     except UnicodeDecodeError, e:
         targetutf8 = target
-	#if type(target) == str:
+        #if type(target) == str:
         #    sys.stderr.write("Target is a string\n")
         #if type(target) == unicode:
         #    sys.stderr.write("Target is unicde\n")
