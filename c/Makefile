@@ -113,6 +113,7 @@ sort:
 	${MAKE} allbin
 
 coverage-testdriver: testdriver-gcov
+	rm -f libinjection.info
 	lcov -b . --directory . --zerocounters
 	./testdriver-gcov ../tests/test-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
