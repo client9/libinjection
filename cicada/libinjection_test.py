@@ -26,7 +26,7 @@ tests = [
         'name'   : 'libinjection-cppcheck',
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'   : ExecuteShell('cd c && make cppcheck')
+        'exec'   : ExecuteShell('cppcheck --version && cd c && make cppcheck')
     },
     {
         'name': 'libinjection-pyflakes',
