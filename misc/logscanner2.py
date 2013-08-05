@@ -30,7 +30,6 @@ months = {
 
 # "time_iso8601":"2013-08-04T03:51:18+00:00"
 def parse_date(datestr):
-    print datestr
     elems = (
         datestr[7:11],
         months[datestr[3:6]],
@@ -43,19 +42,17 @@ def parse_date(datestr):
     return ( "{0}-{1}-{2}T{3}:{4}:{5}+00:00".format(*elems), calendar.timegm( [ int(i) for i in elems] ) )
 
 
-apachelogre = re.compile(r'^(\S*) (\S*) (\S*) \[([^\]]+)\] \"([^"\\]*(?:\\.[^"\\]*)*)\" (\S*) (\S*) \"([^"\\]*(?:\\.[^"\\]*)*)\" \"([^"]*)\" \"([^"]*)\"$')
+apachelogre = re.compile(r'^(\S*) (\S*) (\S*) \[([^\]]+)\] \"([^"\\]*(?:\\.[^"\\]*)*)\" (\S*) (\S*) \"([^"\\]*(?:\\.[^"\\]*)*)\" \"([^"]*)\" \"([^"]*)\"')
 
 def parse_apache(line):
     mo = apachelogre.match(line)
     if not mo:
         return None
-
-    print mo.groups()
-    print parse_date(mo.group(4))
-
     (time_iso, timestamp) = parse_date(mo.group(4))
-    (method, uri, protocol) = mo.group(5).split(' ', 2)
-
+    try:
+        (method, uri, protocol) = mo.group(5).split(' ', 2)
+    except ValueError:
+        (method, uri, protocol) = ('-', '-', '-')
     data = {
         'remote_addr': mo.group(1),
         'time_iso8601': time_iso,
@@ -100,7 +97,7 @@ def doline(line):
         data = parse_apache(line)
 
     if data is None:
-        sys.stderr.write("BAD LINE: {0}".format(line))
+        sys.stderr.write("BAD LINE: {0}\n".format(line))
         return None
 
     if  not data.get('request_uri','').startswith("/diagnostics"):
@@ -110,14 +107,20 @@ def doline(line):
     if len(urlparts.query) == 0:
         return None
 
-    qs = parse_qs(urlparts.query)
+    qsl = [ x.split('=', 1) for x in urlparts.query.split('&') ]
 
-    if u'id' not in qs:
+    target = None
+    for k,v in qsl:
+        if k == 'id':
+            target = v
+            break
+
+    if target is None:
         #print "no 'id'"
         return None
 
     # part one, normal decode
-    target = urllib.unquote_plus(qs['id'][0])
+    target = urllib.unquote_plus(target)
 
     # do it again, but preserve '+'
     target = urllib.unquote(target)
@@ -130,8 +133,28 @@ def doline(line):
 
     # instead make a temporary var in python
     # with the same lifetime as sstate (above)
-    targetutf8 = target.encode('utf-8')
-    libinjection.sqli_init(sstate, targetutf8, 0)
+    try:
+        targetutf8 = target.encode('utf-8')
+        #targetutf8 = target
+    except UnicodeDecodeError, e:
+        targetutf8 = target
+	#if type(target) == str:
+        #    sys.stderr.write("Target is a string\n")
+        #if type(target) == unicode:
+        #    sys.stderr.write("Target is unicde\n")
+        #sys.stderr.write("OOps: {0}\n".format(e))
+        #sys.stderr.write("Encode error: {0}\n".format(target))
+
+
+    try:
+        libinjection.sqli_init(sstate, targetutf8, 0)
+    except TypeError:
+        sys.stderr.write("fail in decode: {0}".format(targetutf8))
+        if type(target) == str:
+            sys.stderr.write("Target is a string\n")
+        if type(target) == unicode:
+            sys.stderr.write("Target is unicde\n")
+        return None
 
     sqli = bool(libinjection.is_sqli(sstate))
 
