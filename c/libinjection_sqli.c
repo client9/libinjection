@@ -490,12 +490,12 @@ static size_t parse_slash(sfilter * sf)
     /*
      * skip over initial '/x'
      */
-    const char *ptr = memchr2(cur + 2, slen - (pos + 2), '*', '/');
+    const char* ptr = memchr2(cur + 2, slen - (pos + 2), '*', '/');
     if (ptr == NULL) {
         /* till end of line */
         clen = slen - pos;
     } else {
-        clen = (ptr +2) - cur;
+        clen = (ptr + 2) - cur;
     }
 
     /*
