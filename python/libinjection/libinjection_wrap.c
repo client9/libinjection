@@ -2864,7 +2864,7 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
   PyObject *descr;
   PyObject *encoded_name;
   descrsetfunc f;
-  int res = 0;
+  int res;
 
 # ifdef Py_USING_UNICODE
   if (PyString_Check(name)) {
@@ -4209,8 +4209,8 @@ SWIGINTERN PyObject *_wrap_sqli_state_tokenvec_get(PyObject *self, PyObject *arg
   result = (stoken_t *)(stoken_t *) ((arg1)->tokenvec);
   {
     int i;
-    resultobj = PyList_New(5+1);
-    for (i = 0; i < 5+1; i++) {
+    resultobj = PyList_New(8);
+    for (i = 0; i < 8; i++) {
       PyObject *o =  SWIG_NewPointerObj((void*)(& result[i]), SWIGTYPE_p_stoken_t,0);
       PyList_SetItem(resultobj,i,o);
     }
@@ -4257,7 +4257,7 @@ SWIGINTERN PyObject *_wrap_sqli_state_fingerprint_get(PyObject *self, PyObject *
   arg1 = (struct libinjection_sqli_state *)(argp1);
   result = (char *)(char *) ((arg1)->fingerprint);
   {
-    size_t size = 5+1;
+    size_t size = 8;
     
     while (size && (result[size - 1] == '\0')) --size;
     
@@ -4678,6 +4678,28 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_sqli_fold(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  sfilter *arg1 = (sfilter *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:sqli_fold",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_fold" "', argument " "1"" of type '" "sfilter *""'"); 
+  }
+  arg1 = (sfilter *)(argp1);
+  result = (int)libinjection_sqli_fold(arg1);
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_sqli_check_fingerprint(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   sfilter *arg1 = (sfilter *) 0 ;
@@ -4753,6 +4775,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"sqli_fingerprint", _wrap_sqli_fingerprint, METH_VARARGS, NULL},
 	 { (char *)"sqli_lookup_word", _wrap_sqli_lookup_word, METH_VARARGS, NULL},
 	 { (char *)"sqli_tokenize", _wrap_sqli_tokenize, METH_VARARGS, NULL},
+	 { (char *)"sqli_fold", _wrap_sqli_fold, METH_VARARGS, NULL},
 	 { (char *)"sqli_check_fingerprint", _wrap_sqli_check_fingerprint, METH_VARARGS, NULL},
 	 { (char *)"sqli_blacklist", _wrap_sqli_blacklist, METH_VARARGS, NULL},
 	 { (char *)"sqli_not_whitelist", _wrap_sqli_not_whitelist, METH_VARARGS, NULL},
@@ -5929,9 +5952,10 @@ SWIG_init(void) {
   
   SWIG_InstallConstants(d,swig_const_table);
   
-  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_VERSION",SWIG_FromCharPtr("3.2.0"));
+  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_VERSION",SWIG_FromCharPtr("3.4.1"));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_SQLI_TOKEN_SIZE",SWIG_From_int((int)(32)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_SQLI_MAX_TOKENS",SWIG_From_int((int)(5)));
+  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_SQLI_BUFFER_SZ",SWIG_From_int((int)(8)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "FLAG_NONE",SWIG_From_int((int)(FLAG_NONE)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "FLAG_QUOTE_NONE",SWIG_From_int((int)(FLAG_QUOTE_NONE)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "FLAG_QUOTE_SINGLE",SWIG_From_int((int)(FLAG_QUOTE_SINGLE)));
