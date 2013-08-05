@@ -77,7 +77,7 @@ valgrind: reader testdriver
 	${VALGRIND} ./reader -q ../data/*.txt
 
 cppcheck:
-	cppcheck --enable=all --inconclusive --std=posix --error-exitcode=2 --verbose \
+	cppcheck --enable=all --inconclusive --std=posix --error-exitcode=2 \
 		 --check-config -I/usr/include -I/usr/include/linux \
 		  .
 
