@@ -70,7 +70,7 @@ int main(int argc, const char* argv[])
     int issqli;
 
     sfilter sf;
-    stoken_t current;
+
     if (argc < 2) {
         fprintf(stderr, "need more args\n");
         return 1;

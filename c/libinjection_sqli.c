@@ -491,7 +491,12 @@ static size_t parse_slash(sfilter * sf)
      * skip over initial '/x'
      */
     const char* ptr = memchr2(cur + 2, slen - (pos + 2), '*', '/');
-    if (ptr == NULL) {
+
+    /*
+     * (ptr == NULL) causes false positive in cppcheck 1.61
+     * casting to type seems to fix it
+     */
+    if (ptr == (const char*) NULL) {
         /* till end of line */
         clen = slen - pos;
     } else {

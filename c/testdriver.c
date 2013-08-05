@@ -113,6 +113,9 @@ int read_file(const char* fname, int flags, int testtype)
     memcpy(copy, g_input, slen);
     libinjection_sqli_init(&sf, copy, slen, flags);
 
+    /* just here for code coverage and cppcheck */
+    libinjection_sqli_callback(&sf, NULL, NULL);
+
     slen = 0;
     g_actual[0] = '\0';
     if (testtype == 1) {
@@ -150,7 +153,6 @@ int main(int argc, char** argv)
     int i;
     int ok;
     int count = 0;
-    int count_ok = 0;
     int count_fail = 0;
     int flags = 0;
     int testtype = 0;
@@ -186,7 +188,6 @@ int main(int argc, char** argv)
 
         ok = read_file(fname, flags, testtype);
         if (ok) {
-            count_ok += 1;
             if (! quiet) {
                 fprintf(stderr, "%s: ok\n", fname);
             }
