@@ -81,6 +81,7 @@ cppcheck:
 		 --check-config -I/usr/include -I/usr/include/linux \
 		  .
 
+
 unused:
 	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
 	diff /tmp/junk fingerprints.txt  | grep '>'
@@ -93,7 +94,7 @@ test_positive: reader
 test_negative: reader
 	./reader -i ../data/false_*.txt
 
-.PHONY: test_positive test_negative test test_unit test_speed
+.PHONY: test_positive test_negative test test_unit test_speed cppcheck valgrind
 
 sqlparse_data.json: Makefile sqlparse_map.py fingerprints.txt
 	./sqlparse_map.py > sqlparse_data.json
