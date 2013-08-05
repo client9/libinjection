@@ -40,9 +40,8 @@ reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjec
 	make clean
 	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c
 
-reader-lcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-lcov libinjection_sqli.c reader.c
-
+reader-gcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
+	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c reader.c
 
 testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${CC}  ${CFLAGS} -O1 -o testdriver libinjection_sqli.c testdriver.c
@@ -114,23 +113,24 @@ sort:
 
 coverage-testdriver: testdriver-gcov
 	rm -f libinjection.info
+	rm -rf lcov-html
+	mkdir lcov-html
 	lcov -b . --directory . --zerocounters
-	./testdriver-gcov ../tests/test-*.txt
+	-./testdriver-gcov ../tests/test-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
 	lcov -b . --directory . --remove libinjection.info 'testdriver' -o libinjection.info
-	rm -rf lcov-html
-	mkdir lcov-html
 	genhtml -o lcov-html libinjection.info
 
-coverage-reader: reader-lcov
+coverage-reader: reader-gcov
+	rm -f libinjection.info
+	rm -rf lcov-html
+	mkdir lcov-html
 	lcov -b . --directory . --zerocounters
-	-./reader -q ../data/*.txt
+	-./reader-gcov -q ../data/*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
 	lcov -b . --directory . --remove libinjection.info 'reader' -o libinjection.info
-	rm -rf lcov-html
-	mkdir lcov-html
 	genhtml -o lcov-html libinjection.info
 
 .PHONY: coverage-reader coverage-testdriver
@@ -145,9 +145,10 @@ clean:
 	@rm -f test_tokens testspeed
 	@rm -rf *.dSYM
 	@rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
-	@rm -rf lcov-html
+	@rm -rf lcov-html libinjection.info
 	@rm -rf core* a.out
 	@rm -f gmon.out nosetests.xml valgrind-*.txt
-	@rm -f reader extractor is_sqli lcov-reader sqli fptool testdriver
+	@rm -f reader extractor is_sqli lcov-reader sqli fptool testdriver example1
+	@rm -f reader-gcov testdriver-gcov
 	@rm -f fingerprints-orig.txt
 
