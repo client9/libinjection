@@ -2024,8 +2024,11 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                  */
                 sql_state->reason = __LINE__;
                 return FALSE;
-        } else if (streq(sql_state->fingerprint, "s&n") || streq(sql_state->fingerprint, "n&1") || streq(sql_state->fingerprint, "1&1") ||
-                   streq(sql_state->fingerprint, "1&v") || streq(sql_state->fingerprint, "1&s")) {
+        } else if (streq(sql_state->fingerprint, "s&n") ||
+                   streq(sql_state->fingerprint, "n&1") ||
+                   streq(sql_state->fingerprint, "1&1") ||
+                   streq(sql_state->fingerprint, "1&v") ||
+                   streq(sql_state->fingerprint, "1&s")) {
             /* 'sexy and 17' not sqli
              * 'sexy and 17<18'  sqli
              */
