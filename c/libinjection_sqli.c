@@ -327,7 +327,7 @@ static int st_is_unary_op(const stoken_t * st)
     case 2:
         return str[0] == '!' && str[1] == '!';
     case 3:
-        return cstrcasecmp("NOT", str, len) == 0;
+        return cstrcasecmp("NOT", str, 3) == 0;
     default:
         return FALSE;
     }
