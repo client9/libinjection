@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include "libinjection.h"
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+#ifndef FALSE
+#define FALSE 0
+#endif
 
 static int g_test_ok = 0;
 static int g_test_fail = 0;
@@ -91,10 +97,10 @@ size_t modp_rtrim(char* str, size_t len)
 }
 
 void test_positive(FILE * fd, const char *fname,
-                   bool flag_invert, bool flag_true, bool flag_quiet)
+                   int flag_invert, int flag_true, int flag_quiet)
 {
     char linebuf[8192];
-    bool issqli;
+    int issqli;
     int linenum = 0;
     sfilter sf;
 
@@ -135,19 +141,19 @@ int main(int argc, const char *argv[])
     /*
      * invert output, by
      */
-    bool flag_invert = false;
+    int flag_invert = FALSE;
 
     /*
      * don't print anything.. useful for
      * performance monitors, gprof.
      */
-    bool flag_quiet = false;
+    int flag_quiet = FALSE;
 
     /*
      * only print postive results
      * with invert, only print negative results
      */
-    bool flag_true = false;
+    int flag_true = FALSE;
 
     int flag_slow = 1;
     int count = 0;
@@ -159,13 +165,13 @@ int main(int argc, const char *argv[])
     while (offset < argc) {
         if (strcmp(argv[offset], "-i") == 0) {
             offset += 1;
-            flag_invert = true;
+            flag_invert = TRUE;
         } else if (strcmp(argv[offset], "-q") == 0) {
             offset += 1;
-            flag_quiet = true;
+            flag_quiet = TRUE;
         } else if (strcmp(argv[offset], "-t") == 0) {
             offset += 1;
-            flag_true = true;
+            flag_true = TRUE;
         } else if (strcmp(argv[offset], "-s") == 0) {
             offset += 1;
             flag_slow = 100;
