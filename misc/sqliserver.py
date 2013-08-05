@@ -143,6 +143,11 @@ class XssTestHandler(tornado.web.RequestHandler):
                 args[index] = val
             except Exception,e:
                 print e
+
+        self.add_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        self.add_header('Pragma', 'no-cache')
+        self.add_header('Expires', '0')
+
         self.write(ldr.load('xsstest.html').generate(args=args))
 
 class DaysSinceHandler(tornado.web.RequestHandler):
@@ -188,6 +193,10 @@ class NullHandler(tornado.web.RequestHandler):
         parsed.append(alltokens(val, libinjection.FLAG_QUOTE_SINGLE | libinjection.FLAG_SQL_ANSI))
         parsed.append(alltokens(val, libinjection.FLAG_QUOTE_SINGLE | libinjection.FLAG_SQL_MYSQL))
         parsed.append(alltokens(val, libinjection.FLAG_QUOTE_DOUBLE | libinjection.FLAG_SQL_MYSQL))
+
+        self.add_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        self.add_header('Pragma', 'no-cache')
+        self.add_header('Expires', '0')
 
         self.render("tokens.html",
                     title='libjection sqli token parsing diagnositcs',
@@ -272,6 +281,10 @@ class NullHandler(tornado.web.RequestHandler):
                 if not issqli:
                     pat = 'see below'
                 args.append([name, val, issqli, pat])
+
+        self.add_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        self.add_header('Pragma', 'no-cache')
+        self.add_header('Expires', '0')
 
         self.render("form.html",
                     title='libjection sqli diagnositc',
