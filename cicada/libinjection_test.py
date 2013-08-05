@@ -23,6 +23,12 @@ tests = [
         'exec': ExecuteShell('g++ --version && cd c && make clean && CC=g++ make test')
     },
     {
+        'name'   : 'libinjection-cppcheck',
+        'listen' : LISTEN,
+        'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec'   : ExecuteShell('make cppcheck')
+    },
+    {
         'name': 'libinjection-pyflakes',
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
