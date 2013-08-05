@@ -16,6 +16,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.wsgi
 import tornado.escape
+import tornado.options
 
 def breakapart(s):
     """ attempts to add spaces in a SQLi so it renders nicely on the webpage
@@ -316,10 +317,9 @@ application = tornado.web.Application([
 
 
 if __name__ == "__main__":
-
-    import tornado.options
-    #tornado.options.parse_config_file("/etc/server.conf")
     tornado.options.parse_command_line()
+
+    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(process)d %(message)s")
 
     application.listen(8888)
     tornado.ioloop.IOLoop.instance().start()
