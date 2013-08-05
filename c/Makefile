@@ -5,7 +5,7 @@ VALGRIND=valgrind --gen-suppressions=no \
 	--track-origins=yes
 
 # http://stackoverflow.com/questions/1629685/when-and-how-to-use-gccs-stack-protection-feature
-# 
+#
 CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -fstack-protector -Wstack-protector -D_FORTIFY_SOURCE=2
 # -DNDEBUG
 
@@ -148,7 +148,7 @@ clean:
 	@rm -rf lcov-html libinjection.info
 	@rm -rf core* a.out
 	@rm -f gmon.out nosetests.xml valgrind-*.txt
-	@rm -f reader extractor is_sqli lcov-reader sqli fptool testdriver example1
+	@rm -f reader is_sqli lcov-reader sqli fptool testdriver example1
 	@rm -f reader-gcov testdriver-gcov
 	@rm -f fingerprints-orig.txt
 
