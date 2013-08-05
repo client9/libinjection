@@ -77,8 +77,9 @@ valgrind: reader testdriver
 	${VALGRIND} ./reader -q ../data/*.txt
 
 cppcheck:
-	rm -f cppcheck-result.xml
-	cppcheck --enable=all --inconclusive --std=posix  --xml . 2> cppcheck-result.xml
+	cppcheck --enable=all --inconclusive --std=posix --error-exitcode=2 --verbose \
+		 --check-config -I/usr/include -I/usr/include/linux \
+		  .
 
 unused:
 	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
