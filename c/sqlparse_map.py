@@ -1334,7 +1334,7 @@ CHARMAP = [
     'CHAR_BACK',            # 92  \\
     'CHAR_OTHER',           # 93  ]
     'CHAR_OP1',             # 94  ^
-    'CHAR_UNDERSCORE',      # 95  _ underscore
+    'CHAR_WORD',            # 95  _ underscore
     'CHAR_TICK',            # 96  ` backtick
     'CHAR_WORD',            # 97  a
     'CHAR_BSTRING',         # 98  b

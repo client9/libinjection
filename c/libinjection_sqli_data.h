@@ -24,7 +24,6 @@ static size_t parse_word(sfilter * sf);
 static size_t parse_var(sfilter * sf);
 static size_t parse_number(sfilter * sf);
 static size_t parse_tick(sfilter * sf);
-static size_t parse_underscore(sfilter * sf);
 static size_t parse_ustring(sfilter * sf);
 static size_t parse_qstring(sfilter * sf);
 static size_t parse_nqstring(sfilter * sf);
@@ -130,7 +129,7 @@ static const pt2Function char_parse_map[] = {
    &parse_backslash, /* 92 */
    &parse_other, /* 93 */
    &parse_operator1, /* 94 */
-   &parse_underscore, /* 95 */
+   &parse_word, /* 95 */
    &parse_tick, /* 96 */
    &parse_word, /* 97 */
    &parse_bstring, /* 98 */

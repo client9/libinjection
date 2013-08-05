@@ -701,35 +701,6 @@ static size_t parse_estring(sfilter * sf)
     return parse_string_core(cs, slen, pos, sf->current, CHAR_SINGLE, 2);
 }
 
-/** MySQL ad-hoc character encoding
- *
- * if something starts with a underscore
- * check to see if it's in this form
- * _[a-z0-9] and if it's a character encoding
- * If not, let the normal 'word parser'
- * handle it.
- */
-static size_t parse_underscore(sfilter *sf)
-{
-    char ch;
-    const char *cs = sf->s;
-    size_t slen = sf->slen;
-    size_t pos = sf->pos;
-
-    size_t xlen = strlenspn(cs + pos + 1, slen - pos - 1,
-                              "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    if (xlen == 0) {
-        return parse_word(sf);
-    }
-    st_assign(sf->current, TYPE_BAREWORD, pos, xlen, cs + pos);
-    ch = sf->lookup(sf, LOOKUP_TYPE, sf->current->val, sf->current->len);
-    if (ch == TYPE_SQLTYPE) {
-        sf->current->type = TYPE_SQLTYPE;
-        return xlen + 1;
-    }
-    return parse_word(sf);
-}
-
 static size_t parse_ustring(sfilter * sf)
 {
     const char *cs = sf->s;
@@ -915,7 +886,6 @@ static size_t parse_word(sfilter * sf)
     if (wlen < LIBINJECTION_SQLI_TOKEN_SIZE) {
 
         ch = sf->lookup(sf, LOOKUP_WORD, sf->current->val, wlen);
-
         if (ch == CHAR_NULL) {
             ch = TYPE_BAREWORD;
         }

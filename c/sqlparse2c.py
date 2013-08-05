@@ -38,7 +38,6 @@ static size_t parse_word(sfilter * sf);
 static size_t parse_var(sfilter * sf);
 static size_t parse_number(sfilter * sf);
 static size_t parse_tick(sfilter * sf);
-static size_t parse_underscore(sfilter * sf);
 static size_t parse_ustring(sfilter * sf);
 static size_t parse_qstring(sfilter * sf);
 static size_t parse_nqstring(sfilter * sf);
