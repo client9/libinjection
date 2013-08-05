@@ -29,6 +29,12 @@ tests = [
         'exec'   : ExecuteShell('cppcheck --version && cd c && make cppcheck')
     },
     {
+        'name'   : 'libinjection-loc',
+        'listen' : LISTEN,
+        'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec'   : ExecuteShell('cd c && cloc.pl libinjection.h libinjection_sqli.c')
+    },
+    {
         'name': 'libinjection-pyflakes',
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
