@@ -1125,12 +1125,20 @@ static size_t parse_number(sfilter * sf)
         if (pos + 1 == slen) {
             /* line ends evaluate "... 1.2f$" as '1.2f' */
             pos += 1;
-        } else if (pos + 1 < slen && (char_is_white(cs[pos+1]) || cs[pos+1] == ';')) {
-            /* evaluate "... 1.2f ... as '1.2f' */
+        } else if ((char_is_white(cs[pos+1]) || cs[pos+1] == ';')) {
+            /*
+             * easy case, evaluate "... 1.2f ... as '1.2f'
+             */
             pos += 1;
+        } else if (cs[pos+1] == 'u' || cs[pos+1] == 'U') {
+            /*
+             * a bit of a hack but makes '1fUNION' parse as '1f UNION'
+             */
+            pos += 1;
+        } else {
+            /* it's like "123FROM" */
+            /* parse as "123" only */
         }
-        /* it's like "123FROM" */
-        /* parse as "123" only */
     }
 
     st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);

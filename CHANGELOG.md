@@ -14,6 +14,7 @@ v3.NEXT
 * Add fingerprint, HT @FluxReiners
 * Add fingerprints, https://groups.google.com/forum/?hl=en#!topic/libinjection/xgwSTn_faRk
 * Fix libinjection_sqli_reset, thanks to @brianrectanus of IronBee
+* Yet another fix for disambiguating Oracle's "f" suffix for numbers HT  @LightOS
 
 # v3.4.1 2013-07-18
 * Fingerprint update only HT @LightOS
