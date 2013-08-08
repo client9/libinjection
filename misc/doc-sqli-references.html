@@ -47,7 +47,7 @@ it passes it back to the database.</p>
 <p>This requires rewritting all queries in the application,
 installing a new proxy between your clients and database.</p>
 
-<hr><p>Robert J. Hansen, Meredith L. Patterson, <a href="http://www.blackhat.com/presentations/bh-usa-05/BH_US_05-Hansen-Patterson/HP2005.pdf">Guns and Butter: Towards Formal Axioms of Input Validation</a>, presentation at Black Hat 2005, 2005-06-30</p>
+<hr><p><em>Robert J. Hansen, Meredith L. Patterson, <a href="http://www.blackhat.com/presentations/bh-usa-05/BH_US_05-Hansen-Patterson/HP2005.pdf">Guns and Butter: Towards Formal Axioms of Input Validation</a>, presentation at Black Hat 2005, 2005-06-30</em></p>
 
 <p>Key points:</p>
 
@@ -56,7 +56,7 @@ installing a new proxy between your clients and database.</p>
 <li>Uses a tree based a approach to detect when user input changes the SQLi structure.</li>
 <li>POC implementaton done using psql parser <a href="http://sourceforge.net/projects/libdejector/">http://sourceforge.net/projects/libdejector/</a>
 </li>
-</ul><hr><p>Gregory T. Buehrer , Bruce W. Weide , Paolo A. G. Sivilotti, <a href="http://www.cse.ohio-state.edu/%7Epaolo/research/publications/sem05.pdf">Using parse tree validation to prevent SQL injection attacks</a>, Proceedings of the International Workshop on Software Engineering and Middleware (SEM) at Joint FSE and ESEC, 2005.</p>
+</ul><hr><p><em>Gregory T. Buehrer , Bruce W. Weide , Paolo A. G. Sivilotti, <a href="http://www.cse.ohio-state.edu/%7Epaolo/research/publications/sem05.pdf">Using parse tree validation to prevent SQL injection attacks</a>, Proceedings of the International Workshop on Software Engineering and Middleware (SEM) at Joint FSE and ESEC, 2005</em></p>
 
 <p>Slides: <a href="http://www.cse.ohio-state.edu/%7Epaolo/research/publications/sem05_talk.pdf">http://www.cse.ohio-state.edu/~paolo/research/publications/sem05_talk.pdf</a></p>
 
@@ -82,7 +82,7 @@ addition, I'm not sure how it actually prevents this development error:</p>
 <pre><code>String q = SQLGuard.init() + "SELECT * FROM reports WHERE id = " + id;
 </code></pre>
 
-<hr><p>W. Halfond and A. Orso, <a href="http://www-bcf.usc.edu/%7Ehalfond/papers/halfond05ase.pdf">AMNESIA: Analysis and Monitoring for NEutralizing SQL-Injection Attacks</a>, Automated Software Engineering, 2005</p>
+<hr><p><em>W. Halfond and A. Orso, <a href="http://www-bcf.usc.edu/%7Ehalfond/papers/halfond05ase.pdf">AMNESIA: Analysis and Monitoring for NEutralizing SQL-Injection Attacks</a>, Automated Software Engineering, 2005</em></p>
 
 <p>Homepage: <a href="http://www-bcf.usc.edu/%7Ehalfond/amnesia.html">http://www-bcf.usc.edu/~halfond/amnesia.html</a></p>
 
@@ -93,8 +93,6 @@ tree analysis before and after user input.</p>
 <p>This appears to require no change in the development process (that's good),
 and only adding a compile step (?).  Worth investigating more.</p>
 
-<hr><p>Christian Bockerman <a href="http://es.slideshare.net/hashdays/hashdays-2011-christian-bockermann-protecting-databases-with-trees">Protecting Databases with Trees</a>, presentation at HashDays 2011.</p>
+<hr><p><em>Christian Bockerman <a href="http://es.slideshare.net/hashdays/hashdays-2011-christian-bockermann-protecting-databases-with-trees">Protecting Databases with Trees</a>, presentation at HashDays 2011</em></p>
 
-<p>Another Tree-based with additional statistics and training.  Note last slide "Writing SQL parsers is hard"</p>
-
-<hr>{% end %}
+<p>Another Tree-based with additional statistics and training.  Note last slide "Writing SQL parsers is hard"</p>{% end %}
