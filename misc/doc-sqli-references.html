@@ -11,7 +11,7 @@
 <h2>
 <a name="sqli-detection" class="anchor" href="#sqli-detection"><span class="octicon octicon-link"></span></a>SQLi Detection</h2>
 
-<p>Stephen W. Boyd and Angelos D. Keromytis, <a href="http://www1.cs.columbia.edu/%7Eangelos/Papers/sqlrand.pdf">SQLrand: Preventing SQL Injection Attacks</a>, Proceedings of the 2nd Applied Cryptography and Network Security (ACNS) Conference, 2004</p>
+<p><em>Stephen W. Boyd and Angelos D. Keromytis, <a href="http://www1.cs.columbia.edu/%7Eangelos/Papers/sqlrand.pdf">SQLrand: Preventing SQL Injection Attacks</a>, Proceedings of the 2nd Applied Cryptography and Network Security (ACNS) Conference, 2004</em></p>
 
 <p>Summary: The client rewrites all SQL queries by appending a fixed
 number, e.g. <code>SELECT</code> becomes <code>SELECT123</code>.  A proxy in front of the
@@ -97,14 +97,4 @@ and only adding a compile step (?).  Worth investigating more.</p>
 
 <p>Another Tree-based with additional statistics and training.  Note last slide "Writing SQL parsers is hard"</p>
 
-<hr><h2>
-<a name="xss" class="anchor" href="#xss"><span class="octicon octicon-link"></span></a>XSS</h2>
-
-<p><a href="https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet">OWASP XSS Filter Evasion Cheat Sheet</a></p>
-
-<p><a href="http://xss.cx/examples/ie/internet-exploror-ie9-xss-filter-rules-example-regexp-mshtmldll.txt">IE's regular expressions XSS filters</a></p>
-
-<p><a href="http://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454">Stackover on parsing XHTML with Regular Expressions</a>
-Comedy Gold</p>
-
-<p><a href="http://security.stackexchange.com/questions/34088/is-there-a-way-to-bypass-djangos-xss-escaping-with-unicode">StackExchange Discussion on Django's output filters</a></p>{% end %}
+<hr>{% end %}
