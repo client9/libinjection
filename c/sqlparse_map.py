@@ -482,6 +482,8 @@ KEYWORDS = {
 'IF'                          : 'f',
 
 'IF EXISTS'                   : 'f',
+'IF NOT'                      :'n',
+'IF NOT EXISTS'               : 'f',
 
 'IFF'                         : 'f',
 'IFNULL'                      : 'f',
