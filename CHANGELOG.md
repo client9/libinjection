@@ -1,5 +1,5 @@
 
-v3.NEXT
+v3.5 -- coming soon
 * Bug fix for libinjection_sqli_reset @brianrectanus
   https://github.com/client9/libinjection/pull/50
 * Non-critical parser fix for numbers with oracle's ending
@@ -12,7 +12,6 @@ v3.NEXT
   No change in performance
 * Improvements in reducing false positives, HT modsecurity team
 * Add fingerprint, HT @FluxReiners
-* Add fingerprints, https://groups.google.com/forum/?hl=en#!topic/libinjection/xgwSTn_faRk
 * Fix libinjection_sqli_reset, thanks to @brianrectanus of IronBee
 * Yet another fix for disambiguating Oracle's "f" suffix for numbers HT  @LightOS
 * Support for parsing of old ODBC-style typing, e.g. 'select {foo 1};' (valid in MySQL)
