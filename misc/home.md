@@ -13,7 +13,6 @@ Libinjection is a small C library to detect SQLi attacks in user input with the 
 Curious?  See more details below or:
 
 * Try it now on the [diagnostics page](/diagnostics)
-* Join the [Google Group](https://groups.google.com/d/forum/libinjection) to get updates
 * Read the [FAQ](/faq-sqli)
 * Download the [code](https://github.com/client9/libinjection/)
 
