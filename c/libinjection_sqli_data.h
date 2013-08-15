@@ -9378,6 +9378,8 @@ static const keyword_t sql_keywords[] = {
     {"IDENT_SEED", 'f'},
     {"IF", 'f'},
     {"IF EXISTS", 'f'},
+    {"IF NOT", 'n'},
+    {"IF NOT EXISTS", 'f'},
     {"IFF", 'f'},
     {"IFNULL", 'f'},
     {"IGNORE", 'k'},
@@ -9978,5 +9980,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9812;
+static const size_t sql_keywords_sz = 9814;
 #endif
