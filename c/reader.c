@@ -128,9 +128,9 @@ void test_positive(FILE * fd, const char *fname,
                 (!issqli && flag_true && flag_invert) ||
                 !flag_true) {
                 modp_toprint(linebuf, len);
-                fprintf(stdout, "%s\t%d\t%s\t%s\t%d\t%s\n",
+                fprintf(stdout, "%s\t%d\t%s\t%s\t%s\n",
                         fname, linenum,
-                        (issqli ? "True" : "False"), sf.fingerprint, sf.reason, linebuf);
+                        (issqli ? "True" : "False"), sf.fingerprint, linebuf);
             }
         }
     }
