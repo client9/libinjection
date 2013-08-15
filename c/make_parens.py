@@ -19,7 +19,7 @@ class PermuteFingerprints(object):
             's)on'
             ])
         self.whitelist = set([
-            'T(vv)', 'Tnvos', 's&1s', 'Tnv;', '1UEnn'
+            'T(vv)', 'Tnvos', 's&1s', 'Tnv;', '1UEnn', '1;Tvk'
             ])
 
     def aslist(self):
