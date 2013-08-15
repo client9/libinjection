@@ -16,7 +16,7 @@ v3.NEXT
 * Fix libinjection_sqli_reset, thanks to @brianrectanus of IronBee
 * Yet another fix for disambiguating Oracle's "f" suffix for numbers HT  @LightOS
 * Support for parsing of old ODBC-style typing, e.g. 'select {foo 1};' (valid in MySQL)
-* Fix tokenization of "IF EXISTS(...."
+* Fix tokenization of "IF EXISTS(....", "IF NOT EXISTS(..."
 
 # v3.4.1 2013-07-18
 * Fingerprint update only HT @LightOS
