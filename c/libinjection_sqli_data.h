@@ -157,9 +157,9 @@ static const pt2Function char_parse_map[] = {
    &parse_xstring, /* 120 */
    &parse_word, /* 121 */
    &parse_word, /* 122 */
-   &parse_other, /* 123 */
+   &parse_char, /* 123 */
    &parse_operator2, /* 124 */
-   &parse_other, /* 125 */
+   &parse_char, /* 125 */
    &parse_operator1, /* 126 */
    &parse_white, /* 127 */
 };
@@ -954,6 +954,7 @@ static const keyword_t sql_keywords[] = {
     {"01;T1;", 'F'},
     {"01;T1C", 'F'},
     {"01;T1F", 'F'},
+    {"01;T1K", 'F'},
     {"01;T1O", 'F'},
     {"01;T1T", 'F'},
     {"01;T;", 'F'},
@@ -985,6 +986,7 @@ static const keyword_t sql_keywords[] = {
     {"01;TS;", 'F'},
     {"01;TSC", 'F'},
     {"01;TSF", 'F'},
+    {"01;TSK", 'F'},
     {"01;TSO", 'F'},
     {"01;TST", 'F'},
     {"01;TT(", 'F'},
@@ -997,6 +999,7 @@ static const keyword_t sql_keywords[] = {
     {"01;TV;", 'F'},
     {"01;TVC", 'F'},
     {"01;TVF", 'F'},
+    {"01;TVK", 'F'},
     {"01;TVO", 'F'},
     {"01;TVT", 'F'},
     {"01A(((", 'F'},
@@ -4083,6 +4086,7 @@ static const keyword_t sql_keywords[] = {
     {"0N;T1;", 'F'},
     {"0N;T1C", 'F'},
     {"0N;T1F", 'F'},
+    {"0N;T1K", 'F'},
     {"0N;T1O", 'F'},
     {"0N;T1T", 'F'},
     {"0N;T;", 'F'},
@@ -4114,6 +4118,7 @@ static const keyword_t sql_keywords[] = {
     {"0N;TS;", 'F'},
     {"0N;TSC", 'F'},
     {"0N;TSF", 'F'},
+    {"0N;TSK", 'F'},
     {"0N;TSO", 'F'},
     {"0N;TST", 'F'},
     {"0N;TT(", 'F'},
@@ -4126,6 +4131,7 @@ static const keyword_t sql_keywords[] = {
     {"0N;TV;", 'F'},
     {"0N;TVC", 'F'},
     {"0N;TVF", 'F'},
+    {"0N;TVK", 'F'},
     {"0N;TVO", 'F'},
     {"0N;TVT", 'F'},
     {"0NA(((", 'F'},
@@ -5832,6 +5838,7 @@ static const keyword_t sql_keywords[] = {
     {"0S;T1;", 'F'},
     {"0S;T1C", 'F'},
     {"0S;T1F", 'F'},
+    {"0S;T1K", 'F'},
     {"0S;T1O", 'F'},
     {"0S;T1T", 'F'},
     {"0S;T;", 'F'},
@@ -5863,6 +5870,7 @@ static const keyword_t sql_keywords[] = {
     {"0S;TS;", 'F'},
     {"0S;TSC", 'F'},
     {"0S;TSF", 'F'},
+    {"0S;TSK", 'F'},
     {"0S;TSO", 'F'},
     {"0S;TST", 'F'},
     {"0S;TT(", 'F'},
@@ -5875,6 +5883,7 @@ static const keyword_t sql_keywords[] = {
     {"0S;TV;", 'F'},
     {"0S;TVC", 'F'},
     {"0S;TVF", 'F'},
+    {"0S;TVK", 'F'},
     {"0S;TVO", 'F'},
     {"0S;TVT", 'F'},
     {"0SA(((", 'F'},
@@ -8099,6 +8108,7 @@ static const keyword_t sql_keywords[] = {
     {"0V;T1;", 'F'},
     {"0V;T1C", 'F'},
     {"0V;T1F", 'F'},
+    {"0V;T1K", 'F'},
     {"0V;T1O", 'F'},
     {"0V;T1T", 'F'},
     {"0V;T;", 'F'},
@@ -8130,6 +8140,7 @@ static const keyword_t sql_keywords[] = {
     {"0V;TS;", 'F'},
     {"0V;TSC", 'F'},
     {"0V;TSF", 'F'},
+    {"0V;TSK", 'F'},
     {"0V;TSO", 'F'},
     {"0V;TST", 'F'},
     {"0V;TT(", 'F'},
@@ -8142,6 +8153,7 @@ static const keyword_t sql_keywords[] = {
     {"0V;TV;", 'F'},
     {"0V;TVC", 'F'},
     {"0V;TVF", 'F'},
+    {"0V;TVK", 'F'},
     {"0V;TVO", 'F'},
     {"0V;TVT", 'F'},
     {"0VA(((", 'F'},
@@ -9320,6 +9332,7 @@ static const keyword_t sql_keywords[] = {
     {"FROM", 'k'},
     {"FROM_DAYS", 'f'},
     {"FROM_UNIXTIME", 'f'},
+    {"FULL JOIN", 'k'},
     {"FULL OUTER", 'k'},
     {"FULL OUTER JOIN", 'k'},
     {"FULLTEXT", 'k'},
@@ -9509,6 +9522,7 @@ static const keyword_t sql_keywords[] = {
     {"NAME_CONST", 'f'},
     {"NATURAL", 'n'},
     {"NATURAL FULL", 'k'},
+    {"NATURAL FULL OUTER JOIN", 'k'},
     {"NATURAL INNER", 'k'},
     {"NATURAL JOIN", 'k'},
     {"NATURAL LEFT", 'k'},
@@ -9516,6 +9530,7 @@ static const keyword_t sql_keywords[] = {
     {"NATURAL LEFT OUTER JOIN", 'k'},
     {"NATURAL OUTER", 'k'},
     {"NATURAL RIGHT", 'k'},
+    {"NATURAL RIGHT OUTER JOIN", 'k'},
     {"NETMASK", 'f'},
     {"NEXT VALUE", 'n'},
     {"NEXT VALUE FOR", 'k'},
@@ -9959,5 +9974,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9793;
+static const size_t sql_keywords_sz = 9808;
 #endif

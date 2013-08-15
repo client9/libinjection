@@ -776,6 +776,7 @@
 1;T1T
 1;T1c
 1;T1f
+1;T1k
 1;T1o
 1;T1t
 1;T;
@@ -815,6 +816,7 @@
 1;TsT
 1;Tsc
 1;Tsf
+1;Tsk
 1;Tso
 1;Tst
 1;Tv,
@@ -822,6 +824,7 @@
 1;TvT
 1;Tvc
 1;Tvf
+1;Tvk
 1;Tvo
 1;Tvt
 1;n:T
@@ -4294,6 +4297,7 @@ n;T1;
 n;T1T
 n;T1c
 n;T1f
+n;T1k
 n;T1o
 n;T1t
 n;T;
@@ -4333,6 +4337,7 @@ n;Ts;
 n;TsT
 n;Tsc
 n;Tsf
+n;Tsk
 n;Tso
 n;Tst
 n;Tv,
@@ -4340,6 +4345,7 @@ n;Tv;
 n;TvT
 n;Tvc
 n;Tvf
+n;Tvk
 n;Tvo
 n;Tvt
 n;n:T
@@ -6047,6 +6053,7 @@ s;T1;
 s;T1T
 s;T1c
 s;T1f
+s;T1k
 s;T1o
 s;T1t
 s;T;
@@ -6086,6 +6093,7 @@ s;Ts;
 s;TsT
 s;Tsc
 s;Tsf
+s;Tsk
 s;Tso
 s;Tst
 s;Tv,
@@ -6093,6 +6101,7 @@ s;Tv;
 s;TvT
 s;Tvc
 s;Tvf
+s;Tvk
 s;Tvo
 s;Tvt
 s;n:T
@@ -7973,6 +7982,7 @@ v;T1;
 v;T1T
 v;T1c
 v;T1f
+v;T1k
 v;T1o
 v;T1t
 v;T;
@@ -8012,6 +8022,7 @@ v;Ts;
 v;TsT
 v;Tsc
 v;Tsf
+v;Tsk
 v;Tso
 v;Tst
 v;Tv,
@@ -8019,6 +8030,7 @@ v;Tv;
 v;TvT
 v;Tvc
 v;Tvf
+v;Tvk
 v;Tvo
 v;Tvt
 v;n:T
@@ -8881,4 +8893,3 @@ vot(f
 vot(n
 vot(s
 vot(v
-o1UE1
