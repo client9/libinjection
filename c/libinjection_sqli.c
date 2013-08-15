@@ -1557,6 +1557,19 @@ int libinjection_sqli_fold(sfilter * sf)
             pos -= 1;
             sf->stats_folds += 1;
             continue;
+        } else if ( sf->tokenvec[left].type == TYPE_LEFTBRACE &&
+                    (sf->tokenvec[left+1].type == TYPE_BAREWORD ||
+                     sf->tokenvec[left+1].type == TYPE_STRING)) {
+            /* weird ODBC / MYSQL  {foo expr} --> expr
+             * but for this rule we just strip away the "{ foo" part
+             */
+            pos -= 2;
+            sf->stats_folds += 2;
+            continue;
+        } else if ( sf->tokenvec[left+1].type == TYPE_RIGHTBRACE) {
+            pos -= 1;
+            sf->stats_folds += 1;
+            continue;
         }
 
         /* all cases of handing 2 tokens is done
