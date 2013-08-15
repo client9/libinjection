@@ -1275,14 +1275,20 @@ static int syntax_merge_words(sfilter * sf,stoken_t * a, stoken_t * b)
 
     /* first token is of right type? */
     if (!
-        (a->type == TYPE_KEYWORD || a->type == TYPE_BAREWORD || a->type == TYPE_OPERATOR ||
-         a->type == TYPE_UNION || a->type == TYPE_EXPRESSION || a->type == TYPE_SQLTYPE)) {
+        (a->type == TYPE_KEYWORD ||
+         a->type == TYPE_BAREWORD ||
+         a->type == TYPE_OPERATOR ||
+         a->type == TYPE_UNION ||
+         a->type == TYPE_FUNCTION ||
+         a->type == TYPE_EXPRESSION ||
+         a->type == TYPE_SQLTYPE)) {
         return CHAR_NULL;
     }
 
     if (b->type != TYPE_KEYWORD  && b->type != TYPE_BAREWORD &&
         b->type != TYPE_OPERATOR && b->type != TYPE_SQLTYPE &&
         b->type != TYPE_LOGIC_OPERATOR &&
+        b->type != TYPE_FUNCTION &&
         b->type != TYPE_UNION    && b->type != TYPE_EXPRESSION) {
         return CHAR_NULL;
     }

@@ -1,9 +1,9 @@
 --TEST--
 test of special function 'IF EXISTS'
 --INPUT--
-IF EXISTS(1)
+IF NOT EXISTS(1)
 --EXPECTED--
-f IF EXISTS
+f IF NOT EXISTS
 ( (
 1 1
 ) )
