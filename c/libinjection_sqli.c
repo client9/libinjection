@@ -57,6 +57,8 @@ typedef enum {
     TYPE_COLLATE     = (int)'A',
     TYPE_LEFTPARENS  = (int)'(',
     TYPE_RIGHTPARENS = (int)')',  /* not used? */
+    TYPE_LEFTBRACE   = (int)'{',
+    TYPE_RIGHTBRACE  = (int)'}',
     TYPE_COMMA       = (int)',',
     TYPE_COLON       = (int)':',
     TYPE_SEMICOLON   = (int)';',
