@@ -10,6 +10,8 @@ that are functionally equivalent for SQLi detection
 import sys
 
 class PermuteFingerprints(object):
+    """ class to mutate / fuzz fingerprints to find new SQLi """
+
     def __init__(self):
         """ initialization """
         self.fingerprints = set()
@@ -334,8 +336,7 @@ class PermuteFingerprints(object):
             self.insert(newline)
 
 
-if __name__ == '__main__':
-
+def main()
     mutator = PermuteFingerprints()
 
     for line in sys.stdin:
@@ -344,4 +345,7 @@ if __name__ == '__main__':
     for fingerprint in mutator.aslist():
         print fingerprint
 
+
+if __name__ == '__main__':
+    main()
 
