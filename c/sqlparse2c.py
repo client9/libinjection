@@ -89,9 +89,9 @@ static size_t parse_estring(sfilter * sf);
     #  load them
     keywords = obj['keywords']
 
-    for  fp in list(obj[u'fingerprints']):
-        fp = '0' + fp.upper()
-        keywords[fp] = 'F'
+    for  fingerprint in list(obj[u'fingerprints']):
+        fingerprint = '0' + fingerprint.upper()
+        keywords[fingerprint] = 'F'
 
     needhelp = []
     for k, v in keywords.iteritems():
@@ -106,7 +106,7 @@ static size_t parse_estring(sfilter * sf);
     print "static const keyword_t sql_keywords[] = {"
     for k in sorted(keywords.keys()):
         if len(k) > 31:
-            sys.write.stderr("ERROR: keyword greater than 32 chars\n");
+            sys.stderr.write("ERROR: keyword greater than 32 chars\n")
             sys.exit(1)
 
         print "    {\"%s\", '%s'}," % (k, keywords[k])
@@ -117,7 +117,6 @@ static size_t parse_estring(sfilter * sf);
     return 0
 
 if __name__ == '__main__':
-    import sys
     import json
     sys.exit(toc(json.load(sys.stdin)))
 
