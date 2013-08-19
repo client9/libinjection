@@ -336,7 +336,7 @@ class PermuteFingerprints(object):
             self.insert(newline)
 
 
-def main()
+def main():
     mutator = PermuteFingerprints()
 
     for line in sys.stdin:
