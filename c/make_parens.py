@@ -1,9 +1,17 @@
 #!/usr/bin/env python
 
+"""
+fingerprint fuzzer and generator
+
+Given a fingerprint, this generates other similar fingerprints
+that are functionally equivalent for SQLi detection
+"""
+
 import sys
 
 class PermuteFingerprints(object):
     def __init__(self):
+        """ initialization """
         self.fingerprints = set()
         self.blacklist = set([
             'E1n', 'sns', '1&n', 's1s', '1n1', '1o1', '1os', 'sn1',
@@ -23,15 +31,24 @@ class PermuteFingerprints(object):
             ])
 
     def aslist(self):
+        """
+        return the fingerprints as a sorted list
+        """
         return sorted(list(self.fingerprints))
 
     def insert(self, s):
+        """
+        insert a new fingerprint, with possible variations
+        """
         if len(s) > 5:
             s = s[0:5]
         if self.validate(s):
             self.fingerprints.add(s)
 
     def validate(self, s):
+        """
+        detemines if a fingerprint could be used a SQLi
+        """
         if len(s) == 0:
             return False
         if s in self.whitelist:
@@ -224,7 +241,9 @@ class PermuteFingerprints(object):
         return True
 
     def permute(self, fp):
-
+        """
+        generate alternative (possiblely invalid) fingerprints
+        """
         self.insert(fp)
 
         # do this for safety
@@ -322,7 +341,7 @@ if __name__ == '__main__':
     for line in sys.stdin:
         mutator.permute(line.strip())
 
-    for fp in mutator.aslist():
-        print fp
+    for fingerprint in mutator.aslist():
+        print fingerprint
 
 

@@ -94,14 +94,14 @@ static size_t parse_estring(sfilter * sf);
         keywords[fingerprint] = 'F'
 
     needhelp = []
-    for k, v in keywords.iteritems():
-        if k != k.upper():
-            needhelp.append(k)
+    for key  in keywords.iterkeys():
+        if key != key.upper():
+            needhelp.append(key)
 
-    for k in needhelp:
-        v = keywords[k]
-        del keywords[k]
-        keywords[k.upper()] = v
+    for key in needhelp:
+        tmpv = keywords[key]
+        del keywords[key]
+        keywords[key.upper()] = tmpv
 
     print "static const keyword_t sql_keywords[] = {"
     for k in sorted(keywords.keys()):

@@ -13,8 +13,7 @@ def qsv_normalize(s):
         snew = unquote(s)
         if s == snew:
             return s
-        s = snew.upper()
-
+        s = snew
 
 import sys
 if __name__ == '__main__':
@@ -24,6 +23,8 @@ if __name__ == '__main__':
             continue
         if line[0] == '#':
             continue
+        print line
+        print
         line = qsv_normalize(line)
-        line = line.replace('\n', ' ')
+        #line = line.replace("\n", ' ')
         print line

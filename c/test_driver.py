@@ -89,8 +89,8 @@ def runtest(testname, flags=None):
     args.append(os.getenv('PARSER_CMD', './sqli'))
 
     if flags:
-        for f in flags:
-            args.append(f)
+        for flag in flags:
+            args.append(flag)
 
     args.append(data[1])
     actual = run(args)
