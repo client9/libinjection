@@ -105,7 +105,7 @@ static size_t parse_estring(sfilter * sf);
 
     print "static const keyword_t sql_keywords[] = {"
     for k in sorted(keywords.keys()):
-        if len(k) > 32:
+        if len(k) > 31:
             sys.write.stderr("ERROR: keyword greater than 32 chars\n");
             sys.exit(1)
 
