@@ -304,32 +304,32 @@ class PermuteFingerprints(object):
 
             done = False
             parts = []
-            for c in fp:
-                if c == '(' and done is False:
-                    parts.append(c)
+            for char in fp:
+                if char == '(' and done is False:
+                    parts.append(char)
                     done = True
-                parts.append(c)
+                parts.append(char)
             newline = ''.join(parts)
             self.insert(newline)
 
             done = False
             parts = []
-            for c in fp:
-                if c == '(':
+            for char in fp:
+                if char == '(':
                     if done is True:
-                        parts.append(c)
+                        parts.append(char)
                     else:
                         done = True
-                parts.append(c)
+                parts.append(char)
             newline = ''.join(parts)
             self.insert(newline)
 
             done = False
             parts = []
-            for c in fp:
-                if c == '(':
-                    parts.append(c)
-                parts.append(c)
+            for char in fp:
+                if char == '(':
+                    parts.append(char)
+                parts.append(char)
             newline = ''.join(parts)
             self.insert(newline)
 
