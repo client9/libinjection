@@ -44,7 +44,8 @@ tests = [
         'name': 'libinjection-pylint',
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('pylint --include-ids=y -f parseable c/*.py')
+        # disable 'too-many-lines' warning
+        'exec': ExecuteShell('pylint --disable=C0302 --include-ids=y -f parseable c/*.py')
     },
     {
         'name': 'libinjection-python-build-test',
