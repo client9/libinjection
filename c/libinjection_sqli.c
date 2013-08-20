@@ -1722,6 +1722,13 @@ int libinjection_sqli_fold(sfilter * sf)
             assert(pos >= 3);
             pos -= 2;
             continue;
+        } else if ((sf->tokenvec[left].type == TYPE_EXPRESSION) &&
+                   (sf->tokenvec[left+1].type == TYPE_DOT) &&
+                   (sf->tokenvec[left+2].type == TYPE_BAREWORD)) {
+            /* select . `foo` --> select `foo` */
+            st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
+            pos -= 1;
+            continue;
         }
 
 
