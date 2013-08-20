@@ -337,6 +337,7 @@ class PermuteFingerprints(object):
 
 
 def main():
+    """ main entrance """
     mutator = PermuteFingerprints()
 
     for line in sys.stdin:
