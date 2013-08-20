@@ -1406,3 +1406,4 @@ def dump():
 if __name__ == '__main__':
     print dump()
 
+# pylint: disable=C0301,C0302
