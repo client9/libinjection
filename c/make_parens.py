@@ -38,14 +38,14 @@ class PermuteFingerprints(object):
         """
         return sorted(list(self.fingerprints))
 
-    def insert(self, s):
+    def insert(self, fingerprint):
         """
         insert a new fingerprint, with possible variations
         """
-        if len(s) > 5:
-            s = s[0:5]
-        if self.validate(s):
-            self.fingerprints.add(s)
+        if len(fingerprint) > 5:
+            fingerprint = fingerprint[0:5]
+        if self.validate(fingerprint):
+            self.fingerprints.add(fingerprint)
 
     def validate(self, s):
         """
