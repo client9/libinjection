@@ -1070,9 +1070,7 @@ static size_t parse_number(sfilter * sf)
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
-    int have_int = 0;
     int have_dot = 0;
-    int have_dec = 0;
     int have_e = 0;
     int have_exp = 0;
 
@@ -1100,7 +1098,6 @@ static size_t parse_number(sfilter * sf)
 
     start = pos;
     while (pos < slen && ISDIGIT(cs[pos])) {
-        have_int = 1;
         pos += 1;
     }
 
@@ -1108,7 +1105,6 @@ static size_t parse_number(sfilter * sf)
         have_dot = 1;
         pos += 1;
         while (pos < slen && ISDIGIT(cs[pos])) {
-            have_dec = 1;
             pos += 1;
         }
         if (pos - start == 1) {
