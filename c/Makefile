@@ -6,7 +6,7 @@ VALGRIND=valgrind --gen-suppressions=no \
 
 # http://stackoverflow.com/questions/1629685/when-and-how-to-use-gccs-stack-protection-feature
 #
-CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -fstack-protector -Wstack-protector -D_FORTIFY_SOURCE=2
+CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -fstack-protector-all -Wstack-protector -D_FORTIFY_SOURCE=2
 # -DNDEBUG
 
 help:
