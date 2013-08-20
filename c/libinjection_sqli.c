@@ -1586,6 +1586,9 @@ int libinjection_sqli_fold(sfilter * sf)
             /* weird ODBC / MYSQL  {foo expr} --> expr
              * but for this rule we just strip away the "{ foo" part
              */
+            if (left > 0) {
+                left -= 1;
+            }
             pos -= 2;
             sf->stats_folds += 2;
             continue;
