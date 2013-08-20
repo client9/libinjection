@@ -61,7 +61,7 @@ tests = [
 cd c
 make clean
 make reader
-./reader -t -i -m 24 ../data/sqli-*.txt
+./reader -t -i -m 21 ../data/sqli-*.txt
 """)
 
     },
@@ -73,7 +73,7 @@ make reader
 cd c
 make clean
 make reader
-./reader -t -m 24 ../data/false_positives.txt
+./reader -t -m 22 ../data/false_positives.txt
 """)
     },
     {
