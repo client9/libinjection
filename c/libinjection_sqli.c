@@ -1155,8 +1155,12 @@ static size_t parse_number(sfilter * sf)
         }
     }
 
-    if (have_int == 1 && have_dot == 1 && have_dec == 0 && have_e == 1 && have_exp == 0) {
-        /* very special form of "1234.e"  this is a WORD not a number!! */
+    if (have_dot == 1 && have_e == 1 && have_exp == 0) {
+        /* very special form of
+         * "1234.e"
+         * "10.10E"
+         * ".E"
+         * this is a WORD not a number!! */
         st_assign(sf->current, TYPE_BAREWORD, start, pos - start, cs + start);
     } else {
         st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);
