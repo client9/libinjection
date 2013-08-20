@@ -12,7 +12,7 @@ v3.5 -- coming soon
   For GCC based applications, this allows -fstack-protector to work
   and -Wstack-protector will now not emit errors.
 * Added '-fstack-protector-all -D_FORTIFY_SOURCE=2' to default CFLAGS.
-  About 5% performance loss.
+  About 10% performance loss with -fstack-protector-all
 * Improvements in reducing false positives, HT modsecurity team
 * Add fingerprint, HT @FluxReiners
 * Support for parsing of old ODBC-style typing, e.g. 'select {foo 1};' (valid in MySQL)
