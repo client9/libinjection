@@ -4,5 +4,5 @@ floating point parsing
 SELECT .;
 --EXPECTED--
 E SELECT
-n .
+. .
 ; ;

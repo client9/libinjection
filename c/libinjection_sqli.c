@@ -59,6 +59,7 @@ typedef enum {
     TYPE_RIGHTPARENS = (int)')',  /* not used? */
     TYPE_LEFTBRACE   = (int)'{',
     TYPE_RIGHTBRACE  = (int)'}',
+    TYPE_DOT         = (int)'.',
     TYPE_COMMA       = (int)',',
     TYPE_COLON       = (int)':',
     TYPE_SEMICOLON   = (int)';',
@@ -1103,7 +1104,7 @@ static size_t parse_number(sfilter * sf)
             pos += 1;
         }
         if (pos - start == 1) {
-            st_assign_char(sf->current, TYPE_BAREWORD, start, 1, '.');
+            st_assign_char(sf->current, TYPE_DOT, start, 1, '.');
             return pos;
         }
     }
@@ -1693,7 +1694,7 @@ int libinjection_sqli_fold(sfilter * sf)
             pos -= 3;
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)&&
-                   (sf->tokenvec[left+1].type == TYPE_BAREWORD  && sf->tokenvec[left+1].val[0] == '.') &&
+                   (sf->tokenvec[left+1].type == TYPE_DOT) &&
                    (sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)) {
             /* ignore the '.n'
              * typically is this dabasename.table
