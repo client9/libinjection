@@ -18,6 +18,8 @@ v3.5 -- coming soon
 * Fix tokenization of "IF EXISTS(....", "IF NOT EXISTS(..."
 * Fi possible stack over-read, and improve detection of "sp_password" flag
   in short sqli
+* Better parsing of generated number forms of "10.e" and "10.10e"
+  (these are actually table specifiers!)
 
 # v3.4.1 2013-07-18
 * Fingerprint update only HT @LightOS
