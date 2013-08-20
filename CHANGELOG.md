@@ -5,21 +5,20 @@ v3.5 -- coming soon
 * Non-critical parser fix for numbers with oracle's ending
   suffix.  "SELECT 1FROM .." -> (SELECT, 1, FROM) not
   (SELECT, 1F, ROM)
+* Yet another fix for disambiguating Oracle's "f" suffix for numbers HT  @LightOS
+* Better parsing of generated number forms of "10.e" and "10.10e"
+  (these are actually table specifiers!) HT @LightOS
 * Change sizing of some static arrays to have a length >= 8
   For GCC based applications, this allows -fstack-protector to work
   and -Wstack-protector will now not emit errors.
-* Added '-fstack-protector -D_FORTIFY_SOURCE=2' to default CFLAGS.
-  No change in performance
+* Added '-fstack-protector-all -D_FORTIFY_SOURCE=2' to default CFLAGS.
+  About 5% performance loss.
 * Improvements in reducing false positives, HT modsecurity team
 * Add fingerprint, HT @FluxReiners
-* Fix libinjection_sqli_reset, thanks to @brianrectanus of IronBee
-* Yet another fix for disambiguating Oracle's "f" suffix for numbers HT  @LightOS
 * Support for parsing of old ODBC-style typing, e.g. 'select {foo 1};' (valid in MySQL)
 * Fix tokenization of "IF EXISTS(....", "IF NOT EXISTS(..."
 * Fi possible stack over-read, and improve detection of "sp_password" flag
   in short sqli HT modsecurity team
-* Better parsing of generated number forms of "10.e" and "10.10e"
-  (these are actually table specifiers!) HT @LightOS
 
 # v3.4.1 2013-07-18
 * Fingerprint update only HT @LightOS
