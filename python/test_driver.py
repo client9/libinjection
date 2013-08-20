@@ -40,7 +40,7 @@ def print_token(tok):
         out += print_token_string(tok)
     else:
         out += tok.val
-    return out
+    return out.strip()
 
 def toascii(data):
     """
