@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+# pylint: disable=C0103,R0911,R0912,R0915
+# disable short-variable-names, too many branches, returns, statements
 """
 fingerprint fuzzer and generator
 
