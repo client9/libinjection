@@ -30,6 +30,8 @@ def run(args):
 
     if has_check_output:
         # 2.7
+        # turn off warning on 2.6 systems
+        # pylint: disable=E1101
         return subprocess.check_output(args)
     else:
         # not 2.7
