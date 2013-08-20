@@ -43,8 +43,6 @@ sqli detected with fingerprint of 's&1UE'
 VERSION INFORMATION
 ===================
 
-Current version is 3.0.0pre17 released on 2013-06-14.
-
 See [CHANGELOG](/CHANGELOG.md) for details.
 
 Versions are listed as "major.minor.point"
