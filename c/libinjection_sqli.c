@@ -1695,7 +1695,7 @@ int libinjection_sqli_fold(sfilter * sf)
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)&&
                    (sf->tokenvec[left+1].type == TYPE_DOT) &&
-                   (sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)) {
+                   (sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING)) {
             /* ignore the '.n'
              * typically is this dabasename.table
              */
