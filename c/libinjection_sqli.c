@@ -927,7 +927,7 @@ static size_t parse_tick(sfilter* sf)
         /* otherwise it's a 'n' type -- mysql treats
          * everything as a bare word
          */
-        sf->current->type = TYPE_STRING;
+        sf->current->type = TYPE_BAREWORD;
     }
     return pos;
 }

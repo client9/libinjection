@@ -3,4 +3,4 @@ merge backquote words into one (mysql)
 --INPUT--
 `foo`.`bar`
 --EXPECTED--
-s `foo`
+n foo

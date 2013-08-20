@@ -4,5 +4,5 @@ keywords backquotes are not keywords
 SELECT `select`;
 --EXPECTED--
 E SELECT
-s `select`
+n select
 ; ;
