@@ -17,9 +17,9 @@ v3.5 -- coming soon
 * Support for parsing of old ODBC-style typing, e.g. 'select {foo 1};' (valid in MySQL)
 * Fix tokenization of "IF EXISTS(....", "IF NOT EXISTS(..."
 * Fi possible stack over-read, and improve detection of "sp_password" flag
-  in short sqli
+  in short sqli HT modsecurity team
 * Better parsing of generated number forms of "10.e" and "10.10e"
-  (these are actually table specifiers!)
+  (these are actually table specifiers!) HT @LightOS
 
 # v3.4.1 2013-07-18
 * Fingerprint update only HT @LightOS
