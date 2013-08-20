@@ -1070,6 +1070,11 @@ static size_t parse_number(sfilter * sf)
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
+    int have_int = 0;
+    int have_dot = 0;
+    int have_dec = 0;
+    int have_e = 0;
+    int have_exp = 0;
 
     /* cs[pos] == '0' has 1/10 chance of being true,
      * while pos+1< slen is almost always true
@@ -1095,15 +1100,19 @@ static size_t parse_number(sfilter * sf)
 
     start = pos;
     while (pos < slen && ISDIGIT(cs[pos])) {
+        have_int = 1;
         pos += 1;
     }
 
     if (pos < slen && cs[pos] == '.') {
+        have_dot = 1;
         pos += 1;
         while (pos < slen && ISDIGIT(cs[pos])) {
+            have_dec = 1;
             pos += 1;
         }
         if (pos - start == 1) {
+            /* only one character read so far */
             st_assign_char(sf->current, TYPE_DOT, start, 1, '.');
             return pos;
         }
@@ -1111,11 +1120,13 @@ static size_t parse_number(sfilter * sf)
 
     if (pos < slen) {
         if (cs[pos] == 'E' || cs[pos] == 'e') {
+            have_e = 1;
             pos += 1;
             if (pos < slen && (cs[pos] == '+' || cs[pos] == '-')) {
                 pos += 1;
             }
             while (pos < slen && ISDIGIT(cs[pos])) {
+                have_exp = 1;
                 pos += 1;
             }
         }
@@ -1144,7 +1155,12 @@ static size_t parse_number(sfilter * sf)
         }
     }
 
-    st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);
+    if (have_int == 1 && have_dot == 1 && have_dec == 0 && have_e == 1 && have_exp == 0) {
+        /* very special form of "1234.e"  this is a WORD not a number!! */
+        st_assign(sf->current, TYPE_BAREWORD, start, pos - start, cs + start);
+    } else {
+        st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);
+    }
     return pos;
 }
 
@@ -1693,12 +1709,13 @@ int libinjection_sqli_fold(sfilter * sf)
             assert(pos >= 3);
             pos -= 3;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_STRING)&&
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD) &&
                    (sf->tokenvec[left+1].type == TYPE_DOT) &&
-                   (sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING)) {
+                   (sf->tokenvec[left+2].type == TYPE_BAREWORD)) {
             /* ignore the '.n'
-             * typically is this dabasename.table
+             * typically is this databasename.table
              */
+            assert(pos >= 3);
             pos -= 2;
             continue;
         }
