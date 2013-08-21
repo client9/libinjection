@@ -109,7 +109,7 @@ memchr2(const char *haystack, size_t haystack_len, char c0, char c1)
             if (cur[1] == c1) {
                 return cur;
             } else {
-                cur += 2; //(c0 == c1) ? 1 : 2;
+                cur += 2; /* (c0 == c1) ? 1 : 2; */
             }
         } else {
             cur += 1;
@@ -218,7 +218,7 @@ static int cstrcasecmp(const char *a, const char *b, size_t n)
             return -1;
         }
     }
-    //printf("off the edge\n");
+
     return (*a == 0) ? 0 : 1;
 }
 
@@ -1401,7 +1401,6 @@ int libinjection_sqli_fold(sfilter * sf)
                 )
             {
                 if (pos == LIBINJECTION_SQLI_MAX_TOKENS) {
-                    //printf("FOLDING\n");
                     pos = 1;
                     left = 0;
                 } else {
@@ -1409,8 +1408,6 @@ int libinjection_sqli_fold(sfilter * sf)
                     pos = 2;
                     left = 0;
                 }
-            } else {
-                //printf("NOT FOLDING\n");
             }
         }
 
@@ -1477,9 +1474,6 @@ int libinjection_sqli_fold(sfilter * sf)
             pos -= 1;
             sf->stats_folds += 1;
             left = 0;
-            //if (left > 0) {
-            //    left -= 1;
-            //}
             continue;
         } else if (syntax_merge_words(sf, &sf->tokenvec[left], &sf->tokenvec[left+1])) {
             pos -= 1;
@@ -1511,9 +1505,10 @@ int libinjection_sqli_fold(sfilter * sf)
                        cstrcasecmp("LOCALTIMESTAMP", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0
                        )) {
 
-            // pos is the same
-            // other conversions need to go here... for instance
-            // password CAN be a function, coalese CAN be a function
+            /* pos is the same
+             * other conversions need to go here... for instance
+             * password CAN be a function, coalese CAN be a function
+             */
             sf->tokenvec[left].type = TYPE_FUNCTION;
             continue;
         } else if (sf->tokenvec[left].type == TYPE_KEYWORD && (
@@ -1643,25 +1638,37 @@ int libinjection_sqli_fold(sfilter * sf)
             continue;
         } else if (sf->tokenvec[left].type == TYPE_VARIABLE &&
                    sf->tokenvec[left+1].type == TYPE_OPERATOR &&
-                   (sf->tokenvec[left+2].type == TYPE_VARIABLE || sf->tokenvec[left+2].type == TYPE_NUMBER ||
+                   (sf->tokenvec[left+2].type == TYPE_VARIABLE ||
+                    sf->tokenvec[left+2].type == TYPE_NUMBER ||
                     sf->tokenvec[left+2].type == TYPE_BAREWORD)) {
             pos -= 2;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER ) &&
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD ||
+                    sf->tokenvec[left].type == TYPE_NUMBER ) &&
                    sf->tokenvec[left+1].type == TYPE_OPERATOR &&
-                   (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD)) {
+                   (sf->tokenvec[left+2].type == TYPE_NUMBER ||
+                    sf->tokenvec[left+2].type == TYPE_BAREWORD)) {
             pos -= 2;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER ||
-                    sf->tokenvec[left].type == TYPE_VARIABLE || sf->tokenvec[left].type == TYPE_STRING) &&
-                   sf->tokenvec[left+1].type == TYPE_OPERATOR && streq(sf->tokenvec[left+1].val, "::") &&
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD ||
+                    sf->tokenvec[left].type == TYPE_NUMBER ||
+                    sf->tokenvec[left].type == TYPE_VARIABLE ||
+                    sf->tokenvec[left].type == TYPE_STRING) &&
+                   sf->tokenvec[left+1].type == TYPE_OPERATOR &&
+                   streq(sf->tokenvec[left+1].val, "::") &&
                    sf->tokenvec[left+2].type == TYPE_SQLTYPE) {
             pos -= 2;
             sf->stats_folds += 2;
             continue;
-        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_NUMBER || sf->tokenvec[left].type == TYPE_STRING || sf->tokenvec[left].type == TYPE_VARIABLE) &&
+        } else if ((sf->tokenvec[left].type == TYPE_BAREWORD ||
+                    sf->tokenvec[left].type == TYPE_NUMBER ||
+                    sf->tokenvec[left].type == TYPE_STRING ||
+                    sf->tokenvec[left].type == TYPE_VARIABLE) &&
                    sf->tokenvec[left+1].type == TYPE_COMMA &&
-                   (sf->tokenvec[left+2].type == TYPE_NUMBER || sf->tokenvec[left+2].type == TYPE_BAREWORD || sf->tokenvec[left+2].type == TYPE_STRING || sf->tokenvec[left+2].type == TYPE_VARIABLE)) {
+                   (sf->tokenvec[left+2].type == TYPE_NUMBER ||
+                    sf->tokenvec[left+2].type == TYPE_BAREWORD ||
+                    sf->tokenvec[left+2].type == TYPE_STRING ||
+                    sf->tokenvec[left+2].type == TYPE_VARIABLE)) {
             pos -= 2;
             if (left > 0) {
                 left -= 1;
@@ -1687,8 +1694,9 @@ int libinjection_sqli_fold(sfilter * sf)
                     sf->tokenvec[left+2].type == TYPE_VARIABLE ||
                     sf->tokenvec[left+2].type == TYPE_STRING ||
                     sf->tokenvec[left+2].type == TYPE_FUNCTION )) {
-            // remove unary operators
-            // select - 1
+            /* remove unary operators
+             * select - 1
+             */
             st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
             pos -= 1;
             continue;
