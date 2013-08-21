@@ -2,6 +2,10 @@ require 'libinjection'
 require 'Test.More'
 require 'Test.Builder.Tester'
 
+function trim(s)
+    return s:find'^%s*$' and '' or s:match'^%s*(.*%S)'
+end
+
 function print_token_string(tok)
     local out = ''
     if tok.str_open ~= '\0' then
@@ -11,11 +15,11 @@ function print_token_string(tok)
     if tok.str_close ~= '\0' then
         out = out .. tok.str_close
     end
-    return(out)
+    return trim(out)
 end
 
 function print_token(tok)
-   local out = '\n'
+   local out = ''
    out = out .. tok.type
    out = out .. ' '
    if tok.type == 's' then
@@ -30,7 +34,7 @@ function print_token(tok)
    else
        out = out .. tok.val
    end
-   return out
+   return '\n' .. trim(out)
 end
 
 function test_tokens(input)
@@ -41,7 +45,7 @@ function test_tokens(input)
     while (libinjection.sqli_tokenize(sql_state) == 1) do
         out = out .. print_token(sql_state.current)
     end
-    return(out)
+    return out
 end
 
 function test_tokens_mysql(input)
@@ -52,7 +56,7 @@ function test_tokens_mysql(input)
     while (libinjection.sqli_tokenize(sql_state) == 1) do
         out = out .. print_token(sql_state.current)
     end
-    return(out)
+    return out
 end
 
 function test_folding(input)
@@ -70,7 +74,7 @@ function test_folding(input)
         out = '\n'
     end
 
-    return(out)
+    return out
 end
 
 function test_fingerprints(input)
@@ -81,6 +85,6 @@ function test_fingerprints(input)
     if issqli == 1 then
         out = sql_state.fingerprint
     end
-    return(out)
+    return out
 end
 
