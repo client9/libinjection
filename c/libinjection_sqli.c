@@ -2072,12 +2072,6 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
                 sql_state->reason = __LINE__;
                 return FALSE;
             }
-        } else if (streq(sql_state->fingerprint, "so1")) {
-            if (sql_state->tokenvec[0].str_open != CHAR_NULL) {
-                /* "foo" -1 is ok, foo"-1 is not */
-                sql_state->reason = __LINE__;
-                return FALSE;
-            }
         } else if (sql_state->tokenvec[1].type == TYPE_KEYWORD) {
             if ((sql_state->tokenvec[1].len < 5) ||
                 cstrcasecmp("INTO", sql_state->tokenvec[1].val, 4)) {
