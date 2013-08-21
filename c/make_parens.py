@@ -27,10 +27,10 @@ class PermuteFingerprints(object):
             'n1s', 'n(1)s', 'En1', 'En(1)', 'n(1)n', 'n1v',
             'n(1)1', 'n&EUE', 'n&EkU', 's&EUE', 's&EkU', 'v&EUE', 'v&EkU',
             'n&nTn', 'nA', 'nos;n', 'UEn', 'so1no', '1)on', '1k(1)',
-            's)on', '1;TnE'
+            's)on', '1;TnE', 's&1s'
             ])
         self.whitelist = set([
-            'T(vv)', 'Tnvos', 's&1s', 'Tnv;', '1UEnn', '1;Tvk'
+            'T(vv)', 'Tnvos', 'Tnv;', '1UEnn', '1;Tvk'
             ])
 
     def aslist(self):

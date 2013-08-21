@@ -5551,7 +5551,6 @@ s&1of
 s&1oo
 s&1os
 s&1ov
-s&1s
 s&E((
 s&E(1
 s&E(f
