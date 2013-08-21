@@ -237,23 +237,23 @@ class NullHandler(tornado.web.RequestHandler):
                 continue
             libinjection.sqli_init(sqlstate, val, 0)
             pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
-            issqli = bool(libinjection.sqli_blacklist(sqlstate) && libinjection.sqli_not_whitelist(sqlstate))
+            issqli = bool(libinjection.sqli_blacklist(sqlstate) and libinjection.sqli_not_whitelist(sqlstate))
             fps.append(['unquoted', 'ansi', issqli, pat])
 
             pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_MYSQL)
-            issqli = bool(libinjection.sqli_blacklist(sqlstate) && libinjection.sqli_not_whitelist(sqlstate))
+            issqli = bool(libinjection.sqli_blacklist(sqlstate) and libinjection.sqli_not_whitelist(sqlstate))
             fps.append(['unquoted', 'mysql', issqli, pat])
 
             pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_SINGLE | libinjection.FLAG_SQL_ANSI)
-            issqli = bool(libinjection.sqli_blacklist(sqlstate) && libinjection.sqli_not_whitelist(sqlstate))
+            issqli = bool(libinjection.sqli_blacklist(sqlstate) and libinjection.sqli_not_whitelist(sqlstate))
             fps.append(['single', 'ansi', issqli, pat])
 
             pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_SINGLE | libinjection.FLAG_SQL_MYSQL)
-            issqli = bool(libinjection.sqli_blacklist(sqlstate) && libinjection.sqli_not_whitelist(sqlstate))
+            issqli = bool(libinjection.sqli_blacklist(sqlstate) and libinjection.sqli_not_whitelist(sqlstate))
             fps.append(['single', 'mysql', issqli, pat])
 
             pat = libinjection.sqli_fingerprint(sqlstate, libinjection.FLAG_QUOTE_DOUBLE | libinjection.FLAG_SQL_MYSQL)
-            issqli = bool(libinjection.sqli_blacklist(sqlstate) && libinjection.sqli_not_whitelist(sqlstate))
+            issqli = bool(libinjection.sqli_blacklist(sqlstate) and libinjection.sqli_not_whitelist(sqlstate))
             fps.append(['double', 'mysql', issqli, pat])
 
             allfp[name] = {
