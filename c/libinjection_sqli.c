@@ -24,6 +24,7 @@
 #define CHAR_NULL    '\0'
 #define CHAR_SINGLE  '\''
 #define CHAR_DOUBLE  '"'
+#define CHAR_TICK    '`'
 
 /* faster than calling out to libc isdigit */
 #define ISDIGIT(a) ((unsigned)((a) - '0') <= 9)
@@ -908,7 +909,7 @@ static size_t parse_word(sfilter * sf)
  */
 static size_t parse_tick(sfilter* sf)
 {
-    size_t pos =  parse_string_core(sf->s, sf->slen, sf->pos, sf->current, '`', 1);
+    size_t pos =  parse_string_core(sf->s, sf->slen, sf->pos, sf->current, CHAR_TICK, 1);
 
     /* we could check to see if start and end of
      * of string are both "`", i.e. make sure we have
@@ -1776,6 +1777,21 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags)
     libinjection_sqli_reset(sql_state, flags);
 
     tlen = libinjection_sqli_fold(sql_state);
+
+    /* Check for magic PHP backquote comment
+     * If:
+     * * last token is of type "bareword"
+     * * And is quoted in a backtick
+     * * And isn't closed
+     * Then convert it to comment
+     */
+    if (tlen > 0 &&
+        sql_state->tokenvec[tlen-1].type == TYPE_BAREWORD &&
+        sql_state->tokenvec[tlen-1].str_open == CHAR_TICK &&
+        sql_state->tokenvec[tlen-1].str_close == CHAR_NULL) {
+        sql_state->tokenvec[tlen-1].type = TYPE_COMMENT;
+    }
+
     for (i = 0; i < tlen; ++i) {
         sql_state->fingerprint[i] = sql_state->tokenvec[i].type;
     }
@@ -1805,6 +1821,7 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags)
         sql_state->tokenvec[0].val[0] = TYPE_EVIL;
         sql_state->tokenvec[1].type = CHAR_NULL;
     }
+
 
     return sql_state->fingerprint;
 }
@@ -2074,18 +2091,6 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
         break;
     }  /* case 3 */
     case 4:
-        if (streq(sql_state->fingerprint, "s&1s")) {
-            /* look for   ...foo" and 1=1 `
-             * where the ending string is actually a comment in
-             * php mysql magic land.  This check is needed
-             * since normal non sqli text often folds to
-             * s&1s.. this check figures that out
-             */
-            if (sql_state->stats_tokens == 4) {
-                sql_state->reason = __LINE__;
-                return FALSE;
-            }
-        }
     case 5: {
         /* nothing right now */
         break;
