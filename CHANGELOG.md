@@ -1,3 +1,5 @@
+# v3.5.2 -- 2013-08-21
+* Fingerprint update.  Credit: Reto Ischi
 
 # v3.5.1 -- 2013-08-21
 * found regression in handling of PHP/MySQL backticks.  Tests added

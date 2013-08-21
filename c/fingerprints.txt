@@ -418,6 +418,12 @@
 1&sv;
 1&svc
 1&svo
+1&t((
+1&t(1
+1&t(f
+1&t(n
+1&t(s
+1&t(v
 1&v
 1&v&(
 1&v&1
@@ -1647,6 +1653,7 @@
 1os&k
 1os&n
 1os&s
+1os&t
 1os&v
 1os((
 1os(E
@@ -1737,6 +1744,7 @@
 1ot(f
 1ot(n
 1ot(s
+1ot(t
 1ot(v
 1ov
 1ov&(
@@ -1747,6 +1755,7 @@
 1ov&k
 1ov&n
 1ov&s
+1ov&t
 1ov&v
 1ov((
 1ov(E
@@ -3159,6 +3168,7 @@ f()&f
 f()&k
 f()&n
 f()&s
+f()&t
 f()&v
 f(),(
 f(),1
@@ -3892,6 +3902,12 @@ n&sv
 n&sv;
 n&svc
 n&svo
+n&t((
+n&t(1
+n&t(f
+n&t(n
+n&t(s
+n&t(v
 n&v
 n&v&(
 n&v&1
@@ -5132,6 +5148,7 @@ nos&f
 nos&k
 nos&n
 nos&s
+nos&t
 nos&v
 nos((
 nos(E
@@ -5222,6 +5239,7 @@ not(1
 not(f
 not(n
 not(s
+not(t
 not(v
 nov&(
 nov&1
@@ -5231,6 +5249,7 @@ nov&f
 nov&k
 nov&n
 nov&s
+nov&t
 nov&v
 nov((
 nov(E
@@ -5705,6 +5724,12 @@ s&sv
 s&sv;
 s&svc
 s&svo
+s&t((
+s&t(1
+s&t(f
+s&t(n
+s&t(s
+s&t(v
 s&v
 s&v&(
 s&v&1
@@ -6885,6 +6910,7 @@ so1&f
 so1&k
 so1&n
 so1&s
+so1&t
 so1&v
 so1((
 so1(E
@@ -7018,6 +7044,7 @@ son&f
 son&k
 son&n
 son&s
+son&t
 son&v
 son((
 son(1
@@ -7108,6 +7135,7 @@ sos&f
 sos&k
 sos&n
 sos&s
+sos&t
 sos&v
 sos((
 sos(E
@@ -7199,6 +7227,7 @@ sot(1
 sot(f
 sot(n
 sot(s
+sot(t
 sot(v
 sov
 sov&(
@@ -7209,6 +7238,7 @@ sov&f
 sov&k
 sov&n
 sov&s
+sov&t
 sov&v
 sov((
 sov(E
@@ -7328,6 +7358,7 @@ t(((1
 t(((f
 t(((n
 t(((s
+t(((t
 t(((v
 t((1)
 t((1o
@@ -7336,12 +7367,14 @@ t((n)
 t((no
 t((s)
 t((so
+t((t(
 t((v)
 t((vo
 t(1)U
 t(1o(
 t(1of
 t(1os
+t(1ot
 t(1ov
 t(f((
 t(f()
@@ -7354,6 +7387,7 @@ t(n)U
 t(no(
 t(nof
 t(nos
+t(not
 t(nov
 t(s)U
 t(so(
@@ -7361,11 +7395,19 @@ t(so1
 t(sof
 t(son
 t(sos
+t(sot
 t(sov
+t(t((
+t(t(1
+t(t(f
+t(t(n
+t(t(s
+t(t(v
 t(v)U
 t(vo(
 t(vof
 t(vos
+t(vot
 to(((
 to((1
 to((f
@@ -7635,6 +7677,12 @@ v&sv
 v&sv;
 v&svc
 v&svo
+v&t((
+v&t(1
+v&t(f
+v&t(n
+v&t(s
+v&t(v
 v&v
 v&v&(
 v&v&1
@@ -8857,6 +8905,7 @@ vos&f
 vos&k
 vos&n
 vos&s
+vos&t
 vos&v
 vos((
 vos(E
@@ -8948,4 +8997,5 @@ vot(1
 vot(f
 vot(n
 vot(s
+vot(t
 vot(v
