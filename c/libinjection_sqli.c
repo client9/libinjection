@@ -1961,19 +1961,6 @@ int libinjection_sqli_not_whitelist(sfilter* sql_state)
             return TRUE;
         }
 
-        /*
-         * if 'oc' then input must be 'CASE/x'
-         * used in HPP attack
-         */
-        if (sql_state->tokenvec[0].type == TYPE_OPERATOR &&
-            sql_state->tokenvec[1].type == TYPE_COMMENT &&
-            sql_state->tokenvec[1].val[0] == '/' &&
-            cstrcasecmp("CASE", sql_state->tokenvec[0].val, sql_state->tokenvec[0].len) != 0)
-        {
-            sql_state->reason = __LINE__;
-            return FALSE;
-        }
-
         /**
          * there are some odd base64-looking query string values
          * 1234-ABCDEFEhfhihwuefi--
