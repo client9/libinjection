@@ -1,5 +1,5 @@
 
-v3.5 -- coming soon
+# v3.5 -- 2013-08-21
 * Bug fix for libinjection_sqli_reset @brianrectanus
   https://github.com/client9/libinjection/pull/50
 * Non-critical parser fix for numbers with oracle's ending

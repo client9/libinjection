@@ -2184,7 +2184,7 @@ static int _wrap_sqli_state_tokenvec_get(lua_State* L) {
   {
     int i;
     lua_newtable(L);
-    for (i = 0; i < 5+1; i++) {
+    for (i = 0; i < 8; i++) {
       lua_pushnumber(L, i+1);
       SWIG_NewPointerObj(L, (void*)(& result[i]), SWIGTYPE_p_stoken_t,0);
       lua_settable(L, -3);
@@ -2786,9 +2786,10 @@ static swig_lua_var_info swig_variables[] = {
 };
 
 static swig_lua_const_info swig_constants[] = {
-    {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.4.1")},
+    {SWIG_LUA_CONSTTAB_STRING("LIBINJECTION_VERSION", "3.5.0")},
     {SWIG_LUA_CONSTTAB_INT("LIBINJECTION_SQLI_TOKEN_SIZE", 32)},
     {SWIG_LUA_CONSTTAB_INT("LIBINJECTION_SQLI_MAX_TOKENS", 5)},
+    {SWIG_LUA_CONSTTAB_INT("LIBINJECTION_SQLI_BUFFER_SZ", 8)},
     {SWIG_LUA_CONSTTAB_INT("FLAG_NONE", FLAG_NONE)},
     {SWIG_LUA_CONSTTAB_INT("FLAG_QUOTE_NONE", FLAG_QUOTE_NONE)},
     {SWIG_LUA_CONSTTAB_INT("FLAG_QUOTE_SINGLE", FLAG_QUOTE_SINGLE)},
