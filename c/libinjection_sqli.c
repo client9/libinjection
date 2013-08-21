@@ -1580,9 +1580,8 @@ int libinjection_sqli_fold(sfilter * sf)
             pos -= 1;
             sf->stats_folds += 1;
             continue;
-        } else if ( sf->tokenvec[left].type == TYPE_LEFTBRACE &&
-                    (sf->tokenvec[left+1].type == TYPE_BAREWORD ||
-                     sf->tokenvec[left+1].type == TYPE_STRING)) {
+        } else if (sf->tokenvec[left].type == TYPE_LEFTBRACE &&
+                   sf->tokenvec[left+1].type == TYPE_BAREWORD) {
             /* weird ODBC / MYSQL  {foo expr} --> expr
              * but for this rule we just strip away the "{ foo" part
              */
