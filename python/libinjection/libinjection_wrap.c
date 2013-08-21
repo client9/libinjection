@@ -5952,7 +5952,7 @@ SWIG_init(void) {
   
   SWIG_InstallConstants(d,swig_const_table);
   
-  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_VERSION",SWIG_FromCharPtr("3.5.0"));
+  SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_VERSION",SWIG_FromCharPtr("3.5.1"));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_SQLI_TOKEN_SIZE",SWIG_From_int((int)(32)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_SQLI_MAX_TOKENS",SWIG_From_int((int)(5)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LIBINJECTION_SQLI_BUFFER_SZ",SWIG_From_int((int)(8)));

@@ -1,5 +1,10 @@
 
-# v3.5 -- 2013-08-21
+# v3.5.1 -- 2013-08-21
+* found regression in handling of PHP/MySQL backticks.  Tests added
+* Dead code removed.
+* Improved test coverage to [97.7%](https://libinjection.client9.com/cicada/artifacts/libinjection-coverage-unittest/lcov-html/c/libinjection_sqli.c.gcov.html)
+
+# v3.5.0 -- 2013-08-21
 * Bug fix for libinjection_sqli_reset @brianrectanus
   https://github.com/client9/libinjection/pull/50
 * Non-critical parser fix for numbers with oracle's ending
