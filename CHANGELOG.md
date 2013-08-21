@@ -1,3 +1,6 @@
+# v3.5.3 -- next
+* Fingerprint update
+
 # v3.5.2 -- 2013-08-21
 * Fingerprint update.  Credit: Reto Ischi
 
