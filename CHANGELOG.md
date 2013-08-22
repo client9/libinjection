@@ -1,5 +1,6 @@
 # v3.5.3 -- next
-* Fingerprint update
+* Fingerprint update -- BETWEEN operation bypasses
+* Fingerprint update -- ANY/SOME quasi-function bypasses
 
 # v3.5.2 -- 2013-08-21
 * Fingerprint update.  Credit: Reto Ischi

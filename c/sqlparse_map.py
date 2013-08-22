@@ -83,6 +83,10 @@ KEYWORDS = {
 'ANALYZE'                     : 'k',
 'AND'                         : '&',
 
+# ANY -- acts like a function
+# http://dev.mysql.com/doc/refman/5.0/en/any-in-some-subqueries.html
+'ANY'                         : 'f',
+
 # pgsql
 'ANYELEMENT'                  : 't',
 'ANYARRAY'                    : 't',
@@ -860,6 +864,9 @@ KEYWORDS = {
 'SMALLDATETIMEFROMPARTS'      : 'f',
 'SMALLINT'                    : 't',
 'SMALLSERIAL'                 : 't',
+# SOME -- acts like a function
+# http://dev.mysql.com/doc/refman/5.0/en/any-in-some-subqueries.html
+'SOME'                        : 'f',
 'SOUNDEX'                     : 'f',
 'SOUNDS'                      : 'o',
 'SPACE'                       : 'f',

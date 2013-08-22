@@ -3081,6 +3081,7 @@ static const keyword_t sql_keywords[] = {
     {"0F(E(N", 'F'},
     {"0F(E(S", 'F'},
     {"0F(E(V", 'F'},
+    {"0F(E1)", 'F'},
     {"0F(E1K", 'F'},
     {"0F(E1O", 'F'},
     {"0F(EF(", 'F'},
@@ -3090,10 +3091,13 @@ static const keyword_t sql_keywords[] = {
     {"0F(EKN", 'F'},
     {"0F(EKS", 'F'},
     {"0F(EKV", 'F'},
+    {"0F(EN)", 'F'},
     {"0F(ENK", 'F'},
     {"0F(ENO", 'F'},
+    {"0F(ES)", 'F'},
     {"0F(ESK", 'F'},
     {"0F(ESO", 'F'},
+    {"0F(EV)", 'F'},
     {"0F(EVK", 'F'},
     {"0F(EVO", 'F'},
     {"0F(F((", 'F'},
@@ -9164,6 +9168,7 @@ static const keyword_t sql_keywords[] = {
     {"ALTER TABLE", 'k'},
     {"ANALYZE", 'k'},
     {"AND", '&'},
+    {"ANY", 'f'},
     {"ANYARRAY", 't'},
     {"ANYELEMENT", 't'},
     {"ANYNONARRY", 't'},
@@ -9860,6 +9865,7 @@ static const keyword_t sql_keywords[] = {
     {"SMALLDATETIMEFROMPARTS", 'f'},
     {"SMALLINT", 't'},
     {"SMALLSERIAL", 't'},
+    {"SOME", 'f'},
     {"SOUNDEX", 'f'},
     {"SOUNDS", 'o'},
     {"SOUNDS LIKE", 'o'},
@@ -10098,5 +10104,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9932;
+static const size_t sql_keywords_sz = 9938;
 #endif

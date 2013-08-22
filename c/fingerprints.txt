@@ -3292,6 +3292,7 @@ f(E(f
 f(E(n
 f(E(s
 f(E(v
+f(E1)
 f(E1k
 f(E1o
 f(Ef(
@@ -3301,10 +3302,13 @@ f(Ekf
 f(Ekn
 f(Eks
 f(Ekv
+f(En)
 f(Enk
 f(Eno
+f(Es)
 f(Esk
 f(Eso
+f(Ev)
 f(Evk
 f(Evo
 f(f((

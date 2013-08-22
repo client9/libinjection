@@ -607,3 +607,12 @@ binary (binary(1)) UNION SELECT 2 --
 ('1' between '1' and '2') & 1 UNION SELECT 1
 (@version between '1' and '2') & 1 UNION SELECT 1
 (@version between 1 and '2') & 1 UNION SELECT 1
+
+#
+# ANY and SOME subqueries
+#
+1 - ANY(SELECT 1,2)
+ANY(SELECT 1) - 1 UNION ALL --
+ANY(SELECT (1)) - 1 UNION ALL --
+ANY((SELECT 1)) - 1 UNION ALL --
+1 - ANY(SELECT 1) UNION ALL --
