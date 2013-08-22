@@ -1400,18 +1400,21 @@ int libinjection_sqli_fold(sfilter * sf)
                     )
                 )
             {
-                if (pos == LIBINJECTION_SQLI_MAX_TOKENS) {
-                    pos = 1;
-                    left = 0;
-                } else {
-                    st_copy(&(sf->tokenvec[1]), &(sf->tokenvec[5]));
+                if (pos > LIBINJECTION_SQLI_MAX_TOKENS) {
+                    //printf("TRUNCATE pos = %lu vs. %lu\n", pos, LIBINJECTION_SQLI_MAX_TOKENS);
+                    st_copy(&(sf->tokenvec[1]), &(sf->tokenvec[LIBINJECTION_SQLI_MAX_TOKENS]));
                     pos = 2;
                     left = 0;
-                }
+                } else {
+                    //printf("HEREIAM\n");
+                    pos = 1;
+                    left = 0;
+                } 
             }
         }
 
         if (! more || left >= LIBINJECTION_SQLI_MAX_TOKENS) {
+            left = pos;
             break;
         }
 
@@ -1462,18 +1465,20 @@ int libinjection_sqli_fold(sfilter * sf)
             sf->tokenvec[left+1].type = TYPE_TSQL;
             left += 2;
             continue; /* reparse everything, but we probably can advance left, and pos */
-        } else if ((sf->tokenvec[left].type ==TYPE_OPERATOR || sf->tokenvec[left].type ==TYPE_LOGIC_OPERATOR) &&
+        } else if ((sf->tokenvec[left].type ==TYPE_OPERATOR ||
+                    sf->tokenvec[left].type ==TYPE_LOGIC_OPERATOR) &&
+                   st_is_unary_op(&sf->tokenvec[left+1])) {
+            pos -= 1;
+            sf->stats_folds += 1;
+            left = 0;
+            continue;
+        } else if (sf->tokenvec[left].type ==TYPE_LEFTPARENS &&
                    st_is_unary_op(&sf->tokenvec[left+1])) {
             pos -= 1;
             sf->stats_folds += 1;
             if (left > 0) {
                 left -= 1;
             }
-            continue;
-        } else if (sf->tokenvec[left].type ==TYPE_LEFTPARENS && st_is_unary_op(&sf->tokenvec[left+1])) {
-            pos -= 1;
-            sf->stats_folds += 1;
-            left = 0;
             continue;
         } else if (syntax_merge_words(sf, &sf->tokenvec[left], &sf->tokenvec[left+1])) {
             pos -= 1;
@@ -1540,8 +1545,10 @@ int libinjection_sqli_fold(sfilter * sf)
              */
             continue;
         } else if (sf->tokenvec[left].type == TYPE_SQLTYPE &&
-                   (sf->tokenvec[left+1].type == TYPE_BAREWORD || sf->tokenvec[left+1].type == TYPE_NUMBER ||
-                    sf->tokenvec[left+1].type == TYPE_VARIABLE || sf->tokenvec[left+1].type == TYPE_STRING))  {
+                   (sf->tokenvec[left+1].type == TYPE_BAREWORD ||
+                    sf->tokenvec[left+1].type == TYPE_NUMBER ||
+                    sf->tokenvec[left+1].type == TYPE_VARIABLE ||
+                    sf->tokenvec[left+1].type == TYPE_STRING))  {
             st_copy(&sf->tokenvec[left], &sf->tokenvec[left+1]);
             pos -= 1;
             sf->stats_folds += 1;
@@ -1568,11 +1575,13 @@ int libinjection_sqli_fold(sfilter * sf)
             }
             left = 0;
             continue;
-        } else if ( sf->tokenvec[left].type == '(' && sf->tokenvec[left+1].type == '(' ) {
+        } else if (sf->tokenvec[left].type == TYPE_LEFTPARENS &&
+                   sf->tokenvec[left+1].type == TYPE_LEFTPARENS) {
             pos -= 1;
             sf->stats_folds += 1;
             continue;
-        } else if ( sf->tokenvec[left].type == ')' && sf->tokenvec[left+1].type == ')' ) {
+        } else if (sf->tokenvec[left].type == TYPE_RIGHTPARENS &&
+                   sf->tokenvec[left+1].type == TYPE_RIGHTPARENS) {
             pos -= 1;
             sf->stats_folds += 1;
             continue;
@@ -1587,7 +1596,7 @@ int libinjection_sqli_fold(sfilter * sf)
             pos -= 2;
             sf->stats_folds += 2;
             continue;
-        } else if ( sf->tokenvec[left+1].type == TYPE_RIGHTBRACE) {
+        } else if (sf->tokenvec[left+1].type == TYPE_RIGHTBRACE) {
             pos -= 1;
             sf->stats_folds += 1;
             continue;

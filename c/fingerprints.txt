@@ -1325,6 +1325,7 @@
 1f(((
 1f(()
 1f((1
+1f((E
 1f((f
 1f((n
 1f((s
@@ -1340,6 +1341,13 @@
 1f(1)
 1f(1n
 1f(1o
+1f(E(
+1f(E1
+1f(Ef
+1f(Ek
+1f(En
+1f(Es
+1f(Ev
 1f(f(
 1f(n)
 1f(n,
@@ -4896,6 +4904,7 @@ nf()v
 nf(1)
 nf(1n
 nf(1o
+nf(E1
 nf(f(
 nf(n)
 nf(n,
@@ -6682,6 +6691,7 @@ sc
 sf(((
 sf(()
 sf((1
+sf((E
 sf((f
 sf((n
 sf((s
@@ -6697,6 +6707,13 @@ sf()v
 sf(1)
 sf(1n
 sf(1o
+sf(E(
+sf(E1
+sf(Ef
+sf(Ek
+sf(En
+sf(Es
+sf(Ev
 sf(f(
 sf(n)
 sf(n,
@@ -8642,6 +8659,7 @@ vc
 vf(((
 vf(()
 vf((1
+vf((E
 vf((f
 vf((n
 vf((s
@@ -8657,6 +8675,13 @@ vf()v
 vf(1)
 vf(1n
 vf(1o
+vf(E(
+vf(E1
+vf(Ef
+vf(Ek
+vf(En
+vf(Es
+vf(Ev
 vf(f(
 vf(n)
 vf(n,
