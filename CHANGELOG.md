@@ -1,6 +1,9 @@
-# v3.5.3 -- next
-* Fingerprint update -- BETWEEN operation bypasses
-* Fingerprint update -- ANY/SOME quasi-function bypasses
+# v3.5.3 -- 2013-08-25
+* Fingerprint update -- `BETWEEN` operation bypasses
+* Fingerprint update -- `ANY/SOME` quasi-function bypasses
+* Fixed issue with folding where `1-(2-3)` would fold to "nothing" instead of `1`
+* Improved test coverage to [98.0%](https://libinjection.client9.com/cicada/artifacts/libinjection-coverage-unittest/lcov-html/c/libinjection_sqli.c.gcov.html)
+* More adjustments to the PHP/MYSQL backtick to reduce false positives
 
 # v3.5.2 -- 2013-08-21
 * Fingerprint update.  Credit: Reto Ischi

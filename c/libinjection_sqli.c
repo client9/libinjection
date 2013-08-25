@@ -1800,11 +1800,13 @@ const char* libinjection_sqli_fingerprint(sfilter * sql_state, int flags)
      * * last token is of type "bareword"
      * * And is quoted in a backtick
      * * And isn't closed
+     * * And it's empty?
      * Then convert it to comment
      */
-    if (tlen > 0 &&
+    if (tlen > 2 &&
         sql_state->tokenvec[tlen-1].type == TYPE_BAREWORD &&
         sql_state->tokenvec[tlen-1].str_open == CHAR_TICK &&
+        sql_state->tokenvec[tlen-1].len == 0 &&
         sql_state->tokenvec[tlen-1].str_close == CHAR_NULL) {
         sql_state->tokenvec[tlen-1].type = TYPE_COMMENT;
     }

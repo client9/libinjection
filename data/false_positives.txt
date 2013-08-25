@@ -413,3 +413,6 @@ x, @x, @x
 
 #
 1; exec will create the case 7
+`
+1234`
+junk <a href="../">foo.com</a>
