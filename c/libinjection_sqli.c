@@ -1547,6 +1547,7 @@ int libinjection_sqli_fold(sfilter * sf)
         } else if (sf->tokenvec[left].type == TYPE_SQLTYPE &&
                    (sf->tokenvec[left+1].type == TYPE_BAREWORD ||
                     sf->tokenvec[left+1].type == TYPE_NUMBER ||
+                    sf->tokenvec[left+1].type == TYPE_FUNCTION ||
                     sf->tokenvec[left+1].type == TYPE_VARIABLE ||
                     sf->tokenvec[left+1].type == TYPE_STRING))  {
             st_copy(&sf->tokenvec[left], &sf->tokenvec[left+1]);
@@ -1582,6 +1583,11 @@ int libinjection_sqli_fold(sfilter * sf)
             continue;
         } else if (sf->tokenvec[left].type == TYPE_RIGHTPARENS &&
                    sf->tokenvec[left+1].type == TYPE_RIGHTPARENS) {
+            pos -= 1;
+            sf->stats_folds += 1;
+            continue;
+        } else if (sf->tokenvec[left].type == TYPE_SQLTYPE &&
+                   sf->tokenvec[left+1].type == TYPE_SQLTYPE) {
             pos -= 1;
             sf->stats_folds += 1;
             continue;
