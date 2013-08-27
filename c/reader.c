@@ -127,6 +127,12 @@ void test_positive(FILE * fd, const char *fname,
             if ((issqli && flag_true && ! flag_invert) ||
                 (!issqli && flag_true && flag_invert) ||
                 !flag_true) {
+
+                // if we didn't find a SQLi and fingerprint from sqlstats is
+                // is 'sns' or 'snsns' then redo using plain context
+                if (!issqli && (strcmp(sf.fingerprint, "sns") == 0 || strcmp(sf.fingerprint, "snsns") == 0)) {
+                    libinjection_sqli_fingerprint(&sf, 0);
+                }
                 modp_toprint(linebuf, len);
                 fprintf(stdout, "%s\t%d\t%s\t%s\t%s\n",
                         fname, linenum,
