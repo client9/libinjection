@@ -71,7 +71,7 @@ class PermuteFingerprints(object):
 
         if '))' in s:
             return False
-        if '((' is s:
+        if '((' in s:
             return False
         if 'v1' in s:
             return False
@@ -130,6 +130,10 @@ class PermuteFingerprints(object):
             return False
 
         if 'ff' in s:
+            return False
+        if 'tt' in s:
+            return False
+        if 'tf' in s:
             return False
 
         if '1no' in s:
