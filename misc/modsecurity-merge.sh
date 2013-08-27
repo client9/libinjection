@@ -16,37 +16,42 @@ else
     (cd libinjection; git pull)
 fi
 
+pwd
+
 #
 # CLONE MODSECURITY
 #
 if [ ! -d ModSecurity ]; then
-    git clone https://github.com/client9/ModSecurity
+    git clone https://github.com/client9/ModSecurity.git
 else
     ( cd ModSecurity; git pull )
 fi
+pwd
 
+#
+# Use right branch
+#
+(cd ModSecurity; git checkout remotes/trunk )
+
+pwd
 
 #
 # COPY IN NEW LIBINJECTION
 #
 cp libinjection/COPYING.txt ModSecurity/apache2/
-cp libinjection/c/libinjection.h ModSecurity/apache2/
-cp libinjection/c/libinjection_sqli.c ModSecurity/apache2/
-cp libinjection/c/libinjection_sqli_data.h ModSecurity/apache2/
+cp libinjection/c/libinjection.h ModSecurity/apache2/libinjection
+cp libinjection/c/libinjection_sqli.c ModSecurity/apache2/libinjection
+cp libinjection/c/libinjection_sqli_data.h ModSecurity/apache2/libinjection
 
-#
-# USE RIGHT BRANCH
-#
-cd ModSecurity
-git checkout remotes/trunk
 
 #
 # REGENERATE / BUILD
 #
+cd ModSecurity
 ./autogen.sh
 ./configure
 make
-
+make distclean
 
 #
 # ADD NEW BITS
