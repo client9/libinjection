@@ -1,13 +1,16 @@
 
 #
 #
-all: libinjection_wrap.c
+all: php
+
+php: libinjection_wrap.c copy words.php
+	gcc `php-config --includes` -fpic -c libinjection_wrap.c libinjection_sqli.c
+	gcc -shared libinjection_sqli.o libinjection_wrap.o -o libinjection.so
 
 #python: copy libinjection/libinjection_wrap.c
 #	rm -f libinjection.py libinjection.pyc
 #	python setup.py --verbose build --force
 #	sudo python setup.py --verbose install
-
 
 words.php: Makefile json2php.py ../c/sqlparse_data.json
 	./json2php.py < ../c/sqlparse_data.json > words.php
@@ -37,7 +40,7 @@ libinjection_wrap.c: libinjection.i libinjection.h
 copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 
 clean:
-	rm -f *~
+	rm -f *~ *.o *.so
 	rm -f words.php
 	rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	rm -f libinjection.php php_libinjection.h libinjection_wrap.c
