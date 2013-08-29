@@ -59,7 +59,7 @@ enum lookup_type {
     LOOKUP_FINGERPRINT
 };
 
-typedef struct {
+struct libinjection_sqli_token {
 #ifdef SWIG
 %immutable;
 #endif
@@ -81,8 +81,9 @@ typedef struct {
     int  count;
 
     char val[LIBINJECTION_SQLI_TOKEN_SIZE];
-}  stoken_t;
+};
 
+typedef struct libinjection_sqli_token stoken_t;
 
 /**
  * Pointer to function, takes cstr input,
@@ -91,7 +92,7 @@ typedef struct {
 struct libinjection_sqli_state;
 typedef char (*ptr_lookup_fn)(struct libinjection_sqli_state*, int lookuptype, const char* word, size_t len);
 
-typedef struct libinjection_sqli_state {
+struct libinjection_sqli_state {
 #ifdef SWIG
 %immutable;
 #endif
@@ -189,7 +190,9 @@ typedef struct libinjection_sqli_state {
      */
     int stats_tokens;
 
-} sfilter;
+};
+
+typedef struct libinjection_sqli_state sfilter;
 
 /**
  *
