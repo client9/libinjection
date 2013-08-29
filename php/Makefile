@@ -42,4 +42,4 @@ clean:
 	rm -f *~ *.o *.so
 	rm -f words.php
 	rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h
-	rm -f libinjection.php php_libinjection.h libinjection_wrap.c
+	rm -f libinjection.php php_libinjection.h

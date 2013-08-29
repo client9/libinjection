@@ -2,6 +2,7 @@ libinjection documentation
 ==========================
 
 * C API (TBD)
+* [php api](/doc-sqli-php)
 * [python api](/doc-sqli-python)
 * lua api (TBD, but mostly identical to python)
 * [SQLi false positives](/doc-sqli-false-positive)
