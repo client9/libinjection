@@ -15,9 +15,8 @@ php: libinjection_wrap.c copy words.php
 words.php: Makefile json2php.py ../c/sqlparse_data.json
 	./json2php.py < ../c/sqlparse_data.json > words.php
 
-test-unit: copy words.php
-	python setup.py build_ext --inplace
-	PYTHON_PATH='.' nosetests -v --with-xunit test_driver.py
+test-unit: php
+	phpunit -v testdriver.php
 
 test: test-unit
 .PHONY: test
