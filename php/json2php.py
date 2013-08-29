@@ -33,7 +33,7 @@ function lookup($state, $stype, $keyword) {
 
     print '$words = array('
     for k in sorted(words.keys()):
-        print "'{0}': '{1}',".format(k, words[k])
+        print "'{0}' => '{1}',".format(k, words[k])
     print ');\n'
 
 
