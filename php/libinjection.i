@@ -17,5 +17,8 @@ struct libinjection_sqli_token * libinjection_sqli_state_tokenvec_geti(sfilter* 
 
 
 struct libinjection_sqli_token * libinjection_sqli_state_tokenvec_geti(sfilter* sf, int i) {
+    if (i < 0 || i > LIBINJECTION_SQLI_BUFFER_SZ) {
+        return null;
+    }
     return &(sf->tokenvec[i]);
 }
