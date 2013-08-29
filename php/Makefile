@@ -35,7 +35,7 @@ libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection_sqli_data.h
 
 libinjection_wrap.c: libinjection.i libinjection.h
-	swig -php -Wextra libinjection.i
+	swig -noproxy -php -Wextra libinjection.i
 
 copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 
