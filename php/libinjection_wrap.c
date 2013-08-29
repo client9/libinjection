@@ -1079,6 +1079,10 @@ extern "C" {
 
 #include "libinjection.h"
 
+struct libinjection_sqli_token * libinjection_sqli_state_tokenvec_geti(sfilter* sf, int i) {
+    return &(sf->tokenvec[i]);
+}
+
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
@@ -2139,6 +2143,38 @@ fail:
 }
 
 
+ZEND_NAMED_FUNCTION(_wrap_libinjection_sqli_state_tokenvec_geti) {
+  sfilter *arg1 = (sfilter *) 0 ;
+  int arg2 ;
+  zval **args[2];
+  struct libinjection_sqli_token *result = 0 ;
+  
+  SWIG_ResetError();
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  {
+    if(SWIG_ConvertPtr(*args[0], (void **) &arg1, SWIGTYPE_p_libinjection_sqli_state, 0) < 0) {
+      SWIG_PHP_Error(E_ERROR, "Type error in argument 1 of libinjection_sqli_state_tokenvec_geti. Expected SWIGTYPE_p_libinjection_sqli_state");
+    }
+  }
+  
+  /*@SWIG:/usr/share/swig2.0/php/utils.i,7,CONVERT_INT_IN@*/
+  convert_to_long_ex(args[1]);
+  arg2 = (int) Z_LVAL_PP(args[1]);
+  /*@SWIG@*/;
+  
+  result = (struct libinjection_sqli_token *)libinjection_sqli_state_tokenvec_geti(arg1,arg2);
+  
+  SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_libinjection_sqli_token, 0);
+  
+  return;
+fail:
+  SWIG_FAIL();
+}
+
+
 static ZEND_RSRC_DTOR_FUNC(_wrap_destroy_int) {
   /* No destructor for simple type _int */
   efree(rsrc->ptr);
@@ -2208,6 +2244,7 @@ static zend_function_entry libinjection_functions[] = {
  SWIG_ZEND_NAMED_FE(libinjection_sqli_check_fingerprint,_wrap_libinjection_sqli_check_fingerprint,NULL)
  SWIG_ZEND_NAMED_FE(libinjection_sqli_blacklist,_wrap_libinjection_sqli_blacklist,NULL)
  SWIG_ZEND_NAMED_FE(libinjection_sqli_not_whitelist,_wrap_libinjection_sqli_not_whitelist,NULL)
+ SWIG_ZEND_NAMED_FE(libinjection_sqli_state_tokenvec_geti,_wrap_libinjection_sqli_state_tokenvec_geti,NULL)
  SWIG_ZEND_NAMED_FE(swig_libinjection_alter_newobject,_wrap_swig_libinjection_alter_newobject,NULL)
  SWIG_ZEND_NAMED_FE(swig_libinjection_get_newobject,_wrap_swig_libinjection_get_newobject,NULL)
 {NULL, NULL, NULL}

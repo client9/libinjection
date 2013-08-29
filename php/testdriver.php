@@ -75,12 +75,13 @@ class LibinjectionTestTokens extends PHPUnit_Framework_TestCase
         $actual = '';
         if ($flag == 'tokens') {
             while (libinjection_sqli_tokenize($sqlistate)) {
-                $actual .= $this->print_token(libinjection_sqli_state_current_get($sqlistate)) + '\n';
+                $actual .= $this->print_token(libinjection_sqli_state_current_get($sqlistate)) . "\n";
             }
         } else if ($flag == 'folding') {
             $fingerprint = libinjection_sqli_fingerprint($sqlistate, $sqli_flags);
             for ($i  = 0; $i < strlen($fingerprint); $i++) {
-                $actual .= $this->print_token(libinjection_sqli_state_tokenvec_get($sqlistate)[$i]) . "\n";
+                $r = libinjection_sqli_state_tokenvec_geti($sqlistate, $i);
+                $actual .= $this->print_token($r) . "\n";
             }
         } else if ($flag == 'fingerprints') {
             $ok = libinjection_is_sqli($sqlistate);
@@ -90,13 +91,13 @@ class LibinjectionTestTokens extends PHPUnit_Framework_TestCase
         } else {
            $this->assert(False);
         }
-
+        $actual = trim($actual);
         $this->assertEquals($actual, $data[2]);
     }
 
     public function print_token($tok) {
         $tt = libinjection_sqli_token_type_get($tok);
-        $out .= '';
+        $out = '';
         $out .= $tt;
         $out .= ' ';
         if ($tt == 's') {
@@ -108,6 +109,7 @@ class LibinjectionTestTokens extends PHPUnit_Framework_TestCase
             } else if ($vc == 2) {
                 $out .= '@@';
             }
+            $out .= $this->print_token_string($tok);
         } else {
             $out .= libinjection_sqli_token_val_get($tok);
         }
