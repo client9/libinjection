@@ -8,6 +8,7 @@ PAGES = \
 	doc-xss-references.html \
 	doc-libinjection-references.html \
 	doc-sqli-python.html \
+	doc-sqli-php.html \
 	doc.html
 
 %.html: %.md base.html
