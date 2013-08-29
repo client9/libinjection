@@ -1,0 +1,42 @@
+
+#
+#
+all: libinjection_wrap.c
+
+#python: copy libinjection/libinjection_wrap.c
+#	rm -f libinjection.py libinjection.pyc
+#	python setup.py --verbose build --force
+#	sudo python setup.py --verbose install
+
+
+words.php: Makefile json2python.py ../c/sqlparse_data.json
+	./json2python.py < ../c/sqlparse_data.json > words.py
+
+test-unit: copy words.py
+	python setup.py build_ext --inplace
+	PYTHON_PATH='.' nosetests -v --with-xunit test_driver.py
+
+test: test-unit
+.PHONY: test
+
+speed:
+	./speedtest.py
+
+libinjection.h: ../c/libinjection.h
+	cp ../c/libinjection.h libinjection.h
+
+libinjection_sqli.c: ../c/libinjection_sqli.c
+	cp ../c/libinjection_sqli.c libinjection_sqli.c
+
+libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
+	cp ../c/libinjection_sqli_data.h libinjection_sqli_data.h
+
+libinjection_wrap.c: libinjection.i libinjection.h
+	swig -php -Wextra libinjection.i
+
+copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
+
+clean:
+	rm -f *~
+	rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h
+	rm -f libinjection.php php_libinjection.h libinjection_wrap.c
