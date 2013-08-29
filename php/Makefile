@@ -9,10 +9,10 @@ all: libinjection_wrap.c
 #	sudo python setup.py --verbose install
 
 
-words.php: Makefile json2python.py ../c/sqlparse_data.json
-	./json2python.py < ../c/sqlparse_data.json > words.py
+words.php: Makefile json2php.py ../c/sqlparse_data.json
+	./json2php.py < ../c/sqlparse_data.json > words.php
 
-test-unit: copy words.py
+test-unit: copy words.php
 	python setup.py build_ext --inplace
 	PYTHON_PATH='.' nosetests -v --with-xunit test_driver.py
 
@@ -38,5 +38,6 @@ copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 
 clean:
 	rm -f *~
+	rm -f words.php
 	rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	rm -f libinjection.php php_libinjection.h libinjection_wrap.c
