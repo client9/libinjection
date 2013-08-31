@@ -80,7 +80,7 @@ class LibinjectionTestTokens extends PHPUnit_Framework_TestCase
         } else if ($flag == 'folding') {
             $fingerprint = libinjection_sqli_fingerprint($sqlistate, $sqli_flags);
             for ($i  = 0; $i < strlen($fingerprint); $i++) {
-                $r = libinjection_sqli_state_tokenvec_geti($sqlistate, $i);
+                $r = libinjection_sqli_get_token($sqlistate, $i);
                 $actual .= $this->print_token($r) . "\n";
             }
         } else if ($flag == 'fingerprints') {
