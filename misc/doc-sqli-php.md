@@ -95,11 +95,11 @@ class libinjection {
   }
   function is_sqli($arg) {
      libinjection_sqli_init($this->_cPtr, $arg, 0);
-     $issqli = libinjection_is_sqli($ss);
+     $issqli = libinjection_is_sqli($this->_cPtr);
 
      $fingerprint = '';
      if ($sqli == 1) {
-         $fingerprint = libinjection_sqli_state_fingerprint_get($x);
+         $fingerprint = libinjection_sqli_state_fingerprint_get($this->_cPtr);
      }
      return $fingerprint;
   }
