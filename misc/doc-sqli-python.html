@@ -55,7 +55,7 @@ python setup.py install
 </pre></div>
 
 <h2>
-<a name="warning" class="anchor" href="#warning"><span class="octicon octicon-link"></span></a>warning</h2>
+<a name="warning" class="anchor" href="#warning"><span class="octicon octicon-link"></span></a>Warning</h2>
 
 <p>This is probably a bug, but for now, the input string must not change
 or get destroyed between the <code>sqli_init</code> (or <code>sqli_reset</code>) call and when
@@ -72,6 +72,32 @@ having to make an internal copy of the string, which would slow things down.</p>
 <span class="n">astr</span> <span class="o">=</span> <span class="bp">None</span>
 
 <span class="n">is_sqli</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+
+<h2>
+<a name="data-structures" class="anchor" href="#data-structures"><span class="octicon octicon-link"></span></a>Data Structures</h2>
+
+<p>The fields in the <code>libinjection_sqli_token</code> and <code>libininjection_sqli_state</code>
+can be accessed in a natural way similar to a python class fields:</p>
+
+<div class="highlight"><pre>
+<span class="n">s</span> <span class="o">=</span> <span class="n">sqli_state</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">fingerprint</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">sqli_token</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">val</span>
+</pre></div>
+
+<p>etc.  There is one exception.  The static C array of
+<code>libinjection_sqli_state.tokenvec</code> can be accessed used the function
+<code>libinjection_sqli_get_token</code> which takes a state object and a index, and returns a <code>struct libinjection_sqli_token*</code> or a <code>null</code> if out of range.</p>
+
+<p>This was done since SWIG seems to have issues with static or fixed
+sized arrays in structures (or more likely I don't know how to use
+SWIG).   Using the following function simplifies generation of API:</p>
+
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">libinjection_sqli_token</span><span class="o">*</span>
+<span class="nf">libinjection_sqli_get_token</span><span class="p">(</span><span class="k">struct</span> <span class="n">libinjection_sqli_state</span><span class="o">*</span><span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
 </pre></div>
 
 <h2>

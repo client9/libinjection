@@ -55,7 +55,7 @@ is_sqli(s)
 ```
 
 
-warning
+Warning
 ----------------------------
 
 This is probably a bug, but for now, the input string must not change
@@ -75,6 +75,35 @@ astr = None
 
 is_sqli(s)
 ```
+
+Data Structures
+----------------------------
+
+The fields in the `libinjection_sqli_token` and `libininjection_sqli_state`
+can be accessed in a natural way similar to a python class fields:
+
+```python
+
+s = sqli_state()
+s.fingerprint
+
+s = sqli_token()
+s.val
+```
+
+etc.  There is one exception.  The static C array of
+`libinjection_sqli_state.tokenvec` can be accessed used the function
+`libinjection_sqli_get_token` which takes a state object and a index, and returns a `struct libinjection_sqli_token*` or a `null` if out of range.
+
+This was done since SWIG seems to have issues with static or fixed
+sized arrays in structures (or more likely I don't know how to use
+SWIG).   Using the following function simplifies generation of API:
+
+```c
+struct libinjection_sqli_token*
+libinjection_sqli_get_token(struct libinjection_sqli_state*, int i);
+```
+
 
 Advanced Callbacks
 ----------------------------
