@@ -105,11 +105,11 @@ class libinjection {
   }
 };
 
-libinject = new libinjection();
+$check = new libinjection();
 
-$fingerprint = libinjection.is_sqli("1 union select 2 --");
+$fingerprint = $check->is_sqli("1 union select 2 --");
 if ($fingerprint) {
-  // do sometjing
+  // it's sqli, do something
 }
 ```
 
