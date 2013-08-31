@@ -93,7 +93,7 @@ def runtest(testname, flag, sqli_flags):
     elif flag == 'folding':
         sqli_fingerprint(sql_state, sqli_flags)
         for i in range(len(sql_state.fingerprint)):
-            actual += print_token(sql_state.tokenvec[i]) + '\n';
+            actual += print_token(sqli_get_token(sql_state, i)) + '\n';
     elif flag == 'fingerprints':
         ok = is_sqli(sql_state)
         if ok:

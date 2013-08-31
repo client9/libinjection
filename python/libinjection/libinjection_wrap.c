@@ -3441,7 +3441,7 @@ SwigPyBuiltin_SetMetaType (PyTypeObject *type, PyTypeObject *metatype)
 #define SWIGTYPE_p_char swig_types[1]
 #define SWIGTYPE_p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char swig_types[2]
 #define SWIGTYPE_p_libinjection_sqli_state swig_types[3]
-#define SWIGTYPE_p_stoken_t swig_types[4]
+#define SWIGTYPE_p_libinjection_sqli_token swig_types[4]
 #define SWIGTYPE_p_void swig_types[5]
 static swig_type_info *swig_types[7];
 static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
@@ -3583,82 +3583,6 @@ SWIGINTERNINLINE PyObject *
 SWIG_From_size_t  (size_t value)
 {    
   return SWIG_From_unsigned_SS_long  ((unsigned long)(value));
-}
-
-
-SWIGINTERN int
-SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
-{
-#if PY_VERSION_HEX>=0x03000000
-  if (PyUnicode_Check(obj))
-#else  
-  if (PyString_Check(obj))
-#endif
-  {
-    char *cstr; Py_ssize_t len;
-#if PY_VERSION_HEX>=0x03000000
-    if (!alloc && cptr) {
-        /* We can't allow converting without allocation, since the internal
-           representation of string in Python 3 is UCS-2/UCS-4 but we require
-           a UTF-8 representation.
-           TODO(bhy) More detailed explanation */
-        return SWIG_RuntimeError;
-    }
-    obj = PyUnicode_AsUTF8String(obj);
-    PyBytes_AsStringAndSize(obj, &cstr, &len);
-    if(alloc) *alloc = SWIG_NEWOBJ;
-#else
-    PyString_AsStringAndSize(obj, &cstr, &len);
-#endif
-    if (cptr) {
-      if (alloc) {
-	/* 
-	   In python the user should not be able to modify the inner
-	   string representation. To warranty that, if you define
-	   SWIG_PYTHON_SAFE_CSTRINGS, a new/copy of the python string
-	   buffer is always returned.
-
-	   The default behavior is just to return the pointer value,
-	   so, be careful.
-	*/ 
-#if defined(SWIG_PYTHON_SAFE_CSTRINGS)
-	if (*alloc != SWIG_OLDOBJ) 
-#else
-	if (*alloc == SWIG_NEWOBJ) 
-#endif
-	  {
-	    *cptr = (char *)memcpy((char *)malloc((len + 1)*sizeof(char)), cstr, sizeof(char)*(len + 1));
-	    *alloc = SWIG_NEWOBJ;
-	  }
-	else {
-	  *cptr = cstr;
-	  *alloc = SWIG_OLDOBJ;
-	}
-      } else {
-        #if PY_VERSION_HEX>=0x03000000
-        assert(0); /* Should never reach here in Python 3 */
-        #endif
-	*cptr = SWIG_Python_str_AsChar(obj);
-      }
-    }
-    if (psize) *psize = len + 1;
-#if PY_VERSION_HEX>=0x03000000
-    Py_XDECREF(obj);
-#endif
-    return SWIG_OK;
-  } else {
-    swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
-    if (pchar_descriptor) {
-      void* vptr = 0;
-      if (SWIG_ConvertPtr(obj, &vptr, pchar_descriptor, 0) == SWIG_OK) {
-	if (cptr) *cptr = (char *) vptr;
-	if (psize) *psize = vptr ? (strlen((char *)vptr) + 1) : 0;
-	if (alloc) *alloc = SWIG_OLDOBJ;
-	return SWIG_OK;
-      }
-    }
-  }
-  return SWIG_TypeError;
 }
 
 
@@ -3807,6 +3731,82 @@ SWIG_AsVal_int (PyObject * obj, int *val)
 }
 
 
+SWIGINTERN int
+SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
+{
+#if PY_VERSION_HEX>=0x03000000
+  if (PyUnicode_Check(obj))
+#else  
+  if (PyString_Check(obj))
+#endif
+  {
+    char *cstr; Py_ssize_t len;
+#if PY_VERSION_HEX>=0x03000000
+    if (!alloc && cptr) {
+        /* We can't allow converting without allocation, since the internal
+           representation of string in Python 3 is UCS-2/UCS-4 but we require
+           a UTF-8 representation.
+           TODO(bhy) More detailed explanation */
+        return SWIG_RuntimeError;
+    }
+    obj = PyUnicode_AsUTF8String(obj);
+    PyBytes_AsStringAndSize(obj, &cstr, &len);
+    if(alloc) *alloc = SWIG_NEWOBJ;
+#else
+    PyString_AsStringAndSize(obj, &cstr, &len);
+#endif
+    if (cptr) {
+      if (alloc) {
+	/* 
+	   In python the user should not be able to modify the inner
+	   string representation. To warranty that, if you define
+	   SWIG_PYTHON_SAFE_CSTRINGS, a new/copy of the python string
+	   buffer is always returned.
+
+	   The default behavior is just to return the pointer value,
+	   so, be careful.
+	*/ 
+#if defined(SWIG_PYTHON_SAFE_CSTRINGS)
+	if (*alloc != SWIG_OLDOBJ) 
+#else
+	if (*alloc == SWIG_NEWOBJ) 
+#endif
+	  {
+	    *cptr = (char *)memcpy((char *)malloc((len + 1)*sizeof(char)), cstr, sizeof(char)*(len + 1));
+	    *alloc = SWIG_NEWOBJ;
+	  }
+	else {
+	  *cptr = cstr;
+	  *alloc = SWIG_OLDOBJ;
+	}
+      } else {
+        #if PY_VERSION_HEX>=0x03000000
+        assert(0); /* Should never reach here in Python 3 */
+        #endif
+	*cptr = SWIG_Python_str_AsChar(obj);
+      }
+    }
+    if (psize) *psize = len + 1;
+#if PY_VERSION_HEX>=0x03000000
+    Py_XDECREF(obj);
+#endif
+    return SWIG_OK;
+  } else {
+    swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
+    if (pchar_descriptor) {
+      void* vptr = 0;
+      if (SWIG_ConvertPtr(obj, &vptr, pchar_descriptor, 0) == SWIG_OK) {
+	if (cptr) *cptr = (char *) vptr;
+	if (psize) *psize = vptr ? (strlen((char *)vptr) + 1) : 0;
+	if (alloc) *alloc = SWIG_OLDOBJ;
+	return SWIG_OK;
+      }
+    }
+  }
+  return SWIG_TypeError;
+}
+
+
 
 
 
@@ -3881,19 +3881,19 @@ SWIG_AsVal_size_t (PyObject * obj, size_t *val)
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGINTERN PyObject *_wrap_stoken_t_type_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_sqli_token_type_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *arg1 = (stoken_t *) 0 ;
+  struct libinjection_sqli_token *arg1 = (struct libinjection_sqli_token *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   char result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_stoken_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "stoken_t_type_get" "', argument " "1"" of type '" "stoken_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_token_type_get" "', argument " "1"" of type '" "struct libinjection_sqli_token *""'"); 
   }
-  arg1 = (stoken_t *)(argp1);
+  arg1 = (struct libinjection_sqli_token *)(argp1);
   result = (char) ((arg1)->type);
   resultobj = SWIG_From_char((char)(result));
   return resultobj;
@@ -3902,19 +3902,19 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_stoken_t_str_open_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_sqli_token_str_open_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *arg1 = (stoken_t *) 0 ;
+  struct libinjection_sqli_token *arg1 = (struct libinjection_sqli_token *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   char result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_stoken_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "stoken_t_str_open_get" "', argument " "1"" of type '" "stoken_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_token_str_open_get" "', argument " "1"" of type '" "struct libinjection_sqli_token *""'"); 
   }
-  arg1 = (stoken_t *)(argp1);
+  arg1 = (struct libinjection_sqli_token *)(argp1);
   result = (char) ((arg1)->str_open);
   resultobj = SWIG_From_char((char)(result));
   return resultobj;
@@ -3923,19 +3923,19 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_stoken_t_str_close_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_sqli_token_str_close_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *arg1 = (stoken_t *) 0 ;
+  struct libinjection_sqli_token *arg1 = (struct libinjection_sqli_token *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   char result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_stoken_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "stoken_t_str_close_get" "', argument " "1"" of type '" "stoken_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_token_str_close_get" "', argument " "1"" of type '" "struct libinjection_sqli_token *""'"); 
   }
-  arg1 = (stoken_t *)(argp1);
+  arg1 = (struct libinjection_sqli_token *)(argp1);
   result = (char) ((arg1)->str_close);
   resultobj = SWIG_From_char((char)(result));
   return resultobj;
@@ -3944,19 +3944,19 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_stoken_t_pos_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_sqli_token_pos_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *arg1 = (stoken_t *) 0 ;
+  struct libinjection_sqli_token *arg1 = (struct libinjection_sqli_token *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   size_t result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_stoken_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "stoken_t_pos_get" "', argument " "1"" of type '" "stoken_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_token_pos_get" "', argument " "1"" of type '" "struct libinjection_sqli_token *""'"); 
   }
-  arg1 = (stoken_t *)(argp1);
+  arg1 = (struct libinjection_sqli_token *)(argp1);
   result =  ((arg1)->pos);
   resultobj = SWIG_From_size_t((size_t)(result));
   return resultobj;
@@ -3965,19 +3965,19 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_stoken_t_len_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_sqli_token_len_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *arg1 = (stoken_t *) 0 ;
+  struct libinjection_sqli_token *arg1 = (struct libinjection_sqli_token *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   size_t result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_stoken_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "stoken_t_len_get" "', argument " "1"" of type '" "stoken_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_token_len_get" "', argument " "1"" of type '" "struct libinjection_sqli_token *""'"); 
   }
-  arg1 = (stoken_t *)(argp1);
+  arg1 = (struct libinjection_sqli_token *)(argp1);
   result =  ((arg1)->len);
   resultobj = SWIG_From_size_t((size_t)(result));
   return resultobj;
@@ -3986,19 +3986,19 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_stoken_t_count_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_sqli_token_count_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *arg1 = (stoken_t *) 0 ;
+  struct libinjection_sqli_token *arg1 = (struct libinjection_sqli_token *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_stoken_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "stoken_t_count_get" "', argument " "1"" of type '" "stoken_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_token_count_get" "', argument " "1"" of type '" "struct libinjection_sqli_token *""'"); 
   }
-  arg1 = (stoken_t *)(argp1);
+  arg1 = (struct libinjection_sqli_token *)(argp1);
   result = (int) ((arg1)->count);
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
@@ -4007,19 +4007,19 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_stoken_t_val_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_sqli_token_val_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *arg1 = (stoken_t *) 0 ;
+  struct libinjection_sqli_token *arg1 = (struct libinjection_sqli_token *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   char *result = 0 ;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_stoken_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "stoken_t_val_get" "', argument " "1"" of type '" "stoken_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_token_val_get" "', argument " "1"" of type '" "struct libinjection_sqli_token *""'"); 
   }
-  arg1 = (stoken_t *)(argp1);
+  arg1 = (struct libinjection_sqli_token *)(argp1);
   result = (char *)(char *) ((arg1)->val);
   {
     size_t size = 32;
@@ -4034,31 +4034,31 @@ fail:
 }
 
 
-SWIGINTERN int _wrap_new_stoken_t(PyObject *self, PyObject *args) {
+SWIGINTERN int _wrap_new_sqli_token(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *result = 0 ;
+  struct libinjection_sqli_token *result = 0 ;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  result = (stoken_t *)calloc(1, sizeof(stoken_t));
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_stoken_t, SWIG_BUILTIN_INIT |  0 );
+  result = (struct libinjection_sqli_token *)calloc(1, sizeof(struct libinjection_sqli_token));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_libinjection_sqli_token, SWIG_BUILTIN_INIT |  0 );
   return resultobj == Py_None ? -1 : 0;
 fail:
   return -1;
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_stoken_t(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_sqli_token(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  stoken_t *arg1 = (stoken_t *) 0 ;
+  struct libinjection_sqli_token *arg1 = (struct libinjection_sqli_token *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_stoken_t, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_token, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_stoken_t" "', argument " "1"" of type '" "stoken_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_sqli_token" "', argument " "1"" of type '" "struct libinjection_sqli_token *""'"); 
   }
-  arg1 = (stoken_t *)(argp1);
+  arg1 = (struct libinjection_sqli_token *)(argp1);
   free((char *) arg1);
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4193,40 +4193,12 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_sqli_state_tokenvec_get(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  stoken_t *result = 0 ;
-  
-  if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
-  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_state_tokenvec_get" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
-  }
-  arg1 = (struct libinjection_sqli_state *)(argp1);
-  result = (stoken_t *)(stoken_t *) ((arg1)->tokenvec);
-  {
-    int i;
-    resultobj = PyList_New(8);
-    for (i = 0; i < 8; i++) {
-      PyObject *o =  SWIG_NewPointerObj((void*)(& result[i]), SWIGTYPE_p_stoken_t,0);
-      PyList_SetItem(resultobj,i,o);
-    }
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_sqli_state_current_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  stoken_t *result = 0 ;
+  struct libinjection_sqli_token *result = 0 ;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_fail;
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
@@ -4234,8 +4206,8 @@ SWIGINTERN PyObject *_wrap_sqli_state_current_get(PyObject *self, PyObject *args
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_state_current_get" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
   arg1 = (struct libinjection_sqli_state *)(argp1);
-  result = (stoken_t *) ((arg1)->current);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_stoken_t, 0 |  0 );
+  result = (struct libinjection_sqli_token *) ((arg1)->current);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -4449,9 +4421,40 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_sqli_get_token(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  struct libinjection_sqli_token *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:sqli_get_token",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_get_token" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
+  }
+  arg1 = (struct libinjection_sqli_state *)(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sqli_get_token" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  result = (struct libinjection_sqli_token *)libinjection_sqli_get_token(arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_libinjection_sqli_token, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_sqli_init(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   char *arg2 = (char *) 0 ;
   size_t arg3 ;
   int arg4 ;
@@ -4470,9 +4473,9 @@ SWIGINTERN PyObject *_wrap_sqli_init(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"OOO:sqli_init",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_init" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_init" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, &size2, &alloc2);
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "sqli_init" "', argument " "2"" of type '" "char const *""'");
@@ -4496,7 +4499,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_is_sqli(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -4505,9 +4508,9 @@ SWIGINTERN PyObject *_wrap_is_sqli(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"O:is_sqli",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "is_sqli" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "is_sqli" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   result = (int)libinjection_is_sqli(arg1);
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
@@ -4518,7 +4521,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_callback(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   ptr_lookup_fn arg2 = (ptr_lookup_fn) 0 ;
   void *arg3 = (void *) 0 ;
   void *argp1 = 0 ;
@@ -4529,9 +4532,9 @@ SWIGINTERN PyObject *_wrap_sqli_callback(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"OO:sqli_callback",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_callback" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_callback" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   {
     if (obj1 == Py_None) {
       arg2 = NULL;
@@ -4551,7 +4554,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_reset(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   int arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -4563,9 +4566,9 @@ SWIGINTERN PyObject *_wrap_sqli_reset(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"OO:sqli_reset",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_reset" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_reset" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   ecode2 = SWIG_AsVal_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sqli_reset" "', argument " "2"" of type '" "int""'");
@@ -4581,7 +4584,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_fingerprint(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   int arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -4594,9 +4597,9 @@ SWIGINTERN PyObject *_wrap_sqli_fingerprint(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"OO:sqli_fingerprint",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_fingerprint" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_fingerprint" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   ecode2 = SWIG_AsVal_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sqli_fingerprint" "', argument " "2"" of type '" "int""'");
@@ -4612,7 +4615,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_lookup_word(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   int arg2 ;
   char *arg3 = (char *) 0 ;
   size_t arg4 ;
@@ -4632,9 +4635,9 @@ SWIGINTERN PyObject *_wrap_sqli_lookup_word(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"OOO:sqli_lookup_word",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_lookup_word" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_lookup_word" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   ecode2 = SWIG_AsVal_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sqli_lookup_word" "', argument " "2"" of type '" "int""'");
@@ -4658,7 +4661,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_tokenize(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -4667,9 +4670,9 @@ SWIGINTERN PyObject *_wrap_sqli_tokenize(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"O:sqli_tokenize",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_tokenize" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_tokenize" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   result = (int)libinjection_sqli_tokenize(arg1);
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
@@ -4680,7 +4683,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_fold(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -4689,9 +4692,9 @@ SWIGINTERN PyObject *_wrap_sqli_fold(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"O:sqli_fold",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_fold" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_fold" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   result = (int)libinjection_sqli_fold(arg1);
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
@@ -4702,7 +4705,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_check_fingerprint(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -4711,9 +4714,9 @@ SWIGINTERN PyObject *_wrap_sqli_check_fingerprint(PyObject *self, PyObject *args
   if (!PyArg_ParseTuple(args,(char *)"O:sqli_check_fingerprint",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_check_fingerprint" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_check_fingerprint" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   result = (int)libinjection_sqli_check_fingerprint(arg1);
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
@@ -4724,7 +4727,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_blacklist(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -4733,9 +4736,9 @@ SWIGINTERN PyObject *_wrap_sqli_blacklist(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"O:sqli_blacklist",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_blacklist" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_blacklist" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   result = (int)libinjection_sqli_blacklist(arg1);
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
@@ -4746,7 +4749,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_sqli_not_whitelist(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  sfilter *arg1 = (sfilter *) 0 ;
+  struct libinjection_sqli_state *arg1 = (struct libinjection_sqli_state *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -4755,9 +4758,9 @@ SWIGINTERN PyObject *_wrap_sqli_not_whitelist(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args,(char *)"O:sqli_not_whitelist",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_libinjection_sqli_state, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_not_whitelist" "', argument " "1"" of type '" "sfilter *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sqli_not_whitelist" "', argument " "1"" of type '" "struct libinjection_sqli_state *""'"); 
   }
-  arg1 = (sfilter *)(argp1);
+  arg1 = (struct libinjection_sqli_state *)(argp1);
   result = (int)libinjection_sqli_not_whitelist(arg1);
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
@@ -4768,6 +4771,7 @@ fail:
 
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
+	 { (char *)"sqli_get_token", _wrap_sqli_get_token, METH_VARARGS, NULL},
 	 { (char *)"sqli_init", _wrap_sqli_init, METH_VARARGS, NULL},
 	 { (char *)"is_sqli", _wrap_is_sqli, METH_VARARGS, NULL},
 	 { (char *)"sqli_callback", _wrap_sqli_callback, METH_VARARGS, NULL},
@@ -4782,34 +4786,34 @@ static PyMethodDef SwigMethods[] = {
 	 { NULL, NULL, 0, NULL }
 };
 
-SWIGPY_DESTRUCTOR_CLOSURE(_wrap_delete_stoken_t)
-static SwigPyGetSet stoken_t_len_getset = { _wrap_stoken_t_len_get, 0 };
-static SwigPyGetSet stoken_t_count_getset = { _wrap_stoken_t_count_get, 0 };
-static SwigPyGetSet stoken_t_type_getset = { _wrap_stoken_t_type_get, 0 };
-static SwigPyGetSet stoken_t_val_getset = { _wrap_stoken_t_val_get, 0 };
-static SwigPyGetSet stoken_t_str_close_getset = { _wrap_stoken_t_str_close_get, 0 };
-static SwigPyGetSet stoken_t_str_open_getset = { _wrap_stoken_t_str_open_get, 0 };
-static SwigPyGetSet stoken_t_pos_getset = { _wrap_stoken_t_pos_get, 0 };
-SWIGINTERN PyGetSetDef SwigPyBuiltin__stoken_t_getset[] = {
-    { (char*) "len", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"stoken_t.len", (void*) &stoken_t_len_getset }
+SWIGPY_DESTRUCTOR_CLOSURE(_wrap_delete_sqli_token)
+static SwigPyGetSet sqli_token_len_getset = { _wrap_sqli_token_len_get, 0 };
+static SwigPyGetSet sqli_token_count_getset = { _wrap_sqli_token_count_get, 0 };
+static SwigPyGetSet sqli_token_type_getset = { _wrap_sqli_token_type_get, 0 };
+static SwigPyGetSet sqli_token_val_getset = { _wrap_sqli_token_val_get, 0 };
+static SwigPyGetSet sqli_token_str_close_getset = { _wrap_sqli_token_str_close_get, 0 };
+static SwigPyGetSet sqli_token_str_open_getset = { _wrap_sqli_token_str_open_get, 0 };
+static SwigPyGetSet sqli_token_pos_getset = { _wrap_sqli_token_pos_get, 0 };
+SWIGINTERN PyGetSetDef SwigPyBuiltin__libinjection_sqli_token_getset[] = {
+    { (char*) "len", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_token.len", (void*) &sqli_token_len_getset }
 ,
-    { (char*) "count", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"stoken_t.count", (void*) &stoken_t_count_getset }
+    { (char*) "count", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_token.count", (void*) &sqli_token_count_getset }
 ,
-    { (char*) "type", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"stoken_t.type", (void*) &stoken_t_type_getset }
+    { (char*) "type", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_token.type", (void*) &sqli_token_type_getset }
 ,
-    { (char*) "val", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"stoken_t.val", (void*) &stoken_t_val_getset }
+    { (char*) "val", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_token.val", (void*) &sqli_token_val_getset }
 ,
-    { (char*) "str_close", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"stoken_t.str_close", (void*) &stoken_t_str_close_getset }
+    { (char*) "str_close", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_token.str_close", (void*) &sqli_token_str_close_getset }
 ,
-    { (char*) "str_open", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"stoken_t.str_open", (void*) &stoken_t_str_open_getset }
+    { (char*) "str_open", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_token.str_open", (void*) &sqli_token_str_open_getset }
 ,
-    { (char*) "pos", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"stoken_t.pos", (void*) &stoken_t_pos_getset }
+    { (char*) "pos", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_token.pos", (void*) &sqli_token_pos_getset }
 ,
     {NULL, NULL, NULL, NULL, NULL} /* Sentinel */
 };
 
 SWIGINTERN PyObject *
-SwigPyBuiltin__stoken_t_richcompare(PyObject *self, PyObject *other, int op) {
+SwigPyBuiltin__libinjection_sqli_token_richcompare(PyObject *self, PyObject *other, int op) {
   PyObject *result = NULL;
   PyObject *tuple = PyTuple_New(1);
   assert(tuple);
@@ -4827,11 +4831,11 @@ SwigPyBuiltin__stoken_t_richcompare(PyObject *self, PyObject *other, int op) {
   return result;
 }
 
-SWIGINTERN PyMethodDef SwigPyBuiltin__stoken_t_methods[] = {
+SWIGINTERN PyMethodDef SwigPyBuiltin__libinjection_sqli_token_methods[] = {
   { NULL, NULL, 0, NULL } /* Sentinel */
 };
 
-static PyHeapTypeObject SwigPyBuiltin__stoken_t_type = {
+static PyHeapTypeObject SwigPyBuiltin__libinjection_sqli_token_type = {
   {
 #if PY_VERSION_HEX >= 0x03000000
     PyVarObject_HEAD_INIT(NULL, 0)
@@ -4839,10 +4843,10 @@ static PyHeapTypeObject SwigPyBuiltin__stoken_t_type = {
     PyObject_HEAD_INIT(NULL)
     0,                                        /* ob_size */
 #endif
-    "stoken_t",                               /* tp_name */
+    "sqli_token",                             /* tp_name */
     sizeof(SwigPyObject),                     /* tp_basicsize */
     0,                                        /* tp_itemsize */
-    (destructor) _wrap_delete_stoken_t_closure, /* tp_dealloc */
+    (destructor) _wrap_delete_sqli_token_closure, /* tp_dealloc */
     (printfunc) 0,                            /* tp_print */
     (getattrfunc) 0,                          /* tp_getattr */
     (setattrfunc) 0,                          /* tp_setattr */
@@ -4852,36 +4856,36 @@ static PyHeapTypeObject SwigPyBuiltin__stoken_t_type = {
     (cmpfunc) 0,                              /* tp_compare */
 #endif
     (reprfunc) 0,                             /* tp_repr */
-    &SwigPyBuiltin__stoken_t_type.as_number,      /* tp_as_number */
-    &SwigPyBuiltin__stoken_t_type.as_sequence,    /* tp_as_sequence */
-    &SwigPyBuiltin__stoken_t_type.as_mapping,     /* tp_as_mapping */
+    &SwigPyBuiltin__libinjection_sqli_token_type.as_number,      /* tp_as_number */
+    &SwigPyBuiltin__libinjection_sqli_token_type.as_sequence,    /* tp_as_sequence */
+    &SwigPyBuiltin__libinjection_sqli_token_type.as_mapping,     /* tp_as_mapping */
     (hashfunc) 0,                             /* tp_hash */
     (ternaryfunc) 0,                          /* tp_call */
     (reprfunc) 0,                             /* tp_str */
     (getattrofunc) 0,                         /* tp_getattro */
     (setattrofunc) 0,                         /* tp_setattro */
-    &SwigPyBuiltin__stoken_t_type.as_buffer,      /* tp_as_buffer */
+    &SwigPyBuiltin__libinjection_sqli_token_type.as_buffer,      /* tp_as_buffer */
 #if PY_VERSION_HEX >= 0x03000000
     Py_TPFLAGS_DEFAULT|Py_TPFLAGS_BASETYPE,   /* tp_flags */
 #else
     Py_TPFLAGS_DEFAULT|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_CHECKTYPES, /* tp_flags */
 #endif
-    "::stoken_t",                             /* tp_doc */
+    "::libinjection_sqli_token",              /* tp_doc */
     (traverseproc) 0,                         /* tp_traverse */
     (inquiry) 0,                              /* tp_clear */
-    (richcmpfunc) SwigPyBuiltin__stoken_t_richcompare, /* feature:python:tp_richcompare */
+    (richcmpfunc) SwigPyBuiltin__libinjection_sqli_token_richcompare, /* feature:python:tp_richcompare */
     0,                                        /* tp_weaklistoffset */
     (getiterfunc) 0,                          /* tp_iter */
     (iternextfunc) 0,                         /* tp_iternext */
-    SwigPyBuiltin__stoken_t_methods,          /* tp_methods */
+    SwigPyBuiltin__libinjection_sqli_token_methods, /* tp_methods */
     0,                                        /* tp_members */
-    SwigPyBuiltin__stoken_t_getset,           /* tp_getset */
+    SwigPyBuiltin__libinjection_sqli_token_getset, /* tp_getset */
     0,                                        /* tp_base */
     0,                                        /* tp_dict */
     (descrgetfunc) 0,                         /* tp_descr_get */
     (descrsetfunc) 0,                         /* tp_descr_set */
     (size_t)(((char*)&((SwigPyObject *) 64L)->dict) - (char*) 64L), /* tp_dictoffset */
-    (initproc) _wrap_new_stoken_t,            /* tp_init */
+    (initproc) _wrap_new_sqli_token,          /* tp_init */
     (allocfunc) 0,                            /* tp_alloc */
     (newfunc) 0,                              /* tp_new */
     (freefunc) 0,                             /* tp_free */
@@ -4992,14 +4996,13 @@ static PyHeapTypeObject SwigPyBuiltin__stoken_t_type = {
     (PyObject*) 0,                            /* ht_slots */
 };
 
-SWIGINTERN SwigPyClientData SwigPyBuiltin__stoken_t_clientdata = {0, 0, 0, 0, 0, 0, (PyTypeObject *)&SwigPyBuiltin__stoken_t_type};
+SWIGINTERN SwigPyClientData SwigPyBuiltin__libinjection_sqli_token_clientdata = {0, 0, 0, 0, 0, 0, (PyTypeObject *)&SwigPyBuiltin__libinjection_sqli_token_type};
 
 SWIGPY_DESTRUCTOR_CLOSURE(_wrap_delete_sqli_state)
 static SwigPyGetSet sqli_state_stats_comment_hash_getset = { _wrap_sqli_state_stats_comment_hash_get, 0 };
 static SwigPyGetSet sqli_state_pos_getset = { _wrap_sqli_state_pos_get, 0 };
 static SwigPyGetSet sqli_state_stats_folds_getset = { _wrap_sqli_state_stats_folds_get, 0 };
 static SwigPyGetSet sqli_state_stats_tokens_getset = { _wrap_sqli_state_stats_tokens_get, 0 };
-static SwigPyGetSet sqli_state_tokenvec_getset = { _wrap_sqli_state_tokenvec_get, 0 };
 static SwigPyGetSet sqli_state_lookup_getset = { _wrap_sqli_state_lookup_get, 0 };
 static SwigPyGetSet sqli_state_fingerprint_getset = { _wrap_sqli_state_fingerprint_get, 0 };
 static SwigPyGetSet sqli_state_flags_getset = { _wrap_sqli_state_flags_get, 0 };
@@ -5019,8 +5022,6 @@ SWIGINTERN PyGetSetDef SwigPyBuiltin__libinjection_sqli_state_getset[] = {
     { (char*) "stats_folds", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.stats_folds", (void*) &sqli_state_stats_folds_getset }
 ,
     { (char*) "stats_tokens", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.stats_tokens", (void*) &sqli_state_stats_tokens_getset }
-,
-    { (char*) "tokenvec", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.tokenvec", (void*) &sqli_state_tokenvec_getset }
 ,
     { (char*) "lookup", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char*)"libinjection_sqli_state.lookup", (void*) &sqli_state_lookup_getset }
 ,
@@ -5240,7 +5241,7 @@ static swig_type_info _swigt__p_SwigPyObject = {"_p_SwigPyObject", "SwigPyObject
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char = {"_p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char", "ptr_lookup_fn|char (*)(struct libinjection_sqli_state *,int,char const *,size_t)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_libinjection_sqli_state = {"_p_libinjection_sqli_state", "sfilter *|struct libinjection_sqli_state *|libinjection_sqli_state *", 0, 0, (void*)&SwigPyBuiltin__libinjection_sqli_state_clientdata, 0};
-static swig_type_info _swigt__p_stoken_t = {"_p_stoken_t", "stoken_t *", 0, 0, (void*)&SwigPyBuiltin__stoken_t_clientdata, 0};
+static swig_type_info _swigt__p_libinjection_sqli_token = {"_p_libinjection_sqli_token", "stoken_t *|struct libinjection_sqli_token *|libinjection_sqli_token *", 0, 0, (void*)&SwigPyBuiltin__libinjection_sqli_token_clientdata, 0};
 static swig_type_info _swigt__p_void = {"_p_void", "void *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -5248,7 +5249,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_char,
   &_swigt__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char,
   &_swigt__p_libinjection_sqli_state,
-  &_swigt__p_stoken_t,
+  &_swigt__p_libinjection_sqli_token,
   &_swigt__p_void,
 };
 
@@ -5256,7 +5257,7 @@ static swig_cast_info _swigc__p_SwigPyObject[] = {  {&_swigt__p_SwigPyObject, 0,
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char[] = {  {&_swigt__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_libinjection_sqli_state[] = {  {&_swigt__p_libinjection_sqli_state, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_stoken_t[] = {  {&_swigt__p_stoken_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_libinjection_sqli_token[] = {  {&_swigt__p_libinjection_sqli_token, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_void[] = {  {&_swigt__p_void, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -5264,7 +5265,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_char,
   _swigc__p_f_p_struct_libinjection_sqli_state_int_p_q_const__char_size_t__char,
   _swigc__p_libinjection_sqli_state,
-  _swigc__p_stoken_t,
+  _swigc__p_libinjection_sqli_token,
   _swigc__p_void,
 };
 
@@ -5967,8 +5968,8 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LOOKUP_OPERATOR",SWIG_From_int((int)(LOOKUP_OPERATOR)));
   SWIG_Python_SetConstant(d, d == md ? public_interface : NULL, "LOOKUP_FINGERPRINT",SWIG_From_int((int)(LOOKUP_FINGERPRINT)));
   
-  /* type '::stoken_t' */
-  builtin_pytype = (PyTypeObject *)&SwigPyBuiltin__stoken_t_type;
+  /* type '::libinjection_sqli_token' */
+  builtin_pytype = (PyTypeObject *)&SwigPyBuiltin__libinjection_sqli_token_type;
   builtin_pytype->tp_dict = d = PyDict_New();
   SwigPyBuiltin_SetMetaType(builtin_pytype, metatype);
   builtin_pytype->tp_new = PyType_GenericNew;
@@ -5978,7 +5979,7 @@ SWIG_init(void) {
   PyDict_SetItemString(d, "this", this_descr);
   PyDict_SetItemString(d, "thisown", thisown_descr);
   if (PyType_Ready(builtin_pytype) < 0) {
-    PyErr_SetString(PyExc_TypeError, "Could not create type 'stoken_t'.");
+    PyErr_SetString(PyExc_TypeError, "Could not create type 'sqli_token'.");
 #if PY_VERSION_HEX >= 0x03000000
     return NULL;
 #else
@@ -5986,8 +5987,8 @@ SWIG_init(void) {
 #endif
   }
   Py_INCREF(builtin_pytype);
-  PyModule_AddObject(m, "stoken_t", (PyObject*) builtin_pytype);
-  SwigPyBuiltin_AddPublicSymbol(public_interface, "stoken_t");
+  PyModule_AddObject(m, "sqli_token", (PyObject*) builtin_pytype);
+  SwigPyBuiltin_AddPublicSymbol(public_interface, "sqli_token");
   d = md;
   
   /* type '::libinjection_sqli_state' */
