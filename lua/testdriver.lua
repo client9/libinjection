@@ -65,9 +65,8 @@ function test_folding(input)
     libinjection.sqli_init(sql_state, input, input:len(), 0)
     libinjection.sqli_fingerprint(sql_state,
                      libinjection.FLAG_QUOTE_NONE + libinjection.FLAG_SQL_ANSI)
-    local vec = sql_state.tokenvec
     for i = 1, sql_state.fingerprint:len() do
-        out = out .. print_token(vec[i])
+        out = out .. print_token(libinjection_sqli_get_token(sql_state, i))
     end
     -- hack for when there is no output
     if out == '' then
