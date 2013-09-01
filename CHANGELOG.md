@@ -1,4 +1,4 @@
-# v3.5.4 --
+# v3.5.4 -- 2013-08-29
 * Big fingerprint update
 ** about 700 impossible, dead fingerprints removed
 ** about 500 new fingerprint added based on fuzzing tests by Reto Ischi

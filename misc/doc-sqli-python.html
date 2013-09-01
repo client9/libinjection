@@ -13,10 +13,10 @@ wrapper to make it more simple and prevent bugs.</p>
 <h2>
 <a name="install-the-python-module" class="anchor" href="#install-the-python-module"><span class="octicon octicon-link"></span></a>Install the python module</h2>
 
-<pre><code>git clone https://github.com/client9/libinjection.git
-cd libinjection/python
+<div class="highlight"><pre>git clone https://github.com/client9/libinjection.git
+<span class="nb">cd </span>libinjection/python
 python setup.py install
-</code></pre>
+</pre></div>
 
 <p>Note, if for some reason it does work for you, install
 <a href="http://www.swig.org">swig</a>, and type <code>make</code></p>
@@ -121,23 +121,23 @@ easiest explaining it with code.</p>
 containing all the data the C program uses into python.  To
 use it:</p>
 
-<pre><code>cd libinjection/python
+<div class="highlight"><pre><span class="nb">cd </span>libinjection/python
 make words.py
-</code></pre>
+</pre></div>
 
 <p>The output file <code>words.py</code> starts like this:</p>
 
-<pre><code>import libinjection
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">libinjection</span>
 
-def lookup(state, stype, keyword):
-    keyword = keyword.upper()
-    if stype == libinjection.LOOKUP_FINGERPRINT:
-        if keyword in fingerprints and libinjection.sqli_not_whitelist(state):
-            return 'F'
-        else:
-            return chr(0)
-    return words.get(keyword, chr(0))
-</code></pre>
+<span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">stype</span><span class="p">,</span> <span class="n">keyword</span><span class="p">):</span>
+    <span class="n">keyword</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">stype</span> <span class="o">==</span> <span class="n">libinjection</span><span class="o">.</span><span class="n">LOOKUP_FINGERPRINT</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">fingerprints</span> <span class="ow">and</span> <span class="n">libinjection</span><span class="o">.</span><span class="n">sqli_not_whitelist</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">'F'</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">words</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keyword</span><span class="p">,</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
 
 <p>The input is:</p>
 

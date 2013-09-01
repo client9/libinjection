@@ -15,7 +15,7 @@ Install the PHP module
 
 It should be as simple as:
 
-```
+```bash
 make
 ```
 
@@ -24,13 +24,13 @@ PHP extensions.
 
 To load the module, add the following to your `php.ini` file:
 
-```
+```ini
 extension=/path/to/libinjection.so
 ```
 
 Or you might be able to do:
 
-```
+```php
 // note may not work with PHP CLI without other
 // configuration changes
 dl_open('/path/to/libinjection.so');
@@ -85,8 +85,7 @@ if ($sqli == 1) {
 
 This flow can be wrapped into a simple class:
 
-```
-
+```php
 class libinjection {
   public $_cPtr=null;
 

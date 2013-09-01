@@ -17,23 +17,23 @@ Help wanted on packaging into a PEAR module and help with Mac OS X
 
 <p>It should be as simple as:</p>
 
-<pre><code>make
-</code></pre>
+<div class="highlight"><pre>make
+</pre></div>
 
 <p>This produces a <code>libinjection.so</code> which can be installed with other
 PHP extensions.</p>
 
 <p>To load the module, add the following to your <code>php.ini</code> file:</p>
 
-<pre><code>extension=/path/to/libinjection.so
-</code></pre>
+<div class="highlight"><pre><span class="na">extension</span><span class="o">=</span><span class="s">/path/to/libinjection.so</span>
+</pre></div>
 
 <p>Or you might be able to do:</p>
 
-<pre><code>// note may not work with PHP CLI without other
-// configuration changes
-dl_open('/path/to/libinjection.so');
-</code></pre>
+<div class="highlight"><pre><span class="c1">// note may not work with PHP CLI without other</span>
+<span class="c1">// configuration changes</span>
+<span class="nx">dl_open</span><span class="p">(</span><span class="s1">'/path/to/libinjection.so'</span><span class="p">);</span>
+</pre></div>
 
 <p>You can do a quick test with:</p>
 
@@ -81,32 +81,31 @@ dl_open('/path/to/libinjection.so');
 
 <p>This flow can be wrapped into a simple class:</p>
 
-<pre><code>
-class libinjection {
-  public $_cPtr=null;
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">libinjection</span> <span class="p">{</span>
+  <span class="k">public</span> <span class="nv">$_cPtr</span><span class="o">=</span><span class="k">null</span><span class="p">;</span>
 
-  function __construct() {
-     $this-&gt;_cPtr = new_libinjection_sqli_state();
-  }
-  function is_sqli($arg) {
-     libinjection_sqli_init($this-&gt;_cPtr, $arg, 0);
-     $issqli = libinjection_is_sqli($this-&gt;_cPtr);
+  <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span> <span class="p">{</span>
+     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cPtr</span> <span class="o">=</span> <span class="nx">new_libinjection_sqli_state</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">function</span> <span class="nf">is_sqli</span><span class="p">(</span><span class="nv">$arg</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">libinjection_sqli_init</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cPtr</span><span class="p">,</span> <span class="nv">$arg</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+     <span class="nv">$issqli</span> <span class="o">=</span> <span class="nx">libinjection_is_sqli</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cPtr</span><span class="p">);</span>
 
-     $fingerprint = '';
-     if ($sqli == 1) {
-         $fingerprint = libinjection_sqli_state_fingerprint_get($this-&gt;_cPtr);
-     }
-     return $fingerprint;
-  }
-};
+     <span class="nv">$fingerprint</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+     <span class="k">if</span> <span class="p">(</span><span class="nv">$sqli</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nv">$fingerprint</span> <span class="o">=</span> <span class="nx">libinjection_sqli_state_fingerprint_get</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_cPtr</span><span class="p">);</span>
+     <span class="p">}</span>
+     <span class="k">return</span> <span class="nv">$fingerprint</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
 
-$check = new libinjection();
+<span class="nv">$check</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">libinjection</span><span class="p">();</span>
 
-$fingerprint = $check-&gt;is_sqli("1 union select 2 --");
-if ($fingerprint) {
-  // it's sqli, do something
-}
-</code></pre>
+<span class="nv">$fingerprint</span> <span class="o">=</span> <span class="nv">$check</span><span class="o">-&gt;</span><span class="na">is_sqli</span><span class="p">(</span><span class="s2">"1 union select 2 --"</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$fingerprint</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// it's sqli, do something</span>
+<span class="p">}</span>
+</pre></div>
 
 <h2>
 <a name="using-libinjection-data-structures" class="anchor" href="#using-libinjection-data-structures"><span class="octicon octicon-link"></span></a>Using libinjection data structures</h2>

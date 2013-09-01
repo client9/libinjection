@@ -11,7 +11,7 @@ You should get nearly 400,000 checks per second using the python API.
 Install the python module
 -------------------------
 
-```
+```bash
 git clone https://github.com/client9/libinjection.git
 cd libinjection/python
 python setup.py install
@@ -126,14 +126,14 @@ A small program `json2python.py` converts the raw JSON file
 containing all the data the C program uses into python.  To
 use it:
 
-```
+```bash
 cd libinjection/python
 make words.py
 ```
 
 The output file `words.py` starts like this:
 
-```
+```python
 import libinjection
 
 def lookup(state, stype, keyword):
