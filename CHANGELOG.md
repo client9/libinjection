@@ -1,9 +1,10 @@
-# v3.5.4 -- 2013-08-29
+# v3.6.0pre -- 2013-09-04
 * Big fingerprint update
 ** about 700 impossible, dead fingerprints removed
 ** about 500 new fingerprint added based on fuzzing tests by Reto Ischi
 ** adding folding rule for "sqltype sqltype -> sqltype" since
    `select binary binary binary 1` is valid
+* New PHP API
 
 # v3.5.3 -- 2013-08-25
 * Fingerprint update -- `BETWEEN` operation bypasses
