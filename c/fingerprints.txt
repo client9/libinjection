@@ -2269,6 +2269,7 @@ Eko(n
 Eko(s
 Eko(v
 Ekok(
+Ekokn
 Eks&(
 Eks&1
 Eks&f
@@ -2521,6 +2522,7 @@ Eo(so
 Eo(v,
 Eo(vo
 Eok(E
+Eoknk
 Es&(1
 Es&(E
 Es&(f
