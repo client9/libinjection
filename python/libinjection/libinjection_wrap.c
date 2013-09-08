@@ -2864,20 +2864,20 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
   PyObject *descr;
   PyObject *encoded_name;
   descrsetfunc f;
-  int res;
+  int res = -1;;
 
 # ifdef Py_USING_UNICODE
   if (PyString_Check(name)) {
     name = PyUnicode_Decode(PyString_AsString(name), PyString_Size(name), NULL, NULL);
     if (!name)
-      return -1;
+      return res;
   } else if (!PyUnicode_Check(name))
 # else
   if (!PyString_Check(name))
 # endif
   {
     PyErr_Format(PyExc_TypeError, "attribute name must be string, not '%.200s'", name->ob_type->tp_name);
-    return -1;
+    return res;
   } else {
     Py_INCREF(name);
   }
@@ -2887,7 +2887,6 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
       goto done;
   }
 
-  res = -1;
   descr = _PyType_Lookup(tp, name);
   f = NULL;
   if (descr != NULL)
