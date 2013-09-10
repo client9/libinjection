@@ -119,6 +119,9 @@ class PageHandler(tornado.web.RequestHandler):
         if pagename == '':
             pagename = 'home'
 
+        self.add_header('X-Content-Type-Options', 'nosniff')
+        self.add_header('X-XSS-Protection', '0')
+
         self.render(
             pagename + '.html',
             title = pagename.replace('-',' '),
