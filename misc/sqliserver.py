@@ -148,6 +148,7 @@ class XssTestHandler(tornado.web.RequestHandler):
         self.add_header('Cache-Control', 'no-cache, no-store, must-revalidate')
         self.add_header('Pragma', 'no-cache')
         self.add_header('Expires', '0')
+        self.add_header('X-XSS-Protection', '0')
 
         self.write(ldr.load('xsstest.html').generate(args=args))
 
@@ -198,6 +199,7 @@ class NullHandler(tornado.web.RequestHandler):
         self.add_header('Cache-Control', 'no-cache, no-store, must-revalidate')
         self.add_header('Pragma', 'no-cache')
         self.add_header('Expires', '0')
+        self.add_header('X-XSS-Protection', '0')
 
         self.render("tokens.html",
                     title='libjection sqli token parsing diagnositcs',
@@ -286,6 +288,7 @@ class NullHandler(tornado.web.RequestHandler):
         self.add_header('Cache-Control', 'no-cache, no-store, must-revalidate')
         self.add_header('Pragma', 'no-cache')
         self.add_header('Expires', '0')
+        self.add_header('X-XSS-Protection', '0')
 
         self.render("form.html",
                     title='libjection sqli diagnositc',
