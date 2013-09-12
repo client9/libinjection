@@ -6,6 +6,7 @@
 ** adding folding rule for "sqltype sqltype -> sqltype" since
    `select binary binary binary 1` is valid
 * Other minor fingerprints added
+* -maybe- API change as typedefs and structs were re-arranged for SWIG
 
 # v3.5.3 -- 2013-08-25
 * Fingerprint update -- `BETWEEN` operation bypasses
