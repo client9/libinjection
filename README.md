@@ -1,7 +1,12 @@
 libinjection
 ============
 
-SQL / SQLI tokenizer parser analyzer.
+SQL / SQLI tokenizer parser analyzer. For
+
+* C and C++
+* PHP
+* Python
+* Lua
 
 See
 [https://libinjection.client9.com/](https://libinjection.client9.com/)
