@@ -1,3 +1,6 @@
+
+* Issue #56: fix possible over-read.  Thanks safe3@github
+
 # v3.6.0 -- 2013-09-11
 * New PHP API
 * Big fingerprint update
