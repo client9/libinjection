@@ -1,4 +1,6 @@
 
+* Issue #54: Add test vectors from Anne Swinnen's article. Thanks qerub@github
+  http://www.arneswinnen.net/2013/09/automated-sql-injection-detection/
 * Issue #56: fix possible over-read.  Thanks safe3@github and flily@github
 * Remove use of `-fstack-protector` as it breaks valgrind detecting memory problems
 

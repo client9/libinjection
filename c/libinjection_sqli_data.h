@@ -618,6 +618,8 @@ static const keyword_t sql_keywords[] = {
     {"01&VU;", 'F'},
     {"01&VUC", 'F'},
     {"01&VUE", 'F'},
+    {"01(EF(", 'F'},
+    {"01(EKF", 'F'},
     {"01(EKN", 'F'},
     {"01(ENK", 'F'},
     {"01(U(E", 'F'},
@@ -3833,6 +3835,7 @@ static const keyword_t sql_keywords[] = {
     {"0N(1OF", 'F'},
     {"0N(1OS", 'F'},
     {"0N(1OV", 'F'},
+    {"0N(EF(", 'F'},
     {"0N(EKN", 'F'},
     {"0N(ENK", 'F'},
     {"0N(F()", 'F'},
@@ -5525,6 +5528,8 @@ static const keyword_t sql_keywords[] = {
     {"0S&VU;", 'F'},
     {"0S&VUC", 'F'},
     {"0S&VUE", 'F'},
+    {"0S(EF(", 'F'},
+    {"0S(EKF", 'F'},
     {"0S(EKN", 'F'},
     {"0S(ENK", 'F'},
     {"0S(U(E", 'F'},
@@ -7713,6 +7718,8 @@ static const keyword_t sql_keywords[] = {
     {"0V&VU;", 'F'},
     {"0V&VUC", 'F'},
     {"0V&VUE", 'F'},
+    {"0V(EF(", 'F'},
+    {"0V(EKF", 'F'},
     {"0V(EKN", 'F'},
     {"0V(ENK", 'F'},
     {"0V(U(E", 'F'},
@@ -9871,5 +9878,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9705;
+static const size_t sql_keywords_sz = 9712;
 #endif
