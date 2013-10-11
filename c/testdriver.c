@@ -71,8 +71,8 @@ int read_file(const char* fname, int flags, int testtype)
 {
     int count = 0;
     FILE *fp = NULL;
-    char linebuf[4096];
-    char g_actual[4096];
+    char linebuf[8192];
+    char g_actual[8192];
     char* bufptr = NULL;
     sfilter sf;
     int ok = 1;
