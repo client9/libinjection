@@ -1,9 +1,8 @@
 --TEST--
-Just for testing various branches in tokenizer
+MS Brackets
 --INPUT--
 []
 --EXPECTED--
-? [
-? ]
+n []
 
 
