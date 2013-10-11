@@ -2182,8 +2182,8 @@ static int reparse_as_mysql(struct libinjection_sqli_state * sql_state)
 /*
  * This function is mostly use with SWIG
  */
-struct libinjection_sqli_token* libinjection_sqli_get_token(struct libinjection_sqli_state * sql_state,
-                                                            int i)
+struct libinjection_sqli_token*
+libinjection_sqli_get_token(struct libinjection_sqli_state * sql_state, int i)
 {
     if (i < 0 || i > (int) strlen(sql_state->fingerprint)) {
         return NULL;
