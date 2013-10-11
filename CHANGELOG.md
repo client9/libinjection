@@ -1,10 +1,14 @@
-
+# v3.7.0 -- TBD
 * Issue #54: Add test vectors from Anne Swinnen's article. Thanks qerub@github
   http://www.arneswinnen.net/2013/09/automated-sql-injection-detection/
 * Minor fingerprint update for Issue #54.  I don't really think it's valid SQL
   but it's safe enough to detect without false positives.
+* Issue #55: Parse MS SQLSERVER use of [[brackets]] for column and table names
+  This is a big one that closes a lot of holes.
 * Issue #56: fix possible over-read.  Thanks safe3@github and flily@github
 * Remove use of `-fstack-protector` as it breaks valgrind detecting memory problems
+* Fixed folding issue where `1,-sin(1)) ` would be folded as `1 (1)`
+* Add more test cases and improved test coverage to [98.4%](https://libinjection.client9.com/cicada/artifacts/libinjection-coverage-unittest/lcov-html/c/libinjection_sqli.c.gcov.html)
 
 # v3.6.0 -- 2013-09-11
 * New PHP API
