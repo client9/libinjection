@@ -1,5 +1,6 @@
 
-* Issue #56: fix possible over-read.  Thanks safe3@github
+* Issue #56: fix possible over-read.  Thanks safe3@github and flily@github
+* Remove use of `-fstack-protector` as it breaks valgrind detecting memory problems
 
 # v3.6.0 -- 2013-09-11
 * New PHP API

@@ -5,9 +5,15 @@ VALGRIND=valgrind --gen-suppressions=no \
 	--track-origins=yes
 
 # http://stackoverflow.com/questions/1629685/when-and-how-to-use-gccs-stack-protection-feature
+# We will warn about stack-protect just to make sure we don't
+# cause errors in environments that's it used.  However we do not
+# use -fstack-protector since:
 #
-CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -fstack-protector-all -Wstack-protector -D_FORTIFY_SOURCE=2
-# -DNDEBUG
+#  * does not actually protect against buffer over-reads on fixed array sizes
+#  * breaks valgrinds ability to detect this.
+#
+CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wstack-protector -D_FORTIFY_SOURCE=2
+
 
 help:
 	@echo ""
