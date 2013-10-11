@@ -1346,7 +1346,7 @@ CHARMAP = [
     'CHAR_XSTRING',         # 88  X
     'CHAR_WORD',            # 89  Y
     'CHAR_WORD',            # 90  Z
-    'CHAR_OTHER',           # 91  [
+    'CHAR_BWORD',           # 91  [  B for Bracket,  for Microsoft SQL SERVER
     'CHAR_BACK',            # 92  \\
     'CHAR_OTHER',           # 93  ]
     'CHAR_OP1',             # 94  ^
@@ -1378,9 +1378,9 @@ CHARMAP = [
     'CHAR_XSTRING',         # 120 x
     'CHAR_WORD',            # 121 y
     'CHAR_WORD',            # 122 z
-    'CHAR_CHAR',           # 123 { left brace
+    'CHAR_CHAR',            # 123 { left brace
     'CHAR_OP2',             # 124 | pipe
-    'CHAR_CHAR',           # 125 } right brace
+    'CHAR_CHAR',            # 125 } right brace
     'CHAR_OP1',             # 126 ~
     'CHAR_WHITE'            # 127
 ]

@@ -91,7 +91,7 @@
         "CHAR_XSTRING", 
         "CHAR_WORD", 
         "CHAR_WORD", 
-        "CHAR_OTHER", 
+        "CHAR_BWORD", 
         "CHAR_BACK", 
         "CHAR_OTHER", 
         "CHAR_OP1", 

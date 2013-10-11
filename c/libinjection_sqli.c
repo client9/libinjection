@@ -120,6 +120,23 @@ memchr2(const char *haystack, size_t haystack_len, char c0, char c1)
 }
 
 /**
+ * memchr might not exist on some systems
+ */
+static const char*
+my_memchr(const char* haystack, size_t hlen, int needle)
+{
+    const char* cur;
+    const char* last =  haystack + hlen;
+    for (cur = haystack; cur < last; ++cur) {
+        if (cur[0] == needle) {
+            return cur;
+        }
+    }
+    return NULL;
+}
+
+/**
+ * memmem might not exist on some systems
  */
 static const char *
 my_memmem(const char* haystack, size_t hlen, const char* needle, size_t nlen)
@@ -857,6 +874,25 @@ static size_t parse_xstring(struct libinjection_sqli_state *sf)
     }
     st_assign(sf->current, TYPE_NUMBER, pos, wlen + 3, cs + pos);
     return pos + 2 + wlen + 1;
+}
+
+/**
+ * This handles MS SQLSERVER bracket words
+ * http://stackoverflow.com/questions/3551284/sql-serverwhat-do-brackets-mean-around-column-name
+ *
+ */
+static size_t parse_bword(struct libinjection_sqli_state * sf)
+{
+    const char *cs = sf->s;
+    size_t pos = sf->pos;
+    const char* endptr = my_memchr(cs + pos, sf->slen - pos, ']');
+    if (endptr == NULL) {
+        st_assign(sf->current, TYPE_BAREWORD, pos, sf->slen - pos, cs + pos);
+        return sf->slen;
+    } else {
+        st_assign(sf->current, TYPE_BAREWORD, pos, (endptr - cs) - pos + 1, cs + pos);
+        return (endptr - cs) + 1;
+    }
 }
 
 static size_t parse_word(struct libinjection_sqli_state * sf)

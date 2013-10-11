@@ -46,6 +46,7 @@ static size_t parse_nqstring(sfilter * sf);
 static size_t parse_xstring(sfilter * sf);
 static size_t parse_bstring(sfilter * sf);
 static size_t parse_estring(sfilter * sf);
+static size_t parse_bword(sfilter * sf);
 """
 
     #
@@ -73,7 +74,8 @@ static size_t parse_estring(sfilter * sf);
         'CHAR_NQSTRING'  : 'parse_nqstring',
         'CHAR_XSTRING'   : 'parse_xstring',
         'CHAR_BSTRING'   : 'parse_bstring',
-        'CHAR_ESTRING'   : 'parse_estring'
+        'CHAR_ESTRING'   : 'parse_estring',
+        'CHAR_BWORD'     : 'parse_bword'
         }
     print
     print "typedef size_t (*pt2Function)(sfilter *sf);"

@@ -30,6 +30,7 @@ static size_t parse_nqstring(sfilter * sf);
 static size_t parse_xstring(sfilter * sf);
 static size_t parse_bstring(sfilter * sf);
 static size_t parse_estring(sfilter * sf);
+static size_t parse_bword(sfilter * sf);
 
 
 typedef size_t (*pt2Function)(sfilter *sf);
@@ -125,7 +126,7 @@ static const pt2Function char_parse_map[] = {
    &parse_xstring, /* 88 */
    &parse_word, /* 89 */
    &parse_word, /* 90 */
-   &parse_other, /* 91 */
+   &parse_bword, /* 91 */
    &parse_backslash, /* 92 */
    &parse_other, /* 93 */
    &parse_operator1, /* 94 */
