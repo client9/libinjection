@@ -4,9 +4,9 @@
 #include <glob.h>
 #include "libinjection.h"
 
-char g_test[4096];
-char g_input[4096];
-char g_expected[4096];
+char g_test[8096];
+char g_input[8096];
+char g_expected[8096];
 
 size_t modp_rtrim(char* str, size_t len)
 {
