@@ -903,7 +903,7 @@ static size_t parse_word(struct libinjection_sqli_state * sf)
     const char *cs = sf->s;
     size_t pos = sf->pos;
     size_t wlen = strlencspn(cs + pos, sf->slen - pos,
-                             " {}<>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"\000");
+                             " []{}<>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"\000");
 
     st_assign(sf->current, TYPE_BAREWORD, pos, wlen, cs + pos);
 
