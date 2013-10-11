@@ -1758,8 +1758,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                    (sf->tokenvec[left+2].type == TYPE_NUMBER ||
                     sf->tokenvec[left+2].type == TYPE_BAREWORD ||
                     sf->tokenvec[left+2].type == TYPE_VARIABLE ||
-                    sf->tokenvec[left+2].type == TYPE_STRING ||
-                    sf->tokenvec[left+2].type == TYPE_FUNCTION )) {
+                    sf->tokenvec[left+2].type == TYPE_STRING)) {
             /*
              * interesting case    turn ", -1"  ->> ",1" PLUS we need to back up
              * one token if possible to see if more folding can be done
@@ -1772,6 +1771,19 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
             /* pos is >= 3 so this is safe */
             assert(pos >= 3);
             pos -= 3;
+            continue;
+        } else if (sf->tokenvec[left].type == TYPE_COMMA &&
+                   st_is_unary_op(&sf->tokenvec[left+1]) &&
+                   sf->tokenvec[left+2].type == TYPE_FUNCTION) {
+
+            /* Seperate case from above since you end up with
+             * 1,-sin(1) --> 1 (1)
+             * Here, just do
+             * 1,-sin(1) --> 1,sin(1)
+             * just remove unary opartor
+             */
+            st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
+            pos -= 1;
             continue;
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD) &&
                    (sf->tokenvec[left+1].type == TYPE_DOT) &&
