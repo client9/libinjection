@@ -126,7 +126,7 @@ int read_file(const char* fname, int flags, int testtype)
     } else if (testtype == 2) {
         num_tokens = libinjection_sqli_fold(&sf);
         for (i = 0; i < num_tokens; ++i) {
-            slen = print_token(g_actual, slen, &(sf.tokenvec[i]));
+            slen = print_token(g_actual, slen, libinjection_sqli_get_token(&sf, i));
         }
     } else {
         while (libinjection_sqli_tokenize(&sf) == 1) {
