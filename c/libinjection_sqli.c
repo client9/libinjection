@@ -303,10 +303,10 @@ static void st_assign_char(stoken_t * st, const char stype, size_t pos, size_t l
                            const char value)
 {
     /* done to elimiate unused warning */
-    len = 1;
+    (void)len;
     st->type = (char) stype;
     st->pos = pos;
-    st->len = len;
+    st->len = 1;
     st->val[0] = value;
     st->val[1] = CHAR_NULL;
 }
