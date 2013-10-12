@@ -7,8 +7,9 @@
   This is a big one that closes a lot of holes.
 * Issue #56: fix possible over-read.  Thanks safe3@github and flily@github
 * Remove use of `-fstack-protector` as it breaks valgrind detecting memory problems
-* Fixed folding issue where `1,-sin(1)) ` would be folded as `1 (1)`
-* Add more test cases and improved test coverage to [98.4%](https://libinjection.client9.com/cicada/artifacts/libinjection-coverage-unittest/lcov-html/c/libinjection_sqli.c.gcov.html)
+  Read more about it [http://blog.client9.com/2013/10/12/gcc-valgrind-stackprotector.html]
+* Fixed folding issue where `1,-sin(1))` would be folded as `1 (1)`
+* Add more test cases and improved test coverage to [98.8%](https://libinjection.client9.com/cicada/artifacts/libinjection-coverage-unittest/lcov-html/c/libinjection_sqli.c.gcov.html)
 
 # v3.6.0 -- 2013-09-11
 * New PHP API
