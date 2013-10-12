@@ -1,4 +1,11 @@
-# v3.7.0 -- TBD
+# v3.7.1 -- 2013-10-13
+
+* Remove un-needed code
+
+# v3.7.0 -- 2013-10-13
+
+Major Release
+
 * [Issue #54](https://github.com/client9/libinjection/issues/54): Add test vectors from [Arne Swinnen](http://www.arneswinnen.net/2013/09/automated-sql-injection-detection/). Thanks [qerub@github](https://github.com/qerub)
 * Minor fingerprint update for [Issue #54](https://github.com/client9/libinjection/issues/54).  I don't really think it's valid SQL but it's safe enough to detect without false positives.
 * [Issue #55](https://github.com/client9/libinjection/issues/55): Parse MS SQLSERVER use of \[brackets\] for column and table names. This is a big one that closes a lot of holes.  Thanks [nroggle@github](https://github.com/nroggel)
