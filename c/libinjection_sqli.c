@@ -869,7 +869,7 @@ static size_t parse_bword(struct libinjection_sqli_state * sf)
 {
     const char *cs = sf->s;
     size_t pos = sf->pos;
-    const char* endptr = memchr(cs + pos, ']', sf->slen - pos);
+    const char* endptr = (const char*) memchr(cs + pos, ']', sf->slen - pos);
     if (endptr == NULL) {
         st_assign(sf->current, TYPE_BAREWORD, pos, sf->slen - pos, cs + pos);
         return sf->slen;
