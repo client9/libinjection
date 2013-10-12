@@ -1,13 +1,10 @@
 # v3.7.0 -- TBD
-* Issue #54: Add test vectors from Anne Swinnen's article. Thanks qerub@github
-  http://www.arneswinnen.net/2013/09/automated-sql-injection-detection/
-* Minor fingerprint update for Issue #54.  I don't really think it's valid SQL
-  but it's safe enough to detect without false positives.
-* Issue #55: Parse MS SQLSERVER use of [[brackets]] for column and table names
-  This is a big one that closes a lot of holes.
-* Issue #56: fix possible over-read.  Thanks safe3@github and flily@github
+* [Issue #54](https://github.com/client9/libinjection/issues/54): Add test vectors from [Arne Swinnen](http://www.arneswinnen.net/2013/09/automated-sql-injection-detection/). Thanks [qerub@github](https://github.com/qerub)
+* Minor fingerprint update for [Issue #54](https://github.com/client9/libinjection/issues/54).  I don't really think it's valid SQL but it's safe enough to detect without false positives.
+* [Issue #55](https://github.com/client9/libinjection/issues/55): Parse MS SQLSERVER use of \[brackets\] for column and table names. This is a big one that closes a lot of holes.  Thanks [nroggle@github](https://github.com/nroggel)
+* [Issue #56](https://github.com/client9/libinjection/issues/56): fix buffer over-read.  Thanks [safe3@github](https://github.com/Safe3) and [flily@github](https://github.com/flily)
 * Remove use of `-fstack-protector` as it breaks valgrind detecting memory problems
-  Read more about it [http://blog.client9.com/2013/10/12/gcc-valgrind-stackprotector.html]
+  Read more about it http://blog.client9.com/2013/10/12/gcc-valgrind-stackprotector.html
 * Fixed folding issue where `1,-sin(1))` would be folded as `1 (1)`
 * Add more test cases and improved test coverage to [98.8%](https://libinjection.client9.com/cicada/artifacts/libinjection-coverage-unittest/lcov-html/c/libinjection_sqli.c.gcov.html)
 
