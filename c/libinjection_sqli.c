@@ -887,7 +887,7 @@ static size_t parse_word(struct libinjection_sqli_state * sf)
     const char *cs = sf->s;
     size_t pos = sf->pos;
     size_t wlen = strlencspn(cs + pos, sf->slen - pos,
-                             " []{}<>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"\000");
+                             " []{}<>:\\?=@!#~+-*/&|^%(),';\t\n\v\f\r\"\240\000");
 
     st_assign(sf->current, TYPE_BAREWORD, pos, wlen, cs + pos);
 
@@ -1218,7 +1218,7 @@ int libinjection_sqli_tokenize(struct libinjection_sqli_state * sf)
         /*
          * get current character
          */
-        const unsigned ch = (unsigned int) (s[*pos]);
+        const unsigned char ch = (unsigned int) (s[*pos]);
 
         /*
          * if not ascii, then continue...
@@ -1226,7 +1226,15 @@ int libinjection_sqli_tokenize(struct libinjection_sqli_state * sf)
          *   it's a string
          */
         if (ch > 127) {
-            fnptr = parse_word;
+
+            /* 160 or 0xA0 or octal 240 is "latin1 non-breaking space"
+             * but is treated as a space in mysql.
+             */
+            if (ch == 160) {
+                fnptr = parse_white;
+            } else {
+                fnptr = parse_word;
+            }
         } else {
             /*
              * look up the parser, and call it
