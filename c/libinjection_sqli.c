@@ -1228,14 +1228,13 @@ int libinjection_sqli_tokenize(struct libinjection_sqli_state * sf)
         if (ch > 127) {
             fnptr = parse_word;
         } else {
-
-        /*
-         * look up the parser, and call it
-         *
-         * Porting Note: this is mapping of char to function
-         *   charparsers[ch]()
-         */
-        fnptr = char_parse_map[ch];
+            /*
+             * look up the parser, and call it
+             *
+             * Porting Note: this is mapping of char to function
+             *   charparsers[ch]()
+             */
+            fnptr = char_parse_map[ch];
         }
         *pos = (*fnptr) (sf);
 
