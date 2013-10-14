@@ -1,3 +1,7 @@
+# v3.8.0 - soon
+
+* [Issue #33](https://github.com/client9/libinjection/issues/54) Fixes MySQL in latin1-mode use of %A0 as whitespace.  This was tricky since %A0 might be part of larger UTF-8 encoding as well.  Or perhaps %C2%A0 (utf-8 encoding) might be treated as whitespace.  Fortunately, MySQL only seems to treat %A0 in latin1 mode.
+
 # v3.7.1 -- 2013-10-13
 
 * Remove un-needed code
