@@ -54,6 +54,12 @@ tests = [
         'exec': ExecuteShell('make clean && cd python && make test'),
     },
     {
+        'name': 'libinjection-php-build-test',
+        'listen': LISTEN,
+        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec': ExecuteShell('make clean && cd php && make test'),
+    },
+    {
         'name': 'libinjection-samples-positive',
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git'),
