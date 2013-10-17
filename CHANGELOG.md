@@ -4,10 +4,14 @@ Important release.
 
 * [Issue #33](https://github.com/client9/libinjection/issues/54) Fixes MySQL in latin1-mode use of %A0 as whitespace.  This was tricky since %A0 might be part of larger UTF-8 encoding as well.  Or perhaps %C2%A0 (utf-8 encoding) might be treated as whitespace.  Fortunately, MySQL only seems to treat %A0 as whitespace in latin1 mode.   HT @ru_raz0r
 * Fixes to Lua testdriver and portability fixes
+* Much improved PHP build and test.  It now uses phpize and builds a real module.
 
 NOTES:
 
-* swig 2.0.11 appears to generate a python binding using a c-function that can return an initialized value.  (bug 1341)[https://sourceforge.net/p/swig/bugs/1341/] filed upstream.
+* swig 2.0.11 appears to generate a python binding using a c-function that can return an initialized value. (bug 1341)[https://sourceforge.net/p/swig/bugs/1341/] filed upstream.
+* swig 2.0.11 appears to generate a lua binding using a c-function that does not properly return a value. (bug 1343)[https://sourceforge.net/p/swig/bugs/1343/] filed upstream.
+
+I may be switching to ctypes/libffi for python, and luajit.ffi for lua in the future.
 
 # v3.7.1 -- 2013-10-13
 
