@@ -1,6 +1,13 @@
-# v3.8.0 - soon
+# v3.8.0 - 2013-10-17
 
-* [Issue #33](https://github.com/client9/libinjection/issues/54) Fixes MySQL in latin1-mode use of %A0 as whitespace.  This was tricky since %A0 might be part of larger UTF-8 encoding as well.  Or perhaps %C2%A0 (utf-8 encoding) might be treated as whitespace.  Fortunately, MySQL only seems to treat %A0 in latin1 mode.
+Important release.
+
+* [Issue #33](https://github.com/client9/libinjection/issues/54) Fixes MySQL in latin1-mode use of %A0 as whitespace.  This was tricky since %A0 might be part of larger UTF-8 encoding as well.  Or perhaps %C2%A0 (utf-8 encoding) might be treated as whitespace.  Fortunately, MySQL only seems to treat %A0 as whitespace in latin1 mode.   HT @ru_raz0r
+* Fixes to Lua testdriver and portability fixes
+
+NOTES:
+
+* swig 2.0.11 appears to generate a python binding using a c-function that can return an initialized value.  (bug 1341)[https://sourceforge.net/p/swig/bugs/1341/] filed upstream.
 
 # v3.7.1 -- 2013-10-13
 
