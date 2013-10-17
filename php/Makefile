@@ -3,30 +3,24 @@
 #
 # everything is copied and generating int the build directory
 #
-# I had to do gross hacks to make mac os x, phpunit / homebrew
-#  combinations work
-# MAC OS X - brew install phpunit
 
-PHPUNIT=phpunit
-APPLE=$(shell uname -a | grep -c Darwin)
-ifeq ($(APPLE),1)
-	PHPUNIT=./phpunit-homebrew.sh
-endif
+all: module
 
-all: php
-
-php: build build/libinjection.h build/libinjection_sqli.c build/libinjection_sqli_data.h build/config.m4 build/libinjection.i build/config.m4
+build/modules/libinjection.so: build build/libinjection.h build/libinjection_sqli.c build/libinjection_sqli_data.h build/config.m4 build/libinjection.i
 	(cd build; swig -noproxy -php -Wextra libinjection.i)
-	(cd build; phpize; ./configure ; make; make install)
+	(cd build; phpize; ./configure ; make )
 
-words.php: Makefile json2php.py ../c/sqlparse_data.json
-	./json2php.py < ../c/sqlparse_data.json > words.php
+module: build/modules/libinjection.so
 
-test-unit: php
-	${PHPUNIT} testdriver.php
-
-test: test-unit
+test: build/modules/libinjection.so
+	mkdir -p build/tests
+	./gentests.py
+	cp testsupport.php build/
+	(cd build; export NO_INTERACTION=1 && make test)
 .PHONY: test
+
+install: build/modules/libinjection.so
+	(cd build; make install)
 
 build:
 	mkdir build
@@ -43,8 +37,16 @@ build/libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 build/libinjection.i: libinjection.i
 	cp libinjection.i build/
 
-build/config.m4: build config.m4
+build/config.m4: config.m4
+	mkdir -p build
 	cp config.m4 build/config.m4
+
+
+#
+# old
+#
+words.php: Makefile json2php.py ../c/sqlparse_data.json
+	./json2php.py < ../c/sqlparse_data.json > words.php
 
 clean:
 	rm -f *~ *.o *.so
