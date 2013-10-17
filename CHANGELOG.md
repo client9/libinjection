@@ -4,7 +4,7 @@ Important release.
 
 * [Issue #33](https://github.com/client9/libinjection/issues/54) Fixes MySQL in latin1-mode use of %A0 as whitespace.  This was tricky since %A0 might be part of larger UTF-8 encoding as well.  Or perhaps %C2%A0 (utf-8 encoding) might be treated as whitespace.  Fortunately, MySQL only seems to treat %A0 as whitespace in latin1 mode.   HT @ru_raz0r
 * Fixes to Lua testdriver and portability fixes
-* Much improved PHP build and test.  It now uses phpize and builds a real module.
+* Much improved PHP build and test.  It now uses phpize and builds and tests like a real module.
 
 NOTES:
 
