@@ -1,3 +1,7 @@
+dnl based on
+dnl http://www.php.net/manual/en/internals2.buildsys.configunix.php
+
+
 PHP_ARG_ENABLE(libinjection, for libinjection support,
 [  --enable-libinjection            Include libinjection])
 
