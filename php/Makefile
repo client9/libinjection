@@ -7,6 +7,7 @@
 all: module
 
 build/modules/libinjection.so: build build/libinjection.h build/libinjection_sqli.c build/libinjection_sqli_data.h build/config.m4 build/libinjection.i
+	swig -version
 	(cd build; swig -noproxy -php -Wextra libinjection.i)
 	(cd build; phpize; ./configure ; make )
 
