@@ -619,7 +619,7 @@ static size_t is_double_delim_escaped(const char* cur,  const char* end)
     return  ((cur + 1) < end) && *(cur+1) == *cur;
 }
 
-/* Look forward for doubling of deliminter
+/* Look forward for doubling of delimiter
  *
  * case 'foo''bar' --> foo''bar
  *
@@ -1779,7 +1779,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                    st_is_unary_op(&sf->tokenvec[left+1]) &&
                    sf->tokenvec[left+2].type == TYPE_FUNCTION) {
 
-            /* Seperate case from above since you end up with
+            /* Separate case from above since you end up with
              * 1,-sin(1) --> 1 (1)
              * Here, just do
              * 1,-sin(1) --> 1,sin(1)
@@ -1991,7 +1991,7 @@ int libinjection_sqli_not_whitelist(struct libinjection_sqli_state* sql_state)
     if (tlen > 1 && sql_state->fingerprint[tlen-1] == TYPE_COMMENT) {
         /*
          * if ending comment is contains 'sp_password' then it's sqli!
-         * MS Audit log appearantly ignores anything with
+         * MS Audit log apparently ignores anything with
          * 'sp_password' in it. Unable to find primary refernece to
          * this "feature" of SQL Server but seems to be known sqli
          * technique
