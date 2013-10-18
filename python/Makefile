@@ -6,7 +6,6 @@ python: copy libinjection/libinjection_wrap.c
 	python setup.py --verbose build --force
 	sudo python setup.py --verbose install
 
-
 words.py: Makefile json2python.py ../c/sqlparse_data.json
 	./json2python.py < ../c/sqlparse_data.json > words.py
 
@@ -30,6 +29,7 @@ libinjection/libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection/libinjection_sqli_data.h
 
 libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libinjection.h
+	swig -version
 	swig -python -builtin -Wall -Wextra libinjection/libinjection.i
 
 copy: libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
@@ -38,6 +38,6 @@ clean:
 	rm -rf build dist
 	rm -f *.pyc *~ _libinjection.so
 	rm -f nosetests.xml
-	(cd libinjection; rm -f *.pyc *~)
-	(cd libinjection; rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h)
-
+	rm -f words.py
+	rm -f libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
+	rm -f libinjection/libinjection_wrap.c libinjection/libinjection.py
