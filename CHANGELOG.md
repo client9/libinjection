@@ -8,7 +8,7 @@ LAMP Special Edition: MySQL and PHP improvements
 * API CHANGE:  the macro `LIBINJECTION_VERSION` has been replaced by `const char* libinjection_version()`.  This allows us to increment the version number without having to regenerate SWIG (or other) bindings for minor releases.
 
 NOTES:
-Pregenerated (SWIG)[http://www.swig.org/] bindings are removed.  You'll need to install SWIG before running `make`.  SWIG is packaged on virtually every OS so this should not be a problem.
+Pregenerated [SWIG](http://www.swig.org/) bindings are removed.  You'll need to install SWIG before running `make`.  SWIG is packaged on virtually every OS so this should not be a problem.
 
 Here's why:
 
