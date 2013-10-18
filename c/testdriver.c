@@ -168,6 +168,8 @@ int main(int argc, char** argv)
         }
     }
 
+    printf("%s\n", libinjection_version());
+
     for (i = offset; i < argc; ++i) {
         fname = argv[i];
         count += 1;
