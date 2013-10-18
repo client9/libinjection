@@ -78,3 +78,4 @@ clean:
 	rm -f unit-test.t
 	rm -f libinjection_sqli.c.*
 	rm -f junit*.xml
+	rm -f libinjection_wrap.c
