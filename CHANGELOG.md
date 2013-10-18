@@ -1,3 +1,7 @@
+# vNEXT
+
+* Over 400 unit tests now!
+
 # v3.8.0 - 2013-10-18
 
 LAMP Special Edition: MySQL and PHP improvements
