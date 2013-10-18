@@ -1,23 +1,28 @@
 
+all: build
 #
 #
-python: copy libinjection/libinjection_wrap.c
+build: copy libinjection/libinjection_wrap.c
 	rm -f libinjection.py libinjection.pyc
 	python setup.py --verbose build --force
+
+install: build
 	sudo python setup.py --verbose install
 
-words.py: Makefile json2python.py ../c/sqlparse_data.json
-	./json2python.py < ../c/sqlparse_data.json > words.py
-
-test-unit: copy words.py
+test-unit: build
 	python setup.py build_ext --inplace
 	PYTHON_PATH='.' nosetests -v --with-xunit test_driver.py
 
-test: test-unit
 .PHONY: test
+test: test-unit
 
+.PHONY: speed
 speed:
 	./speedtest.py
+
+
+words.py: Makefile json2python.py ../c/sqlparse_data.json
+	./json2python.py < ../c/sqlparse_data.json > words.py
 
 libinjection/libinjection.h: ../c/libinjection.h
 	cp ../c/libinjection.h libinjection/libinjection.h
