@@ -44,7 +44,7 @@ test: test-unit
 
 libinjection_wrap.c: libinjection.i libinjection.h
 	swig -version
-	swig -lua libinjection.i
+	swig -lua -Wall -Wextra libinjection.i
 
 sqlifingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json
 	./generate_lua_fingerprints.py > sqlifingerprints.lua
