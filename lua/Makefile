@@ -43,6 +43,7 @@ test-unit: libinjection.so lua-TestMore
 test: test-unit
 
 libinjection_wrap.c: libinjection.i libinjection.h
+	swig -version
 	swig -lua libinjection.i
 
 sqlifingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json
