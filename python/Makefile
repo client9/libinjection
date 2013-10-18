@@ -9,7 +9,7 @@ build: copy libinjection/libinjection_wrap.c
 install: build
 	sudo python setup.py --verbose install
 
-test-unit: build
+test-unit: build words.py
 	python setup.py build_ext --inplace
 	PYTHON_PATH='.' nosetests -v --with-xunit test_driver.py
 
