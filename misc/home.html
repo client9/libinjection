@@ -14,7 +14,7 @@ Libinjection: advanced sqli detection.
 <li>Standard C code, compiles on Linux/Unix/BSD, Mac and Windows, and <a href="https://libinjection.client9.com/cicada/job/libinjection-build-g++/">compiles as C++</a></li>
 <li>Over 500k inspections per second on commodity hardware</li>
 <li>No threads and no memory allocation - only 500 bytes of state used (stack or heap)</li>
-<li>Small - about 1000 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
+<li>Small - about 1500 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
 <li>No external library dependencies</li>
 </ul>
 
@@ -33,8 +33,8 @@ Tests include:
 <li> Static analysis using <a href="http://cppcheck.sourceforge.net">cppcheck</a> and <a href="http://clang-analyzer.llvm.org">clang's static analyzer</a></li>
 <li> Tested against <a href="/cicada/artifacts/libinjection-samples-positive/console.txt">85,000 sqli samples</a></li>
 <li> Tested against previous and current <a href="/cicada/artifacts/libinjection-samples-negative/console.txt">false positives</a></li>
-<li> Over 350 <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, and run under <a href="/cicada/artifacts/libinjection-valgrind/console.txt">valgrind</a> to detect memory problems</li>
-<li> Code coverage (under construction.. back soon.. right now it's > 90%)
+<li> Over 400 <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, and run under <a href="/cicada/artifacts/libinjection-valgrind/console.txt">valgrind</a> to detect memory problems</li>
+<li> Code coverage > 98%
 </ul>
 <p>
 When this isn't enough, a <a href="/days-since-last-bypass">full

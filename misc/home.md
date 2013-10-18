@@ -24,16 +24,19 @@ Curious?  See more details below or:
 ### Easy to integrate
 
 * Standard C code, and compiles as C99 and C++
-* Small - about [1200 lines of code](/cicada/artifacts/libinjection-loc/console.txt) in three files
+* Small - about [1500 lines of code](/cicada/artifacts/libinjection-loc/console.txt) in three files
 * Compiles on Linux/Unix/BSD, Mac and Windows
 * No threads used and thread safe
 * No recursion
 * No (heap) memory allocation
 * No extenal library dependencies
+* 400+ unit tests
+* 98% code coverage
 
 ### Bindings to Scripting Langauges
 
 * [Python](/doc-sqli-python)
+* [PHP](/doc-sqli-php)
 * [Lua](https://github.com/client9/libinjection/tree/master/lua)
 
 Third-Party Ports
