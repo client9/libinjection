@@ -8,7 +8,7 @@ import glob
 from libinjection import *
 from words import *
 
-print LIBINJECTION_VERSION
+print version()
 
 def print_token_string(tok):
     """
