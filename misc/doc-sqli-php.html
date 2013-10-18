@@ -17,27 +17,29 @@ Help wanted on packaging into a PEAR module and help with Mac OS X
 
 <p>It should be as simple as:</p>
 
-<div class="highlight"><pre>make
+<div class="highlight highlight-bash"><pre>make
+make <span class="nb">test</span>
+make install
 </pre></div>
 
-<p>This produces a <code>libinjection.so</code> which can be installed with other
+<p>This produces libinjection module (<code>libinjection.so</code>) that is installed with other
 PHP extensions.</p>
 
 <p>To load the module, add the following to your <code>php.ini</code> file:</p>
 
-<div class="highlight"><pre><span class="na">extension</span><span class="o">=</span><span class="s">/path/to/libinjection.so</span>
+<div class="highlight highlight-ini"><pre><span class="na">extension</span><span class="o">=</span><span class="s">libinjection.so</span>
 </pre></div>
 
 <p>Or you might be able to do:</p>
 
-<div class="highlight"><pre><span class="c1">// note may not work with PHP CLI without other</span>
+<div class="highlight highlight-php"><pre><span class="c1">// note may not work with PHP CLI without other</span>
 <span class="c1">// configuration changes</span>
 <span class="nx">dl_open</span><span class="p">(</span><span class="s1">'/path/to/libinjection.so'</span><span class="p">);</span>
 </pre></div>
 
 <p>You can do a quick test with:</p>
 
-<div class="highlight"><pre><span class="k">echo</span> <span class="nx">LIBINJECTION_VERSION</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="nx">libinjection_version</span><span class="p">()</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
 </pre></div>
 
 <h2>
@@ -45,7 +47,7 @@ PHP extensions.</p>
 
 <p>The basic flow is as follows:</p>
 
-<div class="highlight"><pre>
+<div class="highlight highlight-php"><pre>
 <span class="c1">// create a state object using a special function</span>
 <span class="c1">// one does not use the 'new operator'</span>
 <span class="c1">// this object can be reused.</span>
@@ -81,7 +83,7 @@ PHP extensions.</p>
 
 <p>This flow can be wrapped into a simple class:</p>
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">libinjection</span> <span class="p">{</span>
+<div class="highlight highlight-php"><pre><span class="k">class</span> <span class="nc">libinjection</span> <span class="p">{</span>
   <span class="k">public</span> <span class="nv">$_cPtr</span><span class="o">=</span><span class="k">null</span><span class="p">;</span>
 
   <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span> <span class="p">{</span>
@@ -106,6 +108,25 @@ PHP extensions.</p>
   <span class="c1">// it's sqli, do something</span>
 <span class="p">}</span>
 </pre></div>
+
+<h2>
+<a name="important-gotcha" class="anchor" href="#important-gotcha"><span class="octicon octicon-link"></span></a>Important Gotcha</h2>
+
+<p>The binding between C and PHP is somewhat primitive and doesn't
+add a reference count (?) to the input and so might vanish and
+case a crash.</p>
+
+<p>Foruntately it's easy to avoid and the fix is simple as shown below:</p>
+
+<pre><code>// NO
+$issqli = libinjection_is_sqli(trim($ss));
+
+// YES
+$ss = trim($ss);
+$issqli = libinjection_is_sqli($ss);
+</code></pre>
+
+<p>In the future this requirement will go away.</p>
 
 <h2>
 <a name="using-libinjection-data-structures" class="anchor" href="#using-libinjection-data-structures"><span class="octicon octicon-link"></span></a>Using libinjection data structures</h2>

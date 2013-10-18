@@ -17,15 +17,17 @@ It should be as simple as:
 
 ```bash
 make
+make test
+make install
 ```
 
-This produces a `libinjection.so` which can be installed with other
+This produces libinjection module (`libinjection.so`) that is installed with other
 PHP extensions.
 
 To load the module, add the following to your `php.ini` file:
 
 ```ini
-extension=/path/to/libinjection.so
+extension=libinjection.so
 ```
 
 Or you might be able to do:
@@ -39,7 +41,7 @@ dl_open('/path/to/libinjection.so');
 You can do a quick test with:
 
 ```php
-echo LIBINJECTION_VERSION . "\n";
+echo libinjection_version() . "\n";
 ```
 
 
@@ -111,6 +113,26 @@ if ($fingerprint) {
   // it's sqli, do something
 }
 ```
+
+Important Gotcha
+----------------------------------
+
+The binding between C and PHP is somewhat primitive and doesn't
+add a reference count (?) to the input and so might vanish and
+case a crash.
+
+Foruntately it's easy to avoid and the fix is simple as shown below:
+
+```
+// NO
+$issqli = libinjection_is_sqli(trim($ss));
+
+// YES
+$ss = trim($ss);
+$issqli = libinjection_is_sqli($ss);
+```
+
+In the future this requirement will go away.
 
 
 Using libinjection data structures
