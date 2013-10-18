@@ -32,6 +32,7 @@ libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libin
 	swig -version
 	swig -python -builtin -Wall -Wextra libinjection/libinjection.i
 
+.PHONY:copy
 copy: libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
 
 clean:
