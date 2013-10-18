@@ -14,6 +14,8 @@
 #include <assert.h>
 #include <stddef.h>
 
+#define LIBINJECTION_VERSION "3.8.0"
+
 #ifndef TRUE
 #define TRUE 1
 #endif
@@ -1185,6 +1187,16 @@ static size_t parse_number(struct libinjection_sqli_state * sf)
         st_assign(sf->current, TYPE_NUMBER, start, pos - start, cs + start);
     }
     return pos;
+}
+
+/*
+ * API to return version.  This allows us to increment the version
+ * without having to regenerated the SWIG (or other binding) in minor
+ * releases.
+ */
+const char* libinjection_version()
+{
+    return LIBINJECTION_VERSION;
 }
 
 int libinjection_sqli_tokenize(struct libinjection_sqli_state * sf)
