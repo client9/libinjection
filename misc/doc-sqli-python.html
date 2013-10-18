@@ -13,7 +13,7 @@ wrapper to make it more simple and prevent bugs.</p>
 <h2>
 <a name="install-the-python-module" class="anchor" href="#install-the-python-module"><span class="octicon octicon-link"></span></a>Install the python module</h2>
 
-<div class="highlight"><pre>git clone https://github.com/client9/libinjection.git
+<div class="highlight highlight-bash"><pre>git clone https://github.com/client9/libinjection.git
 <span class="nb">cd </span>libinjection/python
 python setup.py install
 </pre></div>
@@ -24,7 +24,7 @@ python setup.py install
 <h2>
 <a name="using-libinjection" class="anchor" href="#using-libinjection"><span class="octicon octicon-link"></span></a>Using libinjection</h2>
 
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">libinjection</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">libinjection</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c"># create the data object</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">sqli_state</span><span class="p">()</span>
@@ -64,7 +64,7 @@ having to make an internal copy of the string, which would slow things down.</p>
 
 <p>The following example might crash:</p>
 
-<div class="highlight"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">sqli_state</span><span class="p">()</span>
+<div class="highlight highlight-python"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">sqli_state</span><span class="p">()</span>
 
 <span class="n">astr</span> <span class="o">=</span> <span class="s">"something"</span>
 <span class="n">sqli_init</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">astr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -80,7 +80,7 @@ having to make an internal copy of the string, which would slow things down.</p>
 <p>The fields in the <code>libinjection_sqli_token</code> and <code>libininjection_sqli_state</code>
 can be accessed in a natural way similar to a python class fields:</p>
 
-<div class="highlight"><pre>
+<div class="highlight highlight-python"><pre>
 <span class="n">s</span> <span class="o">=</span> <span class="n">sqli_state</span><span class="p">()</span>
 <span class="n">s</span><span class="o">.</span><span class="n">fingerprint</span>
 
@@ -96,7 +96,7 @@ can be accessed in a natural way similar to a python class fields:</p>
 sized arrays in structures (or more likely I don't know how to use
 SWIG).   Using the following function simplifies generation of API:</p>
 
-<div class="highlight"><pre><span class="k">struct</span> <span class="n">libinjection_sqli_token</span><span class="o">*</span>
+<div class="highlight highlight-c"><pre><span class="k">struct</span> <span class="n">libinjection_sqli_token</span><span class="o">*</span>
 <span class="nf">libinjection_sqli_get_token</span><span class="p">(</span><span class="k">struct</span> <span class="n">libinjection_sqli_state</span><span class="o">*</span><span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">);</span>
 </pre></div>
 
@@ -121,13 +121,13 @@ easiest explaining it with code.</p>
 containing all the data the C program uses into python.  To
 use it:</p>
 
-<div class="highlight"><pre><span class="nb">cd </span>libinjection/python
+<div class="highlight highlight-bash"><pre><span class="nb">cd </span>libinjection/python
 make words.py
 </pre></div>
 
 <p>The output file <code>words.py</code> starts like this:</p>
 
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">libinjection</span>
+<div class="highlight highlight-python"><pre><span class="kn">import</span> <span class="nn">libinjection</span>
 
 <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">stype</span><span class="p">,</span> <span class="n">keyword</span><span class="p">):</span>
     <span class="n">keyword</span> <span class="o">=</span> <span class="n">keyword</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
@@ -155,7 +155,7 @@ this is what it is.</p>
 
 <p>Of note is this line:</p>
 
-<div class="highlight"><pre><span class="k">if</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">fingerprints</span> <span class="ow">and</span> <span class="n">libinjection</span><span class="o">.</span><span class="n">sqli_not_whitelist</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+<div class="highlight highlight-python"><pre><span class="k">if</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">fingerprints</span> <span class="ow">and</span> <span class="n">libinjection</span><span class="o">.</span><span class="n">sqli_not_whitelist</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
 </pre></div>
 
 <p>The C version of the code contains some logic that removes false

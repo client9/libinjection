@@ -46,7 +46,7 @@ it passes it back to the database.
 
 No sample code released.
 
-This requires rewritting all queries in the application,
+This requires rewriting all queries in the application,
 installing a new proxy between your clients and database.
 
 ---

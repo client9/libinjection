@@ -33,7 +33,7 @@ Curious?  See more details below or:
 * 400+ unit tests
 * 98% code coverage
 
-### Bindings to Scripting Langauges
+### Bindings to Scripting Languages
 
 * [Python](/doc-sqli-python)
 * [PHP](/doc-sqli-php)

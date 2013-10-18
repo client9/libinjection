@@ -206,7 +206,7 @@ class NullHandler(tornado.web.RequestHandler):
         self.add_header('X-XSS-Protection', '0')
 
         self.render("tokens.html",
-                    title='libjection sqli token parsing diagnositcs',
+                    title='libjection sqli token parsing diagnostics',
                     version = libinjection.version(),
                     parsed=parsed,
                     formvalue=val,
@@ -296,7 +296,7 @@ class NullHandler(tornado.web.RequestHandler):
         self.add_header('X-XSS-Protection', '0')
 
         self.render("form.html",
-                    title='libjection sqli diagnositc',
+                    title='libjection sqli diagnostic',
                     version = libinjection.version(),
                     is_sqli=qssqli,
                     args=args,
