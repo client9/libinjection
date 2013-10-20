@@ -1,76 +1,58 @@
 {% extends "base.html" %}
-{% block title %}libinjection: advanced sqli detection{% end %}
 {% block body %}
-<h1>libinjection</h1>
+<h1>
+<a name="libinjection" class="anchor" href="#libinjection"><span class="octicon octicon-link"></span></a>LIBINJECTION</h1>
 
-Libinjection: advanced sqli detection.
+<p>Libinjection is a small C library to detect SQLi attacks in user input with the following goals:</p>
 
-<b>Try it now on the <a href="/diagnostics">diagnostics</a> page.</b>
-
-<h2>About</h2>
 <ul>
-<li>Open source, code is at <a href="https://github.com/client9/libinjection/">github</a></li>
+<li>Open.  Source code is on <a href="https://github.com/client9/libinjection/">GitHub</a>.</li>
+<li>Low <em>false-postives</em>.   When there are high false positives, people tend to turn off any WAF or protection.</li>
+<li>Excellent detection of SQLi.</li>
+<li>High performance (currently <a href="https://libinjection.client9.com/cicada/artifacts/libinjection-speed/console.txt">over 500,000 TPS</a>)</li>
+<li>Easy to test and QA</li>
+<li>Easy to integrate and extend</li>
+</ul><h3>
+<a name="try-it-now" class="anchor" href="#try-it-now"><span class="octicon octicon-link"></span></a><a href="/diagnostics">Try it now</a>
+</h3>
+
+<h3>
+<a name="easy-to-integrate" class="anchor" href="#easy-to-integrate"><span class="octicon octicon-link"></span></a>Easy to integrate</h3>
+
+<ul>
+<li>Standard C code, and compiles as C99 and C++, with bindings to
+
+<ul>
+<li><a href="/doc-sqli-python">Python</a></li>
+<li><a href="/doc-sqli-php">PHP</a></li>
+<li><a href="https://github.com/client9/libinjection/tree/master/lua">Lua</a></li>
+</ul>
+</li>
+<li>Small - about <a href="/cicada/artifacts/libinjection-loc/console.txt">1500 lines of code</a> in three files</li>
+<li>Compiles on Linux/Unix/BSD, Mac and Windows</li>
+<li>No threads used and thread safe</li>
+<li>No recursion</li>
+<li>No (heap) memory allocation</li>
+<li>No extenal library dependencies</li>
+<li><a href="https://github.com/client9/libinjection/tree/master/tests">400+ unit tests</a></li>
+<li><a href="https://libinjection.client9.com/cicada/artifacts/libinjection-coverage-unittest/lcov-html/c/libinjection_sqli.c.gcov.html">98% code coverage</a></li>
 <li><a href="https://github.com/client9/libinjection/blob/master/COPYING.txt">BSD License</a></li>
-<li>Standard C code, compiles on Linux/Unix/BSD, Mac and Windows, and <a href="https://libinjection.client9.com/cicada/job/libinjection-build-g++/">compiles as C++</a></li>
-<li>Over 500k inspections per second on commodity hardware</li>
-<li>No threads and no memory allocation - only 500 bytes of state used (stack or heap)</li>
-<li>Small - about 1500 lines of code in only three files ( <a href="https://github.com/client9/libinjection/blob/master/c/libinjection.h">1</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c">2</a>, <a href="https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h">3</a>)</li>
-<li>No external library dependencies</li>
-</ul>
-
-<h2>Quality, Accuracy, Precision</h2>
-
-<p>
-Continuous integration is publically accessible at
-<a href="https://libinjection.client9.com/cicada/">https://libinjection.client9.com/cicada/</a>.
-</p>
-<p>
-Tests include:
-</p>
+</ul><h2>
+<a name="third-party-ports" class="anchor" href="#third-party-ports"><span class="octicon octicon-link"></span></a>Third-Party Ports</h2>
 
 <ul>
-<li> Built and tested using gcc, clang, and g++ (windows tested via modsecurity)</li>
-<li> Static analysis using <a href="http://cppcheck.sourceforge.net">cppcheck</a> and <a href="http://clang-analyzer.llvm.org">clang's static analyzer</a></li>
-<li> Tested against <a href="/cicada/artifacts/libinjection-samples-positive/console.txt">85,000 sqli samples</a></li>
-<li> Tested against previous and current <a href="/cicada/artifacts/libinjection-samples-negative/console.txt">false positives</a></li>
-<li> Over 400 <a href="https://github.com/client9/libinjection/tree/master/tests">unit tests</a>, and run under <a href="/cicada/artifacts/libinjection-valgrind/console.txt">valgrind</a> to detect memory problems</li>
-<li> Code coverage > 98%
-</ul>
-<p>
-When this isn't enough, a <a href="/days-since-last-bypass">full
-disclosure of evasions</a> is provided, along with remediations.
-</p>
-
-<h2>Presentations</h2>
-<ul>
-<li>Black Hat USA 2012-07-24: <a href="http://www.client9.com/2012/07/25/libinjection/">libinjection: a C library for SQLi detection and generation through lexical analysis of real world attacks.</a></li>
-<li>DEFCON 2012: <a href="http://www.client9.com/2012/07/27/new-techniques-in-sql-obfuscation/">New Techniques in SQLi Obfuscation: SQL never before used in SQLi</a></li>
-<li>iSEC Partners Open Forum 2012-09-12: <a href="http://www.client9.com/2012/09/06/libinjection-new-techniques-in-detecting-sqli-attacks/">libinjection: New Techniques in Detecting SQLi Attacks</a>
-<li>OWASP NYC 2012-09-27: libinjection and SQLi Obfuscation</a>
-<li>RSA USA: 2013-02-27: <a href="http://www.client9.com/2013/02/27/sql-risc-new-directions-in-sqli-prevention/">SQL-RISC New Directions in SQLi Prevention</a>
-</ul>
-
-<h2>Third-Part Ports</h3>
-<p>
-
-</p>
-<ul>
-<li> <a href="https://github.com/Kanatoko/libinjection-Java">java</a></l1>
-<li> python </li>
-<li> I'm told a .NET port is in progress </li>
-</ul>
-
-<h2>Applications</h2>
+<li><a href="https://github.com/Kanatoko/libinjection-Java">java</a></li>
+<li>At least two .NET ports exists</li>
+<li>Another python wrapper</li>
+</ul><h2>
+<a name="applications" class="anchor" href="#applications"><span class="octicon octicon-link"></span></a>Applications</h2>
 
 <ul>
-<li><a href="http://www.modsecurity.org">ModSecurity</a> - since 2.7.4 release</li>
-<li><a href="https://www.ironbee.com">IronBee</a> - on trunk</li>
-<li>honeypot (coming soon)</li>
-</ul>
-
-<h2>Other</h2>
-<ul>
-<li>a mention on <a href="http://www.reddit.com/r/netsec/comments/x5pmr/libinjection_c_library_to_detect_sqli_attacks/">Reddit</a></li>
-</ul>
-
-{% end %}
+<li>
+<a href="http://www.modsecurity.org/">ModSecurity</a> - since 2.7.4 release</li>
+<li>
+<a href="https://www.ironbee.com">IronBee</a> - since May 2013</li>
+<li>Proprietary Honeypot</li>
+<li>Proprietary WAF, Russia</li>
+<li>Proprietary WAF, Japan</li>
+</ul>{% end %}

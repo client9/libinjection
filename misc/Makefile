@@ -9,8 +9,8 @@ PAGES = \
 	doc-libinjection-references.html \
 	doc-sqli-python.html \
 	doc-sqli-php.html \
-	doc.html
-
+	doc.html \
+	home.html
 %.html: %.md base.html
 	echo $<
 	./mdgen.sh $< > $@
