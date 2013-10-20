@@ -3,7 +3,9 @@ SQLi References
 
 SQLi References and Cheatsheets
 -------------------------------
-[OWASP SQLi Introduction](https://www.owasp.org/index.php/SQL_Injection)
+
+* [Websec.ca SQLI KB Cheatsheet](http://websec.ca/kb/sql_injection)  Highly recommended.
+* [OWASP SQLi Introduction](https://www.owasp.org/index.php/SQL_Injection)
 
 
 SQLi Detection
