@@ -4,16 +4,16 @@ libinjection
 SQL / SQLI tokenizer parser analyzer. For
 
 * C and C++
-* PHP
-* Python
-* Lua
+* [PHP](https://libinjection.client9.com/doc-sqli-php)
+* [Python](https://libinjection.client9.com/doc-sqli-python)
+* [Lua](https://github.com/client9/libinjection/tree/master/lua)
 
 See
 [https://libinjection.client9.com/](https://libinjection.client9.com/)
 for details and presentations.
 
 To use:
-look at sqli_cli.c, reader.c as examples, but it's as simple as this:
+look at [sqli_cli.c](https://github.com/client9/libinjection/blob/master/c/sqli_cli.c), [reader.c](https://github.com/client9/libinjection/blob/master/c/reader.c), and [fptool](https://github.com/client9/libinjection/blob/master/c/fptool.c)  as examples, but it's as simple as this:
 
 ```c
 #include <stdio.h>
@@ -40,7 +40,7 @@ int main(int argc, const char* argv[])
 ```
 
 ```
-$ gcc examples.c libinjection_sqli.c
+$ gcc -Wall -Wextra examples.c libinjection_sqli.c
 $ ./a.out "-1' and 1=1 union/* foo */select load_file('/etc/passwd')--"
 sqli detected with fingerprint of 's&1UE'
 ```
@@ -71,8 +71,7 @@ https://libinjection.client9.com/diagnostics
 
 For quick experiments, cracking and breaking, and other ad-hoc tests.
 
-At https://libinjection.client9.com/cicada/ is
-a integration server showing automated testing:
+At https://libinjection.client9.com/cicada/ is a integration server showing automated testing:
 
 * build and unit-tests under GCC latest
 * build, unit-tests and static analysis using clang
@@ -97,11 +96,11 @@ Send requests to nickg@client9.com
 EMBEDDING
 =============
 
-The 'c' directory is a mess, but you only need to copy the following
+The 'c' directory contains everything, but you only need to copy the following
 into your source tree:
 
-* c/libinjection.h
-* c/libinjection_sqli.c
-* c/libinjection_sqli_data.h
-* COPYING
+* [c/libinjection.h](https://github.com/client9/libinjection/blob/master/c/libinjection.h)
+* [c/libinjection_sqli.c](https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c)
+* [c/libinjection_sqli_data.h](https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h)
+* [COPYING.txt](https://github.com/client9/libinjection/blob/master/COPYING.txt)
 
