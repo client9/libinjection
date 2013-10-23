@@ -2,13 +2,12 @@
 
 rm -f testdriver
 
-scan-build --status-bugs -no-failure-reports \
+scan-build --status-bugs \
 -enable-checker alpha.core.BoolAssignment \
 -enable-checker alpha.core.CastSize \
 -enable-checker alpha.core.CastToStruct \
 -enable-checker alpha.core.FixedAddr \
 -enable-checker alpha.core.PointerArithm \
--enable-checker alpha.core.PointerSub \
 -enable-checker alpha.core.SizeofPtr \
 -enable-checker alpha.deadcode.IdempotentOperations \
 -enable-checker alpha.deadcode.UnreachableCode \
@@ -20,5 +19,16 @@ scan-build --status-bugs -no-failure-reports \
 -enable-checker alpha.unix.cstring.OutOfBounds \
 -enable-checker security.FloatLoopCounter \
 -enable-checker security.insecureAPI.rand \
--enable-checker security.insecureAPI.strcpy \
 make testdriver
+
+# notes 2013-10-24
+
+# do not understand
+# -no-failure-reports
+
+# seems broken or I don't understand it
+# -enable-checker alpha.core.PointerSub
+
+#
+# probably good.. used in testdriver as a hack
+#-enable-checker security.insecureAPI.strcpy
