@@ -12,7 +12,6 @@ scan-build --status-bugs \
 -enable-checker alpha.deadcode.IdempotentOperations \
 -enable-checker alpha.deadcode.UnreachableCode \
 -enable-checker alpha.security.ArrayBound \
--enable-checker alpha.security.ArrayBoundV2 \
 -enable-checker alpha.security.MallocOverflow \
 -enable-checker alpha.security.ReturnPtrRange \
 -enable-checker alpha.unix.cstring.BufferOverlap \
@@ -32,3 +31,7 @@ make testdriver
 #
 # probably good.. used in testdriver as a hack
 #-enable-checker security.insecureAPI.strcpy
+
+# has probelm with "backwards array iteration"
+# used is is_backslash_escaped
+#-enable-checker alpha.security.ArrayBoundV2
