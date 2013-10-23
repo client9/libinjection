@@ -125,6 +125,7 @@ int read_file(const char* fname, int flags, int testtype)
             bufptr = g_expected;
             count = 3;
         } else {
+            assert(bufptr != NULL);
             strcat(bufptr, linebuf);
         }
     }
