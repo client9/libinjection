@@ -32,7 +32,7 @@ tests = [
         'name'   : 'libinjection-clang-static-analyzer',
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'   : ExecuteShell('cd c && build-scan make test')
+        'exec'   : ExecuteShell('cd c && scan-build make test')
     },
     {
         'name'   : 'libinjection-loc',
