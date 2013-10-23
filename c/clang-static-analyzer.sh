@@ -2,7 +2,7 @@
 
 rm -f testdriver
 
-scan-build --status-bugs -no-failure-report \
+scan-build --status-bugs -no-failure-reports \
 -enable-checker alpha.core.BoolAssignment \
 -enable-checker alpha.core.CastSize \
 -enable-checker alpha.core.CastToStruct \
