@@ -1,9 +1,18 @@
 
-VALGRIND=valgrind --gen-suppressions=no \
+VALGRIND=valgrind
+VALGRIND_FLAGS=--gen-suppressions=no \
 	--read-var-info=yes \
 	--error-exitcode=1 \
 	--track-origins=yes
 
+CPPCHECK=cppcheck
+CPPCHECK_FLAGS=--enable=all --inconclusive --std=c89 --error-exitcode=2 \
+		--suppress=variableScope  \
+		--template '{file}:{line} {severity} {id} {message}'
+
+
+# Default GCC-based flags
+#
 # http://stackoverflow.com/questions/1629685/when-and-how-to-use-gccs-stack-protection-feature
 # We will warn about stack-protect just to make sure we don't
 # cause errors in environments that's it used.  However we do not
@@ -37,30 +46,27 @@ help:
 allbin: reader sqli fptool example1 testspeed testdriver
 
 example1: Makefile example1.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
-	${CC}  ${CFLAGS} -o example1 libinjection_sqli.c example1.c
+	${CC} ${CFLAGS} -o example1 libinjection_sqli.c example1.c
 
 reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
-	${CC}  ${CFLAGS} -o reader libinjection_sqli.c reader.c
+	${CC} ${CFLAGS} -o reader libinjection_sqli.c reader.c
 
 reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
-	make clean
+	${MAKE} clean
 	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c
 
 reader-gcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
-	g++ -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c reader.c
+	${CC} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c reader.c
 
 testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${CC}  ${CFLAGS} -O1 -o testdriver libinjection_sqli.c testdriver.c
 
 testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	rm -f sqli
-	gcc -g -fprofile-arcs -ftest-coverage -O0 -o testdriver-gcov testdriver.c libinjection_sqli.c
-
-is_sqli: Makefile is_sqli_cli.cpp libinjection_sqli.c libinjection.h libinjection_sqli_data.h libinjection_sqli_data.h
-	${CXX}  ${CFLAGS} -O3 -o is_sqli is_sqli_cli.cpp libinjection_sqli.c
+	${CC} -g -fprofile-arcs -ftest-coverage -O0 -o testdriver-gcov testdriver.c libinjection_sqli.c
 
 sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
-	${CC} -g -O1 -o sqli sqli_cli.c libinjection_sqli.c
+	${CC} ${CFLAGS} -o sqli sqli_cli.c libinjection_sqli.c
 
 fptool: Makefile fptool.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	${CC} ${CFLAGS} -o fptool fptool.c libinjection_sqli.c
@@ -79,13 +85,11 @@ test: testdriver libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	./reader -q ../data/*.txt
 
 valgrind: reader testdriver
-	(cd ../tests; ${VALGRIND} ../c/testdriver -q test-*.txt)
-	${VALGRIND} ./reader -q ../data/*.txt
+	(cd ../tests; ${VALGRIND} ${VALGRIND_FLAGS} ../c/testdriver -q test-*.txt)
+	${VALGRIND} ${VALGRIND_FLAGS} ./reader -q ../data/*.txt
 
 cppcheck:
-	cppcheck --enable=all --inconclusive --std=c89 --error-exitcode=2 \
-		--suppress=variableScope  \
-		--template '{file}:{line} {severity} {id} {message}' .
+	${CPPCHECK} ${CPPCHECK_FLAGS} .
 
 unused:
 	-${MAKE} test_positive | grep True | awk '{print $$4}' | sort -u > /tmp/junk
@@ -158,4 +162,3 @@ clean:
 	@rm -f reader is_sqli lcov-reader sqli fptool testdriver example1
 	@rm -f reader-gcov testdriver-gcov
 	@rm -f fingerprints-orig.txt
-
