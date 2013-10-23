@@ -17,6 +17,12 @@ tests = [
         'exec': ExecuteShell('g++ --version && cd c && make clean && CC=g++ make test')
     },
     {
+        'name': 'libinjection-build-test-clang',
+        'listen'  : LISTEN,
+        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec': ExecuteShell('clang --version && cd c && ./clang.sh')
+    },
+    {
         'name'   : 'libinjection-cppcheck',
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
