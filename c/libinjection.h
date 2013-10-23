@@ -207,7 +207,7 @@ typedef struct libinjection_sqli_state sfilter;
  * See python's normalized version
  * http://www.python.org/dev/peps/pep-0386/#normalizedversion
  */
-const char* libinjection_version();
+const char* libinjection_version(void);
 
 /**
  *
@@ -220,13 +220,7 @@ void libinjection_sqli_init(struct libinjection_sqli_state* sql_state,
  * Main API: tests for SQLi in three possible contexts, no quotes,
  * single quote and double quote
  *
- * \param sql_state
- * \param s
- * \param slen
- * \param fn a pointer to a function that determines if a fingerprint
- *        is a match or not.  If NULL, then a hardwired list is
- *        used. Useful for loading fingerprints data from custom
- *        sources.
+ * \param sql_state core data structure
  *
  * \return 1 (true) if SQLi, 0 (false) if benign
  */
@@ -254,7 +248,8 @@ void libinjection_sqli_reset(struct libinjection_sqli_state* sql_state,
  * This detects SQLi in a single context, mostly useful for custom
  * logic and debugging.
  *
- * \param sql_state
+ * \param sql_state  Main data structure
+ * \param flags flags to adjust parsing
  *
  * \returns a pointer to sfilter.fingerprint as convenience
  *          do not free!

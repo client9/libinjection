@@ -14,6 +14,10 @@
 
 #include "libinjection.h"
 
+void print_string(stoken_t* t);
+void print_var(stoken_t* t);
+void print_token(stoken_t *t);
+
 void print_string(stoken_t* t)
 {
     /* print opening quote */

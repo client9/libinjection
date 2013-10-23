@@ -23,7 +23,6 @@ CPPCHECK_FLAGS=--enable=all --inconclusive --std=c89 --error-exitcode=2 \
 #
 CFLAGS=-g -O3 -Wall -Wextra -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wstack-protector -D_FORTIFY_SOURCE=2
 
-
 help:
 	@echo ""
 	@echo "note: there is no library-- it's just one file"

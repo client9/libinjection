@@ -1,12 +1,19 @@
+#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <glob.h>
 #include "libinjection.h"
 
-char g_test[8096];
-char g_input[8096];
-char g_expected[8096];
+static char g_test[8096];
+static char g_input[8096];
+static char g_expected[8096];
+
+size_t modp_rtrim(char* str, size_t len);
+size_t print_string(char* buf, size_t len, stoken_t* t);
+size_t print_var(char* buf, size_t len, stoken_t* t);
+size_t print_token(char* buf, size_t len, stoken_t *t);
+int read_file(const char* fname, int flags, int testtype);
 
 size_t modp_rtrim(char* str, size_t len)
 {
@@ -24,17 +31,25 @@ size_t modp_rtrim(char* str, size_t len)
 
 size_t print_string(char* buf, size_t len, stoken_t* t)
 {
+    int slen = 0;
+
     /* print opening quote */
     if (t->str_open != '\0') {
-        len += sprintf(buf + len, "%c", t->str_open);
+        slen = sprintf(buf + len, "%c", t->str_open);
+        assert(slen >= 0);
+        len += (size_t) slen;
     }
 
     /* print content */
-    len += sprintf(buf + len, "%s", t->val);
+    slen = sprintf(buf + len, "%s", t->val);
+    assert(slen >= 0);
+    len += (size_t) slen;
 
     /* print closing quote */
     if (t->str_close != '\0') {
-        len += sprintf(buf + len, "%c", t->str_close);
+        slen = sprintf(buf + len, "%c", t->str_close);
+        assert(slen >= 0);
+        len += (size_t) slen;
     }
 
     return len;
@@ -42,17 +57,27 @@ size_t print_string(char* buf, size_t len, stoken_t* t)
 
 size_t print_var(char* buf, size_t len, stoken_t* t)
 {
+    int slen = 0;
     if (t->count >= 1) {
-        len += sprintf(buf + len, "%c", '@');
+        slen = sprintf(buf + len, "%c", '@');
+        assert(slen >= 0);
+        len += (size_t) slen;
     }
     if (t->count == 2) {
-        len += sprintf(buf + len, "%c", '@');
+        slen = sprintf(buf + len, "%c", '@');
+        assert(slen >= 0);
+        len += (size_t) slen;
     }
     return print_string(buf, len, t);
 }
 
-size_t print_token(char* buf, size_t len, stoken_t *t) {
-    len += sprintf(buf + len, "%c ", t->type);
+size_t print_token(char* buf, size_t len, stoken_t *t)
+{
+    int slen;
+
+    slen = sprintf(buf + len, "%c ", t->type);
+    assert(slen >= 0);
+    len += (size_t) slen;
     switch (t->type) {
     case 's':
         len = print_string(buf, len, t);
@@ -61,9 +86,13 @@ size_t print_token(char* buf, size_t len, stoken_t *t) {
         len = print_var(buf, len, t);
         break;
     default:
-        len += sprintf(buf + len, "%s", t->val);
+        slen = sprintf(buf + len, "%s", t->val);
+        assert(slen >= 0);
+        len += (size_t) slen;
     }
-    len += sprintf(buf + len, "%c", '\n');
+    slen = sprintf(buf + len, "%c", '\n');
+    assert(slen >= 0);
+    len += (size_t) slen;
     return len;
 }
 

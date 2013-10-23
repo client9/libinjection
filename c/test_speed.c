@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include "libinjection.h"
+int testIsSQL(void);
 
 int testIsSQL(void)
 {

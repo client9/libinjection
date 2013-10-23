@@ -1,6 +1,7 @@
 # vNEXT
 
 * Over 400 unit tests now!
+* Compiles clean under clang with `-Weverything -Wno-padded`   `-Wno-padded` is excluded since it's architecture dependant.   See `clang.sh` to see how to invoke.
 
 # v3.8.0 - 2013-10-18
 
