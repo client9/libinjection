@@ -29,6 +29,12 @@ tests = [
         'exec'   : ExecuteShell('cppcheck --version && cd c && make cppcheck')
     },
     {
+        'name'   : 'libinjection-clang-static-analyzer',
+        'listen' : LISTEN,
+        'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
+        'exec'   : ExecuteShell('cd c && build-scan make test')
+    },
+    {
         'name'   : 'libinjection-loc',
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
