@@ -1,131 +1,213 @@
+from QueueAWS import QueueAWS
+from StateDynamo import StateDynamo
+from events import *
+from sourcecontrol import *
+from shell import *
+from publishers import *
+
+WORKDIR=os.path.expanduser("~/cicada/workspace")
+PUBDIR=os.path.expanduser("~/cicada/artifacts")
+
+REGION='us-west-2'
+QUEUE_EVENT = QueueAWS('cicada_events', REGION)
+QUEUE_WORK = QueueAWS('cicada_work', REGION)
+DYNAMO =  StateDynamo(REGION)
+
 LISTEN = [
     TestOnEvent('libinjection'),
     TestOnTime(minute='0', hour='23')
 ]
 
-tests = [
-    {
-        'name'    : 'libinjection-build-test',
+POLLERS = {
+    'poll-svn-stringencoders': {
+        'listen': [
+            TestOnInterval(minutes=10),
+        ],
+        'exec': PollSVN('stringencoders',
+                        'http://stringencoders.googlecode.com/svn/trunk/',
+                        DYNAMO, QUEUE_EVENT)
+    }
+}
+
+LISTEN = [
+    TestOnEvent('libinjection'),
+    TestOnTime(minute='0', hour='23'),
+]
+
+STRINGENCODERS = {
+    'stringencoders-test': {
+        'listen': [ TestOnEvent('stringencoders') ],
+        'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
+        'exec': ExecuteShell('cd stringencoders && ./bootstrap.sh && ./configure && make && make test'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    }
+}
+
+LIBINJECTION = {
+    'libinjection-build-test': {
         'listen'  : LISTEN,
-        'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'    : ExecuteShell('gcc --version && cd c && make clean && make test'),
+        'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec'    : ExecuteShell('gcc --version && cd libinjection/c && make clean && make test'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-build-test-g++',
+    'libinjection-build-test-g++': {
         'listen'  : LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('g++ --version && cd c && make clean && CC=g++ make test')
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec': ExecuteShell('g++ --version && cd libinjection/c && make clean && CC=g++ make test'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-build-test-clang',
+    'libinjection-build-test-clang': {
         'listen'  : LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('clang --version && cd c && ./clang.sh')
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec': ExecuteShell('clang --version && cd libinjection/c && ./clang.sh'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name'   : 'libinjection-cppcheck',
+    'libinjection-cppcheck': {
         'listen' : LISTEN,
-        'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'   : ExecuteShell('cppcheck --version && cd c && make cppcheck')
+        'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec'   : ExecuteShell('cppcheck --version && cd libinjection/c && make cppcheck'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name'   : 'libinjection-clang-static-analyzer',
+    'libinjection-clang-static-analyzer': {
         'listen' : LISTEN,
-        'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'   : ExecuteShell('cd c && ./clang-static-analyzer.sh')
+        'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec'   : ExecuteShell('cd libinjection/c && ./clang-static-analyzer.sh'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name'   : 'libinjection-loc',
+    'libinjection-loc': {
         'listen' : LISTEN,
-        'source' : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'   : ExecuteShell('cd c && cloc.pl libinjection.h libinjection_sqli.c')
+        'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec'   : ExecuteShell('cd libinjection/c && cloc.pl libinjection.h libinjection_sqli.c'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-pyflakes',
+    'libinjection-pyflakes': {
         'listen': LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('cd c && pyflakes *.py')
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec': ExecuteShell('cd libinjection/c && pyflakes *.py'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-pylint',
+    'libinjection-pylint': {
         'listen': LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         # disable 'too-many-lines' warning
-        'exec': ExecuteShell('pylint --disable=C0302 --include-ids=y -f parseable c/*.py')
+        'exec': ExecuteShell('pylint --disable=C0302 --include-ids=y -f parseable libinjection/c/*.py'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-python-build-test',
+    'libinjection-python-build-test': {
         'listen': LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('make clean && cd python && make test'),
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec': ExecuteShell('cd libinjection && make clean && cd python && make test'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-php-build-test',
+    'libinjection-php-build-test': {
         'listen': LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('make clean && cd php && make test'),
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec': ExecuteShell('cd libinjection && make clean && cd php && make test'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-lua-build-test',
+    'libinjection-lua-build-test': {
         'listen': LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec': ExecuteShell('make clean && cd lua && make test'),
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec': ExecuteShell('cd libinjection && make clean && cd lua && make test'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-samples-positive',
+    'libinjection-samples-positive': {
         'listen': LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'   : ExecuteShell("""
-cd c
+cd libinjection/c
 make clean
 make reader
 ./reader -t -i -m 21 ../data/sqli-*.txt
-""")
-
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-samples-negative',
+    'libinjection-samples-negative': {
         'listen': LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'   : ExecuteShell("""
-cd c
+cd libinjection/c
 make clean
 make reader
 ./reader -t -m 22 ../data/false_positives.txt
-""")
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name'    : 'libinjection-coverage-unittest',
+    'libinjection-coverage-unittest': {
         'listen'  : LISTEN,
-        'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec'    : ExecuteShell("cd c && make clean && make coverage-testdriver"),
+        'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec'    : ExecuteShell("cd libinjection/c && make clean && make coverage-testdriver"),
         'publish' : [
-            PublishArtifact('c/lcov-html', 'lcov-html/c/libinjection_sqli.c.gcov.html', 'coverage')
+            # 1. file relative to workspace  for PublishConsole, it's empty
+            # 2. link url
+            # 2. linktext
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('libinjection/c/lcov-html', PUBDIR, 'lcov-html/c/libinjection_sqli.c.gcov.html', 'coverage')
             ]
     },
-    {
-        'name': 'libinjection-speed',
+    'libinjection-speed': {
         'listen'  : LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec' : ExecuteShell("cd c && make test_speed")
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec' : ExecuteShell("cd libinjection/c && make test_speed"),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name': 'libinjection-valgrind',
+    'libinjection-valgrind': {
         'listen'  : LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git'),
-        'exec' : ExecuteShell("cd c && make clean && nice make valgrind"),
+        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec' : ExecuteShell("cd libinjection/c && make clean && nice make valgrind"),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     },
-    {
-        'name'    : 'libinjection-gprof',
+    'libinjection-gprof': {
         'listen'  : LISTEN,
-        'source'  : CheckoutGit('https://github.com/client9/libinjection.git'),
+        'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""#!/bin/bash
-cd c
+cd libinjection/c
 make clean
 make reader
 gcc -g -O2 -pg -o reader libinjection_sqli.c reader.c
 ./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
 gprof ./reader gmon.out
-""")
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     }
-]
+}
+
+PROJECTS = {
+    'pollers': POLLERS,
+    'libinjection': LIBINJECTION,
+    'stringencoders': STRINGENCODERS
+}

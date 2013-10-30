@@ -18,27 +18,31 @@ th { text-align: left }
 </HEAD>
 <BODY>
 <h1>libinjection CI Status</h1>
+
+{% for project, jobs in status.iteritems() %}
+<h2>{{ project }}</h2>
 <TABLE>
-{% for test in status %}
-{% if test['status'] == 'fail' %}
+{% for job in jobs %}
+{% if job['state'] == 'fail' %}
 <TR class='red'>
-{% elif test['status'] == 'pass' %}
+{% elif job['state'] == 'pass' %}
 <TR class='green'>
 {% else %}
 <TR>
 {% end %}
-<TD>{{ test['name'] }}</TD>
-<TD>{{ test['status'] }}</TD>
-<TD>{{ test['timestamp'] }}</TD>
-<TD>{{ test['duration'] }}</TD>
+<TD>{{ job['job'] }}</TD>
+<TD>{{ job['state'] }}</TD>
+<TD>{{ job['start'] }}</TD>
+<TD>{{ job['duration'] }}</TD>
 <TD>
-{% for link,text in test['artifacts'] %}
+{% for link,text in job['artifacts'] %}
 <A HREF="{{ link }}">{{ text }}</A><BR/>
 {% end %}
 </TD>
 </TR>
 {% end %}
 </TABLE>
+{% end %}
 <HR />
 {{ ssl_protocol }} {{ ssl_cipher }}
 </BODY>

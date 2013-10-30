@@ -27,6 +27,65 @@ class TestOnEvent(object):
     def run(self, events):
         return self.event in events
 
+class TestOnInterval(object):
+    def __init__(self, minutes=10):
+        self.interval = minutes * 60
+        self.last = 0
+
+    def run(self):
+        now = time.time()
+        if (now - self.last) < self.interval:
+            return False
+        self.last = now
+        return True
+
+class TestOnQueue(object):
+    def __init__(self, name):
+        self.name = name
+    def run(self):
+        pass
+        # do AWS queue check
+
+
+class PollHG(object, repo, interval, binexe='hg'):
+    def __init__(object, repo, interval):
+        self.repo = repo
+        self.last = 0
+        self.interval = interval * 60
+        self.binexe = binexe
+
+    def run(self):
+        now = time.time()
+        if (now - self.last) < self.interval:
+            return False
+        args = [self.binexe, 'log', '-l', '1', '--incremental',  self.repo]
+
+class PollSVN(object, repo, interval):
+    def __init__(object, repo, interval):
+        self.repo = repo
+        self.last = 0
+        self.interval = interval * 60
+
+    def run(self):
+        now = time.time()
+        if (now - self.last) < self.interval:
+            return False
+        args = ['svn', 'log', '-l', '1', '--incremental',  self.repo]
+
+class PollGit(object, repo, interval, branch='HEAD'):
+    def __init__(self, event):
+        self.repo = repo
+        self.last = 0
+        self.interval = interval * 60
+        self.branch = branch
+
+    def run(self):
+        now = time.time()
+        if (now - self.last) < self.interval:
+            return False
+        args = ['git', 'ls-remote', self.repo, self.branch]
+
+
 class TestOnTime(object):
 
     @staticmethod
