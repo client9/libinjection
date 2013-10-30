@@ -51,6 +51,7 @@ STRINGENCODERS = {
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
             PublishArtifact('stringencoders/lcov-html/html', PUBDIR, 'lcov-html', 'coverage')
         ]
+    }
 }
 
 LIBINJECTION = {
