@@ -5,8 +5,8 @@ from sourcecontrol import *
 from shell import *
 from publishers import *
 
-WORKDIR=os.path.expanduser("~/cicada/workspace")
-PUBDIR=os.path.expanduser("~/cicada/artifacts")
+WORKDIR=os.path.expanduser("/var/cicada/workspace")
+PUBDIR=os.path.expanduser("/var/cicada/artifacts")
 
 REGION='us-west-2'
 QUEUE_EVENT = QueueAWS('cicada_events', REGION)
