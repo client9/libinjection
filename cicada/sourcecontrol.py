@@ -116,6 +116,7 @@ class PollGit(object):
 
     def run(self, now):
         current = self.db.poll_get(self.name)
+        logging.info("Git Poll for {0} with {1}: reading {2}".format(self.name, current, self.repo))
         args = ['git', 'ls-remote', self.repo, self.branch]
         p = subprocess.Popen(args,
                              stdout = subprocess.PIPE,
@@ -125,6 +126,10 @@ class PollGit(object):
         if p.returncode == 0:
             rev = sout.split()[0]
             if rev != current:
+                logging.info("Got update for {0} with {1}".format(self.name, rev))
                 self.db.poll_put(name, rev)
                 self.eventq.put(name)
+            else:
+                logging.info("Git revision for {0} unchanged with {1}".format(self.name, rev))
+
         return (sout, serr, p.returncode)

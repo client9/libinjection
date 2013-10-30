@@ -19,6 +19,14 @@ LISTEN = [
 ]
 
 POLLERS = {
+    'poll-git-openssl': {
+        'listen': [
+            TestOnTime(minute='5', hour='1'),
+        ],
+        'exec': PollGit('openssl',
+                        'git://git.openssl.org/openssl.git',
+                        DYNAMO, QUEUE_EVENT)
+    },
     'poll-svn-stringencoders': {
         'listen': [
             TestOnInterval(minutes=10),
