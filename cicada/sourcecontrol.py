@@ -126,7 +126,7 @@ class PollGit(object):
             rev = sout.split()[0]
             if rev != current:
                 logging.info("Got update for {0} with {1}".format(self.name, rev))
-                self.db.poll_put(self.name, rev)
+                self.db.poll_put(self.name, rev, int(time.time())
                 self.eventq.put(self.name)
             else:
                 logging.info("Git revision for {0} unchanged with {1}".format(self.name, rev))
