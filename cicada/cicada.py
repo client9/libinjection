@@ -106,5 +106,5 @@ define("urlprefix", default="/cicada", help="url prefix")
 
 if __name__ == '__main__':
     tornado.options.parse_command_line()
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(process)d %(message)s")
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(process)d %(message)s")
     c = Cicada()
