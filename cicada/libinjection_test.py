@@ -62,7 +62,7 @@ OPENSSL = {
     'build-test': {
         'listen': [ TestOnEvent('openssl') ],
         'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
-        'exec': ExecuteShell("""
+        'exec': ExecuteShell("""#!/bin/bash
 ./config --no-shared
 make
 make test
