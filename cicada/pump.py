@@ -30,7 +30,7 @@ class Pump(object):
 
         now = int(time.time())
         for projectname, jobs in self.projects.iteritems():
-            for job in jobs:
+            for jobname, job in jobs.iteritems():
                 run = False
                 for listener in job.get('listen', []):
                     if listener.run(now, events):
@@ -41,8 +41,8 @@ class Pump(object):
                         pass
                         #logging.debug("{0} rejected".format(listener))
                 if run:
-                    logging.info("Adding {0}.{1} to be built".format(projectname, job['name']))
-                    self.workq.put(json.dumps( (projectname, job['name']) ))
+                    logging.info("Adding {0}.{1} to be built".format(projectname, jobname))
+                    self.workq.put(json.dumps( (projectname, jobname) ))
 
 
 import logging
