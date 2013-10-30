@@ -64,7 +64,7 @@ OPENSSL = {
         'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
         'exec': ExecuteShell("""
 cd openssl
-./config --no-shared
+./config no-shared
 make
 make test
 """),
