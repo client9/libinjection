@@ -43,7 +43,7 @@ STRINGENCODERS = {
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
     },
-    'codecoverage' = {
+    'codecoverage': {
         'listen': [ TestOnEvent('stringencoders') ],
         'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
         'exec': ExecuteShell('cd stringencoders && ./bootstrap.sh && ./configure && make lcov-html'),
