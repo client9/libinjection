@@ -106,12 +106,11 @@ r360 | nickg@client9.com | ... etc
         return (sout, serr, p.returncode)
 
 class PollGit(object):
-    def __init__(self, name, repo, interval, storage, eventq, branch='HEAD'):
+    def __init__(self, name, repo, storage, eventq, branch='HEAD'):
         self.name = name
         self.repo = repo
-        self.interval = interval * 60
         self.branch = branch
-        self.db = db
+        self.db = storage
         self.eventq = eventq
 
     def run(self, now):
