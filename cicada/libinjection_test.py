@@ -49,7 +49,7 @@ STRINGENCODERS = {
         'exec': ExecuteShell('cd stringencoders && ./bootstrap.sh && ./configure --enable-gcov && make clean && make lcov-html'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('stringencoders/lcov-html/html', PUBDIR, 'html/index.html', 'coverage')
+            PublishArtifact('stringencoders/lcov-html/html', PUBDIR, 'html/src/index.html', 'coverage')
         ]
     }
 }
