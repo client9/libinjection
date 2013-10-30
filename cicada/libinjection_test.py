@@ -27,6 +27,22 @@ POLLERS = {
                         'git://git.openssl.org/openssl.git',
                         DYNAMO, QUEUE_EVENT)
     },
+    'poll-git-modsecurity': {
+        'listen': [
+            TestOnTime(minute='1', hour='2'),
+        ],
+        'exec': PollGit('modsecurity',
+                        'https://github.com/SpiderLabs/ModSecurity.git',
+                        DYNAMO, QUEUE_EVENT)
+    },
+    'poll-git-ironbee': {
+        'listen': [
+            TestOnTime(minute='1', hour='2'),
+        ],
+        'exec': PollGit('ironbee',
+                        'https://github.com/ironbee/ironbee',
+                        DYNAMO, QUEUE_EVENT)
+    },
     'poll-svn-stringencoders': {
         'listen': [
             TestOnInterval(minutes=10),
@@ -41,6 +57,21 @@ LISTEN = [
     TestOnEvent('libinjection'),
     TestOnTime(minute='0', hour='23'),
 ]
+
+OPENSSL = {
+    'build-test': {
+        'listen': [ TestOnEvent('openssl') ],
+        'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
+        'exec': ExecuteShell("""
+./config --no-shared
+make
+make test
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    }
+}
 
 STRINGENCODERS = {
     'stringencoders-test': {
@@ -226,5 +257,6 @@ gprof ./reader gmon.out
 PROJECTS = {
     'pollers': POLLERS,
     'libinjection': LIBINJECTION,
-    'stringencoders': STRINGENCODERS
+    'stringencoders': STRINGENCODERS,
+    'openssl': OPENSSL
 }
