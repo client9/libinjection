@@ -130,7 +130,7 @@ coverage-testdriver: testdriver-gcov
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
 	lcov -b . --directory . --remove libinjection.info 'testdriver' -o libinjection.info
-	genhtml -o lcov-html libinjection.info
+	genhtml --branch-coverage -o lcov-html libinjection.info
 
 coverage-reader: reader-gcov
 	rm -f libinjection.info
