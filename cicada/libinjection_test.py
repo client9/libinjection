@@ -155,7 +155,7 @@ LIBINJECTION = {
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         # disable 'too-many-lines' warning
-        'exec': ExecuteShell('pylint --disable=C0302 --include-ids=y -f parseable libinjection/c/*.py'),
+        'exec': ExecuteShell('/usr/local/bin/pylint --disable=C0302 -f parseable libinjection/c/*.py'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
