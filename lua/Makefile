@@ -10,11 +10,11 @@ LUA_FLAGS=-I/usr/include/luajit-2.0 -lluajit5.1
 LUA=luajit
 
 # centos and friends
-LUA_FLAGS=-I/usr/include/ -L/usr/lib64 -llua
-LUA=lua
+#LUA_FLAGS=-I/usr/include/ -L/usr/lib64 -llua
+#LUA=lua
 
 SHARED=-shared -Wl,-soname,libinjection.so
-CFLAGS= -O0 -g -Wall -Wextra -fPIC -fno-common
+CFLAGS= -O0 -g -Wall -Wextra -Wformat=2 -fPIC -fno-common
 APPLE=$(shell uname -a | grep -c Darwin)
 
 # MAC OS X - brew install luajit
