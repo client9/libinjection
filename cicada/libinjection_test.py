@@ -89,7 +89,7 @@ STRINGENCODERS = {
         'exec': ExecuteShell('cd stringencoders && ./bootstrap.sh && ./configure --enable-gcov && make clean && make lcov-html'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('stringencoders/lcov-html/html', PUBDIR, 'html/src/index.html', 'coverage')
+            PublishArtifact('stringencoders/lcov-html/html', PUBDIR, 'html/stringencoders/src/index.html', 'coverage')
         ]
     }
 }
@@ -219,8 +219,8 @@ make reader
             # 2. link url
             # 2. linktext
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('libinjection/c/lcov-html', PUBDIR, 'lcov-html/c/libinjection_sqli.c.gcov.html', 'coverage')
-            ]
+            PublishArtifact('libinjection/c/lcov-html', PUBDIR, '/lcov-html/libinjection/c/libinjection_sqli.c.gcov.html', 'coverage')
+        ]
     },
     'libinjection-speed': {
         'listen'  : LISTEN,
