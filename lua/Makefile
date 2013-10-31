@@ -5,8 +5,8 @@
 #LUA_FLAGS=-I/usr/include/lua5.1 -llua5.1
 #LUA=/usr/bin/lua5.1
 
-# ubuntu libjit 2
-LUA_FLAGS=-I/usr/include/luajit-2.0 -lluajit5.1
+# ubuntu adm64 luajit 2
+LUA_FLAGS=-I/usr/include/luajit-2.0 -L/usr/lib/x86_64-linux-gnu -lluajit5.1
 LUA=luajit
 
 # centos and friends
@@ -71,11 +71,11 @@ lua-TestMore:
 speed:
 	${LUA} luatest.lua
 clean:
-	rm -f *~
-	rm -rf *.dSYM *.so *.dylib
-	rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h
-	rm -f sqlifingerprints.lua
-	rm -f unit-test.t
-	rm -f libinjection_sqli.c.*
-	rm -f junit*.xml
-	rm -f libinjection_wrap.c
+	@rm -f *~
+	@rm -rf *.dSYM *.so *.dylib
+	@rm -f libinjection.h libinjection_sqli.c libinjection_sqli_data.h
+	@rm -f sqlifingerprints.lua
+	@rm -f unit-test.t
+	@rm -f libinjection_sqli.c.*
+	@rm -f junit*.xml
+	@rm -f libinjection_wrap.c
