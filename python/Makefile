@@ -41,10 +41,10 @@ libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libin
 copy: libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
 
 clean:
-	rm -rf build dist
-	rm -f *.pyc *~ _libinjection.so
-	rm -f nosetests.xml
-	rm -f words.py
-	rm -f libinjection/*~ libinjection/*.pyc
-	rm -f libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
-	rm -f libinjection/libinjection_wrap.c libinjection/libinjection.py
+	@rm -rf build dist
+	@rm -f *.pyc *~ _libinjection.so
+	@rm -f nosetests.xml
+	@rm -f words.py
+	@rm -f libinjection/*~ libinjection/*.pyc
+	@rm -f libinjection/libinjection.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
+	@rm -f libinjection/libinjection_wrap.c libinjection/libinjection.py
