@@ -5,7 +5,7 @@ from sourcecontrol import *
 from shell import *
 from publishers import *
 
-WORKDIR=os.path.expanduser("/var/cicada/workspace")
+WORKDIR=os.path.expanduser("/mnt/cicada/workspace")
 PUBDIR=os.path.expanduser("/var/cicada/artifacts")
 
 REGION='us-west-2'
