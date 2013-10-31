@@ -9,7 +9,8 @@ import glob
 
 def toascii(data):
     """
-    Converts a utf-8 string to ascii.   needed since nosetests xunit is not UTF-8 safe
+    Converts a utf-8 string to ascii.
+    Needed since nosetests xunit is not UTF-8 safe
     https://github.com/nose-devs/nose/issues/649
     https://github.com/nose-devs/nose/issues/692
     """
