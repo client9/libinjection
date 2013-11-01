@@ -72,6 +72,26 @@ make test
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
     },
+    'coverage': {
+        'listen': [ TestOnEvent('openssl') ],
+        'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
+        'exec': ExecuteShell("""
+cd openssl
+./config -O0 -fprofile-arcs -ftest-coverage
+make
+lcov -b . -d . --zerocounters
+make test
+lcov -c -d . --path /mnt/cicada/workspace/openssl/build-test/openssl -o openssl.info
+lcov -d . --remove openssl.info '/usr/include*' -o openssl.info
+# lcov -d . --remove openssl.info '*/test/*' -o openssl.info
+# lcov -d . --remove openssl.info '*/engines/*' -o openssl.info
+genhtml --branch-coverage -o ../lcov-html openssl
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('lcov-html', PUBDIR, '/lcov-html/index.html', 'coverage')
+        ]
+    },
     'clang-static-analyzer': {
         'listen': [ TestOnEvent('openssl') ],
         'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
