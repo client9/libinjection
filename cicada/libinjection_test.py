@@ -130,7 +130,7 @@ cd stringencoders
 # but set the very strict cflags for make only... autoconf emits bad c test and
 #  breaks
 CC=clang ./configure
-export CFLAGS="-Isrc -Weverything -Werror -Wno-cast-align -Wno-documentation"
+export CFLAGS="-Isrc -Weverything -Werror -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
 make -e && make -e test
 """),
         'publish': [
