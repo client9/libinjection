@@ -130,7 +130,7 @@ LIBINJECTION = {
     'libinjection-clang-static-analyzer': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('cd libinjection/c && ./clang-static-analyzer.sh'),
+        'exec'   : ExecuteShell('clang --version && cd libinjection/c && ./clang-static-analyzer.sh'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
