@@ -112,13 +112,57 @@ mv 20* csa
 }
 
 STRINGENCODERS = {
-    'stringencoders-test': {
+    'build-test-gcc': {
         'listen': [ TestOnEvent('stringencoders') ],
         'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
         'exec': ExecuteShell('cd stringencoders && ./bootstrap.sh && ./configure && make && make test'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
+    },
+    'build-test-clang': {
+        'listen': [ TestOnEvent('stringencoders') ],
+        'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
+        'exec': ExecuteShell("""
+cd stringencoders
+./bootstrap.sh
+export CC=clang
+export CFLAGS=-Weverything -Werror
+./configure && make && make test
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'cppcheck': {
+        'listen': [ TestOnEvent('stringencoders') ],
+        'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ],
+        'exec': ExecuteShell("""
+cppcheck --version
+cd stringencoders
+cppcheck --enable=all --inconclusive --std=c89 --error=exitcode=2 \
+   --template '{file}:{line} {severity} {id} {message}'
+"""
+    },
+    'clang-static-analyzer': {
+        'listen': [ TestOnEvent('stringencoders') ],
+        'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('csa', PUBDIR, 'csa/index.html', 'analysis')
+        ],
+        'exec':  ExecuteShell("""
+clang --version
+cd stringencoders
+./bootstrap.sh && ./configure
+scan-build -o /mnt/cicada/workspace/stringencoders/clang-static-analyzer/ --status-bugs -k make
+cd /mnt/cicada/workspace/stringencoders/clang-static-analyzer/
+rm -rf csa
+mv 20* csa
+""")
     },
     'codecoverage': {
         'listen': [ TestOnEvent('stringencoders') ],
