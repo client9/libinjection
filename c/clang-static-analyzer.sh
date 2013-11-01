@@ -32,6 +32,6 @@ make testdriver
 # probably good.. used in testdriver as a hack
 #-enable-checker security.insecureAPI.strcpy
 
-# has probelm with "backwards array iteration"
-# used is is_backslash_escaped
+# has problem with "backwards array iteration"
+# used in is_backslash_escaped
 #-enable-checker alpha.security.ArrayBoundV2
