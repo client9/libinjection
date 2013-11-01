@@ -92,6 +92,21 @@ genhtml --branch-coverage -o ../lcov-html openssl.info
             PublishArtifact('lcov-html', PUBDIR, '/lcov-html/index.html', 'coverage')
         ]
     },
+    'cppcheck': {
+        'listen': [ TestOnEvent('openssl') ],
+        'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ],
+        'exec': ExecuteShell("""
+cppcheck --version
+cd openssl
+cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
+    --suppress=variableScope  \
+    --std=c89 --std=posix \
+    --template '{file}:{line} {severity} {id} {message}' .
+""")
+    },
     'clang-static-analyzer': {
         'listen': [ TestOnEvent('openssl') ],
         'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
