@@ -143,8 +143,11 @@ export CFLAGS=-Weverything -Werror -Wno-cast-align
         'exec': ExecuteShell("""
 cppcheck --version
 cd stringencoders
-cppcheck --enable=all --inconclusive --std=c89 --error-exitcode=2 \
-   --template '{file}:{line} {severity} {id} {message}' src
+cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
+    --suppress=variableScope  \
+    --std=c89 --std=posix \
+    --template '{file}:{line} {severity} {id} {message}' \
+    src test
 """)
     },
     'clang-static-analyzer': {
