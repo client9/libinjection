@@ -145,7 +145,7 @@ cppcheck --version
 cd stringencoders
 cppcheck --enable=all --inconclusive --std=c89 --error=exitcode=2 \
    --template '{file}:{line} {severity} {id} {message}'
-"""
+""")
     },
     'clang-static-analyzer': {
         'listen': [ TestOnEvent('stringencoders') ],
