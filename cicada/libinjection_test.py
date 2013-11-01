@@ -113,6 +113,8 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         'exec': ExecuteShell("""
 cd openssl
 ./config
+make clean
+./config
 scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make
 cd /mnt/cicada/workspace/openssl/clang-static-analyzer/
 # scan-build generates a date-based file, starting with year.  move to fixed directory
@@ -180,6 +182,7 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
 clang --version
 cd stringencoders
 ./bootstrap.sh && ./configure
+make clean
 scan-build -o /mnt/cicada/workspace/stringencoders/clang-static-analyzer/ --status-bugs make
 ERR=$?
 cd /mnt/cicada/workspace/stringencoders/clang-static-analyzer/
