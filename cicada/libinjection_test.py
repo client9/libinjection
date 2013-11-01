@@ -166,9 +166,11 @@ clang --version
 cd stringencoders
 ./bootstrap.sh && ./configure
 scan-build -o /mnt/cicada/workspace/stringencoders/clang-static-analyzer/ --status-bugs make
+ERR=$?
 cd /mnt/cicada/workspace/stringencoders/clang-static-analyzer/
 rm -rf csa
 mv 20* csa
+exit ${ERR}
 """)
     },
     'codecoverage': {
