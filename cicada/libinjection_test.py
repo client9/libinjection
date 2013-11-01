@@ -86,6 +86,7 @@ mv 20* csa
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('csa', PUBDIR, 'csa/index.html', 'analysis')
         ]
     }
 }
