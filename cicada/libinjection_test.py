@@ -127,7 +127,7 @@ STRINGENCODERS = {
 cd stringencoders
 ./bootstrap.sh
 export CC=clang
-export CFLAGS=-Weverything -Werror -W
+export CFLAGS=-Weverything -Werror -Wno-cast-align
 ./configure && make && make test
 """),
         'publish': [
