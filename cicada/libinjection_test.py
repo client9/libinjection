@@ -126,9 +126,7 @@ STRINGENCODERS = {
         'exec': ExecuteShell("""
 cd stringencoders
 ./bootstrap.sh
-export CC=clang
-export CFLAGS=-Weverything -Werror -Wno-cast-align
-./configure && make && make test
+CC=clang CFLAGS="-Weverything -Werror -Wno-cast-align -Wno-documentation" ./configure && make && make test
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
