@@ -71,6 +71,18 @@ make test
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
+    },
+    'clang-static-analyzer': {
+        'listen': [ TestOnEvent('openssl') ],
+        'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
+        'exec': ExecuteShell("""
+cd openssl
+./config
+scan-build -o /mnt/openssl-clang-static-anayzer --status-bugs -k make
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
     }
 }
 
