@@ -6,9 +6,10 @@ VALGRIND_FLAGS=--gen-suppressions=no \
 	--track-origins=yes
 
 CPPCHECK=cppcheck
-CPPCHECK_FLAGS=--enable=all --inconclusive --std=c89 --error-exitcode=2 \
-		--suppress=variableScope  \
-		--template '{file}:{line} {severity} {id} {message}'
+CPPCHECK_FLAGS=--quiet --enable=all --inconclusive --error-exitcode=2 \
+	--std=c89 --std=posix --std=c++11 \
+	--suppress=variableScope  \
+	--template '{file}:{line} {severity} {id} {message}'
 
 
 # Default GCC-based flags
