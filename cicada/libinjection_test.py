@@ -79,6 +79,10 @@ make test
 cd openssl
 ./config
 scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs -k make
+cd /mnt/cicada/workspace/openssl/clang-static-analyzer/
+# scan-build generates a date-based file, starting with year.  move to fixed directory
+rm -rf csa
+mv 20* csa
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
