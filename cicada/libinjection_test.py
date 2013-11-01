@@ -126,7 +126,12 @@ STRINGENCODERS = {
         'exec': ExecuteShell("""
 cd stringencoders
 ./bootstrap.sh
-CC=clang CFLAGS="-Isrc -Weverything -Werror -Wno-cast-align -Wno-documentation -Wno-unused-macros" ./configure && make && make test
+# we set cc=clang for configure
+# but set the very strict cflags for make only... autoconf emits bad c test and
+#  breaks
+CC=clang ./configure
+export CFLAGS="-Isrc -Weverything -Werror -Wno-cast-align -Wno-documentation"
+make -e && make -e test
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
