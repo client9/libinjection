@@ -78,7 +78,7 @@ make test
         'exec': ExecuteShell("""
 cd openssl
 ./config
-scan-build -o /mnt/openssl-clang-static-anayzer --status-bugs -k make
+scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs -k make
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
