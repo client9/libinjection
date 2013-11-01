@@ -98,7 +98,7 @@ genhtml --branch-coverage -o ../lcov-html openssl.info
         'exec': ExecuteShell("""
 cd openssl
 ./config
-scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs -k make
+scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make
 cd /mnt/cicada/workspace/openssl/clang-static-analyzer/
 # scan-build generates a date-based file, starting with year.  move to fixed directory
 rm -rf csa
@@ -143,7 +143,7 @@ export CFLAGS=-Weverything -Werror
         'exec': ExecuteShell("""
 cppcheck --version
 cd stringencoders
-cppcheck --enable=all --inconclusive --std=c89 --error=exitcode=2 \
+cppcheck --enable=all --inconclusive --std=c89 --error-exitcode=2 \
    --template '{file}:{line} {severity} {id} {message}'
 """)
     },
