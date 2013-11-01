@@ -127,7 +127,7 @@ STRINGENCODERS = {
 cd stringencoders
 ./bootstrap.sh
 export CC=clang
-export CFLAGS=-Weverything -Werror
+export CFLAGS=-Weverything -Werror -W
 ./configure && make && make test
 """),
         'publish': [
@@ -144,7 +144,7 @@ export CFLAGS=-Weverything -Werror
 cppcheck --version
 cd stringencoders
 cppcheck --enable=all --inconclusive --std=c89 --error-exitcode=2 \
-   --template '{file}:{line} {severity} {id} {message}'
+   --template '{file}:{line} {severity} {id} {message}' src
 """)
     },
     'clang-static-analyzer': {
@@ -158,7 +158,7 @@ cppcheck --enable=all --inconclusive --std=c89 --error-exitcode=2 \
 clang --version
 cd stringencoders
 ./bootstrap.sh && ./configure
-scan-build -o /mnt/cicada/workspace/stringencoders/clang-static-analyzer/ --status-bugs -k make
+scan-build -o /mnt/cicada/workspace/stringencoders/clang-static-analyzer/ --status-bugs make
 cd /mnt/cicada/workspace/stringencoders/clang-static-analyzer/
 rm -rf csa
 mv 20* csa
