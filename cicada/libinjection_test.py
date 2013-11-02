@@ -134,6 +134,7 @@ export PATH=/mnt/stack/build/bin/:$PATH
 cd openssl
 stack-build ./config
 stack-build make
+poptck
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
@@ -221,6 +222,7 @@ cd stringencoders
 export PATH=/mnt/stack/build/bin/:$PATH
 stack-build ./configure
 stack-build make allbin
+poptck
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
@@ -394,6 +396,7 @@ gprof ./reader gmon.out
 export PATH=/mnt/stack/build/bin/:$PATH
 cd libinjection/c
 stack-build make allbin
+poptck
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
