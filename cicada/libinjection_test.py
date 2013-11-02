@@ -220,8 +220,9 @@ exit ${ERR}
         'listen': [ TestOnEvent('stringencoders') ],
         'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
         'exec'    : ExecuteShell("""#!/bin/bash
-cd stringencoders
 export PATH=/mnt/stack/build/bin/:$PATH
+cd stringencoders
+./bootstrap.sh
 stack-build ./configure
 stack-build make clean
 stack-build make allbin
