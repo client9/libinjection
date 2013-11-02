@@ -134,11 +134,10 @@ export PATH=/mnt/stack/build/bin/:$PATH
 cd openssl
 stack-build ./config
 stack-build make
-""")
-    },
-    'publish': [
-        PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-    ]
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
 }
 
 STRINGENCODERS = {
