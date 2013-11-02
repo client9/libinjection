@@ -133,6 +133,7 @@ mv 20* csa
 export PATH=/mnt/stack/build/bin/:$PATH
 cd openssl
 stack-build ./config
+stack-build make clean
 stack-build make
 poptck
 """),
@@ -222,6 +223,7 @@ exit ${ERR}
 cd stringencoders
 export PATH=/mnt/stack/build/bin/:$PATH
 stack-build ./configure
+stack-build make clean
 stack-build make allbin
 poptck
 """),
@@ -397,6 +399,7 @@ gprof ./reader gmon.out
         'exec'    : ExecuteShell("""#!/bin/bash
 export PATH=/mnt/stack/build/bin/:$PATH
 cd libinjection/c
+stack-build make clean
 stack-build make allbin
 poptck
 """),
