@@ -125,7 +125,20 @@ mv 20* csa
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
             PublishArtifact('csa', PUBDIR, 'csa/index.html', 'analysis')
         ]
-    }
+    },
+    'stack': {
+        'listen': [ TestOnEvent('openssl') ],
+        'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
+        'exec': ExecuteShell("""
+export PATH=/mnt/stack/build/bin/:$PATH
+cd openssl
+stack-build ./config
+stack-build make
+""")
+    },
+    'publish': [
+        PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+    ]
 }
 
 STRINGENCODERS = {
@@ -198,6 +211,19 @@ exit ${ERR}
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
             PublishArtifact('stringencoders/lcov-html/html', PUBDIR, 'html/stringencoders/src/index.html', 'coverage')
+        ]
+    },
+    'stack': {
+        'listen': [ TestOnEvent('stringencoders') ],
+        'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
+        'exec'    : ExecuteShell("""#!/bin/bash
+cd stringencoders
+export PATH=/mnt/stack/build/bin/:$PATH
+stack-build ./configure
+stack-build make allbin
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
     }
 }
@@ -356,6 +382,18 @@ make reader
 gcc -g -O2 -pg -o reader libinjection_sqli.c reader.c
 ./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
 gprof ./reader gmon.out
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'stack': {
+        'listen'  : LISTEN,
+        'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec'    : ExecuteShell("""#!/bin/bash
+export PATH=/mnt/stack/build/bin/:$PATH
+cd libinjection/c
+stack-build make allbin
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
