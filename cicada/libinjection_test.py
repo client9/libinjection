@@ -138,6 +138,7 @@ poptck
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('openssl/pstack.txt', PUBDIR, 'pstack.txt', 'analysis'),
         ]
     }
 }
@@ -226,6 +227,7 @@ poptck
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('stringencoders/pstack.txt', PUBDIR, 'pstack.txt', 'analysis'),
         ]
     }
 }
@@ -400,6 +402,7 @@ poptck
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('libinjection/pstack.txt', PUBDIR, 'pstack.txt', 'analysis'),
         ]
     }
 }
