@@ -138,6 +138,7 @@ stack-build make
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
+    }
 }
 
 STRINGENCODERS = {
