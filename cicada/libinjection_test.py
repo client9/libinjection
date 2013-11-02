@@ -225,7 +225,7 @@ cd stringencoders
 ./bootstrap.sh
 stack-build ./configure
 stack-build make clean
-stack-build make allbin
+stack-build make
 poptck
 """),
         'publish': [
