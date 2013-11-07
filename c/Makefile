@@ -82,11 +82,11 @@ testpy: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinje
 
 test: testdriver libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	(cd ../tests; ../c/testdriver -q test-*.txt)
-	./reader -q ../data/*.txt
+	./reader -q ../data/sqli-*.txt
 
 valgrind: reader testdriver
 	(cd ../tests; ${VALGRIND} ${VALGRIND_FLAGS} ../c/testdriver -q test-*.txt)
-	${VALGRIND} ${VALGRIND_FLAGS} ./reader -q ../data/*.txt
+	${VALGRIND} ${VALGRIND_FLAGS} ./reader -q ../data/sqli-*.txt
 
 cppcheck:
 	${CPPCHECK} ${CPPCHECK_FLAGS} .
@@ -138,7 +138,7 @@ coverage-reader: reader-gcov
 	rm -rf lcov-html
 	mkdir lcov-html
 	lcov -b . --directory . --zerocounters
-	-./reader-gcov -q ../data/*.txt
+	-./reader-gcov -q ../data/sqli-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
 	lcov -b . --directory . --remove libinjection.info 'reader' -o libinjection.info
