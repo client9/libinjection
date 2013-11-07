@@ -77,7 +77,7 @@ libinjection_sqli_init($ss, $arg, $flags);
 $issqli = libinjection_is_sqli($ss);
 
 $fingerprint = '';
-if ($sqli == 1) {
+if ($issqli == 1) {
    $fingerprint = libinjection_sqli_state_fingerprint_get($x);
 }
 

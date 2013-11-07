@@ -73,7 +73,7 @@ PHP extensions.</p>
 <span class="nv">$issqli</span> <span class="o">=</span> <span class="nx">libinjection_is_sqli</span><span class="p">(</span><span class="nv">$ss</span><span class="p">);</span>
 
 <span class="nv">$fingerprint</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
-<span class="k">if</span> <span class="p">(</span><span class="nv">$sqli</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$issqli</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
    <span class="nv">$fingerprint</span> <span class="o">=</span> <span class="nx">libinjection_sqli_state_fingerprint_get</span><span class="p">(</span><span class="nv">$x</span><span class="p">);</span>
 <span class="p">}</span>
 
