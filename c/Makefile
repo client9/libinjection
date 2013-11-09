@@ -58,8 +58,8 @@ reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjec
 reader-gcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
 	${CC} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c reader.c
 
-testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
-	${CC}  ${CFLAGS} -O1 -o testdriver libinjection_sqli.c testdriver.c
+testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c libinjection_html5.c
+	${CC}  ${CFLAGS} -O0 -o testdriver libinjection_sqli.c libinjection_html5.c testdriver.c
 
 testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	rm -f sqli
