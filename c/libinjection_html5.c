@@ -586,7 +586,7 @@ static int h5_state_comment(h5_state_t* hs)
         }
         ch = *(idx + 2);
         if (ch != CHAR_GT) {
-            pos = idx - hs->s + 2;
+            pos = idx - hs->s + 1;
             continue;
         }
 
