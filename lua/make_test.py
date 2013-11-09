@@ -46,7 +46,7 @@ def genluatest(fname, data):
         testname = 'test_fingerprints'
         extra = ''
     else:
-        print "IGNORING: " + name
+        #print "IGNORING: " + name
         return
 
     name = name.replace('.txt', '')
