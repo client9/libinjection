@@ -47,6 +47,7 @@ def genluatest(fname, data):
         extra = ''
     else:
         print "IGNORING: " + name
+        return
 
     name = name.replace('.txt', '')
 
