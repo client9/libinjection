@@ -191,10 +191,8 @@ static int h5_state_tag_name_close(h5_state_t* hs)
     hs->token_type = TAG_NAME_CLOSE;
     hs->pos += 1;
     if (hs->pos < hs->len) {
-        printf("case 1\n");
         hs->state = h5_state_data;
     } else {
-        printf("case 2\n");
         hs->state = h5_state_eof;
     }
 
@@ -507,13 +505,17 @@ static int h5_state_bogus_comment(h5_state_t* hs)
     const char* idx;
     idx = memchr(hs->s + hs->pos, CHAR_GT, hs->len - hs->pos);
     if (idx == NULL) {
+        hs->token_start = hs->s + hs->pos;
         hs->token_len = hs->len - hs->pos;
+        hs->pos = hs->len;
         hs->state = h5_state_eof;
     } else {
+        hs->token_start = hs->s + hs->pos;
         hs->token_len = idx - (hs->s + hs->pos);
+        hs->pos =  idx - hs->s + 1;
         hs->state = h5_state_data;
     }
-    hs->token_start = hs->s + hs->pos;
+
     hs->token_type = TAG_COMMENT;
     return 1;
 }
