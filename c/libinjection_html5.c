@@ -1,4 +1,6 @@
 #include "libinjection_html5.h"
+
+#include <string.h>
 #include <assert.h>
 
 #define DEBUG
