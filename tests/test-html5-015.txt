@@ -5,6 +5,6 @@ tag with since name attribute
 --EXPECTED--
 TAG_NAME_OPEN,3,foo
 ATTR_NAME,3,bar
-
+TAG_NAME_CLOSE,1,>
 
 

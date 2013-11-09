@@ -315,7 +315,7 @@ static int h5_state_attribute_name(h5_state_t* hs)
             hs->token_len   = pos - hs->pos;
             hs->token_type  = ATTR_NAME;
             hs->state = h5_state_tag_name_close;
-            hs->pos = pos + 1;
+            hs->pos = pos;
             return 1;
         } else {
             pos += 1;
@@ -437,7 +437,7 @@ static int h5_state_attribute_value_no_quote(h5_state_t* hs)
             hs->token_type = ATTR_VALUE;
             hs->token_start = hs->s + hs->pos;
             hs->token_len = pos - hs->pos;
-            hs->pos = pos + 1;
+            hs->pos = pos;
             hs->state = h5_state_tag_name_close;
             return 1;
         }
@@ -489,7 +489,8 @@ static int h5_state_self_closing_start_tag(h5_state_t* hs)
     }
     ch = hs->s[hs->pos];
     if (ch == CHAR_GT) {
-        hs->token_start = hs->s + hs->pos;
+        assert(hs->pos > 0);
+        hs->token_start = hs->s + hs->pos -1;
         hs->token_len = 2;
         hs->token_type = TAG_NAME_SELFCLOSE;
         hs->state = h5_state_data;

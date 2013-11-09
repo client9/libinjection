@@ -5,6 +5,6 @@ tag with name attribute, quoted value, unclosed
 --EXPECTED--
 TAG_NAME_OPEN,3,foo
 ATTR_NAME,3,bar
-TAG_NAME_SELFCLOSE,2,>
+TAG_NAME_SELFCLOSE,2,/>
 
 
