@@ -458,7 +458,11 @@ static int h5_state_attribute_value_no_quote(h5_state_t* hs)
 static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
 {
     TRACE();
-    char ch = hs->s[hs->pos];
+    char ch;
+    if (hs->pos >= hs->len) {
+        return 0;
+    }
+    ch = hs->s[hs->pos];
     if (h5_is_white(ch)) {
         hs->pos += 1;
         return h5_state_before_attribute_name(hs);
