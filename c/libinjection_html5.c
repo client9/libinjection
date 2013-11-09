@@ -153,7 +153,11 @@ static int h5_state_tag_open(h5_state_t* hs)
     } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
         return h5_state_tag_name(hs);
     } else {
-        hs->token_start = hs->s + hs->pos;
+        /* user input mistake in configuring state */
+        if (hs->pos == 0) {
+            return h5_state_data(hs);
+        }
+        hs->token_start = hs->s + hs->pos - 1;
         hs->token_len = 1;
         hs->token_type = DATA_TEXT;
         hs->state = h5_state_data;
