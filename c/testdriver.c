@@ -204,7 +204,6 @@ int read_file(const char* fname, int flags, int testtype)
          */
         libinjection_sqli_init(&sf, copy, slen, flags);
         libinjection_sqli_callback(&sf, NULL, NULL);
-        slen =0;
         issqli = libinjection_is_sqli(&sf);
         if (issqli) {
             sprintf(g_actual, "%s", sf.fingerprint);
