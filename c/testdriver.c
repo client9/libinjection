@@ -84,7 +84,7 @@ const char* h5_type_to_string(enum html5_type x)
     case ATTR_NAME: return "ATTR_NAME";
     case ATTR_VALUE: return "ATTR_VALUE";
     case TAG_COMMENT: return "TAG_COMMENT";
-    default: return "UNKNOWN!";
+        /* compiler will complain if missed any */
     }
 }
 
