@@ -389,7 +389,7 @@ static int h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
 
     /* skip quote */
     hs->pos += 1;
-    idx = memchr(hs->s + hs->pos, qchar, hs->len - hs->pos);
+    idx = (const char*) memchr(hs->s + hs->pos, qchar, hs->len - hs->pos);
     if (idx == NULL) {
         hs->token_start = hs->s + hs->pos;
         hs->token_len = hs->len - hs->pos;
@@ -507,7 +507,7 @@ static int h5_state_bogus_comment(h5_state_t* hs)
 {
     TRACE();
     const char* idx;
-    idx = memchr(hs->s + hs->pos, CHAR_GT, hs->len - hs->pos);
+    idx = (const char*) memchr(hs->s + hs->pos, CHAR_GT, hs->len - hs->pos);
     if (idx == NULL) {
         hs->token_start = hs->s + hs->pos;
         hs->token_len = hs->len - hs->pos;
