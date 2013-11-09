@@ -22,6 +22,7 @@
 #define CHAR_EQUALS 61
 #define CHAR_GT 62
 #define CHAR_QUESTION 63
+#define CHAR_RIGHTB 93
 #define CHAR_TICK 96
 
 /* prototypes */
@@ -44,12 +45,17 @@ static int h5_state_attribute_value_single_quote(h5_state_t* hs);
 static int h5_state_attribute_value_no_quote(h5_state_t* hs);
 static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs);
 static int h5_state_comment(h5_state_t* hs);
+static int h5_state_cdata(h5_state_t* hs);
+
 
 /* 12.2.4.44 */
 static int h5_state_bogus_comment(h5_state_t* hs);
 
 /* 12.2.4.45 */
 static int h5_state_markup_declaration_open(h5_state_t* hs);
+
+/* 8.2.4.52 */
+static int h5_state_doctype(h5_state_t* hs);
 
 /**
  * public function
@@ -79,7 +85,7 @@ int libinjection_h5_next(h5_state_t* hs)
 /**
  * Everything below here is private
  *
- */
+*/
 
 static int h5_is_white(char ch)
 {
@@ -530,30 +536,43 @@ static int h5_state_bogus_comment(h5_state_t* hs)
 }
 
 /**
- * 12.2.4.45
+ * 8.2.4.45
  */
 static int h5_state_markup_declaration_open(h5_state_t* hs)
 {
     TRACE();
     size_t remaining = hs->len - hs->pos;
     if (remaining >= 7 &&
-               hs->s[hs->pos + 0] == 'D' &&
-               hs->s[hs->pos + 1] == 'O' &&
-               hs->s[hs->pos + 2] == 'C' &&
-               hs->s[hs->pos + 3] == 'T' &&
-               hs->s[hs->pos + 4] == 'Y' &&
-               hs->s[hs->pos + 5] == 'P' &&
-               hs->s[hs->pos + 6] == 'E') {
-        assert(0);
-    } else if (remaining >=2 &&
+        /* case insensitive */
+        (hs->s[hs->pos + 0] == 'D' || hs->s[hs->pos + 0] == 'd') &&
+        (hs->s[hs->pos + 1] == 'O' || hs->s[hs->pos + 1] == 'o') &&
+        (hs->s[hs->pos + 2] == 'C' || hs->s[hs->pos + 2] == 'c') &&
+        (hs->s[hs->pos + 3] == 'T' || hs->s[hs->pos + 3] == 't') &&
+        (hs->s[hs->pos + 4] == 'Y' || hs->s[hs->pos + 4] == 'y') &&
+        (hs->s[hs->pos + 5] == 'P' || hs->s[hs->pos + 5] == 'p') &&
+        (hs->s[hs->pos + 6] == 'E' || hs->s[hs->pos + 6] == 'e')
+        ) {
+        return h5_state_doctype(hs);
+    } else if (remaining >= 7 &&
+               /* upper case required */
+               hs->s[hs->pos + 0] == '[' &&
+               hs->s[hs->pos + 1] == 'C' &&
+               hs->s[hs->pos + 2] == 'D' &&
+               hs->s[hs->pos + 3] == 'A' &&
+               hs->s[hs->pos + 4] == 'T' &&
+               hs->s[hs->pos + 5] == 'A' &&
+               hs->s[hs->pos + 6] == '['
+        ) {
+        hs->pos += 7;
+        return h5_state_cdata(hs);
+    } else if (remaining >= 2 &&
                hs->s[hs->pos + 0] == '-' &&
                hs->s[hs->pos + 1] == '-') {
         hs->pos += 2;
         return h5_state_comment(hs);
-    } else {
-        // CDATA
-        assert(0);
     }
+
+    return h5_state_bogus_comment(hs);
 }
 
 /**
@@ -603,4 +622,56 @@ static int h5_state_comment(h5_state_t* hs)
         hs->token_type = TAG_COMMENT;
         return 1;
     }
+}
+
+static int h5_state_cdata(h5_state_t* hs)
+{
+    TRACE();
+    const char* idx;
+    size_t pos = hs->pos;
+    while (1) {
+        idx = (const char*) memchr(hs->s + pos, CHAR_RIGHTB, hs->len - pos);
+
+        /* did not find anything or has less than 3 chars left */
+        if (idx == NULL || idx > hs->s + hs->len - 3) {
+            hs->state = h5_state_eof;
+            hs->token_start = hs->s + hs->pos;
+            hs->token_len = hs->len - hs->pos;
+            hs->token_type = DATA_TEXT;
+            return 1;
+        } else if ( *(idx+1) == CHAR_RIGHTB && *(idx+2) == CHAR_GT) {
+            hs->state = h5_state_data;
+            hs->token_start = hs->s + hs->pos;
+            hs->token_len = idx - (hs->s + hs->pos);
+            hs->pos = idx - hs->s + 3;
+            hs->token_type = DATA_TEXT;
+            return 1;
+        } else {
+            pos = idx - hs->s + 1;
+        }
+    }
+}
+
+/**
+ * 8.2.4.52
+ * http://www.w3.org/html/wg/drafts/html/master/syntax.html#doctype-state
+ */
+static int h5_state_doctype(h5_state_t* hs)
+{
+    TRACE();
+    const char* idx;
+
+    hs->token_start = hs->s + hs->pos;
+    hs->token_type = DOCTYPE;
+
+    idx = (const char*) memchr(hs->s + hs->pos, CHAR_GT, hs->len - hs->pos);
+    if (idx == NULL) {
+        hs->state = h5_state_eof;
+        hs->token_len = hs->len - hs->pos;
+    } else {
+        hs->state = h5_state_data;
+        hs->token_len = idx - (hs->s + hs->pos);
+        hs->pos = idx - hs->s + 1;
+    }
+    return 1;
 }

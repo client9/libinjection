@@ -18,7 +18,8 @@ enum html5_type {
     TAG_CLOSE,
     ATTR_NAME,
     ATTR_VALUE,
-    TAG_COMMENT
+    TAG_COMMENT,
+    DOCTYPE,
 };
 
 struct h5_state;
