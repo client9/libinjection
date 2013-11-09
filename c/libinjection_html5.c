@@ -270,7 +270,6 @@ static int h5_state_before_attribute_name(h5_state_t* hs)
         hs->token_start = hs->s + hs->pos;
         hs->token_len = 1;
         hs->token_type = TAG_NAME_CLOSE;
-        hs->state = h5_state_data;
         hs->pos += 1;
         return 1;
     }
@@ -525,12 +524,7 @@ static int h5_state_markup_declaration_open(h5_state_t* hs)
 {
     TRACE();
     size_t remaining = hs->len - hs->pos;
-    if (remaining >=2
-        && hs->s[hs->pos + 0] == '-'
-        && hs->s[hs->pos + 1] == '-') {
-        hs->pos += 2;
-        return h5_state_comment(hs);
-    } else if (remaining >= 7 &&
+    if (remaining >= 7 &&
                hs->s[hs->pos + 0] == 'D' &&
                hs->s[hs->pos + 1] == 'O' &&
                hs->s[hs->pos + 2] == 'C' &&
@@ -539,6 +533,11 @@ static int h5_state_markup_declaration_open(h5_state_t* hs)
                hs->s[hs->pos + 5] == 'P' &&
                hs->s[hs->pos + 6] == 'E') {
         assert(0);
+    } else if (remaining >=2 &&
+               hs->s[hs->pos + 0] == '-' &&
+               hs->s[hs->pos + 1] == '-') {
+        hs->pos += 2;
+        return h5_state_comment(hs);
     } else {
         // CDATA
         assert(0);
