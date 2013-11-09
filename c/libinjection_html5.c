@@ -3,7 +3,6 @@
 #include <string.h>
 #include <assert.h>
 
-#define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #define TRACE() printf("%s:%d\n", __FUNCTION__, __LINE__)
