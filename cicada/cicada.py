@@ -21,12 +21,12 @@ def epoch_to_ago(ago, now=0):
     if (diff < 2):
         return "now"
     if (diff < 60):
-        return "{1}sec".format(diff)
+        return "{0}sec".format(diff)
     if (diff < 60*60*3):
-        return "{1}min".format(int(diff / 60.0))
+        return "{0}min".format(int(diff / 60.0))
     if (diff < 86400):
-        return "{1}hr".format(int(diff / 3600.0))
-    return "{1}day".format(int(diff / 86400.0))
+        return "{0}hr".format(int(diff / 3600.0))
+    return "{0}day".format(int(diff / 86400.0))
 
 class HookShotHandler(tornado.web.RequestHandler):
     """
