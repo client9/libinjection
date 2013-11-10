@@ -15,6 +15,8 @@ size_t print_string(char* buf, size_t len, stoken_t* t);
 size_t print_var(char* buf, size_t len, stoken_t* t);
 size_t print_token(char* buf, size_t len, stoken_t *t);
 int read_file(const char* fname, int flags, int testtype);
+const char* h5_type_to_string(enum html5_type x);
+size_t print_html5_token(char* buf, size_t len, h5_state_t* hs);
 
 size_t modp_rtrim(char* str, size_t len)
 {
@@ -88,6 +90,7 @@ const char* h5_type_to_string(enum html5_type x)
 
         /* compiler will complain if missed any */
     }
+    assert(0);
 }
 
 size_t print_html5_token(char* buf, size_t len, h5_state_t* hs)
