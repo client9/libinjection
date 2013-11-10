@@ -162,3 +162,7 @@ clean:
 	@rm -f reader is_sqli lcov-reader sqli fptool testdriver example1
 	@rm -f reader-gcov testdriver-gcov
 	@rm -f fingerprints-orig.txt
+	@rm -f *.ll *.ll.out
+
+# *.ll *.ll.out are produced by "stack"
+# https://github.com/xiw/stack
