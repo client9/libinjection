@@ -21,7 +21,7 @@ class PublishArtifact(object):
 
     def run(self, workspace, project, jobname, start):
         destdir = os.path.join(self.destination, project, jobname, str(start));
-        latestdir = os.path.join(self.destination, project, jobname, latest);
+        latestdir = os.path.join(self.destination, project, jobname, 'latest');
         if not os.path.exists(destdir):
             os.makedirs(destdir)
         sourcedir = os.path.join(workspace, self.artifact)
