@@ -85,7 +85,7 @@ test: testdriver libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	./reader -q ../data/sqli-*.txt
 
 valgrind: reader testdriver
-	(cd ../tests; ${VALGRIND} ${VALGRIND_FLAGS} ../c/testdriver -q test-*.txt)
+	(cd ../tests; find . -name 'test*.txt' | xargs ${VALGRIND} ${VALGRIND_FLAGS} ../c/testdriver -q)
 	${VALGRIND} ${VALGRIND_FLAGS} ./reader -q ../data/sqli-*.txt
 
 cppcheck:
