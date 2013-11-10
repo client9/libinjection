@@ -6,7 +6,7 @@ Libinjection is a small C library to detect SQLi attacks in user input with the 
 * Open.  Source code is on [GitHub](https://github.com/client9/libinjection/).
 * Low _false-postives_.   When there are high false positives, people tend to turn off any WAF or protection.
 * Excellent detection of SQLi.
-* High performance (currently [over 500,000 TPS](https://libinjection.client9.com/cicada/artifacts/libinjection/libinjection-speed/1384081170/console.txt))
+* High performance (currently [over 500,000 TPS](https://libinjection.client9.com/cicada/artifacts/libinjection/libinjection-speed/latest/console.txt))
 * Easy to test and QA
 * Easy to integrate and extend
 
