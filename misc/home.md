@@ -6,7 +6,7 @@ Libinjection is a small C library to detect SQLi attacks in user input with the 
 * Open.  Source code is on [GitHub](https://github.com/client9/libinjection/).
 * Low _false-postives_.   When there are high false positives, people tend to turn off any WAF or protection.
 * Excellent detection of SQLi.
-* High performance (currently [over 500,000 TPS](https://libinjection.client9.com/cicada/artifacts/libinjection-speed/console.txt))
+* High performance (currently [over 500,000 TPS](https://libinjection.client9.com/cicada/artifacts/libinjection/libinjection-speed/1384081170/console.txt))
 * Easy to test and QA
 * Easy to integrate and extend
 
@@ -18,14 +18,14 @@ Libinjection is a small C library to detect SQLi attacks in user input with the 
  * [Python](/doc-sqli-python)
  * [PHP](/doc-sqli-php)
  * [Lua](https://github.com/client9/libinjection/tree/master/lua)
-* Small - about [1500 lines of code](/cicada/artifacts/libinjection-loc/console.txt) in three files
+* Small - about [1500 lines of code](https://libinjection.client9.com/cicada/artifacts/libinjection/libinjection-loc/latest/console.txt) in three files
 * Compiles on Linux/Unix/BSD, Mac and Windows
 * No threads used and thread safe
 * No recursion
 * No (heap) memory allocation
 * No extenal library dependencies
 * [400+ unit tests](https://github.com/client9/libinjection/tree/master/tests)
-* [98% code coverage](https://libinjection.client9.com/cicada/artifacts/libinjection-coverage-unittest/lcov-html/c/libinjection_sqli.c.gcov.html)
+* [98% code coverage](https://libinjection.client9.com/cicada/artifacts/libinjection/libinjection-coverage-unittest/latest//lcov-html/libinjection/c/index.html)
 * [BSD License](https://github.com/client9/libinjection/blob/master/COPYING.txt)
 
 Third-Party Ports
@@ -43,4 +43,3 @@ Applications
 * Proprietary Honeypot
 * Proprietary WAF, Russia
 * Proprietary WAF, Japan
-
