@@ -47,6 +47,7 @@ class KickHandler(tornado.web.RequestHandler):
 
 class CicadaStatusHandler(tornado.web.RequestHandler):
     def get(self):
+        now = int(time.time())
         projects = {}
         for rs in DYNAMO.projectjobs_list_all():
             try:
@@ -62,12 +63,11 @@ class CicadaStatusHandler(tornado.web.RequestHandler):
                     'project': projectname,
                     'job': jobname,
                     'start': int(rs['started']),
-                    'ago': epoch_to_ago(int(rs['started'])),
+                    'ago': epoch_to_ago(int(rs['started']), now),
                     'duration': int(rs['updated'] - rs['started']),
                     'state': str(rs['state']),
                     'artifacts': artifacts
                 }
-
 
                 if rs['project'] in projects:
                     projects[rs['project']].append(job)
