@@ -15,8 +15,8 @@ execfile('libinjection_test.py')
 def epoch_to_ago(ago, now=0):
     if now == 0:
         now = int(time.time())
-    diff = now-ago
-    if (diff > 0):
+    diff = now - ago
+    if (diff < 0):
         return "future"
     if (diff < 2):
         return "now"
