@@ -50,7 +50,7 @@ class CicadaStatusHandler(tornado.web.RequestHandler):
         now = int(time.time())
         projects = {}
         for rs in DYNAMO.projectjobs_list_all():
-            if True:
+            try:
                 projectname = str(rs['project'])
                 jobname = str(rs['job'])
                 artifacts = []
@@ -73,6 +73,9 @@ class CicadaStatusHandler(tornado.web.RequestHandler):
                     projects[rs['project']].append(job)
                 else:
                     projects[rs['project']] = [ job ]
+            except KeyError, e:
+                logging.error("Likely dead project:  {0} {1}".format(e, rs))
+
             #except Exception, e:
             #    logging.error("Problem in rendering: {0} {1}".format(e, rs))
 
