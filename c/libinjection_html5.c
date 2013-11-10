@@ -12,7 +12,6 @@
 
 
 #define CHAR_EOF -1
-#define CHAR_NULL 0
 #define CHAR_BANG 33
 #define CHAR_DOUBLE 34
 #define CHAR_SINGLE 39
@@ -23,7 +22,6 @@
 #define CHAR_GT 62
 #define CHAR_QUESTION 63
 #define CHAR_RIGHTB 93
-#define CHAR_TICK 96
 
 /* prototypes */
 
@@ -129,8 +127,8 @@ static int h5_state_data(h5_state_t* hs)
     } else {
         hs->token_start = hs->s + hs->pos;
         hs->token_type = DATA_TEXT;
-        hs->token_len = idx - (hs->s + hs->pos);
-        hs->pos = (idx - hs->s) + 1;
+        hs->token_len = (size_t)(idx - hs->s) - hs->pos;
+        hs->pos = (size_t)(idx - hs->s) + 1;
         hs->state = h5_state_tag_open;
         if (hs->token_len == 0) {
             return h5_state_tag_open(hs);
@@ -403,7 +401,7 @@ static int h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
         hs->state = h5_state_eof;
     } else {
         hs->token_start = hs->s + hs->pos;
-        hs->token_len = idx - (hs->s + hs->pos);
+        hs->token_len = (size_t)(idx - hs->s) - hs->pos;
         hs->token_type = ATTR_VALUE;
         hs->state = h5_state_after_attribute_value_quoted_state;
         hs->pos += hs->token_len + 1;
@@ -526,8 +524,8 @@ static int h5_state_bogus_comment(h5_state_t* hs)
         hs->state = h5_state_eof;
     } else {
         hs->token_start = hs->s + hs->pos;
-        hs->token_len = idx - (hs->s + hs->pos);
-        hs->pos =  idx - hs->s + 1;
+        hs->token_len = (size_t)(idx - hs->s) - hs->pos;
+        hs->pos =  (size_t)(idx - hs->s) + 1;
         hs->state = h5_state_data;
     }
 
@@ -605,19 +603,19 @@ static int h5_state_comment(h5_state_t* hs)
         }
         ch = *(idx + 1);
         if (ch != CHAR_DASH && ch != CHAR_BANG) {
-            pos = idx - hs->s + 1;
+            pos = (size_t)(idx - hs->s) + 1;
             continue;
         }
         ch = *(idx + 2);
         if (ch != CHAR_GT) {
-            pos = idx - hs->s + 1;
+            pos = (size_t)(idx - hs->s) + 1;
             continue;
         }
 
         /* ends in --> or -!> */
         hs->token_start = hs->s + hs->pos;
-        hs->token_len = idx - (hs->s + hs->pos);
-        hs->pos = idx - hs->s + 3;
+        hs->token_len = (size_t)(idx - hs->s) + hs->pos;
+        hs->pos = (size_t)(idx - hs->s) + 3;
         hs->state = h5_state_data;
         hs->token_type = TAG_COMMENT;
         return 1;
@@ -642,12 +640,12 @@ static int h5_state_cdata(h5_state_t* hs)
         } else if ( *(idx+1) == CHAR_RIGHTB && *(idx+2) == CHAR_GT) {
             hs->state = h5_state_data;
             hs->token_start = hs->s + hs->pos;
-            hs->token_len = idx - (hs->s + hs->pos);
-            hs->pos = idx - hs->s + 3;
+            hs->token_len = (size_t)(idx - hs->s) - hs->pos;
+            hs->pos = (size_t)(idx - hs->s) + 3;
             hs->token_type = DATA_TEXT;
             return 1;
         } else {
-            pos = idx - hs->s + 1;
+            pos = (size_t)(idx - hs->s) + 1;
         }
     }
 }
@@ -670,8 +668,8 @@ static int h5_state_doctype(h5_state_t* hs)
         hs->token_len = hs->len - hs->pos;
     } else {
         hs->state = h5_state_data;
-        hs->token_len = idx - (hs->s + hs->pos);
-        hs->pos = idx - hs->s + 1;
+        hs->token_len = (size_t)(idx - hs->s) - hs->pos;
+        hs->pos = (size_t)(idx - hs->s) + 1;
     }
     return 1;
 }

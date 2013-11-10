@@ -105,7 +105,7 @@ size_t print_html5_token(char* buf, size_t len, h5_state_t* hs)
                    h5_type_to_string(hs->token_type),
                    (int) hs->token_len,
                    tmp);
-    len += (int) slen;
+    len += (size_t) slen;
     free(tmp);
     return len;
 }
