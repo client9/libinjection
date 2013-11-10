@@ -25,6 +25,10 @@ class PublishArtifact(object):
             os.makedirs(destdir)
         sourcedir = os.path.join(workspace, self.artifact)
         logging.info('Copying {0} to {1}'.format(sourcedir, destdir))
+
+        # creates an empty file if it's missing
+        subprocess.call(['touch', '-a', sourcedir])
+
         subprocess.call(['cp', '-r', sourcedir, destdir])
 
         # portable? link to latest
