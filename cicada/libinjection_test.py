@@ -134,6 +134,7 @@ export PATH=/mnt/stack/build/bin/:$PATH
 cd openssl
 stack-build ./config
 stack-build make clean
+find . -name '*.ll' -o -name '*.ll.out' | xargs -f rm
 stack-build make
 poptck
 """),
