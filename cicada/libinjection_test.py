@@ -21,7 +21,7 @@ LISTEN = [
 POLLERS = {
     'poll-git-openssl': {
         'listen': [
-            TestOnTime(minute='5', hour='1'),
+            TestOnTime(minute='10', hour='1'),
         ],
         'exec': PollGit('openssl',
                         'git://git.openssl.org/openssl.git',
