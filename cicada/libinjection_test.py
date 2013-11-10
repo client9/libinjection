@@ -163,7 +163,7 @@ cd stringencoders
 # but set the very strict cflags for make only... autoconf emits bad c test and
 #  breaks
 CC=clang ./configure
-export CFLAGS="-Isrc -Weverything -Werror -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
+export CFLAGS="-Isrc -Werror -Weverything -Werror -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
 make -e && make -e test
 """),
         'publish': [
@@ -360,7 +360,7 @@ make reader
             # 2. link url
             # 2. linktext
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('libinjection/c/lcov-html', PUBDIR, '/lcov-html/libinjection/c/libinjection_sqli.c.gcov.html', 'coverage')
+            PublishArtifact('libinjection/c/lcov-html', PUBDIR, '/lcov-html/libinjection/c/index.html', 'coverage')
         ]
     },
     'libinjection-speed': {
