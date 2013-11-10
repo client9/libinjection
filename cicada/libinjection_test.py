@@ -27,22 +27,6 @@ POLLERS = {
                         'git://git.openssl.org/openssl.git',
                         DYNAMO, QUEUE_EVENT)
     },
-    'poll-git-modsecurity': {
-        'listen': [
-            TestOnTime(minute='1', hour='2'),
-        ],
-        'exec': PollGit('modsecurity',
-                        'https://github.com/SpiderLabs/ModSecurity.git',
-                        DYNAMO, QUEUE_EVENT)
-    },
-    'poll-git-ironbee': {
-        'listen': [
-            TestOnTime(minute='1', hour='2'),
-        ],
-        'exec': PollGit('ironbee',
-                        'https://github.com/ironbee/ironbee',
-                        DYNAMO, QUEUE_EVENT)
-    },
     'poll-svn-stringencoders': {
         'listen': [
             TestOnInterval(minutes=10),
@@ -163,7 +147,7 @@ cd stringencoders
 # we set cc=clang for configure
 # but set the very strict cflags for make only... autoconf emits bad c test and
 #  breaks
-CC=clang ./configure
+CC=clang CXX='clang -std=c++' ./configure
 export CFLAGS="-Isrc -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
 make -e && make -e test
 """),
