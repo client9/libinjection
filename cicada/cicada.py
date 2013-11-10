@@ -12,6 +12,22 @@ import tornado.escape
 
 execfile('libinjection_test.py')
 
+def epoch_to_ago(ago, now=0):
+    if now == 0:
+        now = int(time.time())
+    diff = now-ago
+    if (diff > 0):
+        return "future"
+    if (diff < 2):
+        return "now"
+    if (diff < 60):
+        return "{1}sec".format(diff)
+    if (diff < 60*60*3):
+        return "{1}min".format(int(diff / 60.0))
+    if (diff < 86400):
+        return "{1}hr".format(int(diff / 3600.0))
+    return "{1}day".format(int(diff / 86400.0))
+
 class HookShotHandler(tornado.web.RequestHandler):
     """
     something to handle github hookshots
@@ -46,6 +62,7 @@ class CicadaStatusHandler(tornado.web.RequestHandler):
                     'project': projectname,
                     'job': jobname,
                     'start': int(rs['started']),
+                    'ago': epoch_to_ago(int(rs['started'])),
                     'duration': int(rs['updated'] - rs['started']),
                     'state': str(rs['state']),
                     'artifacts': artifacts
