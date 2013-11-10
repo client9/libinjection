@@ -202,9 +202,9 @@ exit ${ERR}
         ]
     },
     'stack': {
-        'listen': [ TestOnEvent('stringencoders') ],
+        'listen': [ TestOnInterval(minutes=1000) ],
         'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
-        'exec'    : ExecuteShell("""#!/bin/bash
+        'exec'  : ExecuteShell("""#!/bin/bash
 export PATH=/mnt/stack/build/bin/:$PATH
 cd stringencoders
 ./bootstrap.sh
@@ -385,7 +385,7 @@ gprof ./reader gmon.out
         ]
     },
     'stack': {
-        'listen'  : LISTEN,
+        'listen'  : TestOnInterval(minutes=1000),
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""#!/bin/bash
 export PATH=/mnt/stack/build/bin/:$PATH
