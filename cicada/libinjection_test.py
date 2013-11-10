@@ -255,7 +255,12 @@ LIBINJECTION = {
     'libinjection-build-test-clang': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('clang --version && cd libinjection/c && ./clang.sh'),
+        'exec': ExecuteShell("""
+clang --version
+cd libinjection/c
+make clean
+CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded" make -e test
+"""),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
