@@ -385,7 +385,7 @@ gprof ./reader gmon.out
         ]
     },
     'stack': {
-        'listen'  : [ TestOnInterval(minutes=1000), ]
+        'listen'  : [ TestOnInterval(minutes=1000), ],
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""#!/bin/bash
 export PATH=/mnt/stack/build/bin/:$PATH
