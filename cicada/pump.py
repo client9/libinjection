@@ -62,7 +62,7 @@ if __name__ == '__main__':
         QUEUE_EVENT.put(eventname)
 
     p = Pump(PROJECTS, QUEUE_EVENT, QUEUE_WORK)
-    interval = 10
+    interval = 10*60
     while (True):
         p.run()
         time.sleep(interval)
