@@ -614,7 +614,7 @@ static int h5_state_comment(h5_state_t* hs)
 
         /* ends in --> or -!> */
         hs->token_start = hs->s + hs->pos;
-        hs->token_len = (size_t)(idx - hs->s) + hs->pos;
+        hs->token_len = (size_t)(idx - hs->s) - hs->pos;
         hs->pos = (size_t)(idx - hs->s) + 3;
         hs->state = h5_state_data;
         hs->token_type = TAG_COMMENT;
