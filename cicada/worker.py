@@ -84,7 +84,7 @@ if __name__ == '__main__':
     execfile('libinjection_test.py')
     if not os.path.exists(WORKDIR):
         os.makedirs(WORKDIR)
-    interval = 60
+    interval = 60*10
 
     if len(sys.argv) > 1:
         projectname = sys.argv[1]
