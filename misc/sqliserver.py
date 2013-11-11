@@ -318,6 +318,8 @@ application = tornado.web.Application([
     (r"/diagnostics", NullHandler),
     (r"/days-since-last-bypass", DaysSinceHandler),
     (r"/xsstest", XssTestHandler),
+    (r"/bootstrap", tornado.web.StaticFileHandler, {'path': '/opt/bootstrap' }),
+    (r"/jquery", tornado.web.StaticFileHandler, {'path': '/opt/jquery' }),
     (r'/robots.txt', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
     (r'/favicon.ico', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), "static")}),
     (r"/([a-z-]*)", PageHandler)
