@@ -106,11 +106,14 @@ def make_tornado_application(pubspace):
     }
 
     handlers = [
+        (r'/bootstrap/(.*)', tornado.web.StaticFileHandler, {'path': '/opt/bootstrap' }),
+        (r'/jquery/(.*)', tornado.web.StaticFileHandler, {'path': '/opt/jquery' }),
+        (options.urlprefix + '/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
+
         (options.urlprefix + '/hookshot', HookShotHandler),
         (options.urlprefix + '/kick', KickHandler),
         (options.urlprefix + '/$', CicadaStatusHandler),
         (options.urlprefix + '/index.html', CicadaStatusHandler),
-        (options.urlprefix + '/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace})
     ]
 
     return  tornado.web.Application(handlers, **settings)
