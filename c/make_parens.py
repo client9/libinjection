@@ -59,8 +59,8 @@ class PermuteFingerprints(object):
         if s in self.blacklist:
             return False
 
-        # All SQL types are folded away
-        if 't' in s:
+        # SQL Types are rarely used
+        if 't' in s and 'f(t' not in s and 'At' not in s:
             return False
 
         # only 1 special case for this

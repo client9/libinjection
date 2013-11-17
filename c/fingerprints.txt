@@ -795,6 +795,13 @@
 1Ason
 1Asos
 1Asov
+1AtUE
+1Ato(
+1Ato1
+1Atof
+1Aton
+1Atos
+1Atov
 1AvUE
 1Avo(
 1Avof
@@ -1549,6 +1556,7 @@
 1osA(
 1osAf
 1osAs
+1osAt
 1osAv
 1osB(
 1osB1
@@ -1638,6 +1646,7 @@
 1ovA(
 1ovAf
 1ovAs
+1ovAt
 1ovAv
 1ovB(
 1ovB1
@@ -3105,6 +3114,7 @@ f();n
 f()A(
 f()Af
 f()As
+f()At
 f()Av
 f()B(
 f()B1
@@ -3301,6 +3311,8 @@ f(sof
 f(son
 f(sos
 f(sov
+f(t,(
+f(t,f
 f(v&(
 f(v&1
 f(v&f
@@ -4280,6 +4292,13 @@ nAsof
 nAson
 nAsos
 nAsov
+nAtUE
+nAto(
+nAto1
+nAtof
+nAton
+nAtos
+nAtov
 nAvUE
 nAvo(
 nAvof
@@ -4959,6 +4978,7 @@ nos;c
 nosA(
 nosAf
 nosAs
+nosAt
 nosAv
 nosB(
 nosB1
@@ -5047,6 +5067,7 @@ nov;n
 novA(
 novAf
 novAs
+novAt
 novAv
 novB(
 novB1
@@ -5909,6 +5930,13 @@ sAsof
 sAson
 sAsos
 sAsov
+sAtUE
+sAto(
+sAto1
+sAtof
+sAton
+sAtos
+sAtov
 sAvUE
 sAvo(
 sAvof
@@ -6579,6 +6607,7 @@ so1;n
 so1A(
 so1Af
 so1As
+so1At
 so1Av
 so1B(
 so1B1
@@ -6718,6 +6747,7 @@ son;n
 sonA(
 sonAf
 sonAs
+sonAt
 sonAv
 sonB(
 sonB1
@@ -6802,6 +6832,7 @@ sos;n
 sosA(
 sosAf
 sosAs
+sosAt
 sosAv
 sosB(
 sosB1
@@ -6891,6 +6922,7 @@ sov;n
 sovA(
 sovAf
 sovAs
+sovAt
 sovAv
 sovB(
 sovB1
@@ -7649,6 +7681,13 @@ vAsof
 vAson
 vAsos
 vAsov
+vAtUE
+vAto(
+vAto1
+vAtof
+vAton
+vAtos
+vAtov
 vAvUE
 vAvo(
 vAvof
@@ -8363,6 +8402,7 @@ vos;n
 vosA(
 vosAf
 vosAs
+vosAt
 vosAv
 vosB(
 vosB1
