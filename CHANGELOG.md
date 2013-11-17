@@ -1,6 +1,6 @@
 # vNEXT
 
-* Improvements to folder prevent bypasses using SQL types (casts).  This eliminated about 400 fingerprints as well.
+* Improvements to folder to prevent bypasses using SQL types (casts).  This eliminated about 400 fingerprints as well.
 * Over 400 unit tests now!
 * Compiles clean under clang with `-Weverything -Wno-padded`   `-Wno-padded` is excluded since it's architecture dependant.   See `clang.sh` to see how to invoke.
 * PHP documentation fixes, thanks @LightOS
