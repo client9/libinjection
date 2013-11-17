@@ -1508,14 +1508,15 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
             sf->tokenvec[left+1].type = TYPE_TSQL;
             left += 2;
             continue; /* reparse everything, but we probably can advance left, and pos */
-        } else if ((sf->tokenvec[left].type ==TYPE_OPERATOR ||
-                    sf->tokenvec[left].type ==TYPE_LOGIC_OPERATOR) &&
-                   st_is_unary_op(&sf->tokenvec[left+1])) {
+        } else if ((sf->tokenvec[left].type == TYPE_OPERATOR ||
+                    sf->tokenvec[left].type == TYPE_LOGIC_OPERATOR) &&
+                   (st_is_unary_op(&sf->tokenvec[left+1]) ||
+                    sf->tokenvec[left+1].type == TYPE_SQLTYPE)) {
             pos -= 1;
             sf->stats_folds += 1;
             left = 0;
             continue;
-        } else if (sf->tokenvec[left].type ==TYPE_LEFTPARENS &&
+        } else if (sf->tokenvec[left].type == TYPE_LEFTPARENS &&
                    st_is_unary_op(&sf->tokenvec[left+1])) {
             pos -= 1;
             sf->stats_folds += 1;
@@ -1590,6 +1591,8 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
         } else if (sf->tokenvec[left].type == TYPE_SQLTYPE &&
                    (sf->tokenvec[left+1].type == TYPE_BAREWORD ||
                     sf->tokenvec[left+1].type == TYPE_NUMBER ||
+                    sf->tokenvec[left+1].type == TYPE_SQLTYPE ||
+                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS ||
                     sf->tokenvec[left+1].type == TYPE_FUNCTION ||
                     sf->tokenvec[left+1].type == TYPE_VARIABLE ||
                     sf->tokenvec[left+1].type == TYPE_STRING))  {
@@ -1622,6 +1625,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
         } else if (sf->tokenvec[left].type == TYPE_LEFTPARENS &&
                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS) {
             pos -= 1;
+            left = 0;
             sf->stats_folds += 1;
             continue;
         } else if (sf->tokenvec[left].type == TYPE_RIGHTPARENS &&
@@ -1631,6 +1635,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
             continue;
         } else if (sf->tokenvec[left].type == TYPE_SQLTYPE &&
                    sf->tokenvec[left+1].type == TYPE_SQLTYPE) {
+            left = 0;
             pos -= 1;
             sf->stats_folds += 1;
             continue;
@@ -1689,6 +1694,17 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                 left -= 1;
             }
             pos -= 2;
+            continue;
+        } else if (sf->tokenvec[left].type == TYPE_OPERATOR &&
+                   sf->tokenvec[left+1].type == TYPE_SQLTYPE &&
+                   sf->tokenvec[left+2].type == TYPE_LEFTPARENS) {
+            /* 1 - binary (2) -> 1 - (2) */
+            st_copy(&sf->tokenvec[left+1], &sf->tokenvec[left+2]);
+            if (left > 0) {
+                left -= 1;
+            }
+            left = 0;
+            pos -= 1;
             continue;
         } else if (sf->tokenvec[left].type == TYPE_LOGIC_OPERATOR &&
                    sf->tokenvec[left+2].type == TYPE_LOGIC_OPERATOR) {

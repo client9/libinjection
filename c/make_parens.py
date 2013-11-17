@@ -59,6 +59,10 @@ class PermuteFingerprints(object):
         if s in self.blacklist:
             return False
 
+        # All SQL types are folded away
+        if 't' in s:
+            return False
+
         # only 1 special case for this
         # 1;foo:goto foo
         # 1;n:k
@@ -130,10 +134,6 @@ class PermuteFingerprints(object):
             return False
 
         if 'ff' in s:
-            return False
-        if 'tt' in s:
-            return False
-        if 'tf' in s:
             return False
 
         if '1no' in s:
