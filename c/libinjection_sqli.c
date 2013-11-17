@@ -1399,7 +1399,10 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
     sf->current = &(sf->tokenvec[0]);
     while (more) {
         more = libinjection_sqli_tokenize(sf);
-        if ( ! (sf->current->type == TYPE_COMMENT || sf->current->type == TYPE_LEFTPARENS || st_is_unary_op(sf->current))) {
+        if ( ! (sf->current->type == TYPE_COMMENT ||
+                sf->current->type == TYPE_LEFTPARENS ||
+                sf->current->type == TYPE_SQLTYPE ||
+                st_is_unary_op(sf->current))) {
             break;
         }
     }
@@ -1452,7 +1455,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                     //printf("HEREIAM\n");
                     pos = 1;
                     left = 0;
-                } 
+                }
             }
         }
 
