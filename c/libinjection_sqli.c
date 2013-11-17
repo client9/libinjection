@@ -1633,12 +1633,14 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
             pos -= 1;
             sf->stats_folds += 1;
             continue;
+/*
         } else if (sf->tokenvec[left].type == TYPE_SQLTYPE &&
                    sf->tokenvec[left+1].type == TYPE_SQLTYPE) {
             left = 0;
             pos -= 1;
             sf->stats_folds += 1;
             continue;
+*/
         } else if (sf->tokenvec[left].type == TYPE_LEFTBRACE &&
                    sf->tokenvec[left+1].type == TYPE_BAREWORD) {
             /* weird ODBC / MYSQL  {foo expr} --> expr
