@@ -29,7 +29,7 @@ RMAP = {
     'X': '/* /* nested comment */ */'
 }
 
-if __name__ == '__main__':
+def main():
     mode = 'print'
     fingerprints = []
     with open('fingerprints.txt', 'r') as openfile:
@@ -50,4 +50,7 @@ if __name__ == '__main__':
             if fingerprint != actualfp:
                 print fingerprint, actualfp, ' '.join(sql)
 
+
+if __name__ == '__main__':
+    main()
 
