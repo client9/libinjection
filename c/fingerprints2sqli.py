@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-
+"""
+Small script to convert fingerprints back to SQL or SQLi
+"""
 import subprocess
 
-"""
-Small script to convert fingerprints back to
-SQL or SQLi
-"""
 
 RMAP = {
     '1': '1',
@@ -32,7 +30,7 @@ RMAP = {
 }
 
 if __name__ == '__main__':
-
+    mode = 'print'
     fingerprints = []
     with open('fingerprints.txt', 'r') as fd:
         for line in fd:
@@ -44,10 +42,11 @@ if __name__ == '__main__':
             sql.append(RMAP[ch])
 
         sqlstr =  ' '.join(sql)
-        if True:
+        if mode == 'print':
             print fingerprint, ' '.join(sql)
         else:
-            actualfp = subprocess.check_output(['./fptool', '-0', sqlstr]).strip()
+            args = ['./fptool', '-0', sqlstr]
+            actualfp = subprocess.check_output(args).strip()
             if fingerprint != actualfp:
                 print fingerprint, actualfp, ' '.join(sql)
 
