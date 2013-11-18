@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import subprocess
+
 """
 Small script to convert fingerprints back to
 SQL or SQLi
@@ -7,17 +9,17 @@ SQL or SQLi
 
 RMAP = {
     '1': '1',
-    'f': '',
+    'f': 'convert',
     '&': 'and',
     'v': '@version',
     'n': 'aname',
     's': "\"1\"",
     '(': '(',
     ')': ')',
-    'o': '-',
+    'o': '*',
     'E': 'select',
     'U': 'union',
-    'k': "KEYWORD",
+    'k': "JOIN",
     't': 'binary',
     ',': ',',
     ';': ';',
@@ -40,5 +42,13 @@ if __name__ == '__main__':
         sql = []
         for ch in fingerprint:
             sql.append(RMAP[ch])
-        print fingerprint, ' '.join(sql)
+
+        sqlstr =  ' '.join(sql)
+        if True:
+            print fingerprint, ' '.join(sql)
+        else:
+            actualfp = subprocess.check_output(['./fptool', '-0', sqlstr]).strip()
+            if fingerprint != actualfp:
+                print fingerprint, actualfp, ' '.join(sql)
+
 
