@@ -73,6 +73,8 @@ class PermuteFingerprints(object):
             return False
         if 'v,n' in s:
             return False
+        if 'n,v' in s:
+            return False
         if '1,v' in s:
             return False
         if 'Eo(' in s:
