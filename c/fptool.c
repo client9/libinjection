@@ -18,12 +18,21 @@
 int main(int argc, const char* argv[])
 {
     int ok;
-
+    int single = 0;
     int offset = 1;
 
     sfilter sf;
     if (argc < 2) {
+        fprintf(stderr, "need more args\n");
         return 1;
+    }
+    while (1) {
+        if (strcmp(argv[offset], "-0") == 0) {
+            single = 1;
+            offset += 1;
+        } else {
+            break;
+        }
     }
 
     size_t slen = strlen(argv[offset]);
@@ -36,6 +45,13 @@ int main(int argc, const char* argv[])
      * "plain" context.. test string "as-is"
      */
     libinjection_sqli_init(&sf, argv[offset], slen, 0);
+
+    if (single) {
+        libinjection_sqli_fingerprint(&sf, FLAG_QUOTE_NONE | FLAG_SQL_ANSI);
+        ok = libinjection_sqli_check_fingerprint(&sf);
+        fprintf(stdout, "%s\n", sf.fingerprint);
+        return 0;
+    }
 
     libinjection_sqli_fingerprint(&sf, FLAG_QUOTE_NONE | FLAG_SQL_ANSI);
     ok = libinjection_sqli_check_fingerprint(&sf);
