@@ -19,13 +19,7 @@
 <![endif]-->
 
 <style>
-body { font-family: sans-serif; width: 640px; }
-textarea { width: 100% }
-table { width: 100% }
-td { font-family: monospace; vertical-align: top }
-th { text-align: left }
-.red { background-color: #FFaaaa; overflow: hidden }
-.green { background-color: #aaFFaa }
+cicada-row { font-family: monospace; vertical-align: top }
 </style>
 </HEAD>
 <BODY>
@@ -36,12 +30,12 @@ th { text-align: left }
 
 {% for project, jobs in status.iteritems() %}
 <h2>{{ project }}</h2>
-<TABLE>
+<TABLE class="table table-condensed">
 {% for job in jobs %}
 {% if job['state'] == 'fail' %}
-<TR class='red'>
+<TR class='danger cicada-row'>
 {% elif job['state'] == 'pass' %}
-<TR class='green'>
+<TR class='success cicada-row'>
 {% else %}
 <TR>
 {% end %}
