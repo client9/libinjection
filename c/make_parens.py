@@ -90,6 +90,13 @@ class PermuteFingerprints(object):
         if '(ov' in s:
             return False
 
+        if 'oso' in s:
+            return False
+        if 'o1o' in s:
+            return False
+        if 'ono' in s:
+            return False
+
         # only 1 special case for this
         # 1;foo:goto foo
         # 1;n:k
