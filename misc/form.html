@@ -4,9 +4,9 @@
 <h1>libinjection {{ version }} diagnostics</h1>
 <p>Enter text to be analyzed in form below or directly modify the query string: </p>
 <form method="get">
-<textarea name="id" rows="5" cols="80">{{ formvalue }}</textarea><br/>
-<input type="submit" name="type" value="fingerprints"></input>
-<input type="submit" name="type" value="tokens"></input>
+<textarea class="form-control" name="id" rows="5">{{ formvalue }}</textarea><br/>
+<input class="btn btn-default" type="submit" name="type" value="fingerprints"></input>
+<input class="btn" type="submit" name="type" value="tokens"></input>
 </form>
 {% if len(args) %}
 <div>
