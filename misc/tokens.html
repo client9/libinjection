@@ -35,7 +35,7 @@
 <div style="float:left; margin:0px; padding: 0px; width:50%; background-color:inherit">
 
 <h4>Raw Tokens</h4>
-<table class="table">
+<table class="table table-condensed">
 <tr><th>type</th><th>value</th></tr>
 {% for i in p['tokens'] %}
 <tr><td>{{ i[0] }}</td><td>{{ i[1] }}</tr>
@@ -44,7 +44,7 @@
 </div>
 <div style="float:left; margin: 0px;padding: 0px;width:50%;background-color:inherit">
 <h4>Folded</h4>
-<table class="table">
+<table class="table table-condensed">
 <tr><th>type</th><th>value</th></tr>
 {% for i in p['folds'] %}
 <tr><td>{{ i[0] }}</td><td>{{ i[1] }}</tr>
