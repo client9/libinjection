@@ -32,8 +32,8 @@ RMAP = {
 if __name__ == '__main__':
     mode = 'print'
     fingerprints = []
-    with open('fingerprints.txt', 'r') as fd:
-        for line in fd:
+    with open('fingerprints.txt', 'r') as openfile:
+        for line in openfile:
             fingerprints.append(line.strip())
 
     for fingerprint in fingerprints:
