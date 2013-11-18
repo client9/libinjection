@@ -34,10 +34,10 @@ cicada-row { font-family: monospace; vertical-align: top }
 {% for job in jobs %}
 {% if job['state'] == 'fail' %}
 <TR class='danger cicada-row'>
-{% elif job['state'] == 'pass' %}
-<TR class='success cicada-row'>
+{% elif job['state'] == 'running' %}
+<TR class='active cicada-row'>
 {% else %}
-<TR>
+<TR class='cicada-row'>
 {% end %}
 <TD>{{ job['job'] }}</TD>
 <TD>{{ job['state'] }}</TD>
