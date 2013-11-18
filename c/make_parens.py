@@ -63,6 +63,19 @@ class PermuteFingerprints(object):
         if 't' in s and 'f(t' not in s and 'At' not in s:
             return False
 
+        if 'v,s' in s:
+            return False
+        if 's,v' in s:
+            return False
+        if 'v,v' in s:
+            return False
+        if 'v,1' in s:
+            return False
+        if 'v,n' in s:
+            return False
+        if '1,v' in s:
+            return False
+
         # only 1 special case for this
         # 1;foo:goto foo
         # 1;n:k
