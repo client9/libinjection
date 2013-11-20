@@ -14,6 +14,7 @@
 #define CHAR_EOF -1
 #define CHAR_BANG 33
 #define CHAR_DOUBLE 34
+#define CHAR_PERCENT 37
 #define CHAR_SINGLE 39
 #define CHAR_DASH 45
 #define CHAR_SLASH 47
@@ -48,6 +49,7 @@ static int h5_state_cdata(h5_state_t* hs);
 
 /* 12.2.4.44 */
 static int h5_state_bogus_comment(h5_state_t* hs);
+static int h5_state_bogus_comment2(h5_state_t* hs);
 
 /* 12.2.4.45 */
 static int h5_state_markup_declaration_open(h5_state_t* hs);
@@ -154,6 +156,11 @@ static int h5_state_tag_open(h5_state_t* hs)
     } else if (ch == CHAR_QUESTION) {
         hs->pos += 1;
         return h5_state_bogus_comment(hs);
+    } else if (ch == CHAR_PERCENT) {
+        /* this is not in spec.. alternative comment format used
+           by IE <= 9 and Safari < 4.0.3 */
+        hs->pos += 1;
+        return h5_state_bogus_comment2(hs);
     } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
         return h5_state_tag_name(hs);
     } else {
@@ -531,6 +538,40 @@ static int h5_state_bogus_comment(h5_state_t* hs)
 
     hs->token_type = TAG_COMMENT;
     return 1;
+}
+
+/**
+ * 12.2.4.44 ALT
+ */
+static int h5_state_bogus_comment2(h5_state_t* hs)
+{
+    TRACE();
+    const char* idx;
+    size_t pos = hs->pos;
+    while (1) {
+        idx = (const char*) memchr(hs->s + pos, CHAR_PERCENT, hs->len - pos);
+        if (idx == NULL || (idx + 1 >= hs->s + hs->len)) {
+            hs->token_start = hs->s + hs->pos;
+            hs->token_len = hs->len - hs->pos;
+            hs->pos = hs->len;
+            hs->token_type = TAG_COMMENT;
+            hs->state = h5_state_eof;
+            return 1;
+        }
+
+        if (*(idx +1) != CHAR_GT) {
+            pos = (size_t)(idx - hs->s) + 1;
+            continue;
+        }
+
+        /* ends in %> */
+        hs->token_start = hs->s + hs->pos;
+        hs->token_len = (size_t)(idx - hs->s) - hs->pos;
+        hs->pos = (size_t)(idx - hs->s) + 2;
+        hs->state = h5_state_data;
+        hs->token_type = TAG_COMMENT;
+        return 1;
+    }
 }
 
 /**

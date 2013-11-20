@@ -8565,6 +8565,7 @@ static const keyword_t sql_keywords[] = {
     {"FORMAT", 'f'},
     {"FOUND_ROWS", 'f'},
     {"FROM", 'k'},
+    {"FROM_BASE64", 'f'},
     {"FROM_DAYS", 'f'},
     {"FROM_UNIXTIME", 'f'},
     {"FULL JOIN", 'k'},
@@ -8898,10 +8899,12 @@ static const keyword_t sql_keywords[] = {
     {"REGCONFIG", 't'},
     {"REGDICTIONARY", 't'},
     {"REGEXP", 'o'},
+    {"REGEXP_INSTR", 'f'},
     {"REGEXP_MATCHES", 'f'},
     {"REGEXP_REPLACE", 'f'},
     {"REGEXP_SPLIT_TO_ARRAY", 'f'},
     {"REGEXP_SPLIT_TO_TABLE", 'f'},
+    {"REGEXP_SUBSTR", 'f'},
     {"REGOPER", 't'},
     {"REGOPERATOR", 't'},
     {"REGPROC", 't'},
@@ -9060,6 +9063,7 @@ static const keyword_t sql_keywords[] = {
     {"TOTAL", 'f'},
     {"TOTAL_CHANGES", 'f'},
     {"TO_ASCII", 'f'},
+    {"TO_BASE64", 'f'},
     {"TO_CHAR", 'f'},
     {"TO_DATE", 'f'},
     {"TO_DAYS", 'f'},
@@ -9212,5 +9216,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9045;
+static const size_t sql_keywords_sz = 9049;
 #endif

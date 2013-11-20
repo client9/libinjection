@@ -430,6 +430,8 @@ KEYWORDS = {
 'FORMAT'                      : 'f',
 'FOUND_ROWS'                  : 'f',
 'FROM'                        : 'k',
+# MySQL 5.6
+'FROM_BASE64'                 : 'f',
 'FROM_DAYS'                   : 'f',
 'FROM_UNIXTIME'               : 'f',
 'FUNCTION'                    : 'k',
@@ -784,10 +786,12 @@ KEYWORDS = {
 # 'REAL' only used in data definition
 'REAL'                        : 't',
 'REFERENCES'                  : 'k',
+# pgsql, mariadb
 'REGEXP'                      : 'o',
-# pgsql
+'REGEXP_INSTR'                : 'f',
 'REGEXP_REPLACE'              : 'f',
 'REGEXP_MATCHES'              : 'f',
+'REGEXP_SUBSTR'               : 'f',
 'REGEXP_SPLIT_TO_TABLE'       : 'f',
 'REGEXP_SPLIT_TO_ARRAY'       : 'f',
 'REGPROC'                     : 't',
@@ -970,7 +974,8 @@ KEYWORDS = {
 'TODATETIMEOFFSET'            : 'f',
 # pgsql
 'TO_ASCII'                    : 'f',
-#
+# MySQL 5.6
+'TO_BASE64'                   : 'f',
 # 'TO_CHAR' -- oracle, pgsql
 'TO_CHAR'                     : 'f',
 # pgsql
