@@ -147,7 +147,7 @@ cd stringencoders
 # we set cc=clang for configure
 # but set the very strict cflags for make only... autoconf emits bad c test and
 #  breaks
-CC=clang CXX='clang -std=c++98' ./configure
+CC=clang CXX='clang++' ./configure
 export CFLAGS="-Isrc -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
 make -e && make -e test
 """),
