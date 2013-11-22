@@ -201,6 +201,14 @@ exit ${ERR}
             PublishArtifact('stringencoders/lcov-html/html', PUBDIR, 'html/stringencoders/src/index.html', 'coverage')
         ]
     },
+    'valgrind': {
+        'listen': [ TestOnEvent('stringencoders') ],
+        'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
+        'exec': ExecuteShell('cd stringencoders && ./bootstrap.sh && ./configure && make clean && make valgrind'),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console')
+        ]
+    },
     'stack': {
         'listen': [ TestOnInterval(minutes=1000) ],
         'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
