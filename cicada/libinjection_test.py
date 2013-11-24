@@ -58,7 +58,7 @@ PROTOBUFC = {
 export LD_LIBRARY_PATH=/usr/local/lib
 cd protobuf-c
 ./autogen.sh
-CFLAGS=-I/usr/local/include LDFLAGS=/usr/local/lib ./configure
+CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib ./configure
 make
 """),
         'publish': [
