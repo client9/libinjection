@@ -57,7 +57,7 @@ PROTOBUFC = {
         'exec': ExecuteShell("""
 cd protobuf-c
 ./autogen.sh
-./configure
+CFLAGS=-I/usr/local/include ./configure
 make
 """),
         'publish': [
@@ -70,8 +70,8 @@ make
         'exec': ExecuteShell("""
 cd protobuf-c
 ./autogen.sh
-CC=clang CXX='clang++' ./configure
-export CFLAGS="-Isrc -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
+CC=clang CXX='clang++ CFLAGS=-I/usr/local/include' ./configure
+export CFLAGS="-I/usr/local/include -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
 make -e
 """),
         'publish': [
@@ -102,7 +102,7 @@ cd protobuf-c
 ./autogen.sh
 ./configure
 make clean
-./configure
+CFLAGS=-I/usr/local/include ./configure
 scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make
 cd /mnt/cicada/workspace/openssl/clang-static-analyzer/
 # scan-build generates a date-based file, starting with year.  move to fixed directory
