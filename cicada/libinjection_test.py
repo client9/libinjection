@@ -24,7 +24,7 @@ POLLERS = {
             TestOnTime(minute='10', hour='2'),
         ],
         'exec': PollGit('protobuf-c',
-                        'https://github.com/lipnitsk/protobuf-c.git',
+                        'https://github.com/protobuf-c/protobuf-c',
                         DYNAMO, QUEUE_EVENT)
     },
     'poll-git-openssl': {
@@ -53,10 +53,9 @@ LISTEN = [
 PROTOBUFC = {
     'build-test-gcc': {
         'listen': [ TestOnEvent('protobuf-c') ],
-        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
-./autogen.sh
 ./configure
 make
 """),
@@ -66,10 +65,9 @@ make
     },
     'build-test-clang': {
         'listen': [ TestOnEvent('protobuf-c') ],
-        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
-./autogen.sh
 CC=clang CXX='clang++' ./configure
 export CFLAGS="-Isrc -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
 make -e
@@ -80,7 +78,7 @@ make -e
     },
     'cppcheck': {
         'listen': [ TestOnEvent('protobuf-c') ],
-        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cppcheck --version
 cd protobuf-c
@@ -95,10 +93,9 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
     },
     'clang-static-analyzer': {
         'listen': [ TestOnEvent('protobuf-c') ],
-        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
-./autogen.sh
 ./configure
 make clean
 ./configure
@@ -115,11 +112,10 @@ mv 20* csa
     },
     'stack': {
         'listen': [ TestOnEvent('protobuf-c') ],
-        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 export PATH=/mnt/stack/build/bin/:$PATH
 cd protobuf-c
-./autogen.sh
 stack-build ./configure
 stack-build make clean
 find . -name '*.ll' -o -name '*.ll.out' | xargs -f rm
