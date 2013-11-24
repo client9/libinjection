@@ -19,7 +19,7 @@ LISTEN = [
 ]
 
 POLLERS = {
-    protobufc: {
+    'protobufc': {
         'listen': [
             TestOnTime(minute='10', hour='2'),
         ],
