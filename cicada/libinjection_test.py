@@ -119,7 +119,7 @@ mv 20* csa
         ]
     },
     'stack': {
-        'listen': [ TestOnEvent('protobuf-c') ],
+        'listen': [ TestOnEvent('stack') ],
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 export LD_LIBRARY_PATH=/usr/local/lib
@@ -209,7 +209,7 @@ mv 20* csa
         ]
     },
     'stack': {
-        'listen': [ TestOnEvent('openssl') ],
+        'listen': [ TestOnEvent('stack') ],
         'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
         'exec': ExecuteShell("""
 export PATH=/mnt/stack/build/bin/:$PATH
@@ -308,7 +308,7 @@ exit ${ERR}
         ]
     },
     'stack': {
-        'listen': [ TestOnInterval(minutes=1000) ],
+        'listen': [  TestOnEvent('stack') ],
         'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
         'exec'  : ExecuteShell("""#!/bin/bash
 export PATH=/mnt/stack/build/bin/:$PATH
@@ -491,7 +491,7 @@ gprof ./reader gmon.out
         ]
     },
     'stack': {
-        'listen'  : [ TestOnInterval(minutes=1000), ],
+        'listen'  : [ TestOnEvent('stack'), ],
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""#!/bin/bash
 export PATH=/mnt/stack/build/bin/:$PATH
