@@ -84,6 +84,7 @@ make -e
         'exec': ExecuteShell("""
 cppcheck --version
 cd protobuf-c
+./autogen.sh
 cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
     --suppress=variableScope  \
     --std=c89 --std=posix \
