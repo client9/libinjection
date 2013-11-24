@@ -56,6 +56,7 @@ PROTOBUFC = {
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
+./autogen.sh
 ./configure
 make
 """),
@@ -68,6 +69,7 @@ make
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
+./autogen.sh
 CC=clang CXX='clang++' ./configure
 export CFLAGS="-Isrc -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
 make -e
@@ -96,6 +98,7 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
+./autogen.sh
 ./configure
 make clean
 ./configure
@@ -116,6 +119,7 @@ mv 20* csa
         'exec': ExecuteShell("""
 export PATH=/mnt/stack/build/bin/:$PATH
 cd protobuf-c
+./autogen.sh
 stack-build ./configure
 stack-build make clean
 find . -name '*.ll' -o -name '*.ll.out' | xargs -f rm
