@@ -58,7 +58,7 @@ PROTOBUFC = {
 export LD_LIBRARY_PATH=/usr/local/lib
 cd protobuf-c
 ./autogen.sh
-"CFLAGS=-I/usr/local/include LDFLAGS=/usr/local/lib" ./configure
+CFLAGS='-I/usr/local/include' LDFLAGS=/usr/local/lib ./configure
 make
 """),
         'publish': [
@@ -106,7 +106,7 @@ cd protobuf-c
 ./autogen.sh
 ./configure
 make clean
-CFLAGS=-I/usr/local/include ./configure
+CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib ./configure
 scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make
 cd /mnt/cicada/workspace/openssl/clang-static-analyzer/
 # scan-build generates a date-based file, starting with year.  move to fixed directory
