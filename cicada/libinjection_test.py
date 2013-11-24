@@ -19,6 +19,14 @@ LISTEN = [
 ]
 
 POLLERS = {
+    'protobuf-c': {
+        'listen': [
+            TestOnTime(minute='10', hour='2'),
+        ],
+        'exec': PollGit('protobuf-c',
+                        'https://github.com/lipnitsk/protobuf-c',
+                        DYNAMO, QUEUE_EVENT)
+    },
     'poll-git-openssl': {
         'listen': [
             TestOnTime(minute='10', hour='1'),
@@ -41,6 +49,90 @@ LISTEN = [
     TestOnEvent('libinjection'),
     TestOnTime(minute='0', hour='23'),
 ]
+
+PROTOBUFC = {
+    'build-test-gcc': {
+        'listen': [ TestOnEvent('protobuf-c') ],
+        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'exec': ExecuteShell("""
+cd protobuf-c
+./autogen.sh
+./configure
+make
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'build-test-clang': {
+        'listen': [ TestOnEvent('protobuf-c') ],
+        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'exec': ExecuteShell("""
+cd protobuf-c
+./autogen.sh
+CC=clang CXX='clang++' ./configure
+export CFLAGS="-Isrc -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
+make -e
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'cppcheck': {
+        'listen': [ TestOnEvent('protobuf-c') ],
+        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'exec': ExecuteShell("""
+cppcheck --version
+cd protobuf-c
+cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
+    --suppress=variableScope  \
+    --std=c89 --std=posix \
+    --template '{file}:{line} {severity} {id} {message}' .
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'clang-static-analyzer': {
+        'listen': [ TestOnEvent('protobuf-c') ],
+        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'exec': ExecuteShell("""
+cd protobuf-c
+./autogen.sh
+./configure
+make clean
+./configure
+scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make
+cd /mnt/cicada/workspace/openssl/clang-static-analyzer/
+# scan-build generates a date-based file, starting with year.  move to fixed directory
+rm -rf csa
+mv 20* csa
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('csa', PUBDIR, 'csa/index.html', 'analysis')
+        ]
+    },
+    'stack': {
+        'listen': [ TestOnEvent('protobuf-c') ],
+        'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
+        'exec': ExecuteShell("""
+export PATH=/mnt/stack/build/bin/:$PATH
+cd protobuf-c
+./autogen.sh
+stack-build ./configure
+stack-build make clean
+find . -name '*.ll' -o -name '*.ll.out' | xargs -f rm
+stack-build make
+poptck
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('protobuf-c/pstack.txt', PUBDIR, 'pstack.txt', 'analysis'),
+        ]
+    }
+
+}
 
 OPENSSL = {
     'build-test': {
