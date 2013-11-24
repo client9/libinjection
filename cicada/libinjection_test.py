@@ -23,7 +23,7 @@ POLLERS = {
         'listen': [
             TestOnTime(minute='10', hour='2'),
         ],
-        'exec': PollGit('protobufc',
+        'exec': PollGit('protobuf-c',
                         'https://github.com/lipnitsk/protobuf-c.git',
                         DYNAMO, QUEUE_EVENT)
     },
@@ -52,7 +52,7 @@ LISTEN = [
 
 PROTOBUFC = {
     'build-test-gcc': {
-        'listen': [ TestOnEvent('protobufc') ],
+        'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
@@ -65,7 +65,7 @@ make
         ]
     },
     'build-test-clang': {
-        'listen': [ TestOnEvent('protobufc') ],
+        'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
@@ -79,7 +79,7 @@ make -e
         ]
     },
     'cppcheck': {
-        'listen': [ TestOnEvent('protobufc') ],
+        'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cppcheck --version
@@ -94,7 +94,7 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         ]
     },
     'clang-static-analyzer': {
-        'listen': [ TestOnEvent('protobufc') ],
+        'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 cd protobuf-c
@@ -114,7 +114,7 @@ mv 20* csa
         ]
     },
     'stack': {
-        'listen': [ TestOnEvent('protobufc') ],
+        'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/lipnitsk/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
 export PATH=/mnt/stack/build/bin/:$PATH
