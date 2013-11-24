@@ -55,9 +55,10 @@ PROTOBUFC = {
         'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
+export LD_LIBRARY_PATH=/usr/local/lib
 cd protobuf-c
 ./autogen.sh
-CFLAGS=-I/usr/local/include ./configure
+"CFLAGS=-I/usr/local/include LDFLAGS=/usr/local/lib" ./configure
 make
 """),
         'publish': [
@@ -68,9 +69,10 @@ make
         'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
+export LD_LIBRARY_PATH=/usr/local/lib
 cd protobuf-c
 ./autogen.sh
-CC=clang CXX='clang++ CFLAGS=-I/usr/local/include' ./configure
+CC=clang CXX='clang++' CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib ./configure
 export CFLAGS="-I/usr/local/include -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
 make -e
 """),
@@ -82,6 +84,7 @@ make -e
         'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
+export LD_LIBRARY_PATH=/usr/local/lib
 cppcheck --version
 cd protobuf-c
 ./autogen.sh
@@ -98,6 +101,7 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
+export LD_LIBRARY_PATH=/usr/local/lib
 cd protobuf-c
 ./autogen.sh
 ./configure
@@ -118,6 +122,7 @@ mv 20* csa
         'listen': [ TestOnEvent('protobuf-c') ],
         'source': CheckoutGit('https://github.com/protobuf-c/protobuf-c.git', 'protobuf-c'),
         'exec': ExecuteShell("""
+export LD_LIBRARY_PATH=/usr/local/lib
 export PATH=/mnt/stack/build/bin/:$PATH
 cd protobuf-c
 ./autogen.sh
