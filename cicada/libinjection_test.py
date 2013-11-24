@@ -19,7 +19,7 @@ LISTEN = [
 ]
 
 POLLERS = {
-    'protobufc': {
+    'protobuf-c': {
         'listen': [
             TestOnTime(minute='10', hour='2'),
         ],
@@ -505,5 +505,6 @@ PROJECTS = {
     'pollers': POLLERS,
     'libinjection': LIBINJECTION,
     'stringencoders': STRINGENCODERS,
-    'openssl': OPENSSL
+    'openssl': OPENSSL,
+    'protobuf-c': PROTOBUFC
 }
