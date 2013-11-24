@@ -24,7 +24,7 @@ POLLERS = {
             TestOnTime(minute='10', hour='2'),
         ],
         'exec': PollGit('protobuf-c',
-                        'https://github.com/lipnitsk/protobuf-c.git'
+                        'https://github.com/lipnitsk/protobuf-c.git',
                         DYNAMO, QUEUE_EVENT)
     },
     'poll-git-openssl': {
