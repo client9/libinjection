@@ -61,7 +61,7 @@ LISTEN = [
 STATSITE = {
    'build-gcc': {
         'listen': [ TestOnEvent('protobuf-c') ],
-        'source': CheckoutGit('https://github.com/armon/statsite.git', 'statsite')
+        'source': CheckoutGit('https://github.com/armon/statsite.git', 'statsite'),
         'exec': ExecuteShell("""
 cd statsite
 make
