@@ -19,6 +19,14 @@ LISTEN = [
 ]
 
 POLLERS = {
+    'statsite': {
+        'listen': [
+            TestOnTime(minute='10', hour='3'),
+        ],
+        'exec': PollGit('sitestat',
+                        'https://github.com/armon/statsite.git',
+                        DYNAMO, QUEUE_EVENT)
+    },
     'protobuf-c': {
         'listen': [
             TestOnTime(minute='10', hour='2'),
@@ -50,6 +58,20 @@ LISTEN = [
     TestOnTime(minute='0', hour='23'),
 ]
 
+STATSITE = {
+   'build-gcc': {
+        'listen': [ TestOnEvent('protobuf-c') ],
+        'source': CheckoutGit('https://github.com/armon/statsite.git', 'statsite')
+        'exec': ExecuteShell("""
+cd statsite
+make
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+}
+
 PROTOBUFC = {
     'build-test-gcc': {
         'listen': [ TestOnEvent('protobuf-c') ],
@@ -59,7 +81,8 @@ export LD_LIBRARY_PATH=/usr/local/lib
 cd protobuf-c
 ./autogen.sh
 CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib ./configure
-make
+export CFLAGS='-I/usr/local/include -Wall -Wextra -Werror'
+make -e
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
@@ -512,5 +535,6 @@ PROJECTS = {
     'libinjection': LIBINJECTION,
     'stringencoders': STRINGENCODERS,
     'openssl': OPENSSL,
+    'statsite': STATSITE,
     'protobuf-c': PROTOBUFC
 }
