@@ -23,7 +23,7 @@ POLLERS = {
         'listen': [
             TestOnTime(minute='10', hour='3'),
         ],
-        'exec': PollGit('sitestat',
+        'exec': PollGit('statsite',
                         'https://github.com/armon/statsite.git',
                         DYNAMO, QUEUE_EVENT)
     },
