@@ -172,7 +172,7 @@ cppcheck --version
 cd protobuf-c
 ./autogen.sh
 cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
-    --suppress=variableScope  \
+    --suppress=unusedFunction \
     --std=c89 --std=posix \
     --template '{file}:{line} {severity} {id} {message}' protobuf-c
 """),
