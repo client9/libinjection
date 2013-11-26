@@ -70,6 +70,67 @@ make
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
     },
+   'build-clang': {
+        'listen': [ TestOnEvent('statsite') ],
+        'source': CheckoutGit('https://github.com/armon/statsite.git', 'statsite'),
+        'exec': ExecuteShell("""
+cd statsite
+CC=clang make -e
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'cppcheck': {
+        'listen': [ TestOnEvent('statsite') ],
+        'source': CheckoutGit('https://github.com/armon/statsite.git', 'statsite'),
+        'exec': ExecuteShell("""
+cppcheck --version
+cd statsite
+./autogen.sh
+cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
+    --suppress=variableScope  \
+    --std=c89 --std=posix \
+    --template '{file}:{line} {severity} {id} {message}' .
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'clang-static-analyzer': {
+        'listen': [ TestOnEvent('statsite') ],
+        'source': CheckoutGit('https://github.com/armon/statsite.git', 'statsite'),
+        'exec': ExecuteShell("""
+cd statsite
+scons -c
+scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make -e
+cd /mnt/cicada/workspace/statsite/clang-static-analyzer/
+# scan-build generates a date-based file, starting with year.  move to fixed directory
+rm -rf csa
+mv 20* csa
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('csa', PUBDIR, 'csa/index.html', 'analysis')
+        ]
+    },
+    'stack': {
+        'listen': [ TestOnEvent('stack') ],
+        'source': CheckoutGit('https://github.com/armon/statsite.git', 'statsite'),
+        'exec': ExecuteShell("""
+export LD_LIBRARY_PATH=/usr/local/lib
+export PATH=/mnt/stack/build/bin/:$PATH
+cd statsite
+scons -c
+find . -name '*.ll' -o -name '*.ll.out' | xargs rm -f
+stack-build make
+poptck
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('protobuf-c/pstack.txt', PUBDIR, 'pstack.txt', 'analysis'),
+        ]
+    }
 }
 
 PROTOBUFC = {
@@ -151,7 +212,7 @@ cd protobuf-c
 ./autogen.sh
 stack-build ./configure
 stack-build make clean
-find . -name '*.ll' -o -name '*.ll.out' | xargs -f rm
+find . -name '*.ll' -o -name '*.ll.out' | xargs rm -f
 stack-build make
 poptck
 """),
@@ -239,7 +300,7 @@ export PATH=/mnt/stack/build/bin/:$PATH
 cd openssl
 stack-build ./config
 stack-build make clean
-find . -name '*.ll' -o -name '*.ll.out' | xargs -f rm
+find . -name '*.ll' -o -name '*.ll.out' | xargs rm -f
 stack-build make
 poptck
 """),
