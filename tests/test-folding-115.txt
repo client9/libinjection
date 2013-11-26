@@ -5,4 +5,3 @@ Degenerate MySQL ODBC case, where {``.``.id} is a valid identifier
 --EXPECTED--
 { {
 X
-
