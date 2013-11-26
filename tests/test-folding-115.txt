@@ -3,5 +3,6 @@ Degenerate MySQL ODBC case, where {``.``.id} is a valid identifier
 --INPUT--
 {``.``.id} UNION SELECT TABLE
 --EXPECTED--
+{ {
 X
 
