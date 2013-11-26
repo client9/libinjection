@@ -56,6 +56,10 @@ class CheckoutGit(object):
                              stdout = subprocess.PIPE,
                              stderr = subprocess.STDOUT)
         (sout,serr) = p.communicate()
+        if sout is None:
+            sout = ''
+        if serr is None:
+            serr = ''
 
         cmd = ['git', 'log', '-1', '--oneline']
         p = subprocess.Popen(cmd,
@@ -64,6 +68,10 @@ class CheckoutGit(object):
                              stderr = subprocess.STDOUT)
 
         (sout2, serr2) = p.communicate()
+        if sout2 is None:
+            sout = ''
+        if serr2 is None:
+            serr = ''
 
         # append output, but use first return code
         return (sout + sout2, serr + serr2, p.returncode)

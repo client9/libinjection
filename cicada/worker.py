@@ -31,9 +31,6 @@ def poll(projects, workdir, db, q):
     if not os.path.exists(workspace):
         os.makedirs(workspace)
 
-    # inform DB we are working
-    db.projectjobs_put(projectname, jobname, start, 'running', start)
-
     output = []
 
     try:
@@ -42,19 +39,26 @@ def poll(projects, workdir, db, q):
         logging.error("Got invalid job {0}.{1}".format(projectname, jobname))
         return False
 
+    # inform DB we are working
+    db.projectjobs_put(projectname, jobname, start, 'running', start)
+
     returncode = 0
     if 'source' in worker:
         output.append(timestamp() + ": Source @ {0}".format(workspace))
         (sout, serr, returncode) = worker['source'].run(workspace)
-        output.append(sout)
+
+        if sout is not None and len(sout) > 0:
+            output.append(sout)
+
         output.append(timestamp() + ": return code of {0}".format(returncode))
 
     if returncode == 0:
         output.append("{0}: {1}.{2}.{3}: {4}".format(timestamp(), projectname, jobname, start, "Execute"))
         (sout, serr, returncode) = worker['exec'].run(workspace)
-        output.append(sout)
+        if output is not None and len(output) > 0:
+            output.append(sout)
         output.append("{0}: {1}.{2}.{3}: {4}".format(timestamp(), projectname, jobname, start,
-                                                       "return code of " + str(returncode)))
+                                                     "return code of " + str(returncode)))
 
     if returncode == 0:
         state = 'pass'
