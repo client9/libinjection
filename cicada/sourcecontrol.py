@@ -69,9 +69,9 @@ class CheckoutGit(object):
 
         (sout2, serr2) = p.communicate()
         if sout2 is None:
-            sout = ''
+            sout2 = ''
         if serr2 is None:
-            serr = ''
+            serr2 = ''
 
         # append output, but use first return code
         return (sout + sout2, serr + serr2, p.returncode)
