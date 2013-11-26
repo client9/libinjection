@@ -87,11 +87,10 @@ CC=clang make -e
         'exec': ExecuteShell("""
 cppcheck --version
 cd statsite
-./autogen.sh
 cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
     --suppress=variableScope  \
     --std=c89 --std=posix \
-    --template '{file}:{line} {severity} {id} {message}' .
+    --template '{file}:{line} {severity} {id} {message}' src
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
@@ -175,7 +174,7 @@ cd protobuf-c
 cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
     --suppress=variableScope  \
     --std=c89 --std=posix \
-    --template '{file}:{line} {severity} {id} {message}' .
+    --template '{file}:{line} {severity} {id} {message}' protobuf-c
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
