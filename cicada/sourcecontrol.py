@@ -55,9 +55,19 @@ class CheckoutGit(object):
                              cwd=cwd,
                              stdout = subprocess.PIPE,
                              stderr = subprocess.STDOUT)
-
         (sout,serr) = p.communicate()
-        return (sout,serr,p.returncode)
+
+        cmd = ['git', 'log', '-1', '--oneline']
+        p = subprocess.Popen(cmd,
+                             cwd=cwd,
+                             stdout = subprocess.PIPE,
+                             stderr = subprocess.STDOUT)
+
+        (sout2, serr2) = p.communicate()
+
+        # append output, but use first return code
+        return (sout + sout2, serr + serr2, p.returncode)
+
 
 
 class PollHG(object):
