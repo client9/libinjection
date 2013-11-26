@@ -29,7 +29,7 @@ RMAP = {
     'X': '/* /* nested comment */ */'
 }
 
-def tosqli():
+def to_sqli():
     """
     main code, expects to be run in main libinjection/c directory
     and hardwires "fingerprints.txt" as input file
@@ -56,5 +56,5 @@ def tosqli():
 
 
 if __name__ == '__main__':
-    tosqli()
+    to_sqli()
 
