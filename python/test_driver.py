@@ -48,6 +48,7 @@ def toascii(data):
     https://github.com/nose-devs/nose/issues/649
     https://github.com/nose-devs/nose/issues/692
     """
+    return data
     udata = data.decode('utf-8')
     return udata.encode('ascii', 'xmlcharrefreplace')
 
@@ -112,37 +113,25 @@ def runtest(testname, flag, sqli_flags):
         assert actual == data[2]
 
 def test_tokens():
-    def run_tokens(testname):
-        runtest(testname, 'tokens', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
-
     for testname in sorted(glob.glob('../tests/test-tokens-*.txt')):
         testname = os.path.basename(testname)
-        yield run_tokens, testname
+        runtest(testname, 'tokens', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
 
 def test_tokens_mysql():
-    def run_tokens(testname):
-        runtest(testname, 'tokens', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_MYSQL)
-
     for testname in sorted(glob.glob('../tests/test-tokens_mysql-*.txt')):
         testname = os.path.basename(testname)
-        yield run_tokens, testname
+        runtest(testname, 'tokens', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_MYSQL)
 
 def test_folding():
-    def run_folding(testname):
-        runtest(testname, 'folding', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
-
     for testname in sorted(glob.glob('../tests/test-folding-*.txt')):
         testname = os.path.basename(testname)
-        yield run_folding, testname
+        runtest(testname, 'folding', libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
 
 def test_fingerprints():
-    def run_fingerprints(testname):
-        runtest(testname, 'fingerprints', 0)
-
-
     for testname in sorted(glob.glob('../tests/test-sqli-*.txt')):
         testname = os.path.basename(testname)
-        yield run_fingerprints, testname
+        runtest(testname, 'fingerprints', 0)
+
 
 if __name__ == '__main__':
     import sys
