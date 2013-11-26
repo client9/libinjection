@@ -29,7 +29,7 @@ RMAP = {
     'X': '/* /* nested comment */ */'
 }
 
-def to_sqli():
+def fingerprint_to_sqli():
     """
     main code, expects to be run in main libinjection/c directory
     and hardwires "fingerprints.txt" as input file
@@ -42,8 +42,8 @@ def to_sqli():
 
     for fingerprint in fingerprints:
         sql = []
-        for ch in fingerprint:
-            sql.append(RMAP[ch])
+        for char in fingerprint:
+            sql.append(RMAP[char])
 
         sqlstr =  ' '.join(sql)
         if mode == 'print':
@@ -56,5 +56,5 @@ def to_sqli():
 
 
 if __name__ == '__main__':
-    to_sqli()
+    fingerprint_to_sqli()
 
