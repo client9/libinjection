@@ -29,7 +29,11 @@ RMAP = {
     'X': '/* /* nested comment */ */'
 }
 
-def main():
+def f2sqli():
+    """
+    main code, expects to be run in main libinjection/c directory
+    and hardwires "fingerprints.txt" as input file
+    """
     mode = 'print'
     fingerprints = []
     with open('fingerprints.txt', 'r') as openfile:
@@ -52,5 +56,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    f2sqli()
 
