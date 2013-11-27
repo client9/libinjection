@@ -14,7 +14,7 @@
 #include <assert.h>
 #include <stddef.h>
 
-#define LIBINJECTION_VERSION "3.9.0pre"
+#define LIBINJECTION_VERSION "3.9.0"
 
 #ifndef TRUE
 #define TRUE 1
