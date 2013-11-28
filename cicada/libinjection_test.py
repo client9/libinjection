@@ -542,6 +542,18 @@ make reader
             PublishArtifact('libinjection/c/lcov-html', PUBDIR, '/lcov-html/libinjection/c/index.html', 'coverage')
         ]
     },
+    'libinjection-coverage-data': {
+        'listen'  : LISTEN,
+        'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
+        'exec'    : ExecuteShell("cd libinjection/c && make clean && make coverage-testdriver"),
+        'publish' : [
+            # 1. file relative to workspace  for PublishConsole, it's empty
+            # 2. link url
+            # 2. linktext
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('libinjection/c/lcov-html', PUBDIR, '/lcov-html/libinjection/c/index.html', 'coverage')
+        ]
+    },
     'libinjection-speed': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
