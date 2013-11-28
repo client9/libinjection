@@ -53,10 +53,10 @@ reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_s
 
 reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c libinjection_xss.c
 	${MAKE} clean
-	${CC} -g -O2 -pg -o reader libinjection_sqli.c libinjection_html5.c libinjection_xss.c reader.c
+	${CC} -g -O2 -pg -o reader-gprof libinjection_sqli.c libinjection_html5.c libinjection_xss.c reader.c
 
 reader-gcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c libinjection_xss.c reader.c
-	${CC} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c libinjection_xss.c reader.c
+	${CC} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c libinjection_html5.c libinjection_xss.c reader.c
 
 testdriver: Makefile testdriver.c libinjection.h libinjection_sqli_data.h libinjection_sqli.h libinjection_sqli.c libinjection_html5.c libinjection_xss.c
 	${CC}  ${CFLAGS} -O0 -o testdriver libinjection_sqli.c libinjection_html5.c libinjection_xss.c testdriver.c
@@ -161,7 +161,7 @@ clean:
 	@rm -rf core* a.out
 	@rm -f gmon.out nosetests.xml valgrind-*.txt
 	@rm -f reader is_sqli lcov-reader sqli fptool testdriver example1
-	@rm -f reader-gcov testdriver-gcov
+	@rm -f reader-gcov testdriver-gcov reader-gprof
 	@rm -f fingerprints-orig.txt
 	@rm -f *.ll *.ll.out
 
