@@ -143,7 +143,8 @@ coverage-reader: reader-gcov
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
 	lcov -b . --directory . --remove libinjection.info 'reader' -o libinjection.info
-	genhtml -o lcov-html libinjection.info
+	genhtml --branch-coverage -o lcov-html libinjection.info
+
 
 .PHONY: coverage-reader coverage-testdriver
 
