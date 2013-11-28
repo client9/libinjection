@@ -1974,7 +1974,7 @@ int libinjection_sqli_blacklist(struct libinjection_sqli_state* sql_state)
      * use minimum of 8 bytes to make sure gcc -fstack-protector
      * works correctly
      */
-    char fp2[LIBINJECTION_SQLI_MAX_TOKENS + 2 < 8 ? 8 : LIBINJECTION_SQLI_MAX_TOKENS + 2];
+    char fp2[8];
     char ch;
     size_t i;
     size_t len = strlen(sql_state->fingerprint);
