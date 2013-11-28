@@ -92,7 +92,6 @@ const char* h5_type_to_string(enum html5_type x)
 
         /* compiler will complain if missed any */
     }
-    assert(0);
 }
 
 size_t print_html5_token(char* buf, size_t len, h5_state_t* hs)
