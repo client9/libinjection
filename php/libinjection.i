@@ -2,6 +2,7 @@
 %module libinjection
 %{
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 
 struct libinjection_sqli_token * libinjection_sqli_state_tokenvec_geti(sfilter* sf, int i) {
     return &(sf->tokenvec[i]);
@@ -14,3 +15,4 @@ struct libinjection_sqli_token * libinjection_sqli_state_tokenvec_geti(sfilter* 
 %apply (char *STRING, size_t LENGTH) { (const char *s, size_t slen) };
 
 %include "libinjection.h"
+%include "libinjection_sqli.h"

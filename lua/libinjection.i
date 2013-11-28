@@ -59,3 +59,4 @@ static char libinjection_lua_lookup_word(sfilter* sf, int lookup_type,
 
 
 %include "libinjection.h"
+%include "libinjection_sqli.h"
