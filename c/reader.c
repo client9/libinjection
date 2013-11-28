@@ -143,9 +143,11 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
             issqli = libinjection_is_xss(linebuf, len);
             break;
         }
+/* not needed with clang?
         default:
             assert(0);
-        }
+*/ 
+       }
 
         if (issqli) {
             g_test_ok += 1;
