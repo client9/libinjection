@@ -55,15 +55,15 @@ reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjec
 	${MAKE} clean
 	${CC} -g -O2 -pg -o reader libinjection_sqli.c reader.c
 
-reader-gcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
-	${CC} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c reader.c
+reader-gcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c libinjection_xss.c reader.c
+	${CC} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c libinjection_xss.c reader.c
 
-testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c libinjection_html5.c libinjection_xss.c
+testdriver: Makefile testdriver.c libinjection.h libinjection_sqli_data.h libinjection_sqli.h libinjection_sqli.c libinjection_html5.c libinjection_xss.c
 	${CC}  ${CFLAGS} -O0 -o testdriver libinjection_sqli.c libinjection_html5.c libinjection_xss.c testdriver.c
 
 testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h libinjection_html5.c
 	rm -f sqli
-	${CC} -g -fprofile-arcs -ftest-coverage -O0 -o testdriver-gcov libinjection_sqli.c libinjection_html5.c testdriver.c
+	${CC} -g -fprofile-arcs -ftest-coverage -O0 -o testdriver-gcov libinjection_sqli.c libinjection_html5.c libinjection_xss.c testdriver.c
 
 sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
 	${CC} ${CFLAGS} -o sqli sqli_cli.c libinjection_sqli.c
