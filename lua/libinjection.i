@@ -2,6 +2,7 @@
 %module libinjection
 %{
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 
 static char libinjection_lua_lookup_word(sfilter* sf, int lookup_type,
                                          const char* s, size_t len)
