@@ -545,7 +545,7 @@ make reader
     'libinjection-coverage-data': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("cd libinjection/c && make clean && make coverage-testdriver"),
+        'exec'    : ExecuteShell("cd libinjection/c && make clean && make coverage-reader"),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url

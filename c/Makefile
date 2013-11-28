@@ -55,7 +55,7 @@ reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjec
 	${MAKE} clean
 	${CC} -g -O2 -pg -o reader-gprof libinjection_sqli.c libinjection_html5.c libinjection_xss.c reader.c
 
-reader-gcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c libinjection_xss.c reader.c
+reader-gcov: Makefile libinjection.h libinjection_sqli.h libinjection_sqli_data.h libinjection_sqli.c libinjection_xss.c reader.c
 	${CC} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c libinjection_html5.c libinjection_xss.c reader.c
 
 testdriver: Makefile testdriver.c libinjection.h libinjection_sqli_data.h libinjection_sqli.h libinjection_sqli.c libinjection_html5.c libinjection_xss.c
