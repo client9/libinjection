@@ -433,7 +433,7 @@ LIBINJECTION = {
 clang --version
 cd libinjection/c
 make clean
-CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Werror" make -e test
+CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -Werror" make -e test
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
