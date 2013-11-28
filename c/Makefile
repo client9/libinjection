@@ -139,6 +139,7 @@ coverage-reader: reader-gcov
 	mkdir lcov-html
 	lcov -b . --directory . --zerocounters
 	-./reader-gcov -q ../data/sqli-*.txt
+	-./reader-gcov -q -x ../data/xss-*.txt
 	lcov -b . --directory . --capture --output-file libinjection.info
 	lcov -b . --directory . --remove libinjection.info '/usr/include*' -o libinjection.info
 	lcov -b . --directory . --remove libinjection.info 'reader' -o libinjection.info
