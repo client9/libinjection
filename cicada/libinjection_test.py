@@ -564,10 +564,9 @@ make reader
         'exec'    : ExecuteShell("""#!/bin/bash
 cd libinjection/c
 make clean
-make reader
-gcc -g -O2 -pg -o reader libinjection_sqli.c reader.c
-./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
-gprof ./reader gmon.out
+make reader-gprof
+./reader-gprof -s -q ../data/sqli-*.txt ../data/false-*.txt
+gprof ./reader-gprof gmon.out
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
