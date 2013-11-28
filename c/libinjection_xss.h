@@ -11,7 +11,7 @@ extern "C" {
 
 /* pull in size_t */
 
-#include <strings.h>
+#include <string.h>
 
 int libinjection_is_xss(const char* s, size_t len);
 
