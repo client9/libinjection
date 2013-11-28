@@ -55,10 +55,13 @@ libinjection.h: ../c/libinjection.h
 libinjection_sqli.c: ../c/libinjection_sqli.c
 	cp ../c/libinjection_sqli.c libinjection_sqli.c
 
+libinjection_sqli.h: ../c/libinjection_sqli.h
+	cp ../c/libinjection_sqli.h libinjection_sqli.h
+
 libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection_sqli_data.h
 
-copy: libinjection.h libinjection_sqli.c libinjection_sqli_data.h
+copy: libinjection.h libinjection_sqli.h libinjection_sqli.c libinjection_sqli_data.h
 .PHONY: copy
 
 sample: sqlifingerprints.lua
