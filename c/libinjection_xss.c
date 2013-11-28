@@ -293,7 +293,7 @@ int libinjection_is_xss(const char* s, size_t len)
             if (h5.token_len > 3) {
                 if (h5.token_start[0] == '[' &&
                     (h5.token_start[1] == 'i' || h5.token_start[1] == 'I') &&
-                    (h5.token_start[2] == 'f' || h5.token_start[2] == 'f')) {
+                    (h5.token_start[2] == 'f' || h5.token_start[2] == 'F')) {
                     return 1;
                 }
                 if ((h5.token_start[0] == 'x' || h5.token_start[1] == 'X') &&
