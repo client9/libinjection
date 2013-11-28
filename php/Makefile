@@ -6,7 +6,7 @@
 
 all: module
 
-build/modules/libinjection.so: build build/libinjection.h build/libinjection_sqli.c build/libinjection_sqli_data.h build/config.m4 build/libinjection.i
+build/modules/libinjection.so: build build/libinjection.h build/libinjection_sqli.h build/libinjection_sqli.c build/libinjection_sqli_data.h build/config.m4 build/libinjection.i
 	swig -version
 	(cd build; swig -noproxy -php -Wall -Wextra libinjection.i)
 	(cd build; phpize; ./configure ; make )
@@ -31,6 +31,9 @@ build/libinjection.h: ../c/libinjection.h
 
 build/libinjection_sqli.c: ../c/libinjection_sqli.c
 	cp ../c/libinjection_sqli.c build/libinjection_sqli.c
+
+build/libinjection_sqli.h: ../c/libinjection_sqli.h
+	cp ../c/libinjection_sqli.h build/libinjection_sqli.h
 
 build/libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h build/libinjection_sqli_data.h
