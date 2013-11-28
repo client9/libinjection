@@ -14,28 +14,6 @@
 extern "C" {
 #endif
 
-/**
- * Libinjection's sqli module makes a "normalized"
- * value of the token.  This is the maximum size
- * Token with values larger than this will be truncated
- */
-
-static const int LIBINJECTION_SQLI_TOKEN_SIZE = 32;
-
-
-/**
- * Number of tokens used to create a fingerprint
- */
-
-static const int LIBINJECTION_SQLI_MAX_TOKENS = 5;
-
-/**
- *
- */
-static const int LIBINJECTION_SQLI_BUFFER_SZ = 8;
-
-
-
 enum sqli_flags {
     FLAG_NONE          = 0,
     FLAG_QUOTE_NONE    = 1,  /* 1 << 0 */
@@ -74,7 +52,7 @@ struct libinjection_sqli_token {
      */
     int  count;
 
-    char val[LIBINJECTION_SQLI_TOKEN_SIZE];
+    char val[32];
 };
 
 typedef struct libinjection_sqli_token stoken_t;
@@ -124,7 +102,7 @@ struct libinjection_sqli_state {
     /* MAX TOKENS + 1 since we use one extra token
      * to determine the type of the previous token
      */
-    struct libinjection_sqli_token tokenvec[LIBINJECTION_SQLI_BUFFER_SZ];
+    struct libinjection_sqli_token tokenvec[8];
 #endif
 
     /*
@@ -137,7 +115,7 @@ struct libinjection_sqli_state {
      * +1 for ending null
      * Mimimum of 8 bytes to add gcc's -fstack-protector to work
      */
-    char fingerprint[LIBINJECTION_SQLI_BUFFER_SZ];
+    char fingerprint[8];
 
     /*
      * Line number of code that said decided if the input was SQLi or
