@@ -2230,7 +2230,7 @@ static int reparse_as_mysql(struct libinjection_sqli_state * sql_state)
 struct libinjection_sqli_token*
 libinjection_sqli_get_token(struct libinjection_sqli_state * sql_state, int i)
 {
-    if (i < 0 || i >  LIBINJECTION_SQLI_MAX_TOKENS) {
+    if (i < 0 || i > (int)LIBINJECTION_SQLI_MAX_TOKENS) {
         return NULL;
     }
     return &(sql_state->tokenvec[i]);
