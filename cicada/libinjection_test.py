@@ -458,7 +458,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-loc': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('cd libinjection/c && cloc libinjection.h libinjection_sqli.c'),
+        'exec'   : ExecuteShell('cd libinjection/c && cloc libinjection.h libinjection_sqli.h libinjection_sqli.c'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
