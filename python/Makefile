@@ -37,7 +37,7 @@ libinjection/libinjection_sqli.h: ../c/libinjection_sqli.h
 libinjection/libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection/libinjection_sqli_data.h
 
-libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libinjection.h
+libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libinjection.h libinjection/libinjection_sqli.h
 	swig -version
 	swig -python -builtin -Wall -Wextra libinjection/libinjection.i
 
