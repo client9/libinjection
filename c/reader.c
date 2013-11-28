@@ -181,8 +181,10 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
                             (issqli ? "True" : "False"), linebuf);
                     break;
                 }
+/*
                 default:
                     assert(0);
+*/
                 }
             }
         }
