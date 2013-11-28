@@ -41,7 +41,7 @@ const char* libinjection_version(void);
  * \param[out] fingerprint, buffer of 8+ characters.  c-string,
  * \return 1 if SQLi, 0 if benign.  fingerprint will be set or set to empty string.
  */
-int libinjection_sqli(const char* s, size_t slen, char buf[]);
+int libinjection_sqli(const char* s, size_t slen, char fingerprint[]);
 
 #ifdef __cplusplus
 }
