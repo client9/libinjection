@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 int testIsSQL(void);
 
 int testIsSQL(void)

@@ -13,6 +13,7 @@
 #include <stdio.h>
 
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 
 void print_string(stoken_t* t);
 void print_var(stoken_t* t);

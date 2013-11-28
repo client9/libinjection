@@ -14,6 +14,10 @@
 #include <assert.h>
 #include <stddef.h>
 
+#include "libinjection.h"
+#include "libinjection_sqli.h"
+#include "libinjection_sqli_data.h"
+
 #define LIBINJECTION_VERSION "3.9.0"
 
 #ifndef TRUE
@@ -36,8 +40,6 @@
 #else
 #define FOLD_DEBUG
 #endif
-
-#include "libinjection_sqli_data.h"
 
 /*
  * not making public just yet
@@ -2296,4 +2298,17 @@ int libinjection_is_sqli(struct libinjection_sqli_state * sql_state)
      * Hurray, input is not SQLi
      */
     return FALSE;
+}
+
+int libinjection_sqli(const char* input, size_t slen, char fingerprint[])
+{
+    struct libinjection_sqli_state state;
+    libinjection_sqli_init(&state, input, slen, 0);
+    int issqli = libinjection_is_sqli(&state);
+    if (issqli) {
+        strcpy(fingerprint, state.fingerprint);
+    } else {
+        fingerprint[0] = '\0';
+    }
+    return issqli;
 }

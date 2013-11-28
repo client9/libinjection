@@ -2,6 +2,7 @@
 %module libinjection
 %{
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 
 /* This is the callback function that runs a python function
  *

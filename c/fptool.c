@@ -14,6 +14,7 @@
 
 
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 
 int main(int argc, const char* argv[])
 {

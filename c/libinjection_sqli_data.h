@@ -3,6 +3,7 @@
 #define _LIBINJECTION_SQLI_DATA_H
 
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 
 typedef struct {
     const char *word;

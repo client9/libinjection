@@ -4,7 +4,9 @@
 #include <string.h>
 #include <glob.h>
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 #include "libinjection_html5.h"
+#include "libinjection_xss.h"
 
 static char g_test[8096];
 static char g_input[8096];
@@ -224,6 +226,11 @@ int read_file(const char* fname, int flags, int testtype)
         while (libinjection_h5_next(&hs)) {
             slen = print_html5_token(g_actual, slen, &hs);
         }
+    } else if (testtype == 4) {
+        /*
+         * test XSS detection
+         */
+        sprintf(g_actual, "%d", libinjection_is_xss(copy, slen));
     } else {
         fprintf(stderr, "Got stange testtype value of %d\n", testtype);
         assert(0);
@@ -280,6 +287,9 @@ int main(int argc, char** argv)
         } else if (strstr(fname, "test-html5-")) {
             flags = FLAG_NONE;
             testtype = 3;
+        } else if (strstr(fname, "test-xss-")) {
+            flags = FLAG_NONE;
+            testtype = 4;
         } else {
             fprintf(stderr, "Unknown test type: %s, failing\n", fname);
             count_fail += 1;

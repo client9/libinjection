@@ -48,8 +48,8 @@ allbin: reader sqli fptool example1 testspeed testdriver
 example1: Makefile example1.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${CC} ${CFLAGS} -o example1 libinjection_sqli.c example1.c
 
-reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
-	${CC} ${CFLAGS} -o reader libinjection_sqli.c reader.c
+reader: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c libinjection_html5.c libinjection_xss.c
+	${CC} ${CFLAGS} -o reader libinjection_sqli.c libinjection_html5.c libinjection_xss.c reader.c
 
 reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c
 	${MAKE} clean
@@ -58,8 +58,8 @@ reader-gprof: Makefile reader.c libinjection_sqli_data.h libinjection.h libinjec
 reader-gcov: Makefile sqlparse_data.h libinjection.h libinjection_sqli.c reader.c
 	${CC} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -o reader-gcov libinjection_sqli.c reader.c
 
-testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c libinjection_html5.c
-	${CC}  ${CFLAGS} -O0 -o testdriver libinjection_sqli.c libinjection_html5.c testdriver.c
+testdriver: Makefile testdriver.c libinjection_sqli_data.h libinjection.h libinjection_sqli.c libinjection_html5.c libinjection_xss.c
+	${CC}  ${CFLAGS} -O0 -o testdriver libinjection_sqli.c libinjection_html5.c libinjection_xss.c testdriver.c
 
 testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h libinjection_html5.c
 	rm -f sqli
