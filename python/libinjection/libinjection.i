@@ -77,3 +77,4 @@ for (i = 0; i < $1_dim0; i++) {
     }
 }
 %include "libinjection.h"
+%include "libinjection_sqli.h"
