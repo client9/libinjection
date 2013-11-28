@@ -279,8 +279,10 @@ int libinjection_is_xss(const char* s, size_t len)
                     return 1;
                 }
                 break;
+/*
             default:
                 assert(0);
+*/
             }
             attr = TYPE_NONE;
         } else if (h5.token_type == TAG_COMMENT) {
