@@ -38,7 +38,7 @@ const char* libinjection_version(void);
  *
  * \param[in] s  input string, may contain nulls, does not need to be null-terminated
  * \param[in] slen input string length
- * \param[out] fingerprint, buffer of 8+ characters.  c-string,
+ * \param[out] fingerprint buffer of 8+ characters.  c-string,
  * \return 1 if SQLi, 0 if benign.  fingerprint will be set or set to empty string.
  */
 int libinjection_sqli(const char* s, size_t slen, char fingerprint[]);
