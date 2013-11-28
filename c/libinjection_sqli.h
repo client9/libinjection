@@ -14,6 +14,11 @@
 extern "C" {
 #endif
 
+/*
+ * Pull in size_t
+ */
+#include <string.h>
+
 enum sqli_flags {
     FLAG_NONE          = 0,
     FLAG_QUOTE_NONE    = 1,  /* 1 << 0 */

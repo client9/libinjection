@@ -15,6 +15,11 @@ extern "C" {
 #endif
 
 /*
+ * Pull in size_t
+ */
+#include <string.h>
+
+/*
  * Version info.
  *
  * This is moved into a function to allow SWIG and other auto-generated
