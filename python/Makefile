@@ -51,7 +51,7 @@ libinjection.so: copy
 
 clean:
 	@rm -rf build dist
-	@rm -f *.pyc *~ *.so
+	@rm -f *.pyc *~ *.so *.o
 	@rm -f nosetests.xml
 	@rm -f words.py
 	@rm -f libinjection/*~ libinjection/*.pyc
