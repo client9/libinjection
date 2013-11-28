@@ -209,11 +209,10 @@ int read_file(const char* fname, int flags, int testtype)
         /**
          * test sqli detection
          */
-        libinjection_sqli_init(&sf, copy, slen, flags);
-        libinjection_sqli_callback(&sf, NULL, NULL);
-        issqli = libinjection_is_sqli(&sf);
+        char buf[100];
+        issqli = libinjection_sqli(copy, slen, buf);
         if (issqli) {
-            sprintf(g_actual, "%s", sf.fingerprint);
+            sprintf(g_actual, "%s", buf);
         }
     } else if (testtype == 3) {
         /*
