@@ -21,7 +21,7 @@
 #define LIBINJECTION_VERSION "3.9.0"
 
 static const size_t LIBINJECTION_SQLI_TOKEN_SIZE = sizeof( ((stoken_t*)(0))->val);
-static const int LIBINJECTION_SQLI_MAX_TOKENS = 5;
+static const size_t LIBINJECTION_SQLI_MAX_TOKENS = 5;
 
 #ifndef TRUE
 #define TRUE 1
