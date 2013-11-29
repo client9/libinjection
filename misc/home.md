@@ -15,8 +15,8 @@ Libinjection is a small C library to detect SQLi attacks in user input with the 
 ### Easy to integrate
 
 * Standard C code, and compiles as C99 and C++, with bindings to
- * [Python](/doc-sqli-python)
- * [PHP](/doc-sqli-php)
+ * [Python](https://github.com/client9/libinjection/wiki/doc-sqli-python)
+ * [PHP](https://github.com/client9/libinjection/wiki/doc-sqli-php)
  * [Lua](https://github.com/client9/libinjection/tree/master/lua)
 * Small - about [1500 lines of code](https://libinjection.client9.com/cicada/artifacts/libinjection/libinjection-loc/latest/console.txt) in three files
 * Compiles on Linux/Unix/BSD, Mac and Windows
