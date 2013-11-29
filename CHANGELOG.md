@@ -1,13 +1,15 @@
 # vNEXT
 
-# v3.9.0
+# v3.9.0 - 2013-11-29
+
+Black Friday Edition
+
+* Big API Change!! everything in `libinjection.h` is now `libinjection_sqli.h`.  And a new super simple API is in `libinjection.h`
 * Improvements to folder to prevent bypasses using SQL types (casts).  This eliminated about 400 fingerprints as well.
 * Blacklisted a very degenerate MySQL ODBC case, that is highly unlike to be used in 'real inputs'. thanks to @LightOS foreporting.. not clear who found it originally.
-* Big API Change!! everything in `libinjection.h` is now `libinjection_sqli.h`.  `libinjection.h` now is a super-simple API.
 * Over 400 unit tests now!
 * Compiles clean under clang with `-Weverything -Wno-padded`   `-Wno-padded` is excluded since it's architecture dependant.   See `clang.sh` to see how to invoke.
 * PHP documentation fixes, thanks @LightOS
-
 
 # v3.8.0 - 2013-10-18
 
