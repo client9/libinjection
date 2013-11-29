@@ -41,6 +41,7 @@ pwd
 cp libinjection/COPYING.txt ModSecurity/apache2/
 cp libinjection/c/libinjection.h ModSecurity/apache2/libinjection
 cp libinjection/c/libinjection_sqli.c ModSecurity/apache2/libinjection
+cp libinjection/c/libinjection_sqli.h ModSecurity/apache2/libinjection
 cp libinjection/c/libinjection_sqli_data.h ModSecurity/apache2/libinjection
 
 
@@ -58,6 +59,7 @@ make distclean
 #
 git add apache2/libinjection/COPYING.txt
 git add apache2/libinjection/libinjection.h
+git add apache2/libinjection/libinjection_sqli.h
 git add apache2/libinjection/libinjection_sqli.c
 git add apache2/libinjection/libinjection_sqli_data.h
 
