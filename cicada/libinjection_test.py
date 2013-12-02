@@ -1,17 +1,12 @@
-from QueueAWS import QueueAWS
-from StateDynamo import StateDynamo
+from StateRedis import StateRedis
 from events import *
 from sourcecontrol import *
 from shell import *
 from publishers import *
 
-WORKDIR=os.path.expanduser("/mnt/cicada/workspace")
-PUBDIR=os.path.expanduser("/var/cicada/artifacts")
-
-REGION='us-west-2'
-QUEUE_EVENT = QueueAWS('cicada_events', REGION)
-QUEUE_WORK = QueueAWS('cicada_work', REGION)
-DYNAMO =  StateDynamo(REGION)
+WORKDIR=os.path.expanduser("/tmp/cicada/workspace")
+PUBDIR=os.path.expanduser("/tmp/cicada/artifacts")
+QUEUE_EVENT = StateRedis()
 
 LISTEN = [
     TestOnEvent('libinjection'),
@@ -23,25 +18,25 @@ POLLERS = {
         'listen': [
             TestOnTime(minute='10', hour='3'),
         ],
-        'exec': PollGit('statsite',
-                        'https://github.com/armon/statsite.git',
-                        DYNAMO, QUEUE_EVENT)
+        'exec': PollGit(
+            'statsite',
+            'https://github.com/armon/statsite.git',
+            QUEUE_EVENT
+        )
     },
     'protobuf-c': {
         'listen': [
             TestOnTime(minute='10', hour='2'),
         ],
         'exec': PollGit('protobuf-c',
-                        'https://github.com/protobuf-c/protobuf-c',
-                        DYNAMO, QUEUE_EVENT)
+                        'https://github.com/protobuf-c/protobuf-c', QUEUE_EVENT)
     },
     'poll-git-openssl': {
         'listen': [
             TestOnTime(minute='10', hour='1'),
         ],
         'exec': PollGit('openssl',
-                        'git://git.openssl.org/openssl.git',
-                        DYNAMO, QUEUE_EVENT)
+                        'git://git.openssl.org/openssl.git', QUEUE_EVENT)
     },
     'poll-svn-stringencoders': {
         'listen': [
@@ -49,7 +44,7 @@ POLLERS = {
         ],
         'exec': PollSVN('stringencoders',
                         'http://stringencoders.googlecode.com/svn/trunk/',
-                        DYNAMO, QUEUE_EVENT)
+                        QUEUE_EVENT)
     }
 }
 

@@ -91,11 +91,10 @@ class PollHG(object):
         args = [self.binexe, 'log', '-l', '1', '--incremental',  self.repo]
 
 class PollSVN(object):
-    def __init__(self, name, repo, storage, queue):
+    def __init__(self, name, repo, queue):
         self.repo = repo
         self.last = 0
-        self.db = storage
-        self.eventq = queue
+        self.db = queue
         self.name = name
 
     def run(self, workspace):
@@ -120,16 +119,15 @@ r360 | nickg@client9.com | ... etc
             if rev != current:
                 logging.info("Got update for {0} with {1}".format(self.name, rev))
                 self.db.poll_put(self.name, rev, int(time.time()))
-                self.eventq.put(self.name)
+                self.db.event_put(self.name)
         return (sout, serr, p.returncode)
 
 class PollGit(object):
-    def __init__(self, name, repo, storage, eventq, branch='HEAD'):
+    def __init__(self, name, repo, eventq, branch='HEAD'):
         self.name = name
         self.repo = repo
         self.branch = branch
-        self.db = storage
-        self.eventq = eventq
+        self.db = eventq
 
     def run(self, now):
         current = self.db.poll_get(self.name)
@@ -145,7 +143,7 @@ class PollGit(object):
             if rev != current:
                 logging.info("Got update for {0} with {1}".format(self.name, rev))
                 self.db.poll_put(self.name, rev, int(time.time()))
-                self.eventq.put(self.name)
+                self.db.event_put(self.name)
             else:
                 logging.info("Git revision for {0} unchanged with {1}".format(self.name, rev))
 

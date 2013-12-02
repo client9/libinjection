@@ -34,22 +34,24 @@ class HookShotHandler(tornado.web.RequestHandler):
     right now I'm just hardwiring it
     """
     def get(self):
-        DYNAMO.put('libinjection')
+        QUEUE_EVENT.event_put('libinjection')
     def post(self):
-        DYNAMO.put('libinjection')
+        QUEUE_EVENT.event_put('libinjection')
 
 class KickHandler(tornado.web.RequestHandler):
     """
     hack to do everything
     """
     def get(self):
-        DYNAMO.put('libinjection')
+        QUEUE_EVENT.event_put('libinjection')
+
 
 class CicadaStatusHandler(tornado.web.RequestHandler):
     def get(self):
         now = int(time.time())
         projects = {}
-        for rs in DYNAMO.projectjobs_list_all():
+        for jobname in QUEUE_EVENT.jobs_get_all():
+            rs = QUEUE_EVENT.job_get(jobname)
             try:
                 projectname = str(rs['project'])
                 jobname = str(rs['job'])
@@ -64,7 +66,7 @@ class CicadaStatusHandler(tornado.web.RequestHandler):
                     'job': jobname,
                     'start': int(rs['started']),
                     'ago': epoch_to_ago(int(rs['started']), now),
-                    'duration': int(rs['updated'] - rs['started']),
+                    'duration': int(rs['updated']) - int(rs['started']),
                     'state': str(rs['state']),
                     'artifacts': artifacts
                 }

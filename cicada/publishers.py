@@ -35,4 +35,4 @@ class PublishArtifact(object):
         latestdir = os.path.join(self.destination, project, jobname, 'latest');
         subprocess.call(['rm', '-rf', latestdir])
         subprocess.call(['ln', '-s', destdir, latestdir])
-
+        return destdir

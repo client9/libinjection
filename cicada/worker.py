@@ -1,14 +1,21 @@
 #!/usr/bin/env python
 
+import json
+import logging
 import sys
 import time
-import json
+
+from redis import Redis
+from rq import Connection, Queue
 
 from sourcecontrol import *
 from shell import *
 from publishers import *
 
-def now():
+from StateRedis import *
+from libinjection_test import *
+
+def utcnow():
     return int(time.time())
 
 def timestamp():
@@ -16,33 +23,50 @@ def timestamp():
     s = datetime.datetime.utcnow().isoformat(' ')
     return s[0:19]
 
-def poll(projects, workdir, db, q):
-    logging.info("See if there is anything to do")
-    m = q.get()
-    if m is None:
-        logging.info("Nothing to do...")
-        return True
-    start = now()
-    projectname, jobname = json.loads(m)
 
-    logging.info("Got {0}.{1}".format(projectname, jobname))
+def pump():
+    eventq = QUEUE_EVENT
+    jobq = Queue(connection=Redis())
+    now = utcnow()
 
-    workspace = os.path.join(workdir, projectname, jobname)
+    # GET ALL MESSAGES OFF EVENTQ
+    events = set(eventq.event_get_all())
+
+    logging.debug("got events %s", events)
+
+    # now iterate through our tests, and find ones to
+    # run.  this should be fast and non-blocking
+
+    # for each listener, in each job, in each project
+    for projectname, jobs in PROJECTS.iteritems():
+        for jobname, job in jobs.iteritems():
+            # set jobs
+            eventq.jobs_put(projectname + '.' + jobname)
+
+            for listener in job.get('listen', []):
+                if listener.run(now, events):
+                    job = jobq.enqueue(poll, projectname, jobname)
+                    break
+
+def poll(projectname, jobname):
+    db = QUEUE_EVENT
+    start = utcnow()
+    worker = PROJECTS[projectname][jobname]
+    workspace = os.path.join(WORKDIR, projectname, jobname)
+
+    hkey = projectname + '.' + jobname
+    db.job_set_key(hkey, 'started', utcnow())
+    db.job_set_key(hkey, 'updated', utcnow())
+    db.job_set_key(hkey, 'project', projectname)
+    db.job_set_key(hkey, 'job',  jobname)
+    db.job_set_key(hkey, 'state', 'running')
+
     if not os.path.exists(workspace):
         os.makedirs(workspace)
 
     output = []
-
-    try:
-        worker = projects[projectname][jobname]
-    except:
-        logging.error("Got invalid job {0}.{1}".format(projectname, jobname))
-        return False
-
-    # inform DB we are working
-    db.projectjobs_put(projectname, jobname, start, 'running', start)
-
     returncode = 0
+
     if 'source' in worker:
         output.append(timestamp() + ": Source @ {0}".format(workspace))
         (sout, serr, returncode) = worker['source'].run(workspace)
@@ -66,7 +90,6 @@ def poll(projects, workdir, db, q):
         state = 'fail'
 
     msg = "{0}: {1}.{2}.{3}: {4}".format(timestamp(), projectname, jobname, start, state)
-    logging.info(msg)
     output.append(msg)
 
     # write console output to disk
@@ -74,28 +97,13 @@ def poll(projects, workdir, db, q):
     with open(os.path.join(workspace, 'console.txt'), 'w') as fd:
         fd.write('\n'.join(output))
 
+    outputs = []
     for pub in worker.get('publish', []):
-        pub.run(workspace, projectname, jobname, start)
+        uri = pub.run(workspace, projectname, jobname, start)
+        if uri:
+            outputs.append(uri)
 
-    db.projectjobs_put(projectname, jobname, start, state, now())
-    db.jobhistory_put(projectname, jobname, start, state, now())
+    db.job_set_key(hkey, 'updated', utcnow())
+    db.job_set_key(hkey, 'state', state)
 
-    # idle state
-    return False
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(process)d %(message)s")
-    execfile('libinjection_test.py')
-    if not os.path.exists(WORKDIR):
-        os.makedirs(WORKDIR)
-    interval = 60*10
-
-    if len(sys.argv) > 1:
-        projectname = sys.argv[1]
-        jobname = sys.argv[2]
-        QUEUE_WORK.put(json.dumps( (projectname, jobname)))
-
-    while True:
-        if poll(PROJECTS, WORKDIR, DYNAMO, QUEUE_WORK):
-            logging.info("Sleeping for {0} seconds".format(interval))
-            time.sleep(interval)
+    return (state, outputs)
