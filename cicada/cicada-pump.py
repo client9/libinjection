@@ -3,10 +3,10 @@
 import logging
 import time
 
-from worker import pump
+import cicada
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     while True:
-        pump()
+        cicada.pump()
         time.sleep(60)

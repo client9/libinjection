@@ -1,134 +1,109 @@
 #!/usr/bin/env python
 
+import json
 import logging
-import os
-import os.path
+import sys
 import time
 
-import tornado.httpserver
-import tornado.web
-import tornado.template
-import tornado.escape
+from redis import Redis
+from rq import Connection, Queue
 
-execfile('libinjection_test.py')
+from sourcecontrol import *
+from shell import *
+from publishers import *
 
-def epoch_to_ago(ago, now=0):
-    if now == 0:
-        now = int(time.time())
-    diff = now - ago
-    if (diff < 0):
-        return "future"
-    if (diff < 2):
-        return "now"
-    if (diff < 60):
-        return "{0}sec".format(diff)
-    if (diff < 60*60*3):
-        return "{0}min".format(int(diff / 60.0))
-    if (diff < 86400):
-        return "{0}hr".format(int(diff / 3600.0))
-    return "{0}day".format(int(diff / 86400.0))
+from StateRedis import *
+from libinjection_test import *
 
-class HookShotHandler(tornado.web.RequestHandler):
-    """
-    something to handle github hookshots
-    right now I'm just hardwiring it
-    """
-    def get(self):
-        QUEUE_EVENT.event_put('libinjection')
-    def post(self):
-        QUEUE_EVENT.event_put('libinjection')
+def utcnow():
+    return int(time.time())
 
-class KickHandler(tornado.web.RequestHandler):
-    """
-    hack to do everything
-    """
-    def get(self):
-        QUEUE_EVENT.event_put('libinjection')
+def timestamp():
+    # remove microseconds, use a space
+    s = datetime.datetime.utcnow().isoformat(' ')
+    return s[0:19]
 
 
-class CicadaStatusHandler(tornado.web.RequestHandler):
-    def get(self):
-        now = int(time.time())
-        projects = {}
-        for jobname in QUEUE_EVENT.jobs_get_all():
-            rs = QUEUE_EVENT.job_get(jobname)
-            try:
-                projectname = str(rs['project'])
-                jobname = str(rs['job'])
-                artifacts = []
-                publishers = PROJECTS[projectname][jobname].get('publish', [])
-                for p in publishers:
-                    href, text = p.link()
-                    href = "artifacts/{0}/{1}/{2}/{3}".format(projectname, jobname, rs['started'], href)
-                    artifacts.append( (href, text) )
-                job = {
-                    'project': projectname,
-                    'job': jobname,
-                    'start': int(rs['started']),
-                    'ago': epoch_to_ago(int(rs['started']), now),
-                    'duration': int(rs['updated']) - int(rs['started']),
-                    'state': str(rs['state']),
-                    'artifacts': artifacts
-                }
+def pump():
+    eventq = QUEUE_EVENT
+    jobq = Queue(connection=Redis())
+    now = utcnow()
 
-                if rs['project'] in projects:
-                    projects[rs['project']].append(job)
-                else:
-                    projects[rs['project']] = [ job ]
-            except KeyError, e:
-                logging.error("Likely dead project:  {0} {1}".format(e, rs))
+    # GET ALL MESSAGES OFF EVENTQ
+    events = set(eventq.event_get_all())
 
-            #except Exception, e:
-            #    logging.error("Problem in rendering: {0} {1}".format(e, rs))
+    logging.debug("got events %s", events)
 
+    # now iterate through our tests, and find ones to
+    # run.  this should be fast and non-blocking
 
-        self.render(
-            'status.html',
-            status=projects,
-            ssl_protocol=self.request.headers.get('X-SSL-Protocol', ''),
-            ssl_cipher=self.request.headers.get('X-SSL-Cipher', '')
-        )
+    # for each listener, in each job, in each project
+    for projectname, jobs in PROJECTS.iteritems():
+        for jobname, job in jobs.iteritems():
+            # set jobs
+            eventq.jobs_put(projectname + '.' + jobname)
 
-class Cicada(object):
-    def __init__(self):
-        application = make_tornado_application(PUBDIR)
-        os.chdir(WORKDIR)
+            for listener in job.get('listen', []):
+                if listener.run(now, events):
+                    job = jobq.enqueue(poll, projectname, jobname)
+                    break
 
-        http_server = tornado.httpserver.HTTPServer(application)
-        http_server.listen(options.port)
-        tornado.ioloop.IOLoop.instance().start()
+def poll(projectname, jobname):
+    db = QUEUE_EVENT
+    start = utcnow()
+    worker = PROJECTS[projectname][jobname]
+    workspace = os.path.join(WORKDIR, projectname, jobname)
 
-def make_tornado_application(pubspace):
-    settings = {
-        "static_path": pubspace,
-        "template_path": os.getcwd(),
-        "xsrf_cookies": False,
-        "gzip": options.gzip,
-        'debug': True
-    }
+    hkey = projectname + '.' + jobname
+    db.job_set_key(hkey, 'started', utcnow())
+    db.job_set_key(hkey, 'updated', utcnow())
+    db.job_set_key(hkey, 'project', projectname)
+    db.job_set_key(hkey, 'job',  jobname)
+    db.job_set_key(hkey, 'state', 'running')
 
-    handlers = [
-        (options.urlprefix + '/$', CicadaStatusHandler),
-        (options.urlprefix + '/index.html', CicadaStatusHandler),
-        (r'/bootstrap/(.*)', tornado.web.StaticFileHandler, {'path': '/opt/bootstrap' }),
-        (r'/jquery/(.*)', tornado.web.StaticFileHandler, {'path': '/opt/jquery' }),
-        (options.urlprefix + '/artifacts/(.*)', tornado.web.StaticFileHandler, {'path': pubspace}),
-        (options.urlprefix + '/hookshot', HookShotHandler),
-        (options.urlprefix + '/kick', KickHandler)
-    ]
+    if not os.path.exists(workspace):
+        os.makedirs(workspace)
 
-    return  tornado.web.Application(handlers, **settings)
+    output = []
+    returncode = 0
 
-from tornado.options import define, options
+    if 'source' in worker:
+        output.append(timestamp() + ": Source @ {0}".format(workspace))
+        (sout, serr, returncode) = worker['source'].run(workspace)
 
-#
-# web related options
-#
-define("port", default=9000, help="HTTP port")
-define("gzip", default=False, help="gzip output, not needed if running behind a proxy")
-define("urlprefix", default="/cicada", help="url prefix")
+        if sout is not None and len(sout) > 0:
+            output.append(sout)
 
-if __name__ == '__main__':
-    tornado.options.parse_command_line()
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(process)d %(message)s")
-    c = Cicada()
+        output.append(timestamp() + ": return code of {0}".format(returncode))
+
+    if returncode == 0:
+        output.append("{0}: {1}.{2}.{3}: {4}".format(timestamp(), projectname, jobname, start, "Execute"))
+        (sout, serr, returncode) = worker['exec'].run(workspace)
+        if output is not None and len(output) > 0:
+            output.append(sout)
+        output.append("{0}: {1}.{2}.{3}: {4}".format(timestamp(), projectname, jobname, start,
+                                                     "return code of " + str(returncode)))
+
+    if returncode == 0:
+        state = 'pass'
+    else:
+        state = 'fail'
+
+    msg = "{0}: {1}.{2}.{3}: {4}".format(timestamp(), projectname, jobname, start, state)
+    output.append(msg)
+
+    # write console output to disk
+    # to workspace,
+    with open(os.path.join(workspace, 'console.txt'), 'w') as fd:
+        fd.write('\n'.join(output))
+
+    outputs = []
+    for pub in worker.get('publish', []):
+        uri = pub.run(workspace, projectname, jobname, start)
+        if uri:
+            outputs.append(uri)
+
+    db.job_set_key(hkey, 'updated', utcnow())
+    db.job_set_key(hkey, 'state', state)
+
+    return (state, outputs)
