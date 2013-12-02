@@ -4,8 +4,8 @@ from sourcecontrol import *
 from shell import *
 from publishers import *
 
-WORKDIR=os.path.expanduser("/tmp/cicada/workspace")
-PUBDIR=os.path.expanduser("/tmp/cicada/artifacts")
+WORKDIR=os.path.expanduser("/mnt/cicada/workspace")
+PUBDIR=os.path.expanduser("/mnt/cicada/artifacts")
 QUEUE_EVENT = StateRedis()
 
 LISTEN = [
