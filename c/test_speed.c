@@ -28,7 +28,11 @@ int testIsSQL(void)
     int i, j;
     size_t slen;
     sfilter sf;
-    clock_t t0 = clock();
+    clock_t t0,t1;
+    double total;
+    int tps;
+
+    t0 = clock();
     for (i = imax, j=0; i != 0; --i, ++j) {
         if (s[j] == NULL) {
             j = 0;
@@ -38,9 +42,10 @@ int testIsSQL(void)
         libinjection_sqli_init(&sf, s[j], slen, FLAG_QUOTE_NONE | FLAG_SQL_ANSI);
         libinjection_is_sqli(&sf);
     }
-    clock_t t1 = clock();
-    double total = (double) (t1 - t0) / (double) CLOCKS_PER_SEC;
-    int tps = (int)((double) imax / total);
+
+    t1 = clock();
+    total = (double) (t1 - t0) / (double) CLOCKS_PER_SEC;
+    tps = (int)((double) imax / total);
     return tps;
 }
 

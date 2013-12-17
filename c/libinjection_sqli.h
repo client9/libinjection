@@ -26,7 +26,7 @@ enum sqli_flags {
     FLAG_QUOTE_DOUBLE  = 4,  /* 1 << 2 */
 
     FLAG_SQL_ANSI      = 8,  /* 1 << 3 */
-    FLAG_SQL_MYSQL     = 16, /* 1 << 4 */
+    FLAG_SQL_MYSQL     = 16  /* 1 << 4 */
 };
 
 enum lookup_type {

@@ -18,6 +18,7 @@
 
 int main(int argc, const char* argv[])
 {
+    size_t slen;
     int ok;
     int single = 0;
     int offset = 1;
@@ -36,7 +37,7 @@ int main(int argc, const char* argv[])
         }
     }
 
-    size_t slen = strlen(argv[offset]);
+    slen = strlen(argv[offset]);
 
     if (slen == 0) {
         return 1;

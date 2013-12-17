@@ -4,8 +4,10 @@
 
 int main(int argc, const char* argv[])
 {
+    char fingerprint[8];
     const char* input;
     size_t slen;
+    int issqli;
 
     if (argc < 2) {
         fprintf(stderr, "Usage: %s inputstring\n", argv[0]);
@@ -15,9 +17,8 @@ int main(int argc, const char* argv[])
     input = argv[1];
     slen = strlen(input);
 
-    char fingerprint[8];
 
-    int issqli = libinjection_sqli(input, slen, fingerprint);
+    issqli = libinjection_sqli(input, slen, fingerprint);
     if (issqli) {
         printf("sqli with fingerprint of '%s'\n", fingerprint);
     } else {

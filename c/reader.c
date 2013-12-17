@@ -119,11 +119,12 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
     char linebuf[8192];
     int issqli;
     int linenum = 0;
+    size_t len;
     sfilter sf;
 
     while (fgets(linebuf, sizeof(linebuf), fd)) {
         linenum += 1;
-        size_t len = modp_rtrim(linebuf, strlen(linebuf));
+        len = modp_rtrim(linebuf, strlen(linebuf));
         if (len == 0) {
             continue;
         }

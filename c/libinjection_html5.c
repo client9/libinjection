@@ -115,9 +115,11 @@ static int h5_state_eof(h5_state_t* hs)
 
 static int h5_state_data(h5_state_t* hs)
 {
+    const char* idx;
+
     TRACE();
     assert(hs->len >= hs->pos);
-    const char* idx = (const char*) memchr(hs->s + hs->pos, CHAR_LT, hs->len - hs->pos);
+    idx = (const char*) memchr(hs->s + hs->pos, CHAR_LT, hs->len - hs->pos);
     if (idx == NULL) {
         hs->token_start = hs->s + hs->pos;
         hs->token_len = hs->len - hs->pos;
@@ -144,8 +146,10 @@ static int h5_state_data(h5_state_t* hs)
  */
 static int h5_state_tag_open(h5_state_t* hs)
 {
+    char ch;
+
     TRACE();
-    char ch = hs->s[hs->pos];
+    ch = hs->s[hs->pos];
     if (ch == CHAR_BANG) {
         hs->pos += 1;
         return h5_state_markup_declaration_open(hs);
@@ -180,8 +184,9 @@ static int h5_state_tag_open(h5_state_t* hs)
  */
 static int h5_state_end_tag_open(h5_state_t* hs)
 {
-    TRACE();
     char ch;
+
+    TRACE();
 
     if (hs->pos >= hs->len) {
         return 0;
@@ -219,9 +224,11 @@ static int h5_state_tag_name_close(h5_state_t* hs)
  */
 static int h5_state_tag_name(h5_state_t* hs)
 {
-    TRACE();
     char ch;
-    size_t pos = hs->pos;
+    size_t pos;
+
+    TRACE();
+    pos = hs->pos;
     while (pos < hs->len) {
         ch = hs->s[pos];
         if (h5_is_white(ch)) {
@@ -269,8 +276,10 @@ static int h5_state_tag_name(h5_state_t* hs)
  */
 static int h5_state_before_attribute_name(h5_state_t* hs)
 {
+    int ch;
+
     TRACE();
-    int ch = h5_skip_white(hs);
+    ch = h5_skip_white(hs);
     switch (ch) {
     case CHAR_EOF: {
         return 0;
@@ -295,9 +304,11 @@ static int h5_state_before_attribute_name(h5_state_t* hs)
 
 static int h5_state_attribute_name(h5_state_t* hs)
 {
-    TRACE();
     char ch;
-    size_t pos = hs->pos;
+    size_t pos;
+
+    TRACE();
+    pos = hs->pos;
     while (pos < hs->len) {
         ch = hs->s[pos];
         if (h5_is_white(ch)) {
@@ -346,9 +357,12 @@ static int h5_state_attribute_name(h5_state_t* hs)
  */
 static int h5_state_after_attribute_name(h5_state_t* hs)
 {
+    int c;
+    size_t pos;
+
     TRACE();
-    size_t pos = hs->pos;
-    int c = h5_skip_white(hs);
+    pos = hs->pos;
+    c = h5_skip_white(hs);
     switch (c) {
     case CHAR_EOF: {
         return 0;
@@ -375,8 +389,10 @@ static int h5_state_after_attribute_name(h5_state_t* hs)
  */
 static int h5_state_before_attribute_value(h5_state_t* hs)
 {
+    int c;
     TRACE();
-    int c = h5_skip_white(hs);
+
+    c = h5_skip_white(hs);
 
     if (c == CHAR_EOF) {
         hs->state = h5_state_eof;
@@ -395,8 +411,9 @@ static int h5_state_before_attribute_value(h5_state_t* hs)
 
 static int h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
 {
-    TRACE();
     const char* idx;
+
+    TRACE();
 
     /* skip quote */
     hs->pos += 1;
@@ -432,9 +449,11 @@ int h5_state_attribute_value_single_quote(h5_state_t* hs)
 
 static int h5_state_attribute_value_no_quote(h5_state_t* hs)
 {
-    TRACE();
     char ch;
-    size_t pos = hs->pos;
+    size_t pos;
+
+    TRACE();
+    pos = hs->pos;
     while (pos < hs->len) {
         ch = hs->s[pos];
         if (h5_is_white(ch)) {
@@ -468,8 +487,9 @@ static int h5_state_attribute_value_no_quote(h5_state_t* hs)
  */
 static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
 {
-    TRACE();
     char ch;
+
+    TRACE();
     if (hs->pos >= hs->len) {
         return 0;
     }
@@ -497,8 +517,9 @@ static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
  */
 static int h5_state_self_closing_start_tag(h5_state_t* hs)
 {
-    TRACE();
     char ch;
+
+    TRACE();
     if (hs->pos >= hs->len) {
         return 0;
     }
@@ -521,8 +542,9 @@ static int h5_state_self_closing_start_tag(h5_state_t* hs)
  */
 static int h5_state_bogus_comment(h5_state_t* hs)
 {
-    TRACE();
     const char* idx;
+
+    TRACE();
     idx = (const char*) memchr(hs->s + hs->pos, CHAR_GT, hs->len - hs->pos);
     if (idx == NULL) {
         hs->token_start = hs->s + hs->pos;
@@ -545,9 +567,11 @@ static int h5_state_bogus_comment(h5_state_t* hs)
  */
 static int h5_state_bogus_comment2(h5_state_t* hs)
 {
-    TRACE();
     const char* idx;
-    size_t pos = hs->pos;
+    size_t pos;
+
+    TRACE();
+    pos = hs->pos;
     while (1) {
         idx = (const char*) memchr(hs->s + pos, CHAR_PERCENT, hs->len - pos);
         if (idx == NULL || (idx + 1 >= hs->s + hs->len)) {
@@ -579,8 +603,10 @@ static int h5_state_bogus_comment2(h5_state_t* hs)
  */
 static int h5_state_markup_declaration_open(h5_state_t* hs)
 {
+    size_t remaining;
+
     TRACE();
-    size_t remaining = hs->len - hs->pos;
+    remaining = hs->len - hs->pos;
     if (remaining >= 7 &&
         /* case insensitive */
         (hs->s[hs->pos + 0] == 'D' || hs->s[hs->pos + 0] == 'd') &&
@@ -627,10 +653,12 @@ static int h5_state_markup_declaration_open(h5_state_t* hs)
  */
 static int h5_state_comment(h5_state_t* hs)
 {
-    TRACE();
     char ch;
     const char* idx;
-    size_t pos = hs->pos;
+    size_t pos;
+
+    TRACE();
+    pos = hs->pos;
     while (1) {
         idx = (const char*) memchr(hs->s + pos, CHAR_DASH, hs->len - pos);
 
@@ -665,9 +693,11 @@ static int h5_state_comment(h5_state_t* hs)
 
 static int h5_state_cdata(h5_state_t* hs)
 {
-    TRACE();
     const char* idx;
-    size_t pos = hs->pos;
+    size_t pos;
+
+    TRACE();
+    pos = hs->pos;
     while (1) {
         idx = (const char*) memchr(hs->s + pos, CHAR_RIGHTB, hs->len - pos);
 
@@ -697,9 +727,9 @@ static int h5_state_cdata(h5_state_t* hs)
  */
 static int h5_state_doctype(h5_state_t* hs)
 {
-    TRACE();
     const char* idx;
 
+    TRACE();
     hs->token_start = hs->s + hs->pos;
     hs->token_type = DOCTYPE;
 

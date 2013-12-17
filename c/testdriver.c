@@ -99,7 +99,7 @@ size_t print_html5_token(char* buf, size_t len, h5_state_t* hs)
     int slen;
     char* tmp = (char*) malloc(hs->token_len + 1);
     memcpy(tmp, hs->token_start, hs->token_len);
-    // TODO.. encode to be printable
+    /* TODO.. encode to be printable */
     tmp[hs->token_len] = '\0';
 
     slen = sprintf(buf + len, "%s,%d,%s\n",
@@ -143,6 +143,8 @@ int read_file(const char* fname, int flags, int testtype)
     char linebuf[8192];
     char g_actual[8192];
     char* bufptr = NULL;
+    size_t slen;
+    char* copy;
     sfilter sf;
     int ok = 1;
     int num_tokens;
@@ -178,8 +180,8 @@ int read_file(const char* fname, int flags, int testtype)
     g_input[modp_rtrim(g_input, strlen(g_input))] = '\0';
 
 
-    size_t slen = strlen(g_input);
-    char* copy = (char* ) malloc(slen);
+    slen = strlen(g_input);
+    copy = (char* ) malloc(slen);
     memcpy(copy, g_input, slen);
 
     g_actual[0] = '\0';

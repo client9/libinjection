@@ -5,17 +5,17 @@
 #include <stdio.h>
 
 /*
- * HEY THIS ISN"T DONE
+ * HEY THIS ISN'T DONE
  *  AND MISSING A KEY INGREDIENT!!
  *
  */
 
 typedef enum attribute {
-    TYPE_NONE,
-    TYPE_BLACK,     /* ban always */
-    TYPE_ATTR_URL,  /* attribute value takes a URL-like object */
-    TYPE_STYLE,
-    TYPE_ATTR_INDIRECT,  /* attribute *name* is given in *value* */
+    TYPE_NONE
+    , TYPE_BLACK     /* ban always */
+    , TYPE_ATTR_URL   /* attribute value takes a URL-like object */
+    , TYPE_STYLE
+    , TYPE_ATTR_INDIRECT  /* attribute *name* is given in *value* */
 } attribute_t;
 
 typedef struct stringtype {
@@ -23,31 +23,33 @@ typedef struct stringtype {
     attribute_t atype;
 } stringtype_t;
 
-// view-source:
-// data:
-// javascript:
+/*
+ * view-source:
+ * data:
+ * javascript:
+ */
 static stringtype_t BLACKATTR[] = {
-    { "ACTION", TYPE_ATTR_URL },     /* form */
-    { "ATTRIBUTENAME", TYPE_ATTR_INDIRECT }, /* SVG allow indirection of attribute names */
-    { "BY", TYPE_ATTR_URL },         /* SVG */
-    { "BACKGROUND", TYPE_ATTR_URL }, /* IE6, O11 */
-    { "DATAFORMATAS", TYPE_BLACK },  /* IE */
-    { "DATASRC", TYPE_BLACK },       /* IE */
-    { "DYNSRC", TYPE_ATTR_URL },     /* Obsolete img attribute */
-    { "FILTER", TYPE_STYLE },        /* Opera, SVG inline style */
-    { "FORMACTION", TYPE_ATTR_URL }, /* HTML5 */
-    { "FOLDER", TYPE_ATTR_URL },     /* Only on A tags, IE-only */
-    { "FROM", TYPE_ATTR_URL },       /* SVG */
-    { "HANDLER", TYPE_ATTR_URL },    /* SVG Tiny, Opera */
-    { "HREF", TYPE_ATTR_URL },
-    { "LOWSRC", TYPE_ATTR_URL },     /* Obsolete img attribute */
-    { "POSTER", TYPE_ATTR_URL },     /* Opera 10,11 */
-    { "SRC", TYPE_ATTR_URL },
-    { "STYLE", TYPE_STYLE },
-    { "TO", TYPE_ATTR_URL },         /* SVG */
-    { "VALUES", TYPE_ATTR_URL },     /* SVG */
-    { "XLINK:HREF", TYPE_ATTR_URL },
-    { NULL, TYPE_NONE }
+    { "ACTION", TYPE_ATTR_URL }     /* form */
+    , { "ATTRIBUTENAME", TYPE_ATTR_INDIRECT } /* SVG allow indirection of attribute names */
+    , { "BY", TYPE_ATTR_URL }         /* SVG */
+    , { "BACKGROUND", TYPE_ATTR_URL } /* IE6, O11 */
+    , { "DATAFORMATAS", TYPE_BLACK }  /* IE */
+    , { "DATASRC", TYPE_BLACK }       /* IE */
+    , { "DYNSRC", TYPE_ATTR_URL }     /* Obsolete img attribute */
+    , { "FILTER", TYPE_STYLE }        /* Opera, SVG inline style */
+    , { "FORMACTION", TYPE_ATTR_URL } /* HTML5 */
+    , { "FOLDER", TYPE_ATTR_URL }     /* Only on A tags, IE-only */
+    , { "FROM", TYPE_ATTR_URL }       /* SVG */
+    , { "HANDLER", TYPE_ATTR_URL }    /* SVG Tiny, Opera */
+    , { "HREF", TYPE_ATTR_URL }
+    , { "LOWSRC", TYPE_ATTR_URL }     /* Obsolete img attribute */
+    , { "POSTER", TYPE_ATTR_URL }     /* Opera 10,11 */
+    , { "SRC", TYPE_ATTR_URL }
+    , { "STYLE", TYPE_STYLE }
+    , { "TO", TYPE_ATTR_URL }         /* SVG */
+    , { "VALUES", TYPE_ATTR_URL }     /* SVG */
+    , { "XLINK:HREF", TYPE_ATTR_URL }
+    , { NULL, TYPE_NONE }
 };
 
 /* xmlns */
@@ -68,29 +70,29 @@ static const char* BLACKATTR[] = {
 */
 
 static const char* BLACKTAG[] = {
-    "APPLET",
-//    "AUDIO",
-    "BASE",
-    "EMBED",
-//    "FORM",
-    "FRAME",
-    "FRAMESET",
-    "HANDLER", /* Opera SVG, effectively a script tag */
-    "IFRAME",
-    "IMPORT",
-    "ISINDEX",
-    "LINK",
-    "LISTENER",
-//    "MARQUEE",
-    "META",
-    "NOSCRIPT",
-    "OBJECT",
-    "SCRIPT",
-    "STYLE",
-//    "VIDEO",
-    "VMLFRAME",
-    "XML",
-    NULL
+    "APPLET"
+    /*    , "AUDIO" */
+    , "BASE"
+    , "EMBED"
+    /*   ,  "FORM" */
+    , "FRAME"
+    , "FRAMESET"
+    , "HANDLER" /* Opera SVG, effectively a script tag */
+    , "IFRAME"
+    , "IMPORT"
+    , "ISINDEX"
+    , "LINK"
+    , "LISTENER"
+    /*    , "MARQUEE" */
+    , "META"
+    , "NOSCRIPT"
+    , "OBJECT"
+    , "SCRIPT"
+    , "STYLE"
+    /*    , "VIDEO" */
+    , "VMLFRAME"
+    , "XML"
+    , NULL
 };
 
 static int is_black_tag(const char* s, size_t len);
@@ -121,11 +123,13 @@ static int cstrcasecmp_with_null(const char *a, const char *b, size_t n)
 
 static int is_black_tag(const char* s, size_t len)
 {
+    const char** black;
+
     if (len < 3) {
         return 0;
     }
 
-    const char** black = BLACKTAG;
+    black = BLACKTAG;
     while (*black != NULL) {
         if (cstrcasecmp_with_null(*black, s, len) == 0) {
             return 1;
@@ -152,6 +156,8 @@ static int is_black_tag(const char* s, size_t len)
 
 static attribute_t is_black_attr(const char* s, size_t len)
 {
+    stringtype_t* black;
+
     if (len < 2) {
         return TYPE_NONE;
     }
@@ -169,7 +175,7 @@ static attribute_t is_black_attr(const char* s, size_t len)
         }
     }
 
-    stringtype_t* black = BLACKATTR;
+    black = BLACKATTR;
     while (black->name != NULL) {
         if (cstrcasecmp_with_null(black->name, s, len) == 0) {
             return black->atype;
@@ -182,6 +188,7 @@ static attribute_t is_black_attr(const char* s, size_t len)
 
 static int is_black_url(const char* s, size_t len)
 {
+
     static const char* data_url = "DATA";
     static const char* viewsource_url = "VIEW-SOURCE";
 
@@ -190,6 +197,8 @@ static int is_black_url(const char* s, size_t len)
 
     /* covers JAVA, JAVASCRIPT, + colon */
     static const char* javascript_url = "JAVA";
+
+    size_t tokenlen;
 
     /* skip whitespace */
     while (len > 0) {
@@ -205,7 +214,7 @@ static int is_black_url(const char* s, size_t len)
         break;
     }
 
-    size_t tokenlen = strlen(data_url);
+    tokenlen = strlen(data_url);
     if (len > tokenlen && cstrcasecmp_with_null(data_url, s, tokenlen) == 0) {
         return 1;
     }
@@ -286,12 +295,12 @@ int libinjection_is_xss(const char* s, size_t len)
             }
             attr = TYPE_NONE;
         } else if (h5.token_type == TAG_COMMENT) {
-            // IE uses a "`" as a tag ending char
+	    /* IE uses a "`" as a tag ending char */
             if (memchr(h5.token_start, '`', h5.token_len) != NULL) {
                 return 1;
             }
 
-            // IE conditional comment
+            /* IE conditional comment */
             if (h5.token_len > 3) {
                 if (h5.token_start[0] == '[' &&
                     (h5.token_start[1] == 'i' || h5.token_start[1] == 'I') &&
@@ -306,12 +315,12 @@ int libinjection_is_xss(const char* s, size_t len)
             }
 
             if (h5.token_len > 5) {
-                //  IE <?import pseudo-tag
+	        /*  IE <?import pseudo-tag */
                 if (cstrcasecmp_with_null("IMPORT", h5.token_start, 6) == 0) {
                     return 1;
                 }
 
-                //  XML Entity definition
+                /*  XML Entity definition */
                 if (cstrcasecmp_with_null("ENTITY", h5.token_start, 6) == 0) {
                     return 1;
                 }

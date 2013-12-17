@@ -63,11 +63,12 @@ void print_token(stoken_t *t) {
 
 int main(int argc, const char* argv[])
 {
+    size_t slen;
+    char* copy;
+
     int flags = 0;
     int fold = 0;
     int detect = 0;
-
-
 
     int i;
     int count;
@@ -116,8 +117,8 @@ int main(int argc, const char* argv[])
      * can see if we run past the buffer.
      */
 
-    size_t slen = strlen(argv[offset]);
-    char* copy = (char* ) malloc(slen);
+    slen = strlen(argv[offset]);
+    copy = (char* ) malloc(slen);
     memcpy(copy, argv[offset], slen);
     libinjection_sqli_init(&sf, copy, slen, flags);
 
@@ -128,9 +129,7 @@ int main(int argc, const char* argv[])
         }
     } else if (fold == 1) {
         count = libinjection_sqli_fold(&sf);
-        // printf("count = %d\n", count);
         for (i = 0; i < count; ++i) {
-            //printf("token: %d :: ", i);
             print_token(&(sf.tokenvec[i]));
         }
     } else {

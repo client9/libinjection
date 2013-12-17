@@ -22,7 +22,7 @@ CPPCHECK_FLAGS=--quiet --enable=all --inconclusive --error-exitcode=2 \
 #  * does not actually protect against buffer over-reads on fixed array sizes
 #  * breaks valgrinds ability to detect this.
 #
-CFLAGS=-g -O3 -Wall -Wextra -Werror -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wstack-protector -D_FORTIFY_SOURCE=2
+CFLAGS=-g -O3 -Wall -Wextra -Werror -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wstack-protector -D_FORTIFY_SOURCE=2 -std=c90 -pedantic
 
 help:
 	@echo ""
