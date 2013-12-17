@@ -87,7 +87,7 @@ size_t modp_url_decode(char* dest, const char* s, size_t len)
         }
     }
     *dest = '\0';
-    return (size_t)(dest - deststart); // compute "strlen" of dest.
+    return (size_t)(dest - deststart); /* compute "strlen" of dest */
 }
 
 void modp_toprint(char* str, size_t len)
@@ -162,9 +162,13 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
 
                 switch (mode) {
                 case MODE_SQLI: {
-                    // if we didn't find a SQLi and fingerprint from sqlstats is
-                    // is 'sns' or 'snsns' then redo using plain context
-                    if (!issqli && (strcmp(sf.fingerprint, "sns") == 0 || strcmp(sf.fingerprint, "snsns") == 0)) {
+		    /*
+		     * if we didn't find a SQLi and fingerprint from
+                     * sqlstats is is 'sns' or 'snsns' then redo using
+                     * plain context
+		     */
+                    if (!issqli && (strcmp(sf.fingerprint, "sns") == 0 ||
+				    strcmp(sf.fingerprint, "snsns") == 0)) {
                         libinjection_sqli_fingerprint(&sf, 0);
                     }
 

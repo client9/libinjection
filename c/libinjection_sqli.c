@@ -1452,12 +1452,10 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                 )
             {
                 if (pos > LIBINJECTION_SQLI_MAX_TOKENS) {
-                    //printf("TRUNCATE pos = %lu vs. %lu\n", pos, LIBINJECTION_SQLI_MAX_TOKENS);
-                    st_copy(&(sf->tokenvec[1]), &(sf->tokenvec[LIBINJECTION_SQLI_MAX_TOKENS]));
+		    st_copy(&(sf->tokenvec[1]), &(sf->tokenvec[LIBINJECTION_SQLI_MAX_TOKENS]));
                     pos = 2;
                     left = 0;
                 } else {
-                    //printf("HEREIAM\n");
                     pos = 1;
                     left = 0;
                 }
