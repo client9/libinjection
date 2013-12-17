@@ -10,16 +10,16 @@ extern "C" {
 #include <strings.h>
 
 enum html5_type {
-    DATA_TEXT,
-    TAG_NAME_OPEN,
-    TAG_NAME_CLOSE,
-    TAG_NAME_SELFCLOSE,
-    TAG_DATA,
-    TAG_CLOSE,
-    ATTR_NAME,
-    ATTR_VALUE,
-    TAG_COMMENT,
-    DOCTYPE
+    DATA_TEXT
+    , TAG_NAME_OPEN
+    , TAG_NAME_CLOSE
+    , TAG_NAME_SELFCLOSE
+    , TAG_DATA
+    , TAG_CLOSE
+    , ATTR_NAME
+    , ATTR_VALUE
+    , TAG_COMMENT
+    , DOCTYPE
 };
 
 struct h5_state;

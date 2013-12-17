@@ -18,7 +18,7 @@
 #include "libinjection_sqli.h"
 #include "libinjection_sqli_data.h"
 
-#define LIBINJECTION_VERSION "3.9.0"
+#define LIBINJECTION_VERSION "3.9.1"
 
 #define LIBINJECTION_SQLI_TOKEN_SIZE  sizeof(((stoken_t*)(0))->val)
 #define LIBINJECTION_SQLI_MAX_TOKENS  5
@@ -48,34 +48,34 @@
  * not making public just yet
  */
 typedef enum {
-    TYPE_NONE        = 0,
-    TYPE_KEYWORD     = (int)'k',
-    TYPE_UNION       = (int)'U',
-    TYPE_GROUP       = (int)'B',
-    TYPE_EXPRESSION  = (int)'E',
-    TYPE_SQLTYPE     = (int)'t',
-    TYPE_FUNCTION    = (int)'f',
-    TYPE_BAREWORD    = (int)'n',
-    TYPE_NUMBER      = (int)'1',
-    TYPE_VARIABLE    = (int)'v',
-    TYPE_STRING      = (int)'s',
-    TYPE_OPERATOR    = (int)'o',
-    TYPE_LOGIC_OPERATOR = (int)'&',
-    TYPE_COMMENT     = (int)'c',
-    TYPE_COLLATE     = (int)'A',
-    TYPE_LEFTPARENS  = (int)'(',
-    TYPE_RIGHTPARENS = (int)')',  /* not used? */
-    TYPE_LEFTBRACE   = (int)'{',
-    TYPE_RIGHTBRACE  = (int)'}',
-    TYPE_DOT         = (int)'.',
-    TYPE_COMMA       = (int)',',
-    TYPE_COLON       = (int)':',
-    TYPE_SEMICOLON   = (int)';',
-    TYPE_TSQL        = (int)'T',  /* TSQL start */
-    TYPE_UNKNOWN     = (int)'?',
-    TYPE_EVIL        = (int)'X',  /* unparsable, abort  */
-    TYPE_FINGERPRINT = (int)'F',  /* not really a token */
-    TYPE_BACKSLASH   = (int)'\\'
+    TYPE_NONE        = 0
+    , TYPE_KEYWORD     = (int)'k'
+    , TYPE_UNION       = (int)'U'
+    , TYPE_GROUP       = (int)'B'
+    , TYPE_EXPRESSION  = (int)'E'
+    , TYPE_SQLTYPE     = (int)'t'
+    , TYPE_FUNCTION    = (int)'f'
+    , TYPE_BAREWORD    = (int)'n'
+    , TYPE_NUMBER      = (int)'1'
+    , TYPE_VARIABLE    = (int)'v'
+    , TYPE_STRING      = (int)'s'
+    , TYPE_OPERATOR    = (int)'o'
+    , TYPE_LOGIC_OPERATOR = (int)'&'
+    , TYPE_COMMENT     = (int)'c'
+    , TYPE_COLLATE     = (int)'A'
+    , TYPE_LEFTPARENS  = (int)'('
+    , TYPE_RIGHTPARENS = (int)')'  /* not used? */
+    , TYPE_LEFTBRACE   = (int)'{'
+    , TYPE_RIGHTBRACE  = (int)'}'
+    , TYPE_DOT         = (int)'.'
+    , TYPE_COMMA       = (int)','
+    , TYPE_COLON       = (int)':'
+    , TYPE_SEMICOLON   = (int)';'
+    , TYPE_TSQL        = (int)'T'  /* TSQL start */
+    , TYPE_UNKNOWN     = (int)'?'
+    , TYPE_EVIL        = (int)'X'  /* unparsable, abort  */
+    , TYPE_FINGERPRINT = (int)'F'  /* not really a token */
+    , TYPE_BACKSLASH   = (int)'\\'
 } sqli_token_types;
 
 /**
