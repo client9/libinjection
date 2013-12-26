@@ -1,5 +1,15 @@
 # vNEXT
 
+# v3.9.1 - 2013-12-26
+
+Day-After-Christmas Edition
+
+* No functional changes
+* Code reverted to strict C90 style to allow builds on embedded systems, Windows and FreeBSD
+* For gcc this means `-std=c90 -pedantic`, which seems to simulate Windows behavior on Linux
+* Other minor style changes to header files.
+
+
 # v3.9.0 - 2013-11-29
 
 Black Friday Edition
