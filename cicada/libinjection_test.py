@@ -676,7 +676,7 @@ poptck
 }
 
 PROJECTS = {
-    'pollers': POLLERS,
+    'pollers': POLLERS
     , 'libinjection': LIBINJECTION
     , 'stringencoders': STRINGENCODERS
     , 'openssl': OPENSSL
