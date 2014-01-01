@@ -677,10 +677,10 @@ poptck
 
 PROJECTS = {
     'pollers': POLLERS,
-    'libinjection': LIBINJECTION,
-    'stringencoders': STRINGENCODERS,
-    'openssl': OPENSSL,
-    'statsite': STATSITE,
-    'protobuf-c': PROTOBUFC
-    'mrubby': MRUBY
+    , 'libinjection': LIBINJECTION
+    , 'stringencoders': STRINGENCODERS
+    , 'openssl': OPENSSL
+    , 'statsite': STATSITE
+    , 'protobuf-c': PROTOBUFC
+    , 'mruby': MRUBY
 }
