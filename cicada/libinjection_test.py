@@ -38,6 +38,13 @@ POLLERS = {
         'exec': PollGit('openssl',
                         'git://git.openssl.org/openssl.git', QUEUE_EVENT)
     },
+    'poll-git-mruby': {
+        'listen': [
+            TestOnTime(minute='20', hour='1'),
+        ],
+        'exec': PollGit('mruby',
+                        'https://github.com/mruby/mruby', QUEUE_EVENT)
+    },
     'poll-svn-stringencoders': {
         'listen': [
             TestOnInterval(minutes=10),
@@ -52,6 +59,78 @@ LISTEN = [
     TestOnEvent('libinjection'),
     TestOnTime(minute='0', hour='23'),
 ]
+
+MRUBY = {
+   'build-gcc': {
+        'listen': [ TestOnEvent('mruby') ],
+        'source': CheckoutGit('https://github.com/mruby/mruby.git', 'mruby'),
+        'exec': ExecuteShell("""
+cd mruby
+make
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+   'build-clang': {
+        'listen': [ TestOnEvent('mruby') ],
+        'source': CheckoutGit('https://github.com/mruby/mruby.git', 'mruby'),
+        'exec': ExecuteShell("""
+cd mruby
+CC=clang make -e
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'cppcheck': {
+        'listen': [ TestOnEvent('mruby') ],
+        'source': CheckoutGit('https://github.com/mruby/mruby.git', 'mruby'),
+        'exec': ExecuteShell("""
+cppcheck --version
+cd mruby
+cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
+    --suppress=variableScope  \
+    --std=c89 --std=posix \
+    --template '{file}:{line} {severity} {id} {message}' src
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+        ]
+    },
+    'clang-static-analyzer': {
+        'listen': [ TestOnEvent('mruby') ],
+        'source': CheckoutGit('https://github.com/mruby/mruby.git', 'mruby'),
+        'exec': ExecuteShell("""
+cd mruby
+scan-build -o /mnt/cicada/workspace/mruby/clang-static-analyzer/ --status-bugs make -e
+cd /mnt/cicada/workspace/mruby/clang-static-analyzer/
+# scan-build generates a date-based file, starting with year.  move to fixed directory
+rm -rf csa
+mv 20* csa
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('csa', PUBDIR, 'csa/index.html', 'analysis')
+        ]
+    },
+    'stack': {
+        'listen': [ TestOnEvent('stack') ],
+        'source': CheckoutGit('https://github.com/mruby/mruby.git', 'mruby'),
+        'exec': ExecuteShell("""
+export LD_LIBRARY_PATH=/usr/local/lib
+export PATH=/mnt/stack/build/bin/:$PATH
+cd mruby
+find . -name '*.ll' -o -name '*.ll.out' | xargs rm -f
+stack-build make
+poptck
+"""),
+        'publish': [
+            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('protobuf-c/pstack.txt', PUBDIR, 'pstack.txt', 'analysis'),
+        ]
+    }    
+}
 
 STATSITE = {
    'build-gcc': {
@@ -603,4 +682,5 @@ PROJECTS = {
     'openssl': OPENSSL,
     'statsite': STATSITE,
     'protobuf-c': PROTOBUFC
+    'mrubby': MRUBY
 }
