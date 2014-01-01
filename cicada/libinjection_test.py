@@ -43,7 +43,7 @@ POLLERS = {
             TestOnTime(minute='20', hour='1'),
         ],
         'exec': PollGit('mruby',
-                        'https://github.com/mruby/mruby', QUEUE_EVENT)
+                        'https://github.com/mruby/mruby.git', QUEUE_EVENT)
     },
     'poll-svn-stringencoders': {
         'listen': [
