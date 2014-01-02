@@ -212,23 +212,30 @@ static const char* BLACKTAG[] = {
 
 static int cstrcasecmp_with_null(const char *a, const char *b, size_t n)
 {
+  char ca;
   char cb;
-
-  for (; n > 0; a++, b++, n--) {
-    cb = *b;
+  /* printf("Comparing to %s %.*s\n", a, (int)n, b); */
+  while (n-- > 0) {
+    cb = *b++;
     if (cb == '\0') continue;
+
+    ca = *a++;
 
     if (cb >= 'a' && cb <= 'z') {
       cb -= 0x20;
     }
-    if (*a != cb) {
-      return *a - cb;
-    } else if (*a == '\0') {
-      return -1;
+    /* printf("Comparing %c vs %c with %d left\n", ca, cb, (int)n); */
+    if (ca != cb) {
+      return 1;
     }
   }
 
-  return (*a == 0) ? 0 : 1;
+  if (*a == 0) {
+    /* printf(" MATCH \n"); */
+    return 0;
+  } else {
+    return 1;
+  }
 }
 
 /*
@@ -245,10 +252,10 @@ static int htmlencode_startswith(const char *a, const char *b, size_t n)
   size_t consumed;
   int cb;
   int first = 1;
-  printf("Comparing %s with %.*s\n", a,(int)n,b);
+  /* printf("Comparing %s with %.*s\n", a,(int)n,b); */
     while (n > 0) {
       if (*a == 0) {
-	printf("Match EOL!\n");
+	/* printf("Match EOL!\n"); */
 	return 1;
       }
       cb = html_decode_char_at(b, n, &consumed);
@@ -278,7 +285,7 @@ static int htmlencode_startswith(const char *a, const char *b, size_t n)
         }
 
         if (*a != (char) cb) {
-	  printf("    %c != %c\n", *a, cb);
+	  /* printf("    %c != %c\n", *a, cb); */
 	  /* mismatch */
 	  return 0;
         }
@@ -298,7 +305,7 @@ static int is_black_tag(const char* s, size_t len)
 
     black = BLACKTAG;
     while (*black != NULL) {
-        if (cstrcasecmp_with_null(*black, s, len) == 0) {
+      if (cstrcasecmp_with_null(*black, s, len) == 0) {
             return 1;
         }
         black += 1;
