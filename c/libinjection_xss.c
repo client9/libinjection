@@ -186,6 +186,7 @@ static const char* BLACKTAG[] = {
     "APPLET"
     /*    , "AUDIO" */
     , "BASE"
+    , "COMMENT"  /* IE http://html5sec.org/#38 */
     , "EMBED"
     /*   ,  "FORM" */
     , "FRAME"
@@ -262,6 +263,12 @@ static int htmlencode_startswith(const char *a, const char *b, size_t n)
 
         if (cb == 0) {
 	  /* always ignore null characters in user input */
+	  continue;
+	}
+
+        if (cb == 10) {
+	  /* always ignore vtab characters in user input */
+	  /* who allows this?? */
 	  continue;
 	}
 
