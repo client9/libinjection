@@ -108,7 +108,7 @@ test_negative: reader
 	./reader -i ../data/false_*.txt
 
 test-xss: reader
-	./reader -i -x -m 10 ../data/xss*
+	./reader -t -i -x -m 10 ../data/xss*
 
 .PHONY: test_positive test_negative test test_unit test_speed cppcheck valgrind
 
