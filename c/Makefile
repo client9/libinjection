@@ -68,6 +68,10 @@ testdriver-gcov: testdriver.c libinjection.h libinjection_sqli.c libinjection_sq
 sqli: Makefile sqli_cli.c libinjection_sqli.c libinjection.h libinjection_sqli_data.h
 	${CC} ${CFLAGS} -o sqli sqli_cli.c libinjection_sqli.c
 
+
+h5: Makefile html5_cli.c libinjection_html5.h libinjection_html5.c libinjection_xss.c libinjection_xss.h
+	${CC} ${CFLAGS} -o h5 html5_cli.c libinjection_html5.h libinjection_html5.c libinjection_xss.c
+
 fptool: Makefile fptool.c libinjection.h libinjection_sqli.c libinjection_sqli_data.h
 	${CC} ${CFLAGS} -o fptool fptool.c libinjection_sqli.c
 
@@ -102,6 +106,9 @@ test_positive: reader
 # invert... fail if any are sqli
 test_negative: reader
 	./reader -i ../data/false_*.txt
+
+test-xss: reader
+	./reader -i -x -m 10 ../data/xss*
 
 .PHONY: test_positive test_negative test test_unit test_speed cppcheck valgrind
 
