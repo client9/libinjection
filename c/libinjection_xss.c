@@ -76,9 +76,7 @@ static int html_decode_char_at(const char* src, size_t len, size_t* consumed)
     return '&';
   }
 
-  val = 0;
   if (*(src+2) == 'x' || *(src+2) == 'X') {
-    i = 3;
     ch = (unsigned char) (*(src+3));
     ch = gsHexDecodeMap[ch];
     if (ch == 256) {
