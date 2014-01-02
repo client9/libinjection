@@ -23,6 +23,7 @@
 #define CHAR_GT 62
 #define CHAR_QUESTION 63
 #define CHAR_RIGHTB 93
+#define CHAR_TICK 96
 
 /* prototypes */
 
@@ -41,6 +42,7 @@ static int h5_state_before_attribute_name(h5_state_t* hs);
 static int h5_state_before_attribute_value(h5_state_t* hs);
 static int h5_state_attribute_value_double_quote(h5_state_t* hs);
 static int h5_state_attribute_value_single_quote(h5_state_t* hs);
+static int h5_state_attribute_value_back_quote(h5_state_t* hs);
 static int h5_state_attribute_value_no_quote(h5_state_t* hs);
 static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs);
 static int h5_state_comment(h5_state_t* hs);
@@ -401,6 +403,9 @@ static int h5_state_before_attribute_value(h5_state_t* hs)
         return h5_state_attribute_value_double_quote(hs);
     } else if (c == CHAR_SINGLE) {
         return h5_state_attribute_value_single_quote(hs);
+    } else if (c == CHAR_TICK) {
+        /* NON STANDARD IE */
+        return h5_state_attribute_value_back_quote(hs);
     } else {
         return h5_state_attribute_value_no_quote(hs);
     }
@@ -443,6 +448,13 @@ int h5_state_attribute_value_single_quote(h5_state_t* hs)
 {
     TRACE();
     return h5_state_attribute_value_quote(hs, CHAR_SINGLE);
+}
+
+static
+int h5_state_attribute_value_back_quote(h5_state_t* hs)
+{
+    TRACE();
+    return h5_state_attribute_value_quote(hs, CHAR_TICK);
 }
 
 static int h5_state_attribute_value_no_quote(h5_state_t* hs)
