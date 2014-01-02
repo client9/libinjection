@@ -233,7 +233,12 @@ static int h5_state_tag_name(h5_state_t* hs)
     pos = hs->pos;
     while (pos < hs->len) {
         ch = hs->s[pos];
-        if (h5_is_white(ch)) {
+	if (ch == 0) {
+	  /* special non-standard case */
+	  /* allow nulls in tag name   */
+	  /* some old browsers apparently allow and ignore them */
+	  pos += 1;
+	} else if (h5_is_white(ch)) {
             hs->token_start = hs->s + hs->pos;
             hs->token_len = pos - hs->pos;
             hs->token_type = TAG_NAME_OPEN;
