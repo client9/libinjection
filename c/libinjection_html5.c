@@ -358,21 +358,19 @@ static int h5_state_attribute_name(h5_state_t* hs)
 static int h5_state_after_attribute_name(h5_state_t* hs)
 {
     int c;
-    size_t pos;
 
     TRACE();
-    pos = hs->pos;
     c = h5_skip_white(hs);
     switch (c) {
     case CHAR_EOF: {
         return 0;
     }
     case CHAR_SLASH: {
-        hs->pos = pos + 1;
+        hs->pos += 1;
         return h5_state_self_closing_start_tag(hs);
     }
     case CHAR_EQUALS: {
-        hs->pos = pos + 1;
+        hs->pos += 1;
         return h5_state_before_attribute_value(hs);
     }
     case CHAR_GT: {
