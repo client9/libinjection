@@ -1,3 +1,5 @@
+
+#include "libinjection.h"
 #include "libinjection_xss.h"
 #include "libinjection_html5.h"
 
@@ -489,4 +491,13 @@ int libinjection_is_xss(const char* s, size_t len)
         }
     }
     return 0;
+}
+
+
+/*
+ * wrapper
+ */
+int libinjection_xss(const char* s, size_t len)
+{
+    return libinjection_is_xss(s, len);
 }
