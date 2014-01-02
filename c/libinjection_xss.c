@@ -4,12 +4,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-/*
- * HEY THIS ISN'T DONE
- *  AND MISSING A KEY INGREDIENT!!
- *
- */
-
 typedef enum attribute {
     TYPE_NONE
     , TYPE_BLACK     /* ban always */
@@ -18,10 +12,129 @@ typedef enum attribute {
     , TYPE_ATTR_INDIRECT  /* attribute *name* is given in *value* */
 } attribute_t;
 
+
+static attribute_t is_black_attr(const char* s, size_t len);
+static int is_black_tag(const char* s, size_t len);
+static int is_black_url(const char* s, size_t len);
+static int cstrcasecmp_with_null(const char *a, const char *b, size_t n);
+static int html_decode_char_at(const char* src, size_t len, size_t* consumed);
+static int htmlencode_startswith(const char* prefix, const char *src, size_t n);
+
+
 typedef struct stringtype {
     const char* name;
     attribute_t atype;
 } stringtype_t;
+
+
+static const int gsHexDecodeMap[256] = {
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  0,   1,   2,   3,   4,   5,   6,   7,   8,   9, 256, 256,
+  256, 256, 256, 256, 256,  10,  11,  12,  13,  14,  15, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256,  10,  11,  12,  13,  14,  15, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+  256, 256, 256, 256
+};
+
+static int html_decode_char_at(const char* src, size_t len, size_t* consumed)
+{
+  int val = 0;
+  size_t i;
+  int ch;
+
+  if (len == 0 || src == NULL) {
+    *consumed = 0;
+    return -1;
+  }
+
+  *consumed = 1;
+  if (*src != '&' || len < 2) {
+    return (unsigned char)(*src);
+  }
+
+
+  if (*(src+1) != '#') {
+    /* normally this would be for named entities
+     * but for this case we don't actually care
+     */
+    return '&';
+  }
+
+  val = 0;
+  if (*(src+2) == 'x' || *(src+2) == 'X') {
+    i = 3;
+    ch = (unsigned char) (*(src+3));
+    ch = gsHexDecodeMap[ch];
+    if (ch == 256) {
+      /* degenerate case  '&#[?]' */
+      return '&';
+    }
+    val = ch;
+    i = 4;
+    while (i < len) {
+      ch = (unsigned char) src[i];
+      if (ch == ';') {
+	*consumed = i + 1;
+	return val;
+      }
+      ch = gsHexDecodeMap[ch];
+      if (ch == 256) {
+	*consumed = i;
+	return val;
+      }
+      val = (val * 16) + ch;
+      if (val > 0x1000FF) {
+	return '&';
+      }
+      ++i;
+    }
+    *consumed = i;
+    return val;
+  } else {
+    i = 2;
+    ch = (unsigned char) src[i];
+    if (ch < '0' || ch > '9') {
+      return '&';
+    }
+    val = ch - '0';
+    i += 1;
+    while (i < len) {
+      ch = (unsigned char) src[i];
+      if (ch == ';') {
+	*consumed = i + 1;
+	return val;
+      }
+      if (ch < '0' || ch > '9') {
+	*consumed = i;
+	return val;
+      }
+      val = (val * 10) + (ch - '0');
+      if (val > 0x1000FF) {
+	return '&';
+      }
+      ++i;
+    }
+    *consumed = i;
+    return val;
+  }
+}
+
 
 /*
  * view-source:
@@ -95,30 +208,77 @@ static const char* BLACKTAG[] = {
     , NULL
 };
 
-static int is_black_tag(const char* s, size_t len);
-static attribute_t is_black_attr(const char* s, size_t len);
-static int is_black_url(const char* s, size_t len);
-static int cstrcasecmp_with_null(const char *a, const char *b, size_t n);
 
 static int cstrcasecmp_with_null(const char *a, const char *b, size_t n)
 {
-    char cb;
+  char cb;
 
-    for (; n > 0; a++, b++, n--) {
-        cb = *b;
-        if (cb == '\0') continue;
+  for (; n > 0; a++, b++, n--) {
+    cb = *b;
+    if (cb == '\0') continue;
+
+    if (cb >= 'a' && cb <= 'z') {
+      cb -= 0x20;
+    }
+    if (*a != cb) {
+      return *a - cb;
+    } else if (*a == '\0') {
+      return -1;
+    }
+  }
+
+  return (*a == 0) ? 0 : 1;
+}
+
+/*
+ * Does an HTML encoded  binary string (const char*, lenght) start with
+ * a all uppercase c-string (null terminated), case insenstive!
+ * 
+ * also ignore any embedded nulls in the HTML string!
+ *
+ * return 1 if match / starts with
+ * return 0 if not
+ */
+static int htmlencode_startswith(const char *a, const char *b, size_t n)
+{
+  size_t consumed;
+  int cb;
+  int first = 1;
+  printf("Comparing %s with %.*s\n", a,(int)n,b);
+    while (n > 0) {
+      if (*a == 0) {
+	printf("Match EOL!\n");
+	return 1;
+      }
+      cb = html_decode_char_at(b, n, &consumed);
+      b += consumed;
+      n -= consumed;
+
+      if (first && cb <= 32) {
+        /* ignore all leading whitespace and control characters */
+	continue;
+      }
+      first = 0;
+
+        if (cb == 0) {
+	  /* always ignore null characters in user input */
+	  continue;
+	}
 
         if (cb >= 'a' && cb <= 'z') {
+	  /* upcase */
             cb -= 0x20;
         }
-        if (*a != cb) {
-            return *a - cb;
-        } else if (*a == '\0') {
-            return -1;
+
+        if (*a != (char) cb) {
+	  printf("    %c != %c\n", *a, cb);
+	  /* mismatch */
+	  return 0;
         }
+	a++;
     }
 
-    return (*a == 0) ? 0 : 1;
+    return (*a == 0) ? 1 : 0;
 }
 
 static int is_black_tag(const char* s, size_t len)
@@ -198,8 +358,6 @@ static int is_black_url(const char* s, size_t len)
     /* covers JAVA, JAVASCRIPT, + colon */
     static const char* javascript_url = "JAVA";
 
-    size_t tokenlen;
-
     /* skip whitespace */
     while (len > 0) {
         /*
@@ -214,22 +372,20 @@ static int is_black_url(const char* s, size_t len)
         break;
     }
 
-    tokenlen = strlen(data_url);
-    if (len > tokenlen && cstrcasecmp_with_null(data_url, s, tokenlen) == 0) {
-        return 1;
-    }
-    tokenlen = strlen(viewsource_url);
-    if (len > tokenlen && cstrcasecmp_with_null(viewsource_url, s, tokenlen) == 0) {
+
+    if (htmlencode_startswith(data_url, s, len)) {
         return 1;
     }
 
-    tokenlen = strlen(javascript_url);
-    if (len > tokenlen && cstrcasecmp_with_null(javascript_url, s, tokenlen) == 0) {
+    if (htmlencode_startswith(viewsource_url, s, len)) {
         return 1;
     }
 
-    tokenlen = strlen(vbscript_url);
-    if (len > tokenlen && cstrcasecmp_with_null(vbscript_url, s, tokenlen) == 0) {
+    if (htmlencode_startswith(javascript_url, s, len)) {
+        return 1;
+    }
+
+    if (htmlencode_startswith(vbscript_url, s, len)) {
         return 1;
     }
     return 0;
