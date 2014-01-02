@@ -127,9 +127,15 @@ test 55_2  <audio><source onerror="alert(1)">
 
 test 56 <video onerror="alert(1)"><source></source></video>
 
-test 57 <b <script>alert(1)//</script>0</script></b>
+#
+# Obsolete.. Firefox 3.6, Chrome 5, Safari 4
+#
+# test 57 <b <script>alert(1)//</script>0</script></b>
 
-test 58 <b><script<b></b><alert(1)</script </b></b>
+#
+# Obsolete Firefox 3.6
+#
+#test 58 <b><script<b></b><alert(1)</script </b></b>
 
 test 59 <div id="div1"><input value="``onmouseover=alert(1)"></div> <div id="div2"></div><script>document.getElementById("div2").innerHTML = document.getElementById("div1").innerHTML;</script>
 
