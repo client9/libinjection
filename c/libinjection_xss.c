@@ -206,6 +206,7 @@ static const char* BLACKTAG[] = {
     /*    , "VIDEO" */
     , "VMLFRAME"
     , "XML"
+    , "XSS"
     , NULL
 };
 
