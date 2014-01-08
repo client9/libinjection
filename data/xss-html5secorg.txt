@@ -266,9 +266,88 @@ test 98 <div id=d><div style="font-family:'sans\27\2F\2A\22\2A\2F\3B color\3Ared
 
 test 99 XXX<style>  *{color:gre/**/en !/**/important} /* IE 6-9 Standards mode */  <!-- --><!--*{color:red} /* all UA */  *{background:url(xx:x //**/\red/*)} /* IE 6-7 Standards mode */  </style>
 
-test 100 TBD
+# <img[a][b]src=x[d]onerror[c]=[e]"alert(1)">
+#
+# normal case
+test 100_0 <img src=x onerror="alert(1)">
 
-test 101 TBD
+# [a]case
+test 100_1 <img%09src=x onerror="alert(1)">
+test 100_2 <img%0Asrc=x onerror="alert(1)">
+test 100_3 <img%0Csrc=x onerror="alert(1)">
+test 100_4 <img%0Dsrc=x onerror="alert(1)">
+test 100_5 <img%20src=x onerror="alert(1)">
+test 100_6 <img%47src=x onerror="alert(1)">
+test 100_7 <img%0Bsrc=x onerror="alert(1)">
+
+# [b] case
+test 100_8 <img %47src=x onerror="alert(1)">
+test 100_9 <img %00src=x onerror="alert(1)">
+
+# [c] case
+test 100_10 <img src=x onerror%09="alert(1)">
+test 100_11 <img src=x onerror%0A="alert(1)">
+test 100_12 <img src=x onerror%0C="alert(1)">
+test 100_13 <img src=x onerror%0D="alert(1)">
+test 100_14 <img src=x onerror%20="alert(1)">
+test 100_15 <img src=x onerror%00="alert(1)">
+test 100_16 <img src=x onerror%0B="alert(1)">
+
+# [d] case
+test 100_17 <img src=x%09onerror="alert(1)">
+test 100_18 <img src=x%0Aonerror="alert(1)">
+test 100_19 <img src=x%0Conerror="alert(1)">
+test 100_20 <img src=x%0Donerror="alert(1)">
+test 100_21 <img src=x%20onerror="alert(1)">
+test 100_22 <img src=x%0Bonerror="alert(1)">
+
+# [e] case
+test 100_23 <img src=x onerror=%09"alert(1)">
+test 100_24 <img src=x onerror=%0A"alert(1)">
+test 100_25 <img src=x onerror=%0C"alert(1)">
+test 100_26 <img src=x onerror=%0D"alert(1)">
+test 100_27 <img src=x onerror=%20"alert(1)">
+test 100_28 <img src=x onerror=%00"alert(1)">
+test 100_29 <img src=x onerror=%0B"alert(1)">
+
+# <a href="[a]java[b]script[c]:alert(1)">XXX</a>
+test 101_x <a href="javascript:alert(1)">XXX</a>
+test 101_0 <a href="%00javascript:alert(1)">XXX</a>
+test 101_1 <a href="%01javascript:alert(1)">XXX</a>
+test 101_2 <a href="%02javascript:alert(1)">XXX</a>
+test 101_3 <a href="%03javascript:alert(1)">XXX</a>
+test 101_4 <a href="%04javascript:alert(1)">XXX</a>
+test 101_5 <a href="%05javascript:alert(1)">XXX</a>
+test 101_6 <a href="%06javascript:alert(1)">XXX</a>
+test 101_7 <a href="%07javascript:alert(1)">XXX</a>
+test 101_8 <a href="%08javascript:alert(1)">XXX</a>
+test 101_9 <a href="%09javascript:alert(1)">XXX</a>
+test 101_10 <a href="%0Ajavascript:alert(1)">XXX</a>
+test 101_11 <a href="%0Bjavascript:alert(1)">XXX</a>
+test 101_12 <a href="%0Cjavascript:alert(1)">XXX</a>
+test 101_13 <a href="%0Djavascript:alert(1)">XXX</a>
+test 101_14 <a href="%0Ejavascript:alert(1)">XXX</a>
+test 101_15 <a href="%0Fjavascript:alert(1)">XXX</a>
+test 101_16 <a href="%10javascript:alert(1)">XXX</a>
+test 101_17 <a href="%11javascript:alert(1)">XXX</a>
+test 101_18 <a href="%12javascript:alert(1)">XXX</a>
+test 101_19 <a href="%13javascript:alert(1)">XXX</a>
+test 101_20 <a href="%14javascript:alert(1)">XXX</a>
+test 101_21 <a href="%15javascript:alert(1)">XXX</a>
+test 101_22 <a href="%16javascript:alert(1)">XXX</a>
+test 101_23 <a href="%17javascript:alert(1)">XXX</a>
+test 101_24 <a href="%18javascript:alert(1)">XXX</a>
+test 101_25 <a href="%19javascript:alert(1)">XXX</a>
+test 101_26 <a href="%1Ajavascript:alert(1)">XXX</a>
+test 101_27 <a href="%1Bjavascript:alert(1)">XXX</a>
+test 101_28 <a href="%1Cjavascript:alert(1)">XXX</a>
+test 101_29 <a href="%1Djavascript:alert(1)">XXX</a>
+test 101_30 <a href="%1Ejavascript:alert(1)">XXX</a>
+test 101_31 <a href="%1Fjavascript:alert(1)">XXX</a>
+test 101_32 <a href="%20javascript:alert(1)">XXX</a>
+
+# B -- other cases are obsolete
+test 101_33 <a href="j%00avascript:alert(1)">XXX</a>
 
 test 102 <img src="x` `<script>alert(1)</script>"` `>
 
@@ -355,7 +434,8 @@ test 130_2 <math><maction actiontype="statusline#http://google.com" xlink:href="
 
 test 130_3 <math><maction actiontype="statusline" xlink:href="javascript:alert(3)">CLICKME<mtext>http://http://google.com</mtext></maction> </math>
 
-test 131 TBD Drag and Drop http://html5sec.org/#131
+# Obsolete FF < 10
+#test 131 TBD Drag and Drop http://html5sec.org/#131
 
 test 132_1 <set attributeName="xlink:href" begin="accessKey(a)" to="//example.com/?a" />
 
