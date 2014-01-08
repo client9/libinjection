@@ -199,7 +199,9 @@ static int h5_state_end_tag_open(h5_state_t* hs)
     } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
         return h5_state_tag_name(hs);
     }
-    return h5_state_data(hs);
+
+    hs->is_close = 0;
+    return h5_state_bogus_comment(hs);
 }
 /*
  *
@@ -315,7 +317,7 @@ static int h5_state_attribute_name(h5_state_t* hs)
     size_t pos;
 
     TRACE();
-    pos = hs->pos;
+    pos = hs->pos + 1;
     while (pos < hs->len) {
         ch = hs->s[pos];
         if (h5_is_white(ch)) {
