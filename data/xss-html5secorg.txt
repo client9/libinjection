@@ -86,7 +86,8 @@ test 37 <!--<img src="--><img src=x onerror=alert(1)//">
 
 test 38 <comment><img src="</comment><img src=x onerror=alert(1)//">
 
-test 39_1 <![><img src="]><img src=x onerror=alert(1)//">
+# obsolete, FF 3.6 and Opera 11
+#test 39_1 <![><img src="]><img src=x onerror=alert(1)//">
 
 test 39_2 <svg><![CDATA[><image xlink:href="]]><img src=xx:x onerror=alert(2)//"></svg>
 
@@ -233,7 +234,10 @@ test 91_1 <? foo="><script>alert(1)</script>">
 test 91_2 <! foo="><script>alert(1)</script>">
 test 91_3 </ foo="><script>alert(1)</script>">
 test 91_4 <? foo="><x foo='?><script>alert(1)</script>'>">
-test 91_5 <! foo="[[[x]]"><x foo="]foo><script>alert(1)</script>">
+
+# obsolete Opera 11
+#test 91_5 <! foo="[[[x]]"><x foo="]foo><script>alert(1)</script>">
+
 test 91_6 <% foo><x foo="%><script>alert(1)</script>">
 
 test 92 <div style="background:url(http://foo.f/f oo/;color:red/*/foo.jpg);">X</div>
