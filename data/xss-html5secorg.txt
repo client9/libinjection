@@ -233,7 +233,9 @@ test 90_3 <form xmlns="http://www.w3.org/1999/xhtml" target="_top" action="javas
 test 91_1 <? foo="><script>alert(1)</script>">
 test 91_2 <! foo="><script>alert(1)</script>">
 test 91_3 </ foo="><script>alert(1)</script>">
-test 91_4 <? foo="><x foo='?><script>alert(1)</script>'>">
+
+# obsolete Safari 4
+#test 91_4 <? foo="><x foo='?><script>alert(1)</script>'>">
 
 # obsolete Opera 11
 #test 91_5 <! foo="[[[x]]"><x foo="]foo><script>alert(1)</script>">
