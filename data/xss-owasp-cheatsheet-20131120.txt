@@ -32,7 +32,8 @@
 <IMG SRC=# onmouseover="alert('xxs')">
 
 # Default SRC tag by leaving it empty
-<IMG SRC= onmouseover="alert('xxs')">
+# nickg; Unable to replicate in FF,Safari,Chrome 2014-01-10
+# <IMG SRC= onmouseover="alert('xxs')">
 
 # Default SRC tag by leaving it out entirely
 <IMG onmouseover="alert('xxs')">
