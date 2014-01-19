@@ -62,16 +62,28 @@ static int h5_state_doctype(h5_state_t* hs);
 /**
  * public function
  */
-void libinjection_h5_init(h5_state_t* hs, const char* s, size_t len, int flags)
+void libinjection_h5_init(h5_state_t* hs, const char* s, size_t len, enum html5_flags flags)
 {
     memset(hs, 0, sizeof(h5_state_t));
     hs->s = s;
     hs->len = len;
-    hs->state = h5_state_data;
-    if (flags == 0) {
-        hs->state = h5_state_data;
-    } else {
-        assert(0);
+
+    switch (flags) {
+    case DATA_STATE:
+      hs->state = h5_state_data;
+      break;
+    case VALUE_NO_QUOTE:
+      hs->state = h5_state_before_attribute_name;
+      break;
+    case VALUE_SINGLE_QUOTE:
+      hs->state = h5_state_attribute_value_single_quote;
+      break;
+    case VALUE_DOUBLE_QUOTE:
+      hs->state = h5_state_attribute_value_double_quote;
+      break;
+    case VALUE_BACK_QUOTE:
+      hs->state = h5_state_attribute_value_back_quote;
+      break;
     }
 }
 
@@ -99,7 +111,7 @@ static int h5_skip_white(h5_state_t* hs)
     char ch;
     while (hs->pos < hs->len) {
         ch = hs->s[hs->pos];
-        if (ch == ' ') {
+        if (ch == 0x20 || ch == 0x09 || ch == 0x0A || ch == 0x0C) {
             hs->pos += 1;
         } else {
             return ch;
@@ -425,8 +437,16 @@ static int h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
 
     TRACE();
 
-    /* skip quote */
-    hs->pos += 1;
+    /* skip initial quote in normal case.
+     * dont do this is pos == 0 since it means we have started
+     * in a non-data state.  given an input of '><foo
+     * we want to make 0-length attribute name
+     */
+    if (hs->pos > 0) {
+      hs->pos += 1;
+    }
+
+
     idx = (const char*) memchr(hs->s + hs->pos, qchar, hs->len - hs->pos);
     if (idx == NULL) {
         hs->token_start = hs->s + hs->pos;
