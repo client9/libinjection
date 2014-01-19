@@ -9,6 +9,7 @@ build
 testdriver
 example1
 a.out
+h5
 *~
 *.pyc
 *.dSYM
