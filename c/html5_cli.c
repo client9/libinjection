@@ -15,6 +15,7 @@
 
 #include "libinjection_html5.h"
 #include "libinjection_xss.h"
+#include "libinjection.h"
 
 const char* h5_type_to_string(enum html5_type x)
 {
@@ -55,14 +56,21 @@ int main(int argc, const char* argv[])
     h5_state_t hs;
     char* copy;
     int offset = 1;
+    int flag = 0;
 
     if (argc < 2) {
         fprintf(stderr, "need more args\n");
         return 1;
     }
 
-    while (1) {
-      break;
+    while (offset < argc) {
+      if (strcmp(argv[offset], "-f") == 0) {
+            offset += 1;
+            flag = atoi(argv[offset]);
+            offset += 1;
+      } else {
+	break;
+      }
     }
 
     /* ATTENTION: argv is a C-string, null terminated.  We copy this
@@ -75,12 +83,12 @@ int main(int argc, const char* argv[])
     memcpy(copy, argv[offset], slen);
 
 
-    libinjection_h5_init(&hs, copy, slen, 0);
+    libinjection_h5_init(&hs, copy, slen, flag);
     while (libinjection_h5_next(&hs)) {
         print_html5_token(&hs);
     }
 
-    if (libinjection_is_xss(copy, slen)) {
+    if (libinjection_is_xss(copy, slen, flag)) {
       printf("is injection!\n");
     }
     free(copy);

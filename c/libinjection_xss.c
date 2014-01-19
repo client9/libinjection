@@ -6,6 +6,13 @@
 #include <assert.h>
 #include <stdio.h>
 
+#ifndef DEBUG
+#include <stdio.h>
+#define TRACE() printf("%s:%d\n", __FUNCTION__, __LINE__)
+#else
+#define TRACE()
+#endif
+
 typedef enum attribute {
     TYPE_NONE
     , TYPE_BLACK     /* ban always */
@@ -307,6 +314,7 @@ static int is_black_tag(const char* s, size_t len)
     black = BLACKTAG;
     while (*black != NULL) {
       if (cstrcasecmp_with_null(*black, s, len) == 0) {
+	/* printf("Got black tag %s\n", *black); */
             return 1;
         }
         black += 1;
@@ -316,6 +324,7 @@ static int is_black_tag(const char* s, size_t len)
     if ((s[0] == 's' || s[0] == 'S') &&
         (s[1] == 'v' || s[1] == 'V') &&
         (s[2] == 'g' || s[2] == 'G')) {
+      /*	printf("Got SVG tag \n"); */
         return 1;
     }
 
@@ -323,6 +332,7 @@ static int is_black_tag(const char* s, size_t len)
     if ((s[0] == 'x' || s[0] == 'X') &&
         (s[1] == 's' || s[1] == 'S') &&
         (s[2] == 'l' || s[2] == 'L')) {
+      /*      printf("Got XSL tag\n"); */
         return 1;
     }
 
@@ -339,6 +349,7 @@ static attribute_t is_black_attr(const char* s, size_t len)
 
     /* javascript on.* */
     if ((s[0] == 'o' || s[0] == 'O') && (s[1] == 'n' || s[1] == 'N')) {
+      /* printf("Got javascript on- attribute name\n"); */
         return TYPE_BLACK;
     }
 
@@ -346,6 +357,7 @@ static attribute_t is_black_attr(const char* s, size_t len)
     if (len >= 5) {
         /* XMLNS can be used to create arbitrary tags */
         if (cstrcasecmp_with_null("XMLNS", s, 5) == 0 || cstrcasecmp_with_null("XLINK", s, 5) == 0) {
+	  /*	  printf("Got XMLNS and XLINK tags\n"); */
             return TYPE_BLACK;
         }
     }
@@ -353,6 +365,7 @@ static attribute_t is_black_attr(const char* s, size_t len)
     black = BLACKATTR;
     while (black->name != NULL) {
         if (cstrcasecmp_with_null(black->name, s, len) == 0) {
+	  /*	  printf("Got banned attribute name %s\n", black->name); */
             return black->atype;
         }
         black += 1;
@@ -406,12 +419,12 @@ static int is_black_url(const char* s, size_t len)
     return 0;
 }
 
-int libinjection_is_xss(const char* s, size_t len)
+int libinjection_is_xss(const char* s, size_t len, int flags)
 {
     h5_state_t h5;
     attribute_t attr = TYPE_NONE;
 
-    libinjection_h5_init(&h5, s, len, 0);
+    libinjection_h5_init(&h5, s, len, (enum html5_flags) flags);
     while (libinjection_h5_next(&h5)) {
         if (h5.token_type != ATTR_VALUE) {
             attr = TYPE_NONE;
@@ -506,6 +519,22 @@ int libinjection_is_xss(const char* s, size_t len)
  * wrapper
  */
 int libinjection_xss(const char* s, size_t len)
-{
-    return libinjection_is_xss(s, len);
+{ 
+  if (libinjection_is_xss(s, len, DATA_STATE)) {
+      return 1;
+  }
+  if (libinjection_is_xss(s, len, VALUE_NO_QUOTE)) {
+    return 1;
+  }
+  if (libinjection_is_xss(s, len, VALUE_SINGLE_QUOTE)) {
+    return 1;
+  }
+  if (libinjection_is_xss(s, len, VALUE_DOUBLE_QUOTE)) {
+    return 1;
+  }
+  if (libinjection_is_xss(s, len, VALUE_BACK_QUOTE)) {
+    return 1;
+  }
+
+  return 0;
 }

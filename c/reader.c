@@ -141,7 +141,7 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
             break;
         }
         case MODE_XSS: {
-            issqli = libinjection_is_xss(linebuf, len);
+            issqli = libinjection_xss(linebuf, len);
             break;
         }
         default:

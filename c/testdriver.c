@@ -230,7 +230,7 @@ int read_file(const char* fname, int flags, int testtype)
         /*
          * test XSS detection
          */
-        sprintf(g_actual, "%d", libinjection_is_xss(copy, slen));
+        sprintf(g_actual, "%d", libinjection_xss(copy, slen));
     } else {
         fprintf(stderr, "Got stange testtype value of %d\n", testtype);
         assert(0);

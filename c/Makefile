@@ -168,7 +168,7 @@ clean:
 	@rm -rf lcov-html libinjection.info
 	@rm -rf core* a.out
 	@rm -f gmon.out nosetests.xml valgrind-*.txt
-	@rm -f reader is_sqli lcov-reader sqli fptool testdriver example1
+	@rm -f reader is_sqli lcov-reader sqli fptool testdriver example1 h5
 	@rm -f reader-gcov testdriver-gcov reader-gprof
 	@rm -f fingerprints-orig.txt
 	@rm -f *.ll *.ll.out
