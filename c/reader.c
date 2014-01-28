@@ -275,10 +275,10 @@ int main(int argc, const char *argv[])
     }
 
     if (count > max) {
-        printf("\nTheshold is %d, got %d, failing.\n", max, count);
+        printf("\nThreshold is %d, got %d, failing.\n", max, count);
         return 1;
     } else {
-        printf("\nTheshold is %d, got %d, passing.\n", max, count);
+        printf("\nThreshold is %d, got %d, passing.\n", max, count);
         return 0;
     }
 }
