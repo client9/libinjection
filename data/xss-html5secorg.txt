@@ -349,6 +349,7 @@ test 101_32 <a href="%20javascript:alert(1)">XXX</a>
 # B -- other cases are obsolete
 test 101_33 <a href="j%00avascript:alert(1)">XXX</a>
 
+# Confirmed in IE8, Does not work in IE9+
 test 102 <img src="x` `<script>alert(1)</script>"` `>
 
 test 103 <script>history.pushState(0,0,'/i/am/somewhere_else');</script>
