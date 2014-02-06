@@ -12,6 +12,7 @@
 
 
 #define CHAR_EOF -1
+#define CHAR_NULL 0
 #define CHAR_BANG 33
 #define CHAR_DOUBLE 34
 #define CHAR_PERCENT 37
@@ -180,6 +181,9 @@ static int h5_state_tag_open(h5_state_t* hs)
         hs->pos += 1;
         return h5_state_bogus_comment2(hs);
     } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
+        return h5_state_tag_name(hs);
+    } else if (ch == CHAR_NULL) {
+        /* IE-ism  NULL characters are ignored */
         return h5_state_tag_name(hs);
     } else {
         /* user input mistake in configuring state */
