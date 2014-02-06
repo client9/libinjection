@@ -146,11 +146,38 @@ test 59 <div id="div1"><input value="``onmouseover=alert(1)"></div> <div id="div
 # we reject all styles
 # test 61 TBD CSS encoding and escaping
 
+# IE9 parses this as NOT-XSS
+#  <x ?="foo"/><x foo="><img src=x onerror=alert(1)//"/>
+#
+#
 test 62_1 <x '="foo"><x foo='><img src=x onerror=alert(1)//'>
 
+#
+# IE9 parses this as XSS
+# <!-- ="foo"><x foo --><img onerror="alert(1)//'" src="x"/>
+#
 test 62_2 <! '="foo"><x foo='><img src=x onerror=alert(2)//'>
 
+#
+# IE9 parses this as XSS as previous
+#
 test 62_3 <? '="foo"><x foo='><img src=x onerror=alert(3)//'>
+
+# bonus -- correctly detected
+test 62_4 <!-- '="foo"><x foo='--><img src=x onerror=alert(2)//'>
+
+# bonus -- quotes reversed
+# same as 62_2
+test 62_5 <! "='foo'><x foo="><img src=x onerror=alert(2)//">
+
+# bonus - use of backquotes
+test 62_5 <! `='foo'><x foo=`><img src=x onerror=alert(2)//`>
+
+# bonus 
+<!-- "='foo'><x -->"><img src=x onerror=alert(1)//">
+<!-- "=foo><x -->"><img src=x onerror=alert(1)//">
+<!-- "foo><x -->"><img src=x onerror=alert(1)//">
+<!-- "foo'><x -->"><img src=x onerror=alert(1)//">
 
 test 63_1 <embed src="javascript:alert(1)"></embed> // O10.10↓, OM10.↓, GC6↓,
 
@@ -349,6 +376,7 @@ test 101_32 <a href="%20javascript:alert(1)">XXX</a>
 # B -- other cases are obsolete
 test 101_33 <a href="j%00avascript:alert(1)">XXX</a>
 
+# Confirmed in IE8, Does not work in IE9+
 test 102 <img src="x` `<script>alert(1)</script>"` `>
 
 test 103 <script>history.pushState(0,0,'/i/am/somewhere_else');</script>

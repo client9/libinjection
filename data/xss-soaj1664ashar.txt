@@ -18,7 +18,9 @@
 
 # https://twitter.com/soaj1664ashar/status/416613093490163712
 # Dec 28, 2013
-<form/action=ja&Tab;vascr&Tab;ipt&colon;confirm(document.cookie)> <button/type=submit>
+# appears to be specific for a sanitization filter which alters the input
+# into an XSS-able form.
+#<form/action=ja&Tab;vascr&Tab;ipt&colon;confirm(document.cookie)> <button/type=submit>
 
 # https://twitter.com/soaj1664ashar/status/407438076118462464
 # 6:16 PM - 2 Dec 2013
