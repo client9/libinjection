@@ -78,8 +78,14 @@ fptool: Makefile fptool.c libinjection.h libinjection_sqli.c libinjection_sqli_d
 testspeed: libinjection_sqli_data.h libinjection_sqli.c libinjection.h test_speed.c
 	${CC} ${CFLAGS} -DNDEDBUG -o testspeed libinjection_sqli.c test_speed.c
 
+testspeedxss: libinjection_sqli_data.h libinjection_sqli.c libinjection.h libinjection_html5.c libinjection_xss.c test_speed.c
+	${CC} ${CFLAGS} -DNDEDBUG -o testspeedxss libinjection_sqli.c libinjection_html5.c libinjection_xss.c test_speed_xss.c
+
 test_speed: testspeed
-	./testspeed
+	./testspeed 
+
+test-speed-xss: testspeedxss
+	./testspeedxss
 
 testpy: test_driver.py sqli libinjection_sqli_data.h libinjection_sqli.c libinjection.h
 	nosetests -v test_driver.py
