@@ -112,11 +112,19 @@ static int h5_skip_white(h5_state_t* hs)
     char ch;
     while (hs->pos < hs->len) {
         ch = hs->s[hs->pos];
-        if (ch == 0x20 || ch == 0x09 || ch == 0x0A || ch == 0x0C) {
+	switch (ch) {
+	case 0x00: /* IE only */
+	case 0x20:
+	case 0x09:
+	case 0x0A:
+	case 0x0B: /* IE only */
+	case 0x0C:
+        case 0x0D: /* IE only */
             hs->pos += 1;
-        } else {
+	    break;
+	default:
             return ch;
-        }
+	}
     }
     return CHAR_EOF;
 }
