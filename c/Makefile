@@ -159,6 +159,11 @@ coverage-reader: reader-gcov
 	genhtml --branch-coverage -o lcov-html libinjection.info
 
 
+libinjection.so: libinjection_html5.c libinjection_sqli.c libinjection_xss.c
+	gcc -O3 -g -shared -fPIC -Wl,-soname,libinjection.so \
+		-o libinjection.so \
+		libinjection_html5.c libinjection_sqli.c libinjection_xss.c
+
 .PHONY: coverage-reader coverage-testdriver
 
 test: allbin test_unit
@@ -169,7 +174,7 @@ clean:
 	@rm -f *~ *.pyc
 	@rm -rf build
 	@rm -f test_tokens testspeed
-	@rm -rf *.dSYM
+	@rm -rf *.dSYM *.so
 	@rm -rf *.gcno *.gcda *.info cppcheck-result.xml cobertura-coverage.xml
 	@rm -rf lcov-html libinjection.info
 	@rm -rf core* a.out
