@@ -29,7 +29,7 @@ endif
 # MAC OS X: note using ".so" suffix NOT ".dylib"
 libinjection.so: copy libinjection_wrap.c
 	${CC} ${CFLAGS} -I. ${LUA_FLAGS} \
-	${SHARED} libinjection_wrap.c libinjection_sqli.c -o libinjection.so
+	${SHARED} libinjection_wrap.c libinjection_sqli.c libinjection_html5.c libinjection_xss.c -o libinjection.so
 
 # build and run unit tests
 # Uses a python helper to read the test files to generate

@@ -37,15 +37,27 @@ libinjection/libinjection_sqli.h: ../c/libinjection_sqli.h
 libinjection/libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection/libinjection_sqli_data.h
 
+libinjection/libinjection_html5.c: ../c/libinjection_html5.c
+	cp ../c/libinjection_html5.c libinjection/libinjection_html5.c
+
+libinjection/libinjection_html5.h: ../c/libinjection_html5.h
+	cp ../c/libinjection_html5.h libinjection/libinjection_html5.h
+
+libinjection/libinjection_xss.c: ../c/libinjection_xss.c
+	cp ../c/libinjection_xss.c libinjection/libinjection_xss.c
+
+libinjection/libinjection_xss.h: ../c/libinjection_xss.h
+	cp ../c/libinjection_xss.h libinjection/libinjection_xss.h
+
 libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libinjection.h libinjection/libinjection_sqli.h
 	swig -version
 	swig -python -builtin -Wall -Wextra libinjection/libinjection.i
 
 .PHONY:copy
-copy: libinjection/libinjection.h libinjection/libinjection_sqli.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h
+copy: libinjection/libinjection.h libinjection/libinjection_sqli.h libinjection/libinjection_sqli.c libinjection/libinjection_sqli_data.h libinjection/libinjection_xss.h libinjection/libinjection_xss.c libinjection/libinjection_html5.h libinjection/libinjection_html5.c
 
 libinjection.so: copy
-	gcc -std=c99 -Wall -Werror -fpic -c libinjection/libinjection_sqli.c
+	gcc -std=c99 -Wall -Werror -fpic -c libinjection/libinjection_sqli.c libinjection_html5.c libinjection_xss.c
 	gcc -dynamiclib -shared -o libinjection.so libinjection_sqli.o
 
 
