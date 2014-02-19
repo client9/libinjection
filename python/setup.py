@@ -1,7 +1,7 @@
 """
 libinjection module for python
 
- Copyright 2012, 2013 Nick Galbreath
+ Copyright 2012, 2013, 2014 Nick Galbreath
  nickg@client9.com
  BSD License -- see COPYING.txt for details
 """
