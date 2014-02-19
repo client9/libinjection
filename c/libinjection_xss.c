@@ -387,7 +387,7 @@ static int is_black_url(const char* s, size_t len)
     static const char* javascript_url = "JAVA";
 
     /* skip whitespace */
-    while (len > 0 && *s <= 32) {
+    while (len > 0 && (*s <= 32 || *s >= 127)) {
         /*
          * HEY: this is a signed character.
          *  We are intentionally skipping high-bit characters too
