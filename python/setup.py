@@ -9,7 +9,12 @@ libinjection module for python
 from distutils.core import setup, Extension
 
 MODULE = Extension(
-    '_libinjection', [ 'libinjection/libinjection_wrap.c', 'libinjection/libinjection_sqli.c' ],
+    '_libinjection', [
+        'libinjection/libinjection_wrap.c',
+        'libinjection/libinjection_sqli.c',
+        'libinjection/libinjection_html5.c',
+        'libinjection/libinjection_xss.c'
+    ],
     swig_opts=['-Wextra', '-builtin'],
     define_macros = [],
     include_dirs = [],
