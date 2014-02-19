@@ -6,13 +6,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-#ifndef DEBUG
-#include <stdio.h>
-#define TRACE() printf("%s:%d\n", __FUNCTION__, __LINE__)
-#else
-#define TRACE()
-#endif
-
 typedef enum attribute {
     TYPE_NONE
     , TYPE_BLACK     /* ban always */
