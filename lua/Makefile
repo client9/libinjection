@@ -50,7 +50,7 @@ sqlifingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json
 	./generate_lua_fingerprints.py > sqlifingerprints.lua
 
 copy: 
-	cp ../c/libinjection*.h libinjection*.c .h
+	cp ../c/libinjection*.h libinjection*.c .
 .PHONY: copy
 
 sample: sqlifingerprints.lua
