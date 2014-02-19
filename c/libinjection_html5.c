@@ -705,12 +705,13 @@ static int h5_state_comment(h5_state_t* hs)
     char ch;
     const char* idx;
     size_t pos;
+    size_t offset;
     const char* end = hs->s + hs->len;
-    size_t offset = 1;
 
     TRACE();
     pos = hs->pos;
     while (1) {
+
         idx = (const char*) memchr(hs->s + pos, CHAR_DASH, hs->len - pos);
 
         /* did not find anything or has less than 3 chars left */
@@ -721,6 +722,7 @@ static int h5_state_comment(h5_state_t* hs)
             hs->token_type = TAG_COMMENT;
             return 1;
         }
+	offset = 1;
 
 	/* skip all nulls */
         while (idx + offset < end && *(idx + offset) == 0) {
@@ -753,17 +755,29 @@ static int h5_state_comment(h5_state_t* hs)
             hs->token_type = TAG_COMMENT;
             return 1;
         }
+#endif
 
-        ch = *(idx + offset + 1);
+	offset += 1;
+        if (idx + offset == end) {
+            hs->state = h5_state_eof;
+            hs->token_start = hs->s + hs->pos;
+            hs->token_len = hs->len - hs->pos;
+            hs->token_type = TAG_COMMENT;
+            return 1;
+        }
+
+
+        ch = *(idx + offset);
         if (ch != CHAR_GT) {
             pos = (size_t)(idx - hs->s) + 1;
             continue;
         }
-#endif
+	offset += 1;
+
         /* ends in --> or -!> */
         hs->token_start = hs->s + hs->pos;
         hs->token_len = (size_t)(idx - hs->s) - hs->pos;
-        hs->pos = (size_t)(idx - hs->s) + offset;
+        hs->pos = (size_t)(idx + offset - hs->s);
         hs->state = h5_state_data;
         hs->token_type = TAG_COMMENT;
         return 1;
