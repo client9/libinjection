@@ -22,13 +22,13 @@ typedef enum {
     MODE_XSS
 } detect_mode_t;
 
-int urlcharmap(char ch);
-size_t modp_url_decode(char* dest, const char* s, size_t len);
 size_t modp_rtrim(char* str, size_t len);
 void modp_toprint(char* str, size_t len);
 void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
                    int flag_invert, int flag_true, int flag_quiet);
 
+int urlcharmap(char ch);
+size_t modp_url_decode(char* dest, const char* s, size_t len);
 
 int urlcharmap(char ch) {
     switch (ch) {
