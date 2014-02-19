@@ -221,7 +221,7 @@ int read_file(const char* fname, int flags, int testtype)
          */
 
         h5_state_t hs;
-        libinjection_h5_init(&hs, copy, slen, 0);
+        libinjection_h5_init(&hs, copy, slen, DATA_STATE);
         slen = 0;
         while (libinjection_h5_next(&hs)) {
             slen = print_html5_token(g_actual, slen, &hs);
