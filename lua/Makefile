@@ -58,6 +58,18 @@ libinjection_sqli.c: ../c/libinjection_sqli.c
 libinjection_sqli.h: ../c/libinjection_sqli.h
 	cp ../c/libinjection_sqli.h libinjection_sqli.h
 
+libinjection_xss.h: ../c/libinjection_xss.h
+	cp ../c/libinjection_xss.h libinjection_xss.h
+
+libinjection_xss.c: ../c/libinjection_xss.c
+	cp ../c/libinjection_xss.c libinjection_xss.c
+
+libinjection_html5.h: ../c/libinjection_html5.h
+	cp ../c/libinjection_html5.h libinjection_html5.h
+
+libinjection_html5.c: ../c/libinjection_html5.c
+	cp ../c/libinjection_html5.c libinjection_html5.c
+
 libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
 	cp ../c/libinjection_sqli_data.h libinjection_sqli_data.h
 
