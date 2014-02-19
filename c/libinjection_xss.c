@@ -387,19 +387,17 @@ static int is_black_url(const char* s, size_t len)
     static const char* javascript_url = "JAVA";
 
     /* skip whitespace */
-    while (len > 0) {
+    while (len > 0 && *s <= 32) {
         /*
          * HEY: this is a signed character.
          *  We are intentionally skipping high-bit characters too
-         *  since they are not ascii, and Opera sometimes uses UTF8 whitespace
+         *  since they are not ascii, and Opera sometimes uses UTF8 whitespace.
+	 *
+	 * Also in EUC-JP some of the high bytes are just ignored.
          */
-        if (*s <= 32) {
-            ++s;
-            --len;
-        }
-        break;
+      ++s;
+      --len;
     }
-
 
     if (htmlencode_startswith(data_url, s, len)) {
         return 1;
