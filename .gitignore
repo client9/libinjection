@@ -7,17 +7,22 @@ reader
 
 aclocal.m4
 app.info
+autom4te.cache
 compile
 config.h
 config.h.in
+config.guess
 config.log
 config.status
+config.sub
 configure
 configure.scan
 coverage_report
 depcomp
 install-sh
 libtool
+ltmain.sh
+Makefile.in
 m4
 missing
 stamp-h1
