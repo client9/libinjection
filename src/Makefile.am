@@ -43,3 +43,16 @@ example1_SOURCES = example1.c
 example1_CPPFLAGS = -I$(top_srcdir)/src
 example1_LDADD = libinjection.la
 example1_CFLAGS = -Werror
+
+clean-local:
+	rm -f *~
+
+check_SCRIPTS = \
+	test-unit.sh \
+	test-samples-xss-positive.sh \
+	test-samples-sqli-positive.sh \
+	test-samples-sqli-negative.sh \
+	test-speed-sqli.sh \
+	test-speed-xss.sh
+
+TESTS = $(check_SCRIPTS)
