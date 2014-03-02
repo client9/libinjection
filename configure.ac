@@ -5,7 +5,6 @@ AC_PREREQ([2.69])
 AC_INIT([libinjection], [3.9.2], [github.com/client9/libinjection])
 AM_INIT_AUTOMAKE
 LT_INIT
-AC_CONFIG_SRCDIR([src/example1.c])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
