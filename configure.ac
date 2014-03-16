@@ -5,6 +5,7 @@ AC_PREREQ([2.68])
 AC_INIT([libinjection], [3.9.2], [github.com/client9/libinjection])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
+AC_PROG_LIBTOOL
 LT_INIT
 AC_CONFIG_HEADERS([config.h])
 
