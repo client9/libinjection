@@ -12,7 +12,12 @@ libinjection_la_CFLAGS = -Werror
 
 check_PROGRAMS = reader sqli testdriver testspeed testspeedxss
 
-noinst_PROGRAMS = example1
+noinst_PROGRAMS = example1 html5
+
+html5_SOURCES = html5_cli.c
+html5_CPPFLAGS = -I$(top_srcdir)/src
+html5_LDADD = libinjection.la
+html5_CFLAGS = -Werror -Wall
 
 reader_SOURCES = reader.c
 reader_CPPFLAGS = -I$(top_srcdir)/src

@@ -4,6 +4,7 @@ extractor
 is_sqli
 fptool
 sqli
+html5
 testspeed
 build
 testdriver
