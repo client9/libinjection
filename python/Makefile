@@ -22,8 +22,8 @@ speed:
 	./speedtest.py
 
 
-words.py: Makefile json2python.py ../c/sqlparse_data.json
-	./json2python.py < ../c/sqlparse_data.json > words.py
+words.py: Makefile json2python.py ../src/sqlparse_data.json
+	./json2python.py < ../src/sqlparse_data.json > words.py
 
 
 libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libinjection.h libinjection/libinjection_sqli.h
@@ -32,7 +32,7 @@ libinjection/libinjection_wrap.c: libinjection/libinjection.i libinjection/libin
 
 
 copy:
-	cp ../c/libinjection*.h ../c/libinjection*.c libinjection/
+	cp ../src/libinjection*.h ../src/libinjection*.c libinjection/
 
 .PHONY: copy
 
