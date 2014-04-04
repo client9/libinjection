@@ -26,17 +26,17 @@ install: build/modules/libinjection.so
 build:
 	mkdir build
 
-build/libinjection.h: ../c/libinjection.h
-	cp ../c/libinjection.h build/libinjection.h
+build/libinjection.h: ../src/libinjection.h
+	cp ../src/libinjection.h build/libinjection.h
 
-build/libinjection_sqli.c: ../c/libinjection_sqli.c
-	cp ../c/libinjection_sqli.c build/libinjection_sqli.c
+build/libinjection_sqli.c: ../src/libinjection_sqli.c
+	cp ../src/libinjection_sqli.c build/libinjection_sqli.c
 
-build/libinjection_sqli.h: ../c/libinjection_sqli.h
-	cp ../c/libinjection_sqli.h build/libinjection_sqli.h
+build/libinjection_sqli.h: ../src/libinjection_sqli.h
+	cp ../src/libinjection_sqli.h build/libinjection_sqli.h
 
-build/libinjection_sqli_data.h: ../c/libinjection_sqli_data.h
-	cp ../c/libinjection_sqli_data.h build/libinjection_sqli_data.h
+build/libinjection_sqli_data.h: ../src/libinjection_sqli_data.h
+	cp ../src/libinjection_sqli_data.h build/libinjection_sqli_data.h
 
 build/libinjection.i: libinjection.i
 	cp libinjection.i build/
@@ -49,8 +49,8 @@ build/config.m4: config.m4
 #
 # old
 #
-words.php: Makefile json2php.py ../c/sqlparse_data.json
-	./json2php.py < ../c/sqlparse_data.json > words.php
+words.php: Makefile json2php.py ../src/sqlparse_data.json
+	./json2php.py < ../src/sqlparse_data.json > words.php
 
 clean:
 	rm -f *~ *.o *.so
