@@ -46,11 +46,11 @@ libinjection_wrap.c: libinjection.i libinjection.h
 	swig -version
 	swig -lua -Wall -Wextra libinjection.i
 
-sqlifingerprints.lua: generate_lua_fingerprints.py ../c/sqlparse_data.json
+sqlifingerprints.lua: generate_lua_fingerprints.py ../src/sqlparse_data.json
 	./generate_lua_fingerprints.py > sqlifingerprints.lua
 
 copy: 
-	cp ../c/libinjection*.h ../c/libinjection*.c .
+	cp ../src/libinjection*.h ../src/libinjection*.c .
 .PHONY: copy
 
 sample: sqlifingerprints.lua
