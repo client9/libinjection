@@ -192,6 +192,24 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
     }
 }
 
+void usage(const char* argv[])
+{
+  fprintf(stdout, "usage: %s [flags] [files...]\n", argv[0]);
+  fprintf(stdout, "%s\n", "");
+  fprintf(stdout, "%s\n", "-q --quiet     : quiet mode");
+  fprintf(stdout, "%s\n", "-m --max-fails : number of failed cases need to fail entire test");
+  fprintf(stdout, "%s\n", "-s INTEGER     : repeat each test N time "
+	  "(for performance testing)");
+  fprintf(stdout, "%s\n", "-t             : only print positive matches");
+  fprintf(stdout, "%s\n", "-x --mode-xss  : test input for XSS");
+  fprintf(stdout, "%s\n", "-i --invert    : invert test logic "
+	  "(input is tested for being safe)");
+
+  fprintf(stdout, "%s\n", "");
+  fprintf(stdout, "%s\n", "-? -h -help --help : this page");
+  fprintf(stdout, "%s\n", "");
+}
+
 int main(int argc, const char *argv[])
 {
     /*
@@ -220,10 +238,19 @@ int main(int argc, const char *argv[])
     int offset = 1;
 
     while (offset < argc) {
+        if (strcmp(argv[offset], "-?") == 0 ||
+            strcmp(argv[offset], "-h") == 0 ||
+	    strcmp(argv[offset], "-help") == 0 ||
+	    strcmp(argv[offset], "--help") == 0) {
+	  usage(argv);
+	  exit(0);
+	}
+	  
         if (strcmp(argv[offset], "-i") == 0) {
             offset += 1;
             flag_invert = TRUE;
-        } else if (strcmp(argv[offset], "-q") == 0) {
+        } else if (strcmp(argv[offset], "-q") == 0 ||
+		   strcmp(argv[offset], "--quiet") == 0) {
             offset += 1;
             flag_quiet = TRUE;
         } else if (strcmp(argv[offset], "-t") == 0) {
@@ -232,11 +259,13 @@ int main(int argc, const char *argv[])
         } else if (strcmp(argv[offset], "-s") == 0) {
             offset += 1;
             flag_slow = 100;
-        } else if (strcmp(argv[offset], "-m") == 0) {
-            offset += 1;
+        } else if (strcmp(argv[offset], "-m") == 0 ||
+		   strcmp(argv[offset], "--max-fails") == 0) {
+		     offset += 1;
             max = atoi(argv[offset]);
             offset += 1;
-        } else if (strcmp(argv[offset], "-x") == 0) {
+        } else if (strcmp(argv[offset], "-x") == 0 ||
+		   strcmp(argv[offset], "--mode-xss") == 0) {
             mode = MODE_XSS;
             offset += 1;
         } else {
