@@ -51,7 +51,7 @@ int testIsSQL(void)
 
 int main()
 {
-    const int mintps = 500000;
+    const int mintps = 450000;
     int tps = testIsSQL();
 
     printf("\nTPS : %d\n\n", tps);
