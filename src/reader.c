@@ -22,6 +22,7 @@ typedef enum {
     MODE_XSS
 } detect_mode_t;
 
+static void usage(const char* argv[]);
 size_t modp_rtrim(char* str, size_t len);
 void modp_toprint(char* str, size_t len);
 void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
@@ -192,7 +193,7 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
     }
 }
 
-void usage(const char* argv[])
+static void usage(const char* argv[])
 {
   fprintf(stdout, "usage: %s [flags] [files...]\n", argv[0]);
   fprintf(stdout, "%s\n", "");
