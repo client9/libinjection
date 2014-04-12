@@ -29,6 +29,7 @@ class PublishArtifact(object):
         if (stat.S_ISREG == os.stat(sourcedir).st_mode):
             regular = True
             destdir = os.path.join(destdir, self.destination)
+        logging.info('%s is %s file', sourcedir, str(regular))
         logging.info('Copying {0} to {1}'.format(sourcedir, destdir))
 
 
