@@ -5,6 +5,9 @@ c/#*
 reader
 *.info
 
+# gnu autotest
+*.trs
+
 aclocal.m4
 app.info
 autom4te.cache
