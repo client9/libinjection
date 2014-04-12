@@ -655,7 +655,7 @@ make reader
     'libinjection-valgrind': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec' : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && nice make valgrind"),
+        'exec' : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && VALGRIND=`which valgrind` nice make check"),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
