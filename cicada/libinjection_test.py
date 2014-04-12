@@ -542,7 +542,7 @@ cppcheck --enable=all --inconclusive --suppress=variableScope \
     'libinjection-clang-static-analyzer': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('clang --version && cd libinjection && ./autogen.sh && ./clang-static-analyzer.sh'),
+        'exec'   : ExecuteShell('clang --version && cd libinjection && ./autogen.sh && cd src && ./clang-static-analyzer.sh'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
