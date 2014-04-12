@@ -8,6 +8,8 @@ make
 cd src
 make reader
 rm -f libinjection.info
+rm -rf lcov-html
+mkdir lcov-html
 libtool --mode=execute ./reader -q ../data/sqli-*.txt
 libtool --mode=execute ./reader -q -x ../data/xss-*.txt
 lcov -b . --directory . --capture --output-file libinjection.info

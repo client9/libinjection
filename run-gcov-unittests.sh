@@ -8,6 +8,8 @@ make
 cd src
 make testdriver
 rm -f libinjection.info
+rm -rf lcov-html
+mkdir lcov-html
 lcov -b . --directory . --zerocounters
 libtool --mode=execute ./testdriver ../tests/test-*.txt
 lcov -b . --directory . --capture --output-file libinjection.info
