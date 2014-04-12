@@ -56,7 +56,7 @@ int main()
 
     printf("\nTPS : %d\n\n", tps);
 
-    if (tps < 500000) {
+    if (tps < mintps) {
         printf("FAIL: %d < %d\n", tps, mintps);
         /* FAIL */
         return 1;
