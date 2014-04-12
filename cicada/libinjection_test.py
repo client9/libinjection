@@ -662,7 +662,7 @@ cd libinjection
 ./autogen.sh
 ./configure
 make clean
-export VALGRIND="`which valgrind` --gen-suppressions=no --read-var-info=yes --error-exitcode=1 --track-origins=yesnice"
+export VALGRIND="libtool --mode=execute `which valgrind` --gen-suppressions=no --read-var-info=yes --error-exitcode=1 --track-origins=yesnice"
 make check
 """),
         'publish': [
