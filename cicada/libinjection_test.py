@@ -358,8 +358,6 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
         'exec': ExecuteShell("""
 cd openssl
-./config
-make clean
 scan-build ./config
 scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer --status-bugs make depend
 rm -rf csa
