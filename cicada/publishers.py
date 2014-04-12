@@ -25,22 +25,26 @@ class PublishArtifact(object):
         if not os.path.exists(destdir):
             os.makedirs(destdir)
         sourcedir = os.path.join(workspace, self.artifact)
+
+        # create empty file if it doesnt exist
+        # this works for files and directories
+        if not os.path.exists(sourcedir):
+            subprocess.call(['touch', '-a', sourcedir])
+
         regular = False
         if (stat.S_ISREG(os.stat(sourcedir).st_mode)):
             regular = True
             destdir = os.path.join(destdir, self.destination)
+
         logging.info('%s is %s file', sourcedir, str(regular))
-        logging.info('Copying {0} to {1}'.format(sourcedir, destdir))
 
 
         
-        # creates an empty file if it's missing
-        # works if directory or regular file
-        subprocess.call(['touch', '-a', sourcedir])
-
         if regular:
+            logging.info('Copying file %s to %s', sourcedir, destdir)
             subprocess.call(['cp', sourcedir, destdir])
         else:
+            logging.info('Copying directory %s to %s', sourcedir, destdir)
             subprocess.call(['cp', '-r', sourcedir, destdir])
 
         # portable? link to latest
