@@ -19,6 +19,8 @@
 
 int urlcharmap(char ch);
 size_t modp_url_decode(char* dest, const char* s, size_t len);
+const char* h5_type_to_string(enum html5_type x);
+void print_html5_token(h5_state_t* hs);
 
 int urlcharmap(char ch) {
     switch (ch) {
@@ -153,7 +155,7 @@ int main(int argc, const char* argv[])
       slen = modp_url_decode(copy, copy, slen);
     }
 
-    libinjection_h5_init(&hs, copy, slen, flag);
+    libinjection_h5_init(&hs, copy, slen, (enum html5_flags) flag);
     while (libinjection_h5_next(&hs)) {
         print_html5_token(&hs);
     }
