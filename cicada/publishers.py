@@ -36,7 +36,7 @@ class PublishArtifact(object):
         regular = False
         if (stat.S_ISREG(os.stat(sourcedir).st_mode)):
             regular = True
-            destdir = os.path.join(destdir, self.artifact)
+            destdir = os.path.join(destdir, self.href)
 
         logging.info('%s is %s file', sourcedir, str(regular))
         
