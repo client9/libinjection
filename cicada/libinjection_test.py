@@ -658,6 +658,8 @@ make reader
         'exec' : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && VALGRIND=`which valgrind` nice make check"),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('libinjection/src/test-suite.log', PUBDIR,
+                            'test-suite.txt', 'test log')
         ]
     },
     'libinjection-gprof': {
