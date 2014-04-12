@@ -24,12 +24,22 @@ class PublishArtifact(object):
         if not os.path.exists(destdir):
             os.makedirs(destdir)
         sourcedir = os.path.join(workspace, self.artifact)
+        regular = False
+        if (os.stat.S_ISREG == os.stat(pathname).st_mode):
+            regular = True
+            destdir = os.path.join(destdir, self.destination)
         logging.info('Copying {0} to {1}'.format(sourcedir, destdir))
 
+
+        
         # creates an empty file if it's missing
+        # works if directory or regular file
         subprocess.call(['touch', '-a', sourcedir])
 
-        subprocess.call(['cp', '-r', sourcedir, destdir])
+        if regular:
+            subprocess.call(['cp', sourcedir, destdir])
+        else:
+            subprocess.call(['cp', '-r', sourcedir, destdir])
 
         # portable? link to latest
         latestdir = os.path.join(self.destination, project, jobname, 'latest');
