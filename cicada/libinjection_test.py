@@ -524,7 +524,17 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-cppcheck': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('cppcheck --version && cd libinjection && ./autogen.sh && ./configure && make cppcheck'),
+        'exec'   : ExecuteShell("""
+cppcheck --version
+cd libinjection
+./autogen.sh
+./configure
+cd src
+cppcheck --enable=all --inconclusive --suppress=variableScope \
+         --std=c89 \
+         --template='{file}:{line} {id} {severity} {message}' \
+         --quiet --error-exitcode=1 .
+""")
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
