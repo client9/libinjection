@@ -347,7 +347,9 @@ cd openssl
 cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
     --suppress=variableScope  \
     --std=c89 --std=posix \
-    --template '{file}:{line} {severity} {id} {message}' .
+    --template '{file}:{line} {severity} {id} {message}' \
+    -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -DL_ENDIAN -DTERMIO -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM \
+    .
 """)
     },
     'clang-static-analyzer': {
