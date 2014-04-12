@@ -26,7 +26,7 @@ class PublishArtifact(object):
             os.makedirs(destdir)
         sourcedir = os.path.join(workspace, self.artifact)
         regular = False
-        if (stat.S_ISREG == os.stat(sourcedir).st_mode):
+        if (stat.S_ISREG(os.stat(sourcedir).st_mode)):
             regular = True
             destdir = os.path.join(destdir, self.destination)
         logging.info('%s is %s file', sourcedir, str(regular))
