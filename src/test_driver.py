@@ -110,11 +110,11 @@ def runtest(testname, flags=None):
 
 def run_tokens(testname):
     """ run a single generic SQL token parsing test """
-    runtest(testname, [ '-q0', '-ca'])
+    runtest(testname, ['-q0', '-ca'])
 
 def run_tokens_mysql(testname):
     """ run a single MySQL token parsing test """
-    runtest(testname, [ '-q0', '-cm'])
+    runtest(testname, ['-q0', '-cm'])
 
 def run_folding(testname):
     """ run a single folding test """
