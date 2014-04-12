@@ -490,6 +490,7 @@ LIBINJECTION = {
         'exec'    : ExecuteShell('gcc --version && cd libinjection && ./autogen.sh && ./configure && make clean && make check'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('libinjection/src/test-suite.log', PUBDIR, 'test-suite-log.txt', 'test log'),
         ]
     },
     'libinjection-build-test-g++': {
@@ -498,6 +499,7 @@ LIBINJECTION = {
         'exec': ExecuteShell('g++ --version && cd libinjection && ./autogen.sh && ./configure && make clean && CC=g++ make check'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('libinjection/src/test-suite.log', PUBDIR, 'test-suite-log.txt', 'test log'),
         ]
     },
     'libinjection-build-test-clang': {
