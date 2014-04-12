@@ -328,7 +328,7 @@ lcov -c -d . --path /mnt/cicada/workspace/openssl/build-test/openssl -o openssl.
 lcov -d . --remove openssl.info '/usr/include*' -o openssl.info
 # lcov -d . --remove openssl.info '*/test/*' -o openssl.info
 # lcov -d . --remove openssl.info '*/engines/*' -o openssl.info
-genhtml --branch-coverage -o ../lcov-html openssl.info
+genhtml --branch-coverage -o lcov-html openssl.info
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
