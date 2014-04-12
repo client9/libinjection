@@ -607,7 +607,7 @@ make reader
     'libinjection-coverage-unittest': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("cd libinjection/src && make clean && make coverage-testdriver"),
+        'exec'    : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && make coverage-testdriver"),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url
@@ -619,7 +619,7 @@ make reader
     'libinjection-coverage-data': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("cd libinjection/src && make clean && make coverage-reader"),
+        'exec'    : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && make coverage-reader"),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url
@@ -631,7 +631,7 @@ make reader
     'libinjection-speed': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec' : ExecuteShell("cd libinjection/src && make test_speed"),
+        'exec' : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make test_speed"),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -639,7 +639,7 @@ make reader
     'libinjection-valgrind': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec' : ExecuteShell("cd libinjection/src && make clean && nice make valgrind"),
+        'exec' : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && nice make valgrind"),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -648,7 +648,9 @@ make reader
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""#!/bin/bash
-cd libinjection/src
+cd libinjection
+./autogen.sh
+./configure
 make clean
 make reader-gprof
 ./reader-gprof -s -q ../data/sqli-*.txt ../data/false-*.txt
@@ -663,7 +665,8 @@ gprof ./reader-gprof gmon.out
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""#!/bin/bash
 export PATH=/mnt/stack/build/bin/:$PATH
-cd libinjection/src
+cd libinjection
+./configure
 stack-build make clean
 stack-build make allbin
 poptck
