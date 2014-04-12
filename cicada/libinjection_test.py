@@ -333,7 +333,7 @@ genhtml --branch-coverage -o lcov-html openssl.info
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('lcov-html', PUBDIR, '/lcov-html/index.html', 'coverage')
+            PublishArtifact('openssl/lcov-html', PUBDIR, '/lcov-html/index.html', 'coverage')
         ]
     },
     'cppcheck': {
