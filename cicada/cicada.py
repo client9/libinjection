@@ -26,7 +26,7 @@ def timestamp():
 
 def pump():
     eventq = QUEUE_EVENT
-    jobq = Queue(connection=Redis())
+    jobq = Queue(connection=Redis(), default_timeout=60*60)
     now = utcnow()
 
     # GET ALL MESSAGES OFF EVENTQ
@@ -45,7 +45,7 @@ def pump():
 
             for listener in job.get('listen', []):
                 if listener.run(now, events):
-                    job = jobq.enqueue(poll, projectname, jobname, timeout=60*60)
+                    job = jobq.enqueue(poll, projectname, jobname)
                     break
 
 def poll(projectname, jobname):
