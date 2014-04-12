@@ -487,7 +487,7 @@ LIBINJECTION = {
     'libinjection-build-test': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell('gcc --version && cd libinjection/c && make clean && make test'),
+        'exec'    : ExecuteShell('gcc --version && cd libinjection/src && make clean && make test'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -495,7 +495,7 @@ LIBINJECTION = {
     'libinjection-build-test-g++': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('g++ --version && cd libinjection/c && make clean && CC=g++ make test'),
+        'exec': ExecuteShell('g++ --version && cd libinjection/src && make clean && CC=g++ make test'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -505,7 +505,7 @@ LIBINJECTION = {
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec': ExecuteShell("""
 clang --version
-cd libinjection/c
+cd libinjection/src
 make clean
 CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -Werror" make -e test
 """),
@@ -516,7 +516,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-cppcheck': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('cppcheck --version && cd libinjection/c && make cppcheck'),
+        'exec'   : ExecuteShell('cppcheck --version && cd libinjection/src && make cppcheck'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -524,7 +524,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-clang-static-analyzer': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('clang --version && cd libinjection/c && ./clang-static-analyzer.sh'),
+        'exec'   : ExecuteShell('clang --version && cd libinjection/src && ./clang-static-analyzer.sh'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -532,7 +532,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-loc': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('cd libinjection/c && cloc libinjection*.h libinjection*.c'),
+        'exec'   : ExecuteShell('cd libinjection/src && cloc libinjection*.h libinjection*.c'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -540,7 +540,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-pyflakes': {
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('cd libinjection/c && pyflakes *.py'),
+        'exec': ExecuteShell('cd libinjection/src && pyflakes *.py'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -549,7 +549,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         # disable 'too-many-lines' warning
-        'exec': ExecuteShell('/usr/local/bin/pylint --disable=C0302 --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}]" libinjection/c/*.py'),
+        'exec': ExecuteShell('/usr/local/bin/pylint --disable=C0302 --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}]" libinjection/src/*.py'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -582,7 +582,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'   : ExecuteShell("""
-cd libinjection/c
+cd libinjection/src
 make clean
 make reader
 ./reader -t -i -m 21 ../data/sqli-*.txt
@@ -595,7 +595,7 @@ make reader
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'   : ExecuteShell("""
-cd libinjection/c
+cd libinjection/src
 make clean
 make reader
 ./reader -t -m 22 ../data/false_positives.txt
@@ -607,31 +607,31 @@ make reader
     'libinjection-coverage-unittest': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("cd libinjection/c && make clean && make coverage-testdriver"),
+        'exec'    : ExecuteShell("cd libinjection/src && make clean && make coverage-testdriver"),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url
             # 2. linktext
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('libinjection/c/lcov-html', PUBDIR, '/lcov-html/libinjection/c/index.html', 'coverage')
+            PublishArtifact('libinjection/src/lcov-html', PUBDIR, '/lcov-html/libinjection/src/index.html', 'coverage')
         ]
     },
     'libinjection-coverage-data': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("cd libinjection/c && make clean && make coverage-reader"),
+        'exec'    : ExecuteShell("cd libinjection/src && make clean && make coverage-reader"),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url
             # 2. linktext
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('libinjection/c/lcov-html', PUBDIR, '/lcov-html/libinjection/c/index.html', 'coverage')
+            PublishArtifact('libinjection/src/lcov-html', PUBDIR, '/lcov-html/libinjection/src/index.html', 'coverage')
         ]
     },
     'libinjection-speed': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec' : ExecuteShell("cd libinjection/c && make test_speed"),
+        'exec' : ExecuteShell("cd libinjection/src && make test_speed"),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -639,7 +639,7 @@ make reader
     'libinjection-valgrind': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec' : ExecuteShell("cd libinjection/c && make clean && nice make valgrind"),
+        'exec' : ExecuteShell("cd libinjection/src && make clean && nice make valgrind"),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -648,7 +648,7 @@ make reader
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""#!/bin/bash
-cd libinjection/c
+cd libinjection/src
 make clean
 make reader-gprof
 ./reader-gprof -s -q ../data/sqli-*.txt ../data/false-*.txt
@@ -663,7 +663,7 @@ gprof ./reader-gprof gmon.out
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""#!/bin/bash
 export PATH=/mnt/stack/build/bin/:$PATH
-cd libinjection/c
+cd libinjection/src
 stack-build make clean
 stack-build make allbin
 poptck
