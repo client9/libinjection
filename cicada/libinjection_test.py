@@ -534,7 +534,7 @@ cppcheck --enable=all --inconclusive --suppress=variableScope \
          --std=c89 \
          --template='{file}:{line} {id} {severity} {message}' \
          --quiet --error-exitcode=1 .
-""")
+"""),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
