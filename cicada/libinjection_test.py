@@ -103,6 +103,8 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         'source': CheckoutGit('https://github.com/mruby/mruby.git', 'mruby'),
         'exec': ExecuteShell("""
 cd mruby
+make clean
+rm -rf build
 scan-build -o /mnt/cicada/workspace/mruby/clang-static-analyzer/ --status-bugs make -e
 cd /mnt/cicada/workspace/mruby/clang-static-analyzer/
 # scan-build generates a date-based file, starting with year.  move to fixed directory
