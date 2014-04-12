@@ -670,6 +670,7 @@ cd libinjection
 make clean
 export VALGRIND="`which valgrind` --gen-suppressions=no --read-var-info=yes --error-exitcode=1 --track-origins=yesnice"
 make check
+"""),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
             PublishArtifact('libinjection/src/test-suite.log', PUBDIR,
@@ -679,7 +680,7 @@ make check
     'libinjection-gprof': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("""#!/bin/bash
+        'exec'    : ExecuteShell("""
 cd libinjection
 ./autogen.sh
 ./configure-gprof.sh
