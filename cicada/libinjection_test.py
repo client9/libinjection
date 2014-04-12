@@ -307,7 +307,7 @@ OPENSSL = {
 cd openssl
 ./config
 make
-make check
+make test
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
