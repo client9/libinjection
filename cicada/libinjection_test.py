@@ -652,14 +652,6 @@ make reader
             PublishArtifact('libinjection/src/lcov-html', PUBDIR, '/lcov-html/libinjection/src/index.html', 'coverage')
         ]
     },
-    'libinjection-speed': {
-        'listen'  : LISTEN,
-        'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec' : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make test_speed"),
-        'publish': [
-            PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-        ]
-    },
     'libinjection-valgrind': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
