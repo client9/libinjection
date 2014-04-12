@@ -360,7 +360,7 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
 cd openssl
 ./config
 make clean
-./config
+scan-build ./config
 scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/csa --status-bugs make depend
 rm -rf csa
 mv 20* csa
