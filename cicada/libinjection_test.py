@@ -360,7 +360,7 @@ cd openssl
 ./config
 make clean
 ./config
-scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make
+scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make depend
 cd /mnt/cicada/workspace/openssl/clang-static-analyzer/
 # scan-build generates a date-based file, starting with year.  move to fixed directory
 rm -rf csa
