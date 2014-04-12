@@ -404,7 +404,7 @@ cd stringencoders
 #  breaks
 CC=clang CXX='clang++' ./configure
 export CFLAGS="-Isrc -Weverything -Wno-cast-align -Wno-documentation -Wno-format-nonliteral"
-make -e && make -e test
+make -e && make -e check
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
@@ -513,7 +513,7 @@ cd libinjection
 ./autogen.sh
 ./configure
 make clean
-CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -Werror" make -e test
+CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -Werror" make -e check
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
