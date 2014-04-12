@@ -305,7 +305,7 @@ OPENSSL = {
 cd openssl
 ./config
 make
-make test
+make check
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
@@ -487,7 +487,7 @@ LIBINJECTION = {
     'libinjection-build-test': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell('gcc --version && cd libinjection && ./autogen.sh && ./configure && make clean && make test'),
+        'exec'    : ExecuteShell('gcc --version && cd libinjection && ./autogen.sh && ./configure && make clean && make check'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -495,7 +495,7 @@ LIBINJECTION = {
     'libinjection-build-test-g++': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('g++ --version && cd libinjection && ./autogen.sh && ./configure && make clean && CC=g++ make test'),
+        'exec': ExecuteShell('g++ --version && cd libinjection && ./autogen.sh && ./configure && make clean && CC=g++ make check'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -559,7 +559,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-python-build-test': {
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('cd libinjection && make clean && cd python && make test'),
+        'exec': ExecuteShell('cd libinjection && make clean && cd python && make check'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
