@@ -691,7 +691,7 @@ make
 cd src 
 make reader
 ./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
-gprof ./reader gmon.out
+./libtool --mode=execute gprof ./reader gmon.out
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
