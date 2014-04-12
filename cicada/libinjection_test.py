@@ -646,10 +646,12 @@ make reader
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""
+set -e
 cd libinjection
 ./autogen.sh
 ./configure-gcov.sh
 make
+cd src
 make reader
 """),
         'publish' : [
@@ -681,11 +683,12 @@ make check
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'    : ExecuteShell("""
+set -e
 cd libinjection
 ./autogen.sh
 ./configure-gprof.sh
-cd src
 make
+cd src 
 make reader
 ./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
 gprof ./reader gmon.out
