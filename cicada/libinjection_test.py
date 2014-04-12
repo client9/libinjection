@@ -590,6 +590,7 @@ cd libinjection
 ./autogen.sh
 ./configure
 make clean
+cd src
 make reader
 ./reader -t -i -m 21 ../data/sqli-*.txt
 """),
@@ -605,6 +606,7 @@ cd libinjection
 ./autogen.sh
 ./configure
 make clean
+cd src
 make reader
 ./reader -t -m 22 ../data/false_positives.txt
 """),
@@ -660,6 +662,7 @@ cd libinjection
 ./autogen.sh
 ./configure
 make clean
+cd src
 make reader-gprof
 ./reader-gprof -s -q ../data/sqli-*.txt ../data/false-*.txt
 gprof ./reader-gprof gmon.out
