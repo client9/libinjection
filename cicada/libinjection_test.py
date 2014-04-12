@@ -361,7 +361,7 @@ cd openssl
 ./config
 make clean
 scan-build ./config
-scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/csa --status-bugs make depend
+scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer --status-bugs make depend
 rm -rf csa
 mv 20* csa
 exit ${ERR}
