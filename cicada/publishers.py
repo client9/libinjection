@@ -1,6 +1,7 @@
 import logging
 import os
 import stat
+import os.stat
 import subprocess
 
 class PublishArtifact(object):
@@ -26,7 +27,7 @@ class PublishArtifact(object):
             os.makedirs(destdir)
         sourcedir = os.path.join(workspace, self.artifact)
         regular = False
-        if (stat.S_ISREG == stat(sourcedir).st_mode):
+        if (stat.S_ISREG == os.stat(sourcedir).st_mode):
             regular = True
             destdir = os.path.join(destdir, self.destination)
         logging.info('Copying {0} to {1}'.format(sourcedir, destdir))
