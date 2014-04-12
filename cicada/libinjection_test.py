@@ -487,7 +487,7 @@ LIBINJECTION = {
     'libinjection-build-test': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell('gcc --version && cd libinjection/src && make clean && make test'),
+        'exec'    : ExecuteShell('gcc --version && cd libinjection && ./autogen.sh && ./configure && make clean && make test'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -495,7 +495,7 @@ LIBINJECTION = {
     'libinjection-build-test-g++': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('g++ --version && cd libinjection/src && make clean && CC=g++ make test'),
+        'exec': ExecuteShell('g++ --version && cd libinjection && ./autogen.sh && ./configure && make clean && CC=g++ make test'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -505,7 +505,9 @@ LIBINJECTION = {
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec': ExecuteShell("""
 clang --version
-cd libinjection/src
+cd libinjection
+./autogen.sh
+./configure
 make clean
 CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -Werror" make -e test
 """),
@@ -516,7 +518,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-cppcheck': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('cppcheck --version && cd libinjection/src && make cppcheck'),
+        'exec'   : ExecuteShell('cppcheck --version && cd libinjection && ./autogen.sh && ./configure && make cppcheck'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -524,7 +526,7 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
     'libinjection-clang-static-analyzer': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('clang --version && cd libinjection/src && ./clang-static-analyzer.sh'),
+        'exec'   : ExecuteShell('clang --version && cd libinjection && ./autogen.sh && ./clang-static-analyzer.sh'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -582,7 +584,9 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'   : ExecuteShell("""
-cd libinjection/src
+cd libinjection
+./autogen.sh
+./configure
 make clean
 make reader
 ./reader -t -i -m 21 ../data/sqli-*.txt
@@ -595,7 +599,9 @@ make reader
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'   : ExecuteShell("""
-cd libinjection/src
+cd libinjection
+./autogen.sh
+./configure
 make clean
 make reader
 ./reader -t -m 22 ../data/false_positives.txt
