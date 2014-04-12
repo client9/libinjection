@@ -1,7 +1,6 @@
 import logging
 import os
 import stat
-import os.stat
 import subprocess
 
 class PublishArtifact(object):
