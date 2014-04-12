@@ -490,8 +490,7 @@ LIBINJECTION = {
         'exec'    : ExecuteShell('gcc --version && cd libinjection && ./autogen.sh && ./configure && make clean && make check'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('libinjection/src/test-suite.log',
-                            PUBDIR + '/test-suite.txt',
+            PublishArtifact('libinjection/src/test-suite.log', PUBDIR
                             'test-suite.txt', 'test log')
         ]
     },
@@ -501,8 +500,7 @@ LIBINJECTION = {
         'exec': ExecuteShell('g++ --version && cd libinjection && ./autogen.sh && ./configure && make clean && CC=g++ make check'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
-            PublishArtifact('libinjection/src/test-suite.log',
-                            PUBDIR + '/test-suite.txt',
+            PublishArtifact('libinjection/src/test-suite.log', PUBDIR,
                             'test-suite.txt', 'test log')
         ]
     },
@@ -519,6 +517,8 @@ CC=clang CFLAGS="-g -O3 -Weverything -Wno-padded -Wno-covered-switch-default -We
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
+            PublishArtifact('libinjection/src/test-suite.log', PUBDIR,
+                            'test-suite.txt', 'test log')
         ]
     },
     'libinjection-cppcheck': {
