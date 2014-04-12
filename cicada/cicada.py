@@ -45,7 +45,7 @@ def pump():
 
             for listener in job.get('listen', []):
                 if listener.run(now, events):
-                    job = jobq.enqueue(poll, projectname, jobname)
+                    job = jobq.enqueue(poll, projectname, jobname, timeout=60*60)
                     break
 
 def poll(projectname, jobname):
