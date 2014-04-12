@@ -23,7 +23,9 @@ class PublishArtifact(object):
     def run(self, workspace, project, jobname, start):
         destdir = os.path.join(self.destination, project, jobname, str(start));
         if not os.path.exists(destdir):
+            logging.info("Making destination directory of %s", destdir)
             os.makedirs(destdir)
+
         sourcedir = os.path.join(workspace, self.artifact)
 
         # create empty file if it doesnt exist
@@ -34,11 +36,9 @@ class PublishArtifact(object):
         regular = False
         if (stat.S_ISREG(os.stat(sourcedir).st_mode)):
             regular = True
-            destdir = os.path.join(destdir, self.destination)
+            destdir = os.path.join(destdir, self.artifact)
 
         logging.info('%s is %s file', sourcedir, str(regular))
-
-
         
         if regular:
             logging.info('Copying file %s to %s', sourcedir, destdir)
