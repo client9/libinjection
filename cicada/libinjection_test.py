@@ -645,15 +645,7 @@ make reader
     'libinjection-coverage-data': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("""
-set -e
-cd libinjection
-./autogen.sh
-./configure-gcov.sh
-make
-cd src
-make reader
-"""),
+        'exec'    : ExecuteShell("cd libinjection && ./test-gcov-data.sh"),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url
@@ -682,17 +674,7 @@ make check
     'libinjection-gprof': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("""
-set -e
-cd libinjection
-./autogen.sh
-./configure-gprof.sh
-make
-cd src 
-make reader
-./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
-./libtool --mode=execute gprof ./reader gmon.out
-"""),
+        'exec'    : ExecuteShell("cd libinjection && ./test-gprof.sh"),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
