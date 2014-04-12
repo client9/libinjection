@@ -320,6 +320,8 @@ make test
 cd openssl
 ./config -O0 -fprofile-arcs -ftest-coverage
 make
+rm -rf lcov-html
+mkdir lcov-html
 lcov -b . -d . --zerocounters
 make test
 lcov -c -d . --path /mnt/cicada/workspace/openssl/build-test/openssl -o openssl.info
