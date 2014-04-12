@@ -31,7 +31,7 @@ RMAP = {
 
 def fingerprint_to_sqli():
     """
-    main code, expects to be run in main libinjection/c directory
+    main code, expects to be run in main libinjection/src directory
     and hardwires "fingerprints.txt" as input file
     """
     mode = 'print'
