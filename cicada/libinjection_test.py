@@ -633,7 +633,7 @@ make reader
     'libinjection-coverage-unittest': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && make coverage-testdriver"),
+        'exec'    : ExecuteShell("cd libinjection && ./run-gcov-unittests.sh"),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url
@@ -645,7 +645,7 @@ make reader
     'libinjection-coverage-data': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("cd libinjection && ./test-gcov-data.sh"),
+        'exec'    : ExecuteShell("cd libinjection && ./run-gcov-samples.sh"),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url
