@@ -106,6 +106,7 @@ cd mruby
 make clean
 rm -rf build
 scan-build -o /mnt/cicada/workspace/mruby/clang-static-analyzer/ --status-bugs make -e
+ERR=$?
 cd /mnt/cicada/workspace/mruby/clang-static-analyzer/
 # scan-build generates a date-based file, starting with year.  move to fixed directory
 rm -rf csa
@@ -360,11 +361,10 @@ cd openssl
 ./config
 make clean
 ./config
-scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/ --status-bugs make depend
-cd /mnt/cicada/workspace/openssl/clang-static-analyzer/
-# scan-build generates a date-based file, starting with year.  move to fixed directory
+scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer/csa --status-bugs make depend
 rm -rf csa
 mv 20* csa
+exit ${ERR}
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
