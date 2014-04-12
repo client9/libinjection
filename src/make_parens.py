@@ -18,7 +18,7 @@ class PermuteFingerprints(object):
         self.fingerprints = set()
         self.blacklist = set([
             'E1n', 'sns', '1&n', 's1s', '1n1', '1o1', '1os', 'sn1',
-            'sonc', 'so1', 'n&n', 'son','nov', 'n&s', 'E1s', 'nos',
+            'sonc', 'so1', 'n&n', 'son', 'nov', 'n&s', 'E1s', 'nos',
             'nkn&n', '1sn', 'n&nkn', 's1n', 'n&nEn', 's&sn', '1os1o',
             'sU', 'nU', 'n,(n)', 'n&n&n', 'Enkn', 'nk1;',
             '1os1o', '1n1;', 's*1s', '1s1', 'nknEn', 'n&sn',

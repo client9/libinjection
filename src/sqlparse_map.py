@@ -1399,7 +1399,7 @@ def get_fingerprints():
     """
 
     with open('fingerprints.txt', 'r') as lines:
-        sqlipat = [ line.strip() for line in lines ]
+        sqlipat = [line.strip() for line in lines]
 
     return sorted(sqlipat)
 

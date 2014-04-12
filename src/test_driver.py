@@ -76,7 +76,7 @@ def runtest(testname, flags=None):
     """
     runs a test, optionally with valgrind
     """
-    data =  readtestdata(os.path.join('../tests', testname))
+    data = readtestdata(os.path.join('../tests', testname))
 
     if os.environ.get('VALGRIND', None):
         args = [

@@ -45,7 +45,7 @@ def fingerprint_to_sqli():
         for char in fingerprint:
             sql.append(RMAP[char])
 
-        sqlstr =  ' '.join(sql)
+        sqlstr = ' '.join(sql)
         if mode == 'print':
             print fingerprint, ' '.join(sql)
         else:
