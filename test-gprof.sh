@@ -1,6 +1,8 @@
 #!/bin/bash
 ./autogen.sh
-./configure-gprof.sh
+export CFLAGS="-O2 -pg -ansi"
+./configure --enable-static --disable-shared
+make clean
 make
 cd src 
 make reader
