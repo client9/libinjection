@@ -575,7 +575,7 @@ cppcheck --enable=all --inconclusive --suppress=variableScope \
     'libinjection-python-build-test': {
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('cd libinjection && make clean && cd python && make check'),
+        'exec': ExecuteShell('cd libinjection && cd python && make clean && make test'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -583,7 +583,7 @@ cppcheck --enable=all --inconclusive --suppress=variableScope \
     'libinjection-php-build-test': {
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('cd libinjection && make clean && cd php && make test'),
+        'exec': ExecuteShell('cd libinjection && cd php && make clean && make test'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
@@ -591,7 +591,7 @@ cppcheck --enable=all --inconclusive --suppress=variableScope \
     'libinjection-lua-build-test': {
         'listen': LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec': ExecuteShell('cd libinjection && make clean && cd lua && make test'),
+        'exec': ExecuteShell('cd libinjection && cd lua && make clean && make test'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
