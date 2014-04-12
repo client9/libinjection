@@ -645,7 +645,13 @@ make reader
     'libinjection-coverage-data': {
         'listen'  : LISTEN,
         'source'  : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'    : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && make coverage-reader"),
+        'exec'    : ExecuteShell("""
+cd libinjection
+./autogen.sh
+./configure-gcov.sh
+make
+make reader
+"""),
         'publish' : [
             # 1. file relative to workspace  for PublishConsole, it's empty
             # 2. link url
@@ -657,7 +663,13 @@ make reader
     'libinjection-valgrind': {
         'listen'  : LISTEN,
         'source': CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec' : ExecuteShell("cd libinjection && ./autogen.sh && ./configure && make clean && VALGRIND=`which valgrind` nice make check"),
+        'exec' : ExecuteShell("""
+cd libinjection
+./autogen.sh
+./configure
+make clean
+export VALGRIND="`which valgrind` --gen-suppressions=no --read-var-info=yes --error-exitcode=1 --track-origins=yesnice"
+make check
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
             PublishArtifact('libinjection/src/test-suite.log', PUBDIR,
@@ -670,12 +682,12 @@ make reader
         'exec'    : ExecuteShell("""#!/bin/bash
 cd libinjection
 ./autogen.sh
-./configure
-make clean
+./configure-gprof.sh
 cd src
-make reader-gprof
-./reader-gprof -s -q ../data/sqli-*.txt ../data/false-*.txt
-gprof ./reader-gprof gmon.out
+make
+make reader
+./reader -s -q ../data/sqli-*.txt ../data/false-*.txt
+gprof ./reader gmon.out
 """),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
