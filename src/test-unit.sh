@@ -3,4 +3,4 @@ set -e
 cd ../tests
 pwd
 
-find . -name 'test*.txt' | xargs ../src/testdriver
+find . -name 'test*.txt' | xargs ${VALGRIND} ../src/testdriver

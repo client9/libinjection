@@ -1,3 +1,3 @@
 #!/bin/sh
 set -e
-./testspeed
+${VALGRIND} ./testspeed
