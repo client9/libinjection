@@ -358,17 +358,16 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         'listen': [ TestOnEvent('openssl') ],
         'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
         'exec': ExecuteShell("""
+# remove existing clang results
+rm -rf csa
+rm -rf 201*
 cd openssl
 make clean
-# remove our directory
-rm -rf csa
-# remove existing clang-static-analysis results
-rm -rf 201*
-
 scan-build ./config
 scan-build \
   -o /mnt/cicada/workspace/openssl/clang-static-analyzer \
   --status-bugs make
+ERR=$?
 cd /mnt/cicada/workspace/openssl/clang-static-analyzer
 mkdir -p csa
 mv 20* csa
@@ -449,14 +448,35 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
             PublishArtifact('csa', PUBDIR, 'csa/index.html', 'analysis')
         ],
         'exec':  ExecuteShell("""
+set -v
 clang --version
+rm -rf 201*
+rm -rf csa
 cd stringencoders
-./bootstrap.sh && ./configure
+./bootstrap.sh
+scan-build ./configure
 make clean
-scan-build -o /mnt/cicada/workspace/stringencoders/clang-static-analyzer/ --status-bugs make
+scan-build --status-bug \
+    -o /mnt/cicada/workspace/stringencoders/clang-static-analyzer/ \
+    -enable-checker alpha.core.BoolAssignment \
+    -enable-checker alpha.core.CastSize \
+    -enable-checker alpha.core.CastToStruct \
+    -enable-checker alpha.core.FixedAddr \
+    -enable-checker alpha.core.PointerArithm \
+    -enable-checker alpha.core.SizeofPtr \
+    -enable-checker alpha.deadcode.IdempotentOperations \
+    -enable-checker alpha.deadcode.UnreachableCode \
+    -enable-checker alpha.security.ArrayBound \
+    -enable-checker alpha.security.MallocOverflow \
+    -enable-checker alpha.security.ReturnPtrRange \
+    -enable-checker alpha.unix.cstring.BufferOverlap \
+    -enable-checker alpha.unix.cstring.OutOfBounds \
+    -enable-checker security.FloatLoopCounter \
+    -enable-checker security.insecureAPI.rand \
+    make
 ERR=$?
 cd /mnt/cicada/workspace/stringencoders/clang-static-analyzer/
-rm -rf csa
+mkdir csa
 mv 20* csa
 exit ${ERR}
 """)
