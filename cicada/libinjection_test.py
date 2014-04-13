@@ -592,9 +592,7 @@ mv 20* csa
 # has problem with "backwards array iteration"
 # used in is_backslash_escaped
 #-enable-checker alpha.security.ArrayBoundV2
-""")
-
-cd libjinection && ./run-clang-static-analyzer.sh'),
+"""),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
