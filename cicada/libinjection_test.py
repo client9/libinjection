@@ -455,7 +455,7 @@ cd stringencoders
 ./bootstrap.sh
 scan-build ./configure
 make clean
-scan-build --status-bug \
+scan-build --status-bugs \
     -o /mnt/cicada/workspace/stringencoders/clang-static-analyzer/ \
     -enable-checker alpha.core.BoolAssignment \
     -enable-checker alpha.core.CastSize \
