@@ -361,7 +361,10 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
 cd openssl
 make clean
 scan-build ./config
-scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer --status-bugs make
+scan-build \
+  -o /mnt/cicada/workspace/openssl/clang-static-analyzer \
+  --status-bugs make
+cd /mnt/cicada/workspace/openssl/clang-static-analyzer
 rm -rf csa
 mv 20* csa
 exit ${ERR}
@@ -457,7 +460,7 @@ exit ${ERR}
         'listen': [ TestOnEvent('stringencoders') ],
         'source': CheckoutSVN('http://stringencoders.googlecode.com/svn/trunk/', 'stringencoders'),
         'exec': ExecuteShell('cd stringencoders && ./bootstrap.sh && ./configure --enable-gcov && make clean && make lcov-html'),
-        'publish': [
+       'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
             PublishArtifact('stringencoders/lcov-html/html', PUBDIR, 'html/stringencoders/src/index.html', 'coverage')
         ]
@@ -548,7 +551,50 @@ cppcheck --enable=all --inconclusive --suppress=variableScope \
     'libinjection-clang-static-analyzer': {
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
-        'exec'   : ExecuteShell('cd libjinection && ./run-clang-static-analyzer.sh'),
+        'exec'   : ExecuteShell("""
+clang --version
+cd libinjection
+./autogen.sh
+scan-build ./configure
+cd src
+scan-build --status-bugs \
+    -enable-checker alpha.core.BoolAssignment \
+    -enable-checker alpha.core.CastSize \
+    -enable-checker alpha.core.CastToStruct \
+    -enable-checker alpha.core.FixedAddr \
+    -enable-checker alpha.core.PointerArithm \
+    -enable-checker alpha.core.SizeofPtr \
+    -enable-checker alpha.deadcode.IdempotentOperations \
+    -enable-checker alpha.deadcode.UnreachableCode \
+    -enable-checker alpha.security.ArrayBound \
+    -enable-checker alpha.security.MallocOverflow \
+    -enable-checker alpha.security.ReturnPtrRange \
+    -enable-checker alpha.unix.cstring.BufferOverlap \
+    -enable-checker alpha.unix.cstring.OutOfBounds \
+    -enable-checker security.FloatLoopCounter \
+    -enable-checker security.insecureAPI.rand \
+    make testdriver
+cd /mnt/cicada/workspace/libinjection/clang-static-analyzer/
+rm -rf csa
+mv 20* csa
+# notes 2013-10-24
+
+# do not understand
+# -no-failure-reports
+
+# seems broken or I don't understand it
+# -enable-checker alpha.core.PointerSub
+
+#
+# probably good.. used in testdriver as a hack
+#-enable-checker security.insecureAPI.strcpy
+
+# has problem with "backwards array iteration"
+# used in is_backslash_escaped
+#-enable-checker alpha.security.ArrayBoundV2
+""")
+
+cd libjinection && ./run-clang-static-analyzer.sh'),
         'publish': [
             PublishArtifact('console.txt', PUBDIR, 'console.txt', 'console'),
         ]
