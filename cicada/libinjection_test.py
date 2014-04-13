@@ -602,8 +602,10 @@ scan-build --status-bugs \
     -enable-checker security.FloatLoopCounter \
     -enable-checker security.insecureAPI.rand \
     make testdriver
+ERR=$?
 cd /mnt/cicada/workspace/libinjection/libinjection-clang-static-analyzer
 mv 201* csa
+exit ${ERR}
 
 # notes 2013-10-24
 
