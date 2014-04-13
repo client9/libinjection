@@ -557,12 +557,17 @@ cppcheck --enable=all --inconclusive --suppress=variableScope \
         'listen' : LISTEN,
         'source' : CheckoutGit('https://github.com/client9/libinjection.git', 'libinjection'),
         'exec'   : ExecuteShell("""
+set -v
 clang --version
+rm -rf 201*
+rm -rf csa
 cd libinjection
 ./autogen.sh
 scan-build ./configure
+make clean
 cd src
 scan-build --status-bugs \
+    -o /mnt/cicada/workspace/libinjection/libinjection-clang-static-analyzer \
     -enable-checker alpha.core.BoolAssignment \
     -enable-checker alpha.core.CastSize \
     -enable-checker alpha.core.CastToStruct \
@@ -579,9 +584,10 @@ scan-build --status-bugs \
     -enable-checker security.FloatLoopCounter \
     -enable-checker security.insecureAPI.rand \
     make testdriver
-cd /mnt/cicada/workspace/libinjection/clang-static-analyzer/
-rm -rf csa
-mv 20* csa
+cd /mnt/cicada/workspace/libinjection/libinjection-clang-static-analyzer
+mkdir csa
+mv 201* csa
+
 # notes 2013-10-24
 
 # do not understand
