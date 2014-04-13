@@ -345,6 +345,7 @@ genhtml --branch-coverage -o lcov-html openssl.info
         'exec': ExecuteShell("""
 cppcheck --version
 cd openssl
+./config
 cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
     --suppress=variableScope  \
     --std=c89 --std=posix \
@@ -358,8 +359,9 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         'source': CheckoutGit('git://git.openssl.org/openssl.git', 'openssl'),
         'exec': ExecuteShell("""
 cd openssl
+make clean
 scan-build ./config
-scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer --status-bugs make depend
+scan-build -o /mnt/cicada/workspace/openssl/clang-static-analyzer --status-bugs make
 rm -rf csa
 mv 20* csa
 exit ${ERR}
