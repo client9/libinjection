@@ -25,8 +25,8 @@ Libinjection is a small C library to detect SQLi attacks in user input with the 
 * No (heap) memory allocation
 * No extenal library dependencies
 * [400+ unit tests](https://github.com/client9/libinjection/tree/master/tests)
-* [98% code coverage](https://libinjection.client9.com/cicada/artifacts/libinjection/libinjection-coverage-unittest/latest/lcov-html/libinjection/c/index.html)
-* [BSD License](https://github.com/client9/libinjection/blob/master/COPYING.txt)
+* [98% code coverage](https://libinjection.client9.com/cicada/artifacts/libinjection/libinjection-coverage-unittest/latest/lcov-html/libinjection/src/index.html)
+* [BSD License](https://github.com/client9/libinjection/blob/master/COPYING)
 
 Third-Party Ports
 ---------------------
