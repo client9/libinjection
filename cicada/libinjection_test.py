@@ -360,12 +360,17 @@ cppcheck --quiet --error-exitcode=2 --enable=all --inconclusive \
         'exec': ExecuteShell("""
 cd openssl
 make clean
+# remove our directory
+rm -rf csa
+# remove existing clang-static-analysis results
+rm -rf 201*
+
 scan-build ./config
 scan-build \
   -o /mnt/cicada/workspace/openssl/clang-static-analyzer \
   --status-bugs make
 cd /mnt/cicada/workspace/openssl/clang-static-analyzer
-rm -rf csa
+mkdir -p csa
 mv 20* csa
 exit ${ERR}
 """),
