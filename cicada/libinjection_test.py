@@ -780,7 +780,7 @@ PROJECTS = {
     , 'libinjection': LIBINJECTION
     , 'stringencoders': STRINGENCODERS
     , 'openssl': OPENSSL
-    , 'statsite': STATSITE
-    , 'protobuf-c': PROTOBUFC
+#    , 'statsite': STATSITE
+#    , 'protobuf-c': PROTOBUFC
     , 'mruby': MRUBY
 }
