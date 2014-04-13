@@ -33,15 +33,9 @@ class PublishArtifact(object):
         if not os.path.exists(sourcedir):
             subprocess.call(['touch', '-a', sourcedir])
 
-        regular = False
         if (stat.S_ISREG(os.stat(sourcedir).st_mode)):
-            regular = True
-            destdir = os.path.join(destdir, self.href)
-
-        logging.info('%s is %s file', sourcedir, str(regular))
-        
-        if regular:
-            logging.info('Copying file %s to %s', sourcedir, destdir)
+            destfile = os.path.join(destdir, self.href)   
+            logging.info('Copying file %s to %s', sourcedir, destfile)
             subprocess.call(['cp', sourcedir, destdir])
         else:
             logging.info('Copying directory %s to %s', sourcedir, destdir)
