@@ -14,23 +14,23 @@ LISTEN = [
 ]
 
 POLLERS = {
-    'statsite': {
-        'listen': [
-            TestOnTime(minute='10', hour='3'),
-        ],
-        'exec': PollGit(
-            'statsite',
-            'https://github.com/armon/statsite.git',
-            QUEUE_EVENT
-        )
-    },
-    'protobuf-c': {
-        'listen': [
-            TestOnTime(minute='10', hour='2'),
-        ],
-        'exec': PollGit('protobuf-c',
-                        'https://github.com/protobuf-c/protobuf-c', QUEUE_EVENT)
-    },
+#    'statsite': {
+#        'listen': [
+#            TestOnTime(minute='10', hour='3'),
+#        ],
+#        'exec': PollGit(
+#            'statsite',
+#            'https://github.com/armon/statsite.git',
+#            QUEUE_EVENT
+#        )
+#    },
+#    'protobuf-c': {
+#        'listen': [
+#            TestOnTime(minute='10', hour='2'),
+#        ],
+#        'exec': PollGit('protobuf-c',
+#                        'https://github.com/protobuf-c/protobuf-c', QUEUE_EVEN#T)
+#    },
     'poll-git-openssl': {
         'listen': [
             TestOnTime(minute='10', hour='1'),
