@@ -369,8 +369,7 @@ scan-build \
   --status-bugs make
 ERR=$?
 cd /mnt/cicada/workspace/openssl/clang-static-analyzer
-mkdir -p csa
-mv 20* csa
+mv 201* csa
 exit ${ERR}
 """),
         'publish': [
@@ -476,7 +475,6 @@ scan-build --status-bug \
     make
 ERR=$?
 cd /mnt/cicada/workspace/stringencoders/clang-static-analyzer/
-mkdir csa
 mv 20* csa
 exit ${ERR}
 """)
@@ -605,7 +603,6 @@ scan-build --status-bugs \
     -enable-checker security.insecureAPI.rand \
     make testdriver
 cd /mnt/cicada/workspace/libinjection/libinjection-clang-static-analyzer
-mkdir csa
 mv 201* csa
 
 # notes 2013-10-24
