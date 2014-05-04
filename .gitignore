@@ -3,6 +3,9 @@
 *.dSYM
 c/#*
 reader
+Makefile
+test-driver
+
 *.info
 
 # gnu autotest
