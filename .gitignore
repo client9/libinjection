@@ -17,7 +17,7 @@ autom4te.cache
 #compile
 config.h
 config.h.in
-config.guess
+#config.guess
 config.log
 config.status
 #config.sub
