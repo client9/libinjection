@@ -112,15 +112,11 @@ memchr2(const char *haystack, size_t haystack_len, char c0, char c1)
     }
 
     while (cur < last) {
-        if (cur[0] == c0) {
-            if (cur[1] == c1) {
-                return cur;
-            } else {
-                cur += 2; /* (c0 == c1) ? 1 : 2; */
-            }
-        } else {
-            cur += 1;
+        /* safe since cur < len - 1 always */
+        if (cur[0] == c0 && cur[1] == c1) {
+            return cur;
         }
+        cur += 1;
     }
 
     return NULL;
