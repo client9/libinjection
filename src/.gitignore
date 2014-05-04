@@ -1,4 +1,5 @@
 /.libs/
+Makefile
 reader
 lcov-reader
 extractor
