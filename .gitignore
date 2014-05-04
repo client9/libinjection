@@ -20,7 +20,7 @@ config.h.in
 config.guess
 config.log
 config.status
-config.sub
+#config.sub
 #configure
 configure.scan
 coverage_report
