@@ -16,7 +16,7 @@ app.info
 autom4te.cache
 #compile
 config.h
-config.h.in
+#config.h.in
 #config.guess
 config.log
 config.status
