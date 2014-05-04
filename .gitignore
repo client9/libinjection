@@ -11,26 +11,26 @@ test-driver
 # gnu autotest
 *.trs
 
-aclocal.m4
+#aclocal.m4
 app.info
 autom4te.cache
-compile
+#compile
 config.h
 config.h.in
 config.guess
 config.log
 config.status
 config.sub
-configure
+#configure
 configure.scan
 coverage_report
-depcomp
-install-sh
-libtool
-ltmain.sh
+#depcomp
+#install-sh
+#libtool
+#ltmain.sh
 Makefile.in
-m4
-missing
+#m4
+#missing
 stamp-h1
 *~
 *.html
