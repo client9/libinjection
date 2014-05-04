@@ -3,6 +3,6 @@ Comments, C-style.  Test for Issue #71 for bug in memchr2
 --INPUT--
 /* foo **/1
 --EXPECTED--
-C /* foo */
+c /* foo **/
 1 1
 
