@@ -28,7 +28,7 @@ coverage_report
 #install-sh
 #libtool
 #ltmain.sh
-Makefile.in
+#Makefile.in
 #m4
 #missing
 stamp-h1
