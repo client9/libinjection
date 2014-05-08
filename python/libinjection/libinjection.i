@@ -3,6 +3,7 @@
 %{
 #include "libinjection.h"
 #include "libinjection_sqli.h"
+#include <stddef.h>
 
 /* This is the callback function that runs a python function
  *
