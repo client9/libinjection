@@ -21,17 +21,27 @@ OBJECTS=libinjection_sqli.o \
 	libinjection_html5.o \
 	libinjection_xss.o
 
-EXES=reader testdriver testspeedxss testspeedsqli html5 sqli
+SAMPLES=html5 sqli fptool
+TESTDRIVERS=reader testdriver testspeedxss testspeedsqli
 
 all: ${SHAREDLIB} ${STATICLIB}
 
-libinjection_sqli.o: libinjection_sqli.c
+samples: ${SAMPLES}
+.PHONY: samples
+
+sqlparse_data.json: sqlparse_map.py fingerprints.txt
+	./sqlparse_map.py > sqlparse_data.json
+
+libinjection_sqli_data.h: sqlparse2c.py sqlparse_data.json
+	./sqlparse2c.py < sqlparse_data.json > libinjection_sqli_data.h
+
+libinjection_sqli.o: libinjection.h libinjection_sqli.c libinjection_sqli.h libinjection_sqli_data.h
 	${CC} ${CFLAGS} -c -o libinjection_sqli.o libinjection_sqli.c
 
-libinjection_xss.o: libinjection_xss.c
+libinjection_xss.o: libinjection.h libinjection_xss.c libinjection_xss.h libinjection_html5.h
 	${CC} ${CFLAGS} -c -o libinjection_xss.o libinjection_xss.c
 
-libinjection_html5.o: libinjection_html5.c
+libinjection_html5.o: libinjection.h libinjection_html5.c libinjection_html5.h
 	${CC} ${CFLAGS} -c -o libinjection_html5.o libinjection_html5.c
 
 ${SHAREDLIB}: ${OBJECTS}
@@ -41,11 +51,7 @@ ${STATICLIB}: ${OBJECTS}
 	rm -f ${STATICLIB}
 	${AR} -o ${STATICLIB} ${OBJECTS}
 
-samples: html5 sqli
-
-.PHONY: samples
-
-check: reader testdriver testspeedxss testspeedsqli
+check: ${TESTDRIVERS}
 	@./test-driver.sh test-unit.sh
 	@./test-driver.sh test-samples-sqli-negative.sh
 	@./test-driver.sh test-samples-sqli-positive.sh
@@ -57,25 +63,30 @@ test: check
 .PHONY: check test
 
 reader: reader.c ${STATICLIB}
-	${CC} -o reader reader.c -L. ${STATICLIB}
+	${CC} ${CFLAGS} -o reader reader.c -L. ${STATICLIB}
 
 sqli: sqli_cli.c ${STATICLIB}
-	${CC} -o sqli sqli_cli.c -L. ${STATICLIB}
+	${CC} ${CFLAGS} -o sqli sqli_cli.c -L. ${STATICLIB}
 
-html5: html5_cli.c
-	${CC} -o html5 html5_sqli.c ${STATICLIB}
+html5: html5_cli.c ${STATICLIB}
+	${CC} ${CFLAGS} -o html5 html5_cli.c -L. ${STATICLIB}
 
 testdriver: testdriver.c ${STATICLIB}
-	${CC} -o testdriver testdriver.c -L. ${STATICLIB}
+	${CC} ${CFLAGS} -o testdriver testdriver.c -L. ${STATICLIB}
 
-testspeedsqli: test_speed.c ${STATICLIB}
-	${CC} -o testspeedsqli test_speed.c -L. ${STATICLIB}
+testspeedsqli: test_speed_sqli.c ${STATICLIB}
+	${CC} ${CFLAGS} -o testspeedsqli test_speed_sqli.c -L. ${STATICLIB}
 
 testspeedxss: test_speed_xss.c ${STATICLIB}
-	${CC} -o testspeedxss test_speed_xss.c -L. ${STATICLIB}
+	${CC} ${CFLAGS} -o testspeedxss test_speed_xss.c -L. ${STATICLIB}
+
+fptool: fptool.c ${STATICLIB}
+	${CC} ${CFLAGS} -o fptool fptool.c -L. ${STATICLIB}
 
 clean:
 	rm -f *.so *.a *.o *.dylib *.lo
 	rm -f *~
 	rm -f *.log
-	rm -f ${EXES}
+	rm -f ${SAMPLES} ${TESTDRIVERS}
+	rm -f *.gcno
+	rm -rf *.dSYM
