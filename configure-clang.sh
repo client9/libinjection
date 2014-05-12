@@ -11,7 +11,7 @@ set -e
 #  typed, it's good to have a default: assert(0) in case someone does
 #  a bad cast, etc also this conflicts with GCC checks.
 #
+make clean
 export CC=clang
 export CFLAGS="-g -ansi -fpic -O3 -Weverything -Wno-unused-macros -Wno-padded -Wno-covered-switch-default"
-./configure --with-pic
-make clean
+make check
