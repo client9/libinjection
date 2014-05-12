@@ -1,8 +1,5 @@
 #!/bin/bash
 clang --version
-
-./autogen.sh
-scan-build ./configure
 cd src
 scan-build --status-bugs \
     -enable-checker alpha.core.BoolAssignment \

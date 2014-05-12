@@ -2,9 +2,7 @@
 #
 # Code coverage from data only (not unit tests)
 #
-./autogen.sh
 ./configure-gcov.sh
-make
 cd src
 make reader
 rm -f libinjection.info

@@ -11,6 +11,6 @@ set -e
 #  typed, it's good to have a default: assert(0) in case someone does
 #  a bad cast, etc also this conflicts with GCC checks.
 #
-export CFLAGS="-g -O3 -pie -fPIE -fPIC -fstack-protector --param ssp-buffer-size=4 -Wall -Wextra -Wformat -Wformat-security -Werror -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wstack-protector -D_FORTIFY_SOURCE=2 -ansi -pedantic"
-./configure --with-pic
 make clean
+export CFLAGS="-g -O3 -pie -fPIE -fPIC -fstack-protector --param ssp-buffer-size=4 -Wall -Wextra -Wformat -Wformat-security -Werror -Wcast-align -Wshadow -Wpointer-arith -Wcast-qual -Wstack-protector -D_FORTIFY_SOURCE=2 -ansi -pedantic"
+make -e

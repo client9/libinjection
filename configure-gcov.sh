@@ -3,6 +3,9 @@ set -e
 #
 # gprof build
 #
-export CFLAGS="-g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra"
-./configure --with-pic
 make clean
+export CC=gcc
+export CFLAGS="-ansi -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra"
+make -e
+
+

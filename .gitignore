@@ -2,8 +2,6 @@
 *.pyc
 *.dSYM
 c/#*
-reader
-Makefile
 
 *.info
 
