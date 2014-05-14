@@ -16,7 +16,7 @@ STATICLIB=lib${LIBNAME}.${STATICLIB_SUFFIX}
 SHAREDLIB_SUFFIX=so
 SHAREDLIB=lib${LIBNAME}.${SHAREDLIB_SUFFIX}
 
-HEADERS=libinjection_sqli_data.h libinjection_html5.h libinjection_xss.h
+HEADERS=libinjection_sqli.h libinjection_sqli_data.h libinjection_html5.h libinjection_xss.h
 
 SOURCES=libinjection_sqli.c \
 	libinjection_html5.c \
