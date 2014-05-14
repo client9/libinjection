@@ -4,6 +4,11 @@ LD=ld
 CFLAGS=-Wall -Werror -ansi -g -O3
 AR=libtool -static
 
+INSTALL=install
+PREFIX=/usr/local
+INCLUDE_DIR=${PREFIX}/include
+LIB_DIR=${PREFIX}/lib
+
 LIBNAME=injection
 STATICLIB_SUFFIX=a
 STATICLIB=lib${LIBNAME}.${STATICLIB_SUFFIX}
@@ -82,6 +87,14 @@ testspeedxss: test_speed_xss.c ${STATICLIB}
 
 fptool: fptool.c ${STATICLIB}
 	${CC} ${CFLAGS} -o fptool fptool.c -L. ${STATICLIB}
+
+install: ${STATICLIB}
+	${INSTALL} -d ${INCLUDE_DIR}
+	${INSTALL} -c ${HEADERS} ${INCLUDE_DIR}
+	${INSTALL} -d ${LIB_DIR}
+	${INSTALL} -c ${STATICLIB} ${LIB_DIR}
+
+.PHONY: install
 
 clean:
 	rm -f *.so *.a *.o *.dylib *.lo
