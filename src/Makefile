@@ -1,9 +1,13 @@
 
+AR=ar r
 CC=cc
 LD=ld
+LDSHARED=ld -shared
 CFLAGS=-Wall -Werror -ansi -g -O3
+
+# MAC
 #AR=libtool -static
-AR=ar r
+
 INSTALL=install
 PREFIX=/usr/local
 INCLUDE_DIR=${PREFIX}/include
@@ -29,7 +33,8 @@ OBJECTS=libinjection_sqli.o \
 SAMPLES=html5 sqli fptool
 TESTDRIVERS=reader testdriver testspeedxss testspeedsqli
 
-all: ${SHAREDLIB} ${STATICLIB}
+#all: ${SHAREDLIB} ${STATICLIB}
+all: ${STATICLIB}
 
 samples: ${SAMPLES}
 .PHONY: samples
@@ -50,7 +55,7 @@ libinjection_html5.o: libinjection.h libinjection_html5.c libinjection_html5.h
 	${CC} ${CFLAGS} -c -o libinjection_html5.o libinjection_html5.c
 
 ${SHAREDLIB}: ${OBJECTS}
-	${LD} -dylib -o ${SHAREDLIB} ${OBJECTS} -lc
+	${LD} -shared -o ${SHAREDLIB} ${OBJECTS} -lc
 
 ${STATICLIB}: ${OBJECTS}
 	rm -f ${STATICLIB}
