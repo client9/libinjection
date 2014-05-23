@@ -2,8 +2,8 @@
 CC=cc
 LD=ld
 CFLAGS=-Wall -Werror -ansi -g -O3
-AR=libtool -static
-
+#AR=libtool -static
+AR="ar -cr"
 INSTALL=install
 PREFIX=/usr/local
 INCLUDE_DIR=${PREFIX}/include
