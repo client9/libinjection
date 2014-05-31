@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/client9/libinjection.svg?branch=master)](https://travis-ci.org/client9/libinjection)
+
 libinjection
 ============
 
