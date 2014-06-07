@@ -108,9 +108,9 @@ void print_html5_token(h5_state_t* hs)
     tmp[hs->token_len] = '\0';
 
     printf("%s,%d,%s\n",
-	   h5_type_to_string(hs->token_type),
-	   (int) hs->token_len,
-	   tmp);
+           h5_type_to_string(hs->token_type),
+           (int) hs->token_len,
+           tmp);
 
     free(tmp);
 }
@@ -132,14 +132,14 @@ int main(int argc, const char* argv[])
     while (offset < argc) {
       if (strcmp(argv[offset], "-u") == 0) {
             offset += 1;
-	    urldecode = 1;
-     
+            urldecode = 1;
+
       } else if (strcmp(argv[offset], "-f") == 0) {
             offset += 1;
             flag = atoi(argv[offset]);
             offset += 1;
       } else {
-	break;
+        break;
       }
     }
 
