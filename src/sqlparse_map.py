@@ -1300,11 +1300,11 @@ CHARMAP = [
     'CHAR_OP1',   # 37 %
     'CHAR_OP2',   # 38 &
     'CHAR_STR',   # 39 '
-    'CHAR_CHAR',  # 40 (
-    'CHAR_CHAR',  # 41 )
+    'CHAR_LEFTPARENS',  # 40 (
+    'CHAR_RIGHTPARENS',  # 41 )
     'CHAR_OP2',   # 42 *
     'CHAR_OP1',   # 43 +
-    'CHAR_CHAR',  # 44 ,
+    'CHAR_COMMA',  # 44 ,
     'CHAR_DASH',  # 45 -
     'CHAR_NUM',   # 46 .
     'CHAR_SLASH', # 47 /
@@ -1319,7 +1319,7 @@ CHARMAP = [
     'CHAR_NUM',   # 56 8
     'CHAR_NUM',   # 57 9
     'CHAR_OP2',   # 58 : colon
-    'CHAR_CHAR',  # 59 ; semiclon
+    'CHAR_SEMICOLON',  # 59 ; semiclon
     'CHAR_OP2',   # 60 <
     'CHAR_OP2',   # 61 =
     'CHAR_OP2',   # 62 >
@@ -1383,9 +1383,9 @@ CHARMAP = [
     'CHAR_XSTRING',         # 120 x
     'CHAR_WORD',            # 121 y
     'CHAR_WORD',            # 122 z
-    'CHAR_CHAR',            # 123 { left brace
+    'CHAR_LEFTBRACE',            # 123 { left brace
     'CHAR_OP2',             # 124 | pipe
-    'CHAR_CHAR',            # 125 } right brace
+    'CHAR_RIGHTBRACE',            # 125 } right brace
     'CHAR_OP1',             # 126 ~
     'CHAR_WHITE',            # 127
     'CHAR_WORD',
