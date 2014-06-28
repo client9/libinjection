@@ -7,5 +7,3 @@ E SELECT
 n [foo]
 k FROM
 n [bar]
-
-
