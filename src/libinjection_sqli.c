@@ -838,7 +838,7 @@ static size_t parse_bstring(struct libinjection_sqli_state *sf)
 
 /*
  * hex literal string
- * re: [XX]'[0123456789abcdefABCDEF]*'
+ * re: [xX]'[0123456789abcdefABCDEF]*'
  * mysql has requirement of having EVEN number of chars,
  *  but pgsql does not
  */
