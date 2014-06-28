@@ -1238,29 +1238,13 @@ int libinjection_sqli_tokenize(struct libinjection_sqli_state * sf)
         const unsigned char ch = (unsigned char) (s[*pos]);
 
         /*
-         * if not ascii, then continue...
-         *   actually probably need to just assuming
-         *   it's a string
+         * look up the parser, and call it
+         *
+         * Porting Note: this is mapping of char to function
+         *   charparsers[ch]()
          */
-        if (ch > 127) {
+        fnptr = char_parse_map[ch];
 
-            /* 160 or 0xA0 or octal 240 is "latin1 non-breaking space"
-             * but is treated as a space in mysql.
-             */
-            if (ch == 160) {
-                fnptr = parse_white;
-            } else {
-                fnptr = parse_word;
-            }
-        } else {
-            /*
-             * look up the parser, and call it
-             *
-             * Porting Note: this is mapping of char to function
-             *   charparsers[ch]()
-             */
-            fnptr = char_parse_map[ch];
-        }
         *pos = (*fnptr) (sf);
 
         /*

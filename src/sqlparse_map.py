@@ -1387,7 +1387,135 @@ CHARMAP = [
     'CHAR_OP2',             # 124 | pipe
     'CHAR_CHAR',            # 125 } right brace
     'CHAR_OP1',             # 126 ~
-    'CHAR_WHITE'            # 127
+    'CHAR_WHITE',            # 127
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', # 130
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #140
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #150
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WHITE', #160 0xA0 latin1 whitespace
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #170
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+		'CHAR_WORD',
+		'CHAR_WORD',
+    'CHAR_WORD', #180
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #190
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #200
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #210
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #220
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #230
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #240
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD', #250
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD',
+    'CHAR_WORD'
 ]
 
 import json
@@ -1407,7 +1535,6 @@ def dump():
     """
     generates a JSON file, sorted keys
     """
-
     objs = {
         'keywords': KEYWORDS,
         'charmap': CHARMAP,
@@ -1416,6 +1543,10 @@ def dump():
     return json.dumps(objs, sort_keys=True, indent=4)
 
 if __name__ == '__main__':
+    import sys
+    if len(CHARMAP) != 256:
+        sys.stderr.write("Assert failed: charmap is %d characters\n" % len(CHARMAP))
+        sys.exit(1)
     print dump()
 
 # pylint: disable=C0301,C0302
