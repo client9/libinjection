@@ -1100,7 +1100,6 @@ static size_t parse_number(struct libinjection_sqli_state * sf)
     const char *cs = sf->s;
     const size_t slen = sf->slen;
     size_t pos = sf->pos;
-    int have_dot = 0;
     int have_e = 0;
     int have_exp = 0;
 
@@ -1132,7 +1131,6 @@ static size_t parse_number(struct libinjection_sqli_state * sf)
     }
 
     if (pos < slen && cs[pos] == '.') {
-        have_dot = 1;
         pos += 1;
         while (pos < slen && ISDIGIT(cs[pos])) {
             pos += 1;
@@ -1181,7 +1179,7 @@ static size_t parse_number(struct libinjection_sqli_state * sf)
         }
     }
 
-    if (have_dot == 1 && have_e == 1 && have_exp == 0) {
+    if (have_e == 1 && have_exp == 0) {
         /* very special form of
          * "1234.e"
          * "10.10E"

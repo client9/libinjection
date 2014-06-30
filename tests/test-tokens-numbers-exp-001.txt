@@ -4,5 +4,5 @@ smoke
 SELECT 1E;
 --EXPECTED--
 E SELECT
-1 1E
+n 1E
 ; ;
