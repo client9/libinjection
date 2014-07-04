@@ -639,7 +639,7 @@ KEYWORDS = {
 'NATURAL'                     : 'n',
 'NETMASK'                     : 'f',
 'NEXTVAL'                     : 'f',
-'NOT'                         : 'o',
+'NOT'                         : 'o', # UNARY OPERATOR
 'NOTNULL'                     : 'k',
 'NOW'                         : 'f',
 # oracle http://www.shift-the-oracle.com/sql/select-for-update.html
@@ -1293,7 +1293,7 @@ CHARMAP = [
     'CHAR_WHITE', # 30
     'CHAR_WHITE', # 31
     'CHAR_WHITE', # 32
-    'CHAR_OP2',   # 33 !
+    'CHAR_BANG',  # 33 !
     'CHAR_STR',   # 34 "
     'CHAR_HASH',  # 35 "#"
     'CHAR_MONEY', # 36 $
@@ -1303,8 +1303,8 @@ CHARMAP = [
     'CHAR_LEFTPARENS',  # 40 (
     'CHAR_RIGHTPARENS',  # 41 )
     'CHAR_OP2',   # 42 *
-    'CHAR_OP1',   # 43 +
-    'CHAR_COMMA',  # 44 ,
+    'CHAR_UNARY', # 43 +
+    'CHAR_COMMA', # 44 ,
     'CHAR_DASH',  # 45 -
     'CHAR_NUM',   # 46 .
     'CHAR_SLASH', # 47 /
@@ -1386,7 +1386,7 @@ CHARMAP = [
     'CHAR_LEFTBRACE',            # 123 { left brace
     'CHAR_OP2',             # 124 | pipe
     'CHAR_RIGHTBRACE',            # 125 } right brace
-    'CHAR_OP1',             # 126 ~
+    'CHAR_UNARY',             # 126 ~
     'CHAR_WHITE',            # 127
     'CHAR_WORD',
     'CHAR_WORD',
