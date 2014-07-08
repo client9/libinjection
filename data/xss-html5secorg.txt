@@ -76,7 +76,7 @@ test 32 <table background="javascript:alert(1)"></table>
 
 test 33 <a style="pointer-events:none;position:absolute;"><a style="position:absolute;" onclick="alert(1);">XXX</a></a><a href="javascript:alert(2)">XXX</a>
 
-test 34 1<vmlframe xmlns=urn:schemas-microsoft-com:vml style=behavior:url(#default#vml);position:absolute;width:100%;height:100% src=test.vml#xss></vmlframe>
+test 34 1<vmlframe xmlns=urn:schemas-microsoft-com:vml style=behavior:url(#default#vml);position:absolute;width:100%25;height:100%25 src=test.vml#xss></vmlframe>
 
 test 35 1<a href=#><line xmlns=urn:schemas-microsoft-com:vml style=behavior:url(#default#vml);position:absolute href=javascript:alert(1) strokecolor=white strokeweight=1000px from=0 to=1000 /></a>
 
@@ -267,7 +267,7 @@ test 91_3 </ foo="><script>alert(1)</script>">
 # obsolete Opera 11
 #test 91_5 <! foo="[[[x]]"><x foo="]foo><script>alert(1)</script>">
 
-test 91_6 <% foo><x foo="%><script>alert(1)</script>">
+test 91_6 <%25 foo><x foo="%25><script>alert(1)</script>">
 
 test 92 <div style="background:url(http://foo.f/f oo/;color:red/*/foo.jpg);">X</div>
 
@@ -471,9 +471,9 @@ test 132_2 <svg height="50px"> <image xmlns:xlink="http://www.w3.org/1999/xlink"
 
 test 133 <!-- `<img/src=xx:xx onerror=alert(1)//--!>
 
-test 134_1 <xmp> <% </xmp> <img alt='%></xmp><img src=xx:x onerror=alert(1)//'>
+test 134_1 <xmp> <%25 </xmp> <img alt='%25></xmp><img src=xx:x onerror=alert(1)//'>
 
-test 134_2 <script> x='<%' </script> %>/ alert(2) </script>
+test 134_2 <script> x='<%25' </script> %25>/ alert(2) </script>
 
 test 134_3 XXX <style> *['<!--']{} </style> -->{} *{color:red}</style>
 
