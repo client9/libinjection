@@ -102,8 +102,16 @@ int libinjection_h5_next(h5_state_t* hs)
  *
  */
 
+
 static int h5_is_white(char ch)
 {
+    /*
+     * \t = htab = 0x09
+     * \n = newline = 0x0A
+     * \v = vtab = 0x0B
+     * \f = form feed = 0x0C
+     * \r = cr  = 0x0D
+     */
     return strchr(" \t\n\v\f\r", ch) != NULL;
 }
 
