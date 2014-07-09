@@ -1,4 +1,4 @@
-Files is this directory are sample input for SQLi or false positives
+Files in this directory are sample input for SQLi or false positives
 
 Lines that are empty or start with `#` ignored.  Otherwise they should
 be URL-encoded "user input" as might be found in query string.
