@@ -417,6 +417,10 @@ KEYWORDS = {
 'FILEGROUP_NAME'              : 'f',
 'FILEGROUPPROPERTY'           : 'f',
 'FILEPROPERTY'                : 'f',
+
+# http://www-01.ibm.com/support/knowledgecenter/#!/SSGU8G_11.50.0/com.ibm.sqls.doc/ids_sqs_1526.htm
+'FILETOBLOB'                  : 'f',
+'FILETOCLOB'                  : 'f',
 'FIND_IN_SET'                 : 'f',
 'FIRST_VALUE'                 : 'f',
 'FLOAT'                       : 't',
