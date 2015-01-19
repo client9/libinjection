@@ -8640,6 +8640,8 @@
         "FILEGROUP_NAME": "f", 
         "FILELEN": "f", 
         "FILEPROPERTY": "f", 
+        "FILETOBLOB": "f", 
+        "FILETOCLOB": "f", 
         "FILE_ID": "f", 
         "FILE_IDEX": "f", 
         "FILE_NAME": "f", 

@@ -8674,6 +8674,8 @@ static const keyword_t sql_keywords[] = {
     {"FILEGROUP_NAME", 'f'},
     {"FILELEN", 'f'},
     {"FILEPROPERTY", 'f'},
+    {"FILETOBLOB", 'f'},
+    {"FILETOCLOB", 'f'},
     {"FILE_ID", 'f'},
     {"FILE_IDEX", 'f'},
     {"FILE_NAME", 'f'},
@@ -9347,5 +9349,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9051;
+static const size_t sql_keywords_sz = 9053;
 #endif
