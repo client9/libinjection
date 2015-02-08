@@ -134,7 +134,6 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
         }
 
         len =  modp_url_decode(linebuf, linebuf, len);
-        issqli = 0;
         switch (mode) {
         case MODE_SQLI: {
             libinjection_sqli_init(&sf, linebuf, len, 0);
