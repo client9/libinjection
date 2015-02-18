@@ -416,3 +416,7 @@ x, @x, @x
 `
 1234`
 junk <a href="../">foo.com</a>
+
+
+# bogus
+1alert(1)
