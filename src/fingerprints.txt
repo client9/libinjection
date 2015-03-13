@@ -5656,7 +5656,6 @@ s;Tvc
 s;Tvf
 s;Tvk
 s;Tvo
-s;Tvt
 s;n:T
 sA(f(
 sA(n)
@@ -6697,7 +6696,6 @@ svos1
 svosU
 svosf
 svosv
-svs
 svs;
 svs;c
 svsc
