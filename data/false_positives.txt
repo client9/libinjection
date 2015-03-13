@@ -420,3 +420,5 @@ junk <a href="../">foo.com</a>
 
 # bogus
 1alert(1)
+
+foo 'null' bar

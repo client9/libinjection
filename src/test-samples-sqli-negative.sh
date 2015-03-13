@@ -3,4 +3,4 @@
 # XSS Sample Tests
 #
 set -e
-${VALGRIND} ./reader -i ../data/false_*.txt
+${VALGRIND} ./reader -m 21 ../data/false_*.txt
