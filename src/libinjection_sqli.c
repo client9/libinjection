@@ -1428,8 +1428,15 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                     sf->tokenvec[2].type == TYPE_COMMA &&
                     sf->tokenvec[3].type == TYPE_LEFTPARENS &&
                     sf->tokenvec[4].type == TYPE_NUMBER
+                    ) ||
+                (
+                    sf->tokenvec[0].type == TYPE_FUNCTION &&
+                    sf->tokenvec[1].type == TYPE_LEFTPARENS &&
+/*                    sf->tokenvec[2].type == TYPE_COMMA && */
+                    sf->tokenvec[3].type == TYPE_RIGHTPARENS &&
+                    sf->tokenvec[4].type == TYPE_COMMA
                     )
-                )
+                ) 
             {
                 if (pos > LIBINJECTION_SQLI_MAX_TOKENS) {
 		    st_copy(&(sf->tokenvec[1]), &(sf->tokenvec[LIBINJECTION_SQLI_MAX_TOKENS]));

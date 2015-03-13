@@ -422,3 +422,4 @@ junk <a href="../">foo.com</a>
 1alert(1)
 
 foo 'null' bar
+User(foo),junk
