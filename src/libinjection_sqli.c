@@ -1841,7 +1841,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
              * positives. 
              */
             if  (cstrcasecmp("USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0) {
-                sf->tokenvec[left].type = TYPE_NONE;
+                sf->tokenvec[left].type = TYPE_BAREWORD;
             }
         }
 
