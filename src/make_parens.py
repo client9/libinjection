@@ -207,7 +207,8 @@ class PermuteFingerprints(object):
             return False
         if 'nnk' in s:
             return False
-
+        if 'n1f' in s:
+            return False
         # folded away
         if s.startswith('('):
             return False

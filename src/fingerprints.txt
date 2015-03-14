@@ -2140,7 +2140,6 @@ Ekn,f
 Ekn1
 Ekn1;
 Ekn1c
-Ekn1f
 Ekn1k
 Ekn1o
 Ekn;(
@@ -3975,12 +3974,6 @@ n1UE
 n1UE;
 n1UEc
 n1UEk
-n1f()
-n1f(1
-n1f(f
-n1f(n
-n1f(s
-n1f(v
 n1o(1
 n1o(f
 n1o(n
@@ -6453,7 +6446,6 @@ son,(
 son,f
 son1(
 son1U
-son1f
 son1n
 son1o
 son1s
