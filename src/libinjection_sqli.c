@@ -1428,15 +1428,8 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                     sf->tokenvec[2].type == TYPE_COMMA &&
                     sf->tokenvec[3].type == TYPE_LEFTPARENS &&
                     sf->tokenvec[4].type == TYPE_NUMBER
-                    ) ||
-                (
-                    sf->tokenvec[0].type == TYPE_FUNCTION &&
-                    sf->tokenvec[1].type == TYPE_LEFTPARENS &&
-/*                    sf->tokenvec[2].type == TYPE_COMMA && */
-                    sf->tokenvec[3].type == TYPE_RIGHTPARENS &&
-                    sf->tokenvec[4].type == TYPE_COMMA
                     )
-                ) 
+                )
             {
                 if (pos > LIBINJECTION_SQLI_MAX_TOKENS) {
 		    st_copy(&(sf->tokenvec[1]), &(sf->tokenvec[LIBINJECTION_SQLI_MAX_TOKENS]));
@@ -1837,8 +1830,20 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
             pos -= 1;
             left = 0;
             continue;
+        } else if ((sf->tokenvec[left].type == TYPE_FUNCTION) &&
+                   (sf->tokenvec[left+1].type == TYPE_LEFTPARENS) &&
+                   (sf->tokenvec[left+2].type != TYPE_RIGHTPARENS)) {
+            /*
+             * whats going on here
+             * Some SQL functions like USER() have 0 args
+             * if we get User(foo), then User is not a function
+             * This should be expanded since it eliminated a lot of false
+             * positives. 
+             */
+            if  (cstrcasecmp("USER", sf->tokenvec[left].val, sf->tokenvec[left].len) == 0) {
+                sf->tokenvec[left].type = TYPE_NONE;
+            }
         }
-
 
         /* no folding -- assume left-most token is
            is good, now use the existing 2 tokens --
