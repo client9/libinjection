@@ -945,7 +945,8 @@ KEYWORDS = {
 
 # 'TABLE'
 # because SQLi really can't use 'TABLE'
-'TABLE'                       : 'k',
+#  change from keyword to none
+'TABLE'                       : 'n',
 'TAN'                         : 'f',
 'TERMINATED'                  : 'k',
 'TERTIARY_WEIGHTS'            : 'f',

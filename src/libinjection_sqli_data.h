@@ -9165,7 +9165,7 @@ static const keyword_t sql_keywords[] = {
     {"SYSTEM_USER", 'f'},
     {"SYSUSERS", 'k'},
     {"SYSUTCDATETME", 'f'},
-    {"TABLE", 'k'},
+    {"TABLE", 'n'},
     {"TAN", 'f'},
     {"TERMINATED", 'k'},
     {"TERTIARY_WEIGHTS", 'f'},
