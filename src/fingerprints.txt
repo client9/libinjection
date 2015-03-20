@@ -4507,7 +4507,6 @@ nf()o
 nf()s
 nf()v
 nf(1)
-nf(1n
 nf(1o
 nf(E(
 nf(E1
@@ -6374,9 +6373,7 @@ so1n,
 so1nE
 so1nU
 so1nf
-so1s(
 so1sU
-so1sf
 so1sv
 so1v(
 so1vU
@@ -6448,7 +6445,6 @@ son1(
 son1U
 son1n
 son1o
-son1s
 son1v
 son;
 son;E
