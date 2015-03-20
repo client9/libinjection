@@ -56,9 +56,12 @@ A '<' B
 '<'
 ' < '
 A' LIKE 'B
-A 'LIKE' B
-'LIKE'
-' LIKE '
+
+# common false positive
+#A 'LIKE' B
+#'LIKE'
+#' LIKE '
+
 A' - 'B
 A '-' B
 '-'
