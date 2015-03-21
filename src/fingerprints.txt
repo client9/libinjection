@@ -1936,8 +1936,8 @@ E1kvk
 E1kvo
 E1n)U
 E1n;
-E1n;c
 E1nc
+E1n;c
 E1nkn
 E1o(1
 E1o(E
@@ -2304,7 +2304,6 @@ En,(v
 En,f(
 En1;
 En1;c
-En1c
 En1o(
 En1of
 En1os
@@ -4516,7 +4515,6 @@ nf(En
 nf(Es
 nf(Ev
 nf(f(
-nf(n)
 nf(n,
 nf(no
 nf(s)

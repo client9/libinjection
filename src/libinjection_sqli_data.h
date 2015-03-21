@@ -2612,7 +2612,6 @@ static const keyword_t sql_keywords[] = {
     {"0EN,F(", 'F'},
     {"0EN1;", 'F'},
     {"0EN1;C", 'F'},
-    {"0EN1C", 'F'},
     {"0EN1O(", 'F'},
     {"0EN1OF", 'F'},
     {"0EN1OS", 'F'},
@@ -4366,7 +4365,6 @@ static const keyword_t sql_keywords[] = {
     {"0NF(ES", 'F'},
     {"0NF(EV", 'F'},
     {"0NF(F(", 'F'},
-    {"0NF(N)", 'F'},
     {"0NF(N,", 'F'},
     {"0NF(NO", 'F'},
     {"0NF(S)", 'F'},
@@ -9333,5 +9331,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9037;
+static const size_t sql_keywords_sz = 9035;
 #endif
