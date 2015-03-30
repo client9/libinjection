@@ -1428,6 +1428,13 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                     sf->tokenvec[2].type == TYPE_COMMA &&
                     sf->tokenvec[3].type == TYPE_LEFTPARENS &&
                     sf->tokenvec[4].type == TYPE_NUMBER
+                    ) ||
+                (
+                    sf->tokenvec[0].type == TYPE_BAREWORD &&
+                    sf->tokenvec[1].type == TYPE_RIGHTPARENS &&
+                    sf->tokenvec[2].type == TYPE_OPERATOR &&
+                    sf->tokenvec[3].type == TYPE_LEFTPARENS &&
+                    sf->tokenvec[4].type == TYPE_BAREWORD
                     )
                 )
             {
