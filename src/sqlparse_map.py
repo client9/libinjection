@@ -68,7 +68,6 @@ KEYWORDS = {
 'ABS'                         : 'f',
 'ACCESSIBLE'                  : 'k',
 'ACOS'                        : 'f',
-'ADD'                         : 'k',
 'ADDDATE'                     : 'f',
 'ADDTIME'                     : 'f',
 'AES_DECRYPT'                 : 'f',

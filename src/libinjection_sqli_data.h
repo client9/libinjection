@@ -8375,7 +8375,6 @@ static const keyword_t sql_keywords[] = {
     {"ABS", 'f'},
     {"ACCESSIBLE", 'k'},
     {"ACOS", 'f'},
-    {"ADD", 'k'},
     {"ADDDATE", 'f'},
     {"ADDTIME", 'f'},
     {"AES_DECRYPT", 'f'},
@@ -9330,5 +9329,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9034;
+static const size_t sql_keywords_sz = 9033;
 #endif
