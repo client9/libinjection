@@ -269,6 +269,9 @@ class PermuteFingerprints(object):
         if 'v(v' in s:
             return False
 
+        if s.startswith('n('):
+            return False
+
         if s.startswith('vs'):
             return False
 
