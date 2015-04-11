@@ -4020,7 +4020,6 @@ n;Tk(
 n;Tk1
 n;Tkf
 n;Tkk
-n;Tkn
 n;Tko
 n;Tks
 n;Tkv

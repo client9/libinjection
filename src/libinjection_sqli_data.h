@@ -4032,7 +4032,6 @@ static const keyword_t sql_keywords[] = {
     {"0N;TK1", 'F'},
     {"0N;TKF", 'F'},
     {"0N;TKK", 'F'},
-    {"0N;TKN", 'F'},
     {"0N;TKO", 'F'},
     {"0N;TKS", 'F'},
     {"0N;TKV", 'F'},
@@ -9287,5 +9286,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 8991;
+static const size_t sql_keywords_sz = 8990;
 #endif
