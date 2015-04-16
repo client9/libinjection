@@ -4674,10 +4674,6 @@ nof(n
 nof(s
 nof(v
 nok&(
-nok&1
-nok&f
-nok&s
-nok&v
 nok(1
 nok(f
 nok(n
