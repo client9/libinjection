@@ -33,7 +33,9 @@ class PermuteFingerprints(object):
             "nok&1",
             "nok&f",
             "nok&s",
-            "nok&v"
+            "nok&v",
+            "nk(n)",
+            "nknc",
             ])
         self.whitelist = set([
             'T(vv)', 'Tnvos', 'Tnv;', '1UEnn', '1;Tvk'
@@ -69,6 +71,8 @@ class PermuteFingerprints(object):
         if 't' in s and 'f(t' not in s and 'At' not in s:
             return False
 
+        if 'oo' in s:
+            return False
         if 'v,s' in s:
             return False
         if 's,v' in s:
