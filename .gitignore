@@ -2,8 +2,9 @@
 *.pyc
 *.dSYM
 c/#*
-
+*.plist
 *.info
+*.gch
 
 # gnu autotest
 *.trs
