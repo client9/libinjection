@@ -36,6 +36,7 @@ class PermuteFingerprints(object):
             "nok&v",
             "nk(n)",
             "nknc",
+            "son1n",
             ])
         self.whitelist = set([
             'T(vv)', 'Tnvos', 'Tnv;', '1UEnn', '1;Tvk'
