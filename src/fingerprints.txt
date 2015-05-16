@@ -341,7 +341,6 @@
 1&s1
 1&s1;
 1&s1c
-1&s1o
 1&s;
 1&s;E
 1&s;T
@@ -1801,7 +1800,6 @@ E(s)s
 E(s)v
 E(s,f
 E(s1)
-E(s1o
 E(sf(
 E(so(
 E(so1
@@ -2181,7 +2179,6 @@ Eks1;
 Eks1c
 Eks1f
 Eks1k
-Eks1o
 Eks;(
 EksB(
 EksB1
@@ -2433,10 +2430,6 @@ Es1
 Es1;
 Es1;c
 Es1c
-Es1o(
-Es1of
-Es1os
-Es1ov
 Es;(E
 EsB(1
 EsB(f
@@ -2712,7 +2705,6 @@ T(nso
 T(s)f
 T(s)o
 T(s1)
-T(s1o
 T(sf(
 T(sn)
 T(sno
@@ -3614,7 +3606,6 @@ n&s)o
 n&s1
 n&s1;
 n&s1c
-n&s1o
 n&s;
 n&s;E
 n&s;T
@@ -4709,7 +4700,6 @@ nos1(
 nos1U
 nos1f
 nos1n
-nos1o
 nos1s
 nos1v
 nos;
@@ -5137,7 +5127,6 @@ s&s)o
 s&s1
 s&s1;
 s&s1c
-s&s1o
 s&s;
 s&s;E
 s&s;T
@@ -5460,22 +5449,6 @@ s1f(n
 s1f(s
 s1f(v
 s1nc
-s1o(1
-s1o(f
-s1o(n
-s1o(s
-s1o(v
-s1of(
-s1os(
-s1os1
-s1osU
-s1osf
-s1osv
-s1ov(
-s1ovU
-s1ovf
-s1ovo
-s1ovs
 s1s;
 s1s;c
 s1sc
@@ -6454,7 +6427,6 @@ sos1(
 sos1U
 sos1f
 sos1n
-sos1o
 sos1s
 sos1v
 sos;
@@ -6809,7 +6781,6 @@ v&s)o
 v&s1
 v&s1;
 v&s1c
-v&s1o
 v&s;
 v&s;E
 v&s;T
@@ -7928,7 +7899,6 @@ vos1(
 vos1U
 vos1f
 vos1n
-vos1o
 vos1s
 vos1v
 vos;
