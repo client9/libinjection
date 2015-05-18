@@ -783,7 +783,6 @@
 1B(1)
 1B(1o
 1B(f(
-1B(n)
 1B(no
 1B(s)
 1B(so
@@ -4069,7 +4068,6 @@ nAvos
 nB(1)
 nB(1o
 nB(f(
-nB(n)
 nB(no
 nB(s)
 nB(so
@@ -5591,7 +5589,6 @@ sAvos
 sB(1)
 sB(1o
 sB(f(
-sB(n)
 sB(no
 sB(s)
 sB(so
@@ -7225,7 +7222,6 @@ vAvos
 vB(1)
 vB(1o
 vB(f(
-vB(n)
 vB(no
 vB(s)
 vB(so

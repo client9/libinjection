@@ -105,7 +105,8 @@ class PermuteFingerprints(object):
             return False
         if '(ov' in s:
             return False
-
+        if 'B(n)' in s:
+            return False
         if 'oso' in s:
             return False
         if 'o1o' in s:
