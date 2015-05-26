@@ -8264,7 +8264,7 @@ static const keyword_t sql_keywords[] = {
     {"CHAR_LENGTH", 'f'},
     {"CHDIR", 'f'},
     {"CHDRIVE", 'f'},
-    {"CHECK", 'k'},
+    {"CHECK", 'n'},
     {"CHECKSUM_AGG", 'f'},
     {"CHOOSE", 'f'},
     {"CHR", 'f'},

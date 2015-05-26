@@ -206,7 +206,10 @@ KEYWORDS = {
 'CHARINDEX'                   : 'f',
 'CHARSET'                     : 'f',
 'CHAR_LENGTH'                 : 'f',
-'CHECK'                       : 'k',
+
+# mysql keyword but not clear how used
+'CHECK'                       : 'n',
+
 'CHECKSUM_AGG'                : 'f',
 'CHOOSE'                      : 'f',
 'CHR'                         : 'f',
