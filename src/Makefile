@@ -39,6 +39,10 @@ all: ${STATICLIB}
 samples: ${SAMPLES}
 .PHONY: samples
 
+fingerprints.txt: make_parens.py
+	./make_parens.py < fingerprints.txt > fingerprints2.txt
+	mv fingerprints2.txt fingerprints.txt
+
 sqlparse_data.json: sqlparse_map.py fingerprints.txt
 	./sqlparse_map.py > sqlparse_data.json
 

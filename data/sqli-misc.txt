@@ -578,9 +578,9 @@ binary (binary 1) union select table_name from information_schema.tables
 
 #
 # Anonymous from  Research Institution of Telecom in Beijing, China
-#
-=1 union select admin,pass from admin limit 1
-=1 union select 1,2,3,4,5,6
+#  commenting out since i have no idea how this could be a true SQL injection
+#=1 union select admin,pass from admin limit 1
+#=1 union select 1,2,3,4,5,6
 
 # problems with type-casting, and nested type casting
 #

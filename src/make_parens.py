@@ -73,6 +73,8 @@ class PermuteFingerprints(object):
         if 't' in s and 'f(t' not in s and 'At' not in s:
             return False
 
+        if '1nf' in s:
+            return False
         if 's1o' in s:
             return False
         if 'oo' in s:
@@ -286,6 +288,9 @@ class PermuteFingerprints(object):
             return False
 
         if s.startswith('vs'):
+            return False
+
+        if s.startswith('o'):
             return False
 
         if ')(' in s:

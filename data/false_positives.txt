@@ -436,3 +436,5 @@ foobar sent you 1 message about
 4.7" & iPhone 6 Plus 5.5
 Family and friends having meal outdoors
 <table width="99%" border="0" cellpadding="1"'
+8-bit Limit (BRK)
+3rd space(s)
