@@ -702,7 +702,8 @@ KEYWORDS = {
 'ORDER'                       : 'n',
 'ORIGINAL_DB_NAME'            : 'f',
 'ORIGINAL_LOGIN'              : 'f',
-'OUT'                         : 'k',
+# is a mysql reserved word but not really used
+'OUT'                         : 'n',
 'OUTER'                       : 'n',
 'OUTFILE'                     : 'k',
 # unusual PGSQL operator that looks like a function

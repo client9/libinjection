@@ -8723,7 +8723,7 @@ static const keyword_t sql_keywords[] = {
     {"ORDER BY", 'B'},
     {"ORIGINAL_DB_NAME", 'f'},
     {"ORIGINAL_LOGIN", 'f'},
-    {"OUT", 'k'},
+    {"OUT", 'n'},
     {"OUTER", 'n'},
     {"OUTFILE", 'k'},
     {"OVERLAPS", 'f'},
