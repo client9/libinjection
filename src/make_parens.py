@@ -30,6 +30,7 @@ class PermuteFingerprints(object):
             's)on', '1;TnE', 's&1s', 'n)c', 'svs', '1n(1)',
             'so1s(', 'son1s', 'nf(1n', 'so1sf', 'son1s', 'nf(n)', 'En1c',
             'n)on', "nok&n", "n;Tkn",
+            "nEnc",
             "nok&1",
             "nok&f",
             "nok&s",
