@@ -5,8 +5,10 @@ libinjection module for python
  nickg@client9.com
  BSD License -- see COPYING.txt for details
 """
-
-from distutils.core import setup, Extension
+try:
+    from setuptools import setup, Extension
+except ImportError:
+    from distutils.core import setup, Extension
 
 MODULE = Extension(
     '_libinjection', [
