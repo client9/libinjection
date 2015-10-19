@@ -1,5 +1,5 @@
 
-AR=ar r
+AR=ar -r
 CC=cc
 LD=ld
 LDSHARED=ld -shared
@@ -63,7 +63,7 @@ ${SHAREDLIB}: ${OBJECTS}
 
 ${STATICLIB}: ${OBJECTS}
 	rm -f ${STATICLIB}
-	${AR} -o ${STATICLIB} ${OBJECTS}
+	${AR} ${STATICLIB} ${OBJECTS}
 
 check: ${TESTDRIVERS}
 	@./test-driver.sh test-unit.sh
