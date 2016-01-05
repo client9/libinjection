@@ -1,4 +1,4 @@
 language: c
-
+sudo: false
 script:
         - make -e check
