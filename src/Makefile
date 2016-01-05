@@ -6,7 +6,7 @@ LDSHARED=ld -shared
 CFLAGS=-Wall -Werror -ansi -g -O3
 
 # MAC
-#AR=libtool -static
+AR=libtool -static
 
 INSTALL=install
 PREFIX=/usr/local
@@ -106,7 +106,7 @@ install: ${STATICLIB}
 .PHONY: install
 
 clean:
-	rm -f *.so *.a *.o *.dylib *.lo
+	rm -f *.so *.a *.o *.dylib *.lo *.gch
 	rm -f *~
 	rm -f *.log
 	rm -f ${SAMPLES} ${TESTDRIVERS}
