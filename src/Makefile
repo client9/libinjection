@@ -1,12 +1,14 @@
 
 AR=ar -r
+# MAC
+# AR=libtool -static
+
 CC=cc
 LD=ld
 LDSHARED=ld -shared
 CFLAGS=-Wall -Werror -ansi -g -O3
 
-# MAC
-AR=libtool -static
+
 
 INSTALL=install
 PREFIX=/usr/local
