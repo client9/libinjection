@@ -118,7 +118,7 @@ void test_positive(FILE * fd, const char *fname, detect_mode_t mode,
                    int flag_invert, int flag_true, int flag_quiet)
 {
     char linebuf[8192];
-    int issqli;
+    int issqli = 0;
     int linenum = 0;
     size_t len;
     sfilter sf;
