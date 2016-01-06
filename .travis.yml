@@ -2,5 +2,8 @@ sudo: required
 dist: trusty
 
 language: c
+services:
+  - docker
+
 script:
         - make -e check
