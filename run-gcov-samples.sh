@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Code coverage from data only (not unit tests)
 #

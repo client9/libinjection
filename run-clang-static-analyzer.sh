@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 clang --version
 cd src
 scan-build --status-bugs \

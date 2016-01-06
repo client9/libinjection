@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 git status | grep -v '#'
 
 NUMBER=`grep LIBINJECTION_VERSION c/libinjection.h | head -1 | awk '{print $3}' | tr -d '"'`
