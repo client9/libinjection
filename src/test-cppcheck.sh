@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 CPPCHECK=cppcheck
 CPPCHECK_FLAGS=--quiet --enable=all --inconclusive --error-exitcode=2 \
