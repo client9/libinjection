@@ -1,7 +1,7 @@
 sudo: required
 dist: trusty
 
-language: c
+language: generic
 
 services:
   - docker
@@ -10,7 +10,5 @@ before_install:
   - docker pull nickg/libinjection-docker
 
 script:
-  - pwd
-  - ls -l
   - docker run -v $HOME/build:/build -w /build/client9/libinjection nickg/libinjection-docker ./make-ci.sh
 
