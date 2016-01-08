@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # this is the script that runs in CI
 
