@@ -10,4 +10,4 @@ before_install:
   - docker pull nickg/libinjection-docker
 
 script:
-  - docker run -d nickg/libinjection-docker make -e check
+  - docker run nickg/libinjection-docker make -e check
