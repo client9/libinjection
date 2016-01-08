@@ -12,5 +12,5 @@ before_install:
 script:
   - pwd
   - ls -l
-  - docker run -v $HOME/libinjection:/workspace -w /workspace nickg/libinjection-docker ls -l
+  - docker run -v $HOME/build:/build -w /build/client9/libinjection nickg/libinjection-docker ls -l
 
