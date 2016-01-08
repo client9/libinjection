@@ -2,8 +2,12 @@ sudo: required
 dist: trusty
 
 language: c
+
 services:
   - docker
 
+before_install:
+  - docker pull nickg/libinjection-docker
+
 script:
-        - make -e check
+  - docker run -d nickg/libinjection-docker make -e check
