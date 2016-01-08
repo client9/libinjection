@@ -10,5 +10,6 @@ before_install:
   - docker pull nickg/libinjection-docker
 
 script:
-  - docker run -v $HOME:/workspace -w /workspace nickg/libinjection-docker ls -l
+  - ls -l
+  - docker run -v $HOME/libinjection:/workspace -w /workspace nickg/libinjection-docker ls -l
 
