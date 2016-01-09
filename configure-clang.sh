@@ -14,4 +14,4 @@ set -e
 make clean
 export CC=clang
 export CFLAGS="-g -ansi -fpic -O3 -Weverything -Wno-unused-macros -Wno-padded -Wno-covered-switch-default"
-make check
+make -e check

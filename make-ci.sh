@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 # this is the script that runs in CI
 set -e
 
@@ -19,7 +19,8 @@ echo
 echo $DASH
 echo "CLANG STATIC ANALYZER"
 echo
-(cd src; make analyze)
+cd src
+make analyze
 
 echo
 echo "Done!"
