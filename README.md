@@ -16,9 +16,9 @@ for details and presentations.
 
 To use look at:
 
-* [sqli_cli.c](https://github.com/client9/libinjection/blob/master/src/sqli_cli.c)
-* [reader.c](https://github.com/client9/libinjection/blob/master/src/reader.c)
-* [fptool](https://github.com/client9/libinjection/blob/master/src/fptool.c)
+* [sqli_cli.c](/sqli_cli.c)
+* [reader.c](/src/reader.c)
+* [fptool](/fptool.c)
 
 as examples, but it's as simple as this:
 
@@ -57,7 +57,7 @@ sqli detected with fingerprint of 's&1UE'
 VERSION INFORMATION
 ===================
 
-See [CHANGELOG](/CHANGELOG.md) for details.
+See [CHANGELOG](/CHANGELOG) for details.
 
 Versions are listed as "major.minor.point"
 
@@ -101,8 +101,8 @@ The [src](https://github.com/client9/libinjection/tree/master/src)
 directory contains everything, but you only need to copy the following
 into your source tree:
 
-* [c/libinjection.h](https://github.com/client9/libinjection/blob/master/src/libinjection.h)
-* [c/libinjection_sqli.c](https://github.com/client9/libinjection/blob/master/src/libinjection_sqli.c)
-* [c/libinjection_sqli_data.h](https://github.com/client9/libinjection/blob/master/src/libinjection_sqli_data.h)
-* [COPYING.txt](https://github.com/client9/libinjection/blob/master/COPYING)
+* [c/libinjection.h](/src/libinjection.h)
+* [c/libinjection_sqli.c](/src/libinjection_sqli.c)
+* [c/libinjection_sqli_data.h](/src/libinjection_sqli_data.h)
+* [COPYING.txt](/COPYING)
 
