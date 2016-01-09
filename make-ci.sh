@@ -1,6 +1,6 @@
-#!/bin/sh
-
+#!/bin/sh 
 # this is the script that runs in CI
+set -e
 
 DASH=----------------------
 echo $DASH

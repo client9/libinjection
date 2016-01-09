@@ -106,12 +106,12 @@ install: ${STATICLIB}
 .PHONY: install
 
 clean:
-	rm -f *.so *.a *.o *.dylib *.lo *.gch
-	rm -f *~
-	rm -f *.log
-	rm -f ${SAMPLES} ${TESTDRIVERS}
-	rm -f *.gcno
-	rm -rf *.dSYM
+	@rm -f *.so *.a *.o *.dylib *.lo *.gch
+	@rm -f *~
+	@rm -f *.log
+	@rm -f ${SAMPLES} ${TESTDRIVERS}
+	@rm -f *.gcno
+	@rm -rf *.dSYM
 
 
 #---- CLANG STATIC ANALYZER
