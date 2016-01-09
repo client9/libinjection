@@ -6,7 +6,7 @@ AR=ar -r
 CC=cc
 LD=ld
 LDSHARED=ld -shared
-CFLAGS=-Wall -Werror -ansi -g -O3
+CFLAGS=-Wall -Wextra -Werror -pedantic -ansi -g -O3
 
 INSTALL=install
 PREFIX=/usr/local
