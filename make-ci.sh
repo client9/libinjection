@@ -27,14 +27,12 @@ echo $DASH
 cppcheck --version
 echo
 
-pwd
-ls -l
 cppcheck --std=c89 \
          --enable=all \
          --inconclusive \
          --suppress=variableScope \
          --quiet \
-         --error-exitcode=1
+         --error-exitcode=1 \
          --template='{file}:{line} {id} {severity} {message}' \
          .
 echo
