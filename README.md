@@ -14,8 +14,13 @@ See
 [https://libinjection.client9.com/](https://libinjection.client9.com/)
 for details and presentations.
 
-To use:
-look at [sqli_cli.c](https://github.com/client9/libinjection/blob/master/c/sqli_cli.c), [reader.c](https://github.com/client9/libinjection/blob/master/c/reader.c), and [fptool](https://github.com/client9/libinjection/blob/master/c/fptool.c)  as examples, but it's as simple as this:
+To use look at:
+
+* [sqli_cli.c](https://github.com/client9/libinjection/blob/master/src/sqli_cli.c)
+* [reader.c](https://github.com/client9/libinjection/blob/master/src/reader.c)
+* [fptool](https://github.com/client9/libinjection/blob/master/src/fptool.c)
+
+as examples, but it's as simple as this:
 
 ```c
 #include <stdio.h>
@@ -96,8 +101,8 @@ The [src](https://github.com/client9/libinjection/tree/master/src)
 directory contains everything, but you only need to copy the following
 into your source tree:
 
-* [c/libinjection.h](https://github.com/client9/libinjection/blob/master/c/libinjection.h)
-* [c/libinjection_sqli.c](https://github.com/client9/libinjection/blob/master/c/libinjection_sqli.c)
-* [c/libinjection_sqli_data.h](https://github.com/client9/libinjection/blob/master/c/libinjection_sqli_data.h)
+* [c/libinjection.h](https://github.com/client9/libinjection/blob/master/src/libinjection.h)
+* [c/libinjection_sqli.c](https://github.com/client9/libinjection/blob/master/src/libinjection_sqli.c)
+* [c/libinjection_sqli_data.h](https://github.com/client9/libinjection/blob/master/src/libinjection_sqli_data.h)
 * [COPYING.txt](https://github.com/client9/libinjection/blob/master/COPYING.txt)
 
