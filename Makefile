@@ -10,3 +10,6 @@ clean:
 
 .PHONY: all check clean
 
+
+docker-console:
+	docker run --rm -it -v $(PWD):/build -w /build nickg/libinjection-docker sh

@@ -8,8 +8,6 @@ LD=ld
 LDSHARED=ld -shared
 CFLAGS=-Wall -Werror -ansi -g -O3
 
-
-
 INSTALL=install
 PREFIX=/usr/local
 INCLUDE_DIR=${PREFIX}/include
@@ -114,3 +112,42 @@ clean:
 	rm -f ${SAMPLES} ${TESTDRIVERS}
 	rm -f *.gcno
 	rm -rf *.dSYM
+
+
+#---- CLANG STATIC ANALYZER
+#
+#
+#
+# We are not using scan-analyze since it depends on perl
+# Using clang directly produces text output which is fine for
+# automated testing.  Oddly -Werror doesn't work here, and
+# we have to test if any output occured or not.  This done by
+# piping output to a file and then checking what it contains.
+#
+# Open to better ideas here.
+#
+
+# ubuntu adds "-3.7" suffix
+CLANG_VERSION=
+
+analyze:
+	rm -f /tmp/libinjection-analyze.txt
+	clang${CLANG_VERSION} \
+	-I. --analyze \
+	-Xanalyzer -analyzer-checker=alpha.core.BoolAssignment \
+	-Xanalyzer -analyzer-checker=alpha.core.CastSize \
+	-Xanalyzer -analyzer-checker=alpha.core.FixedAddr \
+	-Xanalyzer -analyzer-checker=alpha.core.IdenticalExpr \
+	-Xanalyzer -analyzer-checker=alpha.core.PointerArithm \
+	-Xanalyzer -analyzer-checker=alpha.core.PointerSub \
+	-Xanalyzer -analyzer-checker=alpha.core.SizeofPtr \
+	-Xanalyzer -analyzer-checker=alpha.core.TestAfterDivZero \
+	-Xanalyzer -analyzer-checker=alpha.security.ArrayBoundV2 \
+	-Xanalyzer -analyzer-checker=alpha.security.MallocOverflow \
+	-Xanalyzer -analyzer-checker=alpha.security.ReturnPtrRange \
+	-Xanalyzer -analyzer-checker=alpha.unix.cstring.BufferOverlap \
+	-Xanalyzer -analyzer-checker=alpha.unix.cstring.OutOfBounds \
+	libinjection*.c 2>&1 | tee /tmp/libinjection-analyze.txt
+	test ! -s /tmp/libinjection-analyze.txt
+
+.PHONY: analyze

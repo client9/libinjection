@@ -3,7 +3,7 @@
 # this is the script that runs in CI
 
 DASH=----------------------
-echo "$DASH"
+echo $DASH
 gcc --version
 echo $DASH
 make -e check
@@ -15,6 +15,11 @@ clang --version
 echo $DASH
 ./configure-clang.sh
 
+echo
+echo $DASH
+echo "CLANG STATIC ANALYZER"
+echo
+(cd src; make analyze)
 
 echo
 echo "Done!"
