@@ -26,6 +26,9 @@ echo
 echo $DASH
 cppcheck --version
 echo
+
+pwd
+ls -l
 cppcheck --std=c89 \
          --enable=all \
          --inconclusive \
