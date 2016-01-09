@@ -11,7 +11,10 @@ set -e
 #  typed, it's good to have a default: assert(0) in case someone does
 #  a bad cast, etc also this conflicts with GCC checks.
 #
+# -Wdisabled-macro-expansion triggered on some linux libc headers involving
+#  stdout and stdin definitions
+#
 make clean
 export CC=clang
-export CFLAGS="-g -ansi -fpic -O3 -Weverything -Wno-unused-macros -Wno-padded -Wno-covered-switch-default -Werror"
+export CFLAGS="-g -ansi -fpic -O3 -Weverything -Wno-unused-macros -Wno-padded -Wno-covered-switch-default -Wno-disabled-macro-expansion -Werror"
 make -e check
