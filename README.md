@@ -88,14 +88,9 @@ At https://libinjection.client9.com/cicada/ is a integration server showing auto
 LICENSE
 =============
 
-Copyright (c) 2012,2013 Nick Galbreath
+Copyright (c) 2012-2016 Nick Galbreath
 
 Licensed under the standard BSD open source license.  See [COPYING.txt](/COPYING.txt) for details.
-
-Commercial and support licenses available.
-
-Send requests to nickg@client9.com
-
 
 EMBEDDING
 =============
