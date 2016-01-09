@@ -20,12 +20,14 @@ look at [sqli_cli.c](https://github.com/client9/libinjection/blob/master/c/sqli_
 ```c
 #include <stdio.h>
 #include <strings.h>
+#include <errno.h>
 #include "libinjection.h"
+#include "libinjection_sqli.h"
 
 int main(int argc, const char* argv[])
 {
-    sfilter state;
-    int issqli
+    struct libinjection_sqli_state state;
+    int issqli;
 
     const char* input = argv[1];
     size_t slen = strlen(input);
@@ -35,7 +37,7 @@ int main(int argc, const char* argv[])
     libinjection_sqli_init(&state, input, slen, FLAG_NONE);
     issqli = libinjection_is_sqli(&state);
     if (issqli) {
-        fprintf(sterr, "sqli detected with fingerprint of '%s'\n", state.pat);
+        fprintf(stderr, "sqli detected with fingerprint of '%s'\n", state.fingerprint);
     }
     return issqli;
 }
