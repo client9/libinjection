@@ -16,9 +16,9 @@ for details and presentations.
 
 To use look at:
 
-* [sqli_cli.c](/sqli_cli.c)
+* [sqli_cli.c](/src/sqli_cli.c)
 * [reader.c](/src/reader.c)
-* [fptool](/fptool.c)
+* [fptool](/src/fptool.c)
 
 as examples, but it's as simple as this:
 
