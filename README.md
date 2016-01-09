@@ -92,7 +92,7 @@ LICENSE
 
 Copyright (c) 2012-2016 Nick Galbreath
 
-Licensed under the standard BSD open source license.  See [COPYING.txt](/COPYING.txt) for details.
+Licensed under the standard BSD open source license.  See [COPYING](/COPYING) for details.
 
 EMBEDDING
 =============
@@ -104,5 +104,5 @@ into your source tree:
 * [c/libinjection.h](https://github.com/client9/libinjection/blob/master/src/libinjection.h)
 * [c/libinjection_sqli.c](https://github.com/client9/libinjection/blob/master/src/libinjection_sqli.c)
 * [c/libinjection_sqli_data.h](https://github.com/client9/libinjection/blob/master/src/libinjection_sqli_data.h)
-* [COPYING.txt](https://github.com/client9/libinjection/blob/master/COPYING.txt)
+* [COPYING.txt](https://github.com/client9/libinjection/blob/master/COPYING)
 
