@@ -77,9 +77,10 @@ QUALITY AND DIAGNOSITICS
 The continuous integration results at
 https://travis-ci.org/client9/libinjection tests the following:
 
-- [x] build and unit-tests under GCC latest
-- [x] build, unit-tests and static analysis using clang
-- [x] results from cppcheck (static analysis on C code)
+- [x] build and unit-tests under GCC
+- [x] build and unit-tests under Clang
+- [x] static analysis using [clang static analyzer](http://clang-analyzer.llvm.org)
+- [x] static analysis using [cppcheck](https://github.com/danmar/cppcheck)
 - [ ] results from pylint and pyflake (static analysis on python helper scripts)
 - [ ] results from valgrind (memory errors)
 - [ ] performance tests using gprof
@@ -101,8 +102,8 @@ The [src](https://github.com/client9/libinjection/tree/master/src)
 directory contains everything, but you only need to copy the following
 into your source tree:
 
-* [c/libinjection.h](/src/libinjection.h)
-* [c/libinjection_sqli.c](/src/libinjection_sqli.c)
-* [c/libinjection_sqli_data.h](/src/libinjection_sqli_data.h)
+* [src/libinjection.h](/src/libinjection.h)
+* [src/libinjection_sqli.c](/src/libinjection_sqli.c)
+* [src/libinjection_sqli_data.h](/src/libinjection_sqli_data.h)
 * [COPYING](/COPYING)
 
