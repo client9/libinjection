@@ -8,7 +8,7 @@ SQL / SQLI tokenizer parser analyzer. For
 * C and C++
 * [PHP](https://libinjection.client9.com/doc-sqli-php)
 * [Python](https://libinjection.client9.com/doc-sqli-python)
-* [Lua](https://github.com/client9/libinjection/tree/master/lua)
+* [Lua](/lua)
 
 See
 [https://libinjection.client9.com/](https://libinjection.client9.com/)
@@ -104,5 +104,5 @@ into your source tree:
 * [c/libinjection.h](/src/libinjection.h)
 * [c/libinjection_sqli.c](/src/libinjection_sqli.c)
 * [c/libinjection_sqli_data.h](/src/libinjection_sqli_data.h)
-* [COPYING.txt](/COPYING)
+* [COPYING](/COPYING)
 
