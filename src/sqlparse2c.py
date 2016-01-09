@@ -15,8 +15,8 @@ def toc(obj):
     """ main routine """
 
     print """
-#ifndef _LIBINJECTION_SQLI_DATA_H
-#define _LIBINJECTION_SQLI_DATA_H
+#ifndef LIBINJECTION_SQLI_DATA_H
+#define LIBINJECTION_SQLI_DATA_H
 
 #include "libinjection.h"
 #include "libinjection_sqli.h"

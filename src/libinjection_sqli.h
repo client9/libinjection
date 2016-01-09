@@ -1,5 +1,5 @@
 /**
- * Copyright 2012, 2013 Nick Galbreath
+ * Copyright 2012-2016 Nick Galbreath
  * nickg@client9.com
  * BSD License -- see COPYING.txt for details
  *
@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef _LIBINJECTION_SQLI_H
-#define _LIBINJECTION_SQLI_H
+#ifndef LIBINJECTION_SQLI_H
+#define LIBINJECTION_SQLI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -292,4 +292,4 @@ int libinjection_sqli_not_whitelist(struct libinjection_sqli_state * sql_state);
 }
 #endif
 
-#endif /* _LIBINJECTION_SQLI_H */
+#endif /* LIBINJECTION_SQLI_H */
