@@ -31,9 +31,12 @@ cppcheck --std=c89 \
          --enable=all \
          --inconclusive \
          --suppress=variableScope \
+         --suppress=missingIncludeSystem \
          --quiet \
          --error-exitcode=1 \
          --template='{file}:{line} {id} {severity} {message}' \
          .
+echo "passed"
+
 echo
 echo "Done!"
