@@ -23,4 +23,16 @@ cd src
 make analyze
 
 echo
+echo $DASH
+cppcheck --version
+echo
+cppcheck --std=c89 \
+         --enable=all \
+         --inconclusive \
+         --suppress=variableScope \
+         --quiet \
+         --error-exitcode=1
+         --template='{file}:{line} {id} {severity} {message}' \
+         .
+echo
 echo "Done!"
