@@ -69,21 +69,18 @@ Point releases are purely data changes.  These may be safely applied.
 QUALITY AND DIAGNOSITICS
 ========================
 
-Use the diagnostic test page at
+The continuous integration results at
+https://travis-ci.org/client9/libinjection tests the following:
 
-https://libinjection.client9.com/diagnostics
+- [x] build and unit-tests under GCC latest
+- [x] build, unit-tests and static analysis using clang
+- [x] results from cppcheck (static analysis on C code)
+- [ ] results from pylint and pyflake (static analysis on python helper scripts)
+- [ ] results from valgrind (memory errors)
+- [ ] performance tests using gprof
+- [ ] false negatives and positives reports
 
-For quick experiments, cracking and breaking, and other ad-hoc tests.
-
-At https://libinjection.client9.com/cicada/ is a integration server showing automated testing:
-
-* build and unit-tests under GCC latest
-* build, unit-tests and static analysis using clang
-* results from cppcheck (static analysis on C code)
-* results from pylint and pyflake (static analysis on python helper scripts)
-* results from valgrind (memory errors)
-* performance tests using gprof
-* false negatives and positives reports
+(missing checks coming soon)
 
 LICENSE
 =============
@@ -95,7 +92,8 @@ Licensed under the standard BSD open source license.  See [COPYING.txt](/COPYING
 EMBEDDING
 =============
 
-The 'c' directory contains everything, but you only need to copy the following
+The [src](https://github.com/client9/libinjection/tree/master/src)
+directory contains everything, but you only need to copy the following
 into your source tree:
 
 * [c/libinjection.h](https://github.com/client9/libinjection/blob/master/c/libinjection.h)
