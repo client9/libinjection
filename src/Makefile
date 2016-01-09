@@ -142,7 +142,7 @@ analyze:
 	-Xanalyzer -analyzer-checker=alpha.core.PointerSub \
 	-Xanalyzer -analyzer-checker=alpha.core.SizeofPtr \
 	-Xanalyzer -analyzer-checker=alpha.core.TestAfterDivZero \
-	-Xanalyzer -analyzer-checker=alpha.security.ArrayBoundV2 \
+	-Xanalyzer -analyzer-checker=alpha.security.ArrayBound \
 	-Xanalyzer -analyzer-checker=alpha.security.MallocOverflow \
 	-Xanalyzer -analyzer-checker=alpha.security.ReturnPtrRange \
 	-Xanalyzer -analyzer-checker=alpha.unix.cstring.BufferOverlap \
