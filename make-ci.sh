@@ -6,6 +6,7 @@ DASH=----------------------
 echo $DASH
 gcc --version
 echo $DASH
+make clean
 make -e check
 
 echo
