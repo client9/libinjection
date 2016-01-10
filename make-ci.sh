@@ -10,13 +10,6 @@ make clean
 make -e check
 echo
 
-echo $DASH
-echo "GCC + VALGRIND"
-export VALGRIND="libtool --mode=execute `which valgrind` --gen-suppressions=no --read-var-info=yes --error-exitcode=1 --track-origins=yes"
-make -e check
-export VALGRIND=
-echo
-
 echo
 echo $DASH
 clang --version
@@ -45,6 +38,16 @@ cppcheck --std=c89 \
          --template='{file}:{line} {id} {severity} {message}' \
          .
 echo "passed"
+
+echo $DASH
+echo "GCC + VALGRIND"
+make clean
+export CFLAGS=-Wall -Wextra -Werror -pedantic -ansi -g -O1
+export VALGRIND="valgrind --gen-suppressions=no --leak-check=full --show-leak-kinds=all --read-var-info=yes --error-exitcode=1 --track-origins=yes"
+make -e check
+unset VALGRIND
+unset CFLAGS
+echo
 
 echo
 echo "Done!"
