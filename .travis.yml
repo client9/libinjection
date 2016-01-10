@@ -10,5 +10,5 @@ before_install:
   - docker pull nickg/libinjection-docker
 
 script:
-  - docker run -v $HOME/build:/build -w /build/client9/libinjection nickg/libinjection-docker ./make-ci.sh
+  - docker run -v $HOME/build/client9/libinjection:/build -w /build ./make-ci.sh
 
