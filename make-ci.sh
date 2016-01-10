@@ -8,7 +8,37 @@ gcc --version
 echo $DASH
 make clean
 make -e check
+make clean
+
+#
+# Code coverage
+#
+export CC=gcc
+export CFLAGS="-ansi -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra"
+
+echo $DASH
+echo "Generating code coverage"
+echo "CFLAGS=$CFLAGS"
 echo
+make -e check
+if [ -n "$COVERALLS_REPO_TOKEN" ] ; then
+    echo "uploading to coveralls"
+    coveralls \
+        --gcov-options '\-lp' \
+        --exclude-pattern '.*h' \
+        --exclude src/reader.c \
+        --exclude src/example1.c \
+        --exclude src/fptool.c \
+        --exclude src/test_speed_sqli.c \
+        --exclude src/test_speed_xss.c \
+        --exclude src/testdriver.c \
+        --exclude src/html5_cli.c \
+        --exclude src/sqli_cli.c \
+        --exclude python
+fi
+echo
+unset CC
+unset CFLAGS
 
 echo
 echo $DASH

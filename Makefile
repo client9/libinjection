@@ -12,6 +12,17 @@ clean:
 
 
 docker-console:
-	docker run --rm -it -v $(PWD):/build -w /build nickg/libinjection-docker sh
+	docker run --rm -it \
+		-e COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN \
+		-v $(PWD):/build \
+		-w /build \
+		nickg/libinjection-docker \
+		sh
+
 docker-ci:
-	docker run --rm -v $(PWD):/build -w /build nickg/libinjection-docker ./make-ci.sh
+	docker run --rm \
+		-e COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN \
+		-v $(PWD):/build \
+		-w /build \
+		nickg/libinjection-docker \
+		./make-ci.sh
