@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/client9/libinjection.svg?branch=master)](https://travis-ci.org/client9/libinjection)
-
+[![Coverage Status](https://coveralls.io/repos/client9/libinjection/badge.svg?branch=master&service=github)](https://coveralls.io/github/client9/libinjection?branch=master)
 libinjection
 ============
 
