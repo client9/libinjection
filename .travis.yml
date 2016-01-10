@@ -10,5 +10,5 @@ before_install:
   - docker pull nickg/libinjection-docker
 
 script:
-  - docker run -v $HOME/build/client9/libinjection:/build -w /build nickg/libinjection-docker ./make-ci.sh
+  - docker run -e COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN -v $HOME/build/client9/libinjection:/build -w /build nickg/libinjection-docker ./make-ci.sh
 
