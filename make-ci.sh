@@ -42,7 +42,7 @@ echo "passed"
 echo $DASH
 echo "GCC + VALGRIND"
 make clean
-export CFLAGS=-Wall -Wextra -Werror -pedantic -ansi -g -O1
+export CFLAGS="-Wall -Wextra -Werror -pedantic -ansi -g -O1"
 export VALGRIND="valgrind --gen-suppressions=no --leak-check=full --show-leak-kinds=all --read-var-info=yes --error-exitcode=1 --track-origins=yes"
 make -e check
 unset VALGRIND
