@@ -5,6 +5,7 @@ c/#*
 *.plist
 *.info
 *.gch
+*.gcov
 
 # gnu autotest
 *.trs
