@@ -10,4 +10,6 @@ if [ "$aexit" -eq "0" ]; then
    echo "PASS: $TEST"
 else
    echo "FAIL: $TEST"
+   cat $LOG
+   exit 1
 fi
