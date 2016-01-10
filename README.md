@@ -81,12 +81,7 @@ https://travis-ci.org/client9/libinjection tests the following:
 - [x] build and unit-tests under Clang
 - [x] static analysis using [clang static analyzer](http://clang-analyzer.llvm.org)
 - [x] static analysis using [cppcheck](https://github.com/danmar/cppcheck)
-- [ ] results from pylint and pyflake (static analysis on python helper scripts)
-- [ ] results from valgrind (memory errors)
-- [ ] performance tests using gprof
-- [ ] false negatives and positives reports
-
-(missing checks coming soon)
+- [x] checks for memory errors using [valgrind](http://valgrind.org/)
 
 LICENSE
 =============
