@@ -14,13 +14,7 @@ See
 [https://libinjection.client9.com/](https://libinjection.client9.com/)
 for details and presentations.
 
-To use look at:
-
-* [sqli_cli.c](/src/sqli_cli.c)
-* [reader.c](/src/reader.c)
-* [fptool](/src/fptool.c)
-
-as examples, but it's as simple as this:
+Simple example:
 
 ```c
 #include <stdio.h>
@@ -54,6 +48,12 @@ $ ./a.out "-1' and 1=1 union/* foo */select load_file('/etc/passwd')--"
 sqli detected with fingerprint of 's&1UE'
 ```
 
+More advanced samples:
+
+* [sqli_cli.c](/src/sqli_cli.c)
+* [reader.c](/src/reader.c)
+* [fptool](/src/fptool.c)
+
 VERSION INFORMATION
 ===================
 
@@ -82,6 +82,7 @@ https://travis-ci.org/client9/libinjection tests the following:
 - [x] static analysis using [clang static analyzer](http://clang-analyzer.llvm.org)
 - [x] static analysis using [cppcheck](https://github.com/danmar/cppcheck)
 - [x] checks for memory errors using [valgrind](http://valgrind.org/)
+- [x] code coverage online using [coveralls.io](https://coveralls.io/github/client9/libinjection)
 
 LICENSE
 =============
