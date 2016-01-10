@@ -66,10 +66,10 @@ ${STATICLIB}: ${OBJECTS}
 	${AR} ${STATICLIB} ${OBJECTS}
 
 check: ${TESTDRIVERS}
-	@./test-driver.sh test-unit.sh
-	@./test-driver.sh test-samples-sqli-negative.sh
-	@./test-driver.sh test-samples-sqli-positive.sh
-	@./test-driver.sh test-samples-xss-positive.sh
+	./test-driver.sh test-unit.sh
+	./test-driver.sh test-samples-sqli-negative.sh
+	./test-driver.sh test-samples-sqli-positive.sh
+	./test-driver.sh test-samples-xss-positive.sh
 
 # remove speed checks for now
 #	@./test-driver.sh test-speed-xss.sh
