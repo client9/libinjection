@@ -8,8 +8,14 @@ gcc --version
 echo $DASH
 make clean
 make -e check
-
 echo
+
+echo $DASH
+echo "GCC + VALGRIND"
+export VALGRIND="libtool --mode=execute `which valgrind` --gen-suppressions=no --read-var-info=yes --error-exitcode=1 --track-origins=yes"
+make -e check
+echo
+
 echo
 echo $DASH
 clang --version
