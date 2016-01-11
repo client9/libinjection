@@ -90,7 +90,8 @@ LICENSE
 
 Copyright (c) 2012-2016 Nick Galbreath
 
-Licensed under the standard BSD open source license.  See [COPYING](/COPYING) for details.
+Licensed under the standard [BSD 3-Clause](http://opensource.org/licenses/BSD-3-Clause) open source
+license.  See [COPYING](/COPYING) for details.
 
 EMBEDDING
 =============
