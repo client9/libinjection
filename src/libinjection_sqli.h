@@ -1,7 +1,7 @@
 /**
  * Copyright 2012-2016 Nick Galbreath
  * nickg@client9.com
- * BSD License -- see COPYING.txt for details
+ * BSD License -- see `COPYING.txt` for details
  *
  * https://libinjection.client9.com/
  *
@@ -63,7 +63,7 @@ struct libinjection_sqli_token {
 typedef struct libinjection_sqli_token stoken_t;
 
 /**
- * Pointer to function, takes cstr input,
+ * Pointer to function, takes c-string input,
  *  returns '\0' for no match, else a char
  */
 struct libinjection_sqli_state;
@@ -97,7 +97,7 @@ struct libinjection_sqli_state {
     int flags;
 
     /*
-     * pos is index in string we are at when tokenizing
+     * pos is the index in the string during tokenization
      */
     size_t pos;
 
@@ -156,7 +156,7 @@ struct libinjection_sqli_state {
      */
     int stats_comment_c;
 
-    /* '#' operators or mysql EOL comments found
+    /* '#' operators or MySQL EOL comments found
      *
      */
     int stats_comment_hash;
@@ -208,8 +208,8 @@ void libinjection_sqli_init(struct libinjection_sqli_state* sql_state,
  */
 int libinjection_is_sqli(struct libinjection_sqli_state* sql_state);
 
-/*  FOR H@CKERS ONLY
- *
+/*  FOR HACKERS ONLY
+ *   provides deep hooks into the decision making process
  */
 void libinjection_sqli_callback(struct libinjection_sqli_state*  sql_state,
                                 ptr_lookup_fn fn,
@@ -269,7 +269,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sql_state);
  *  two functions.  With this, you over-ride one part or the other.
  *
  *     return libinjection_sqli_blacklist(sql_state) &&
- *        libinject_sqli_not_whitelist(sql_state);
+ *        libinjection_sqli_not_whitelist(sql_state);
  *
  * \param sql_state should be filled out after libinjection_sqli_fingerprint is called
  */
@@ -284,7 +284,7 @@ int libinjection_sqli_blacklist(struct libinjection_sqli_state* sql_state);
 /* Given a positive match for a pattern (i.e. pattern is SQLi), this function
  * does additional analysis to reduce false positives.
  *
- * \return TRUE if sqli, false otherwise
+ * \return TRUE if SQLi, false otherwise
  */
 int libinjection_sqli_not_whitelist(struct libinjection_sqli_state * sql_state);
 
