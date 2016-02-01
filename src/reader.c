@@ -224,7 +224,7 @@ int main(int argc, const char *argv[])
     int flag_quiet = FALSE;
 
     /*
-     * only print postive results
+     * only print positive results
      * with invert, only print negative results
      */
     int flag_true = FALSE;

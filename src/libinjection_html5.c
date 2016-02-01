@@ -106,9 +106,9 @@ int libinjection_h5_next(h5_state_t* hs)
 static int h5_is_white(char ch)
 {
     /*
-     * \t = htab = 0x09
+     * \t = horizontal tab = 0x09
      * \n = newline = 0x0A
-     * \v = vtab = 0x0B
+     * \v = vertical tab = 0x0B
      * \f = form feed = 0x0C
      * \r = cr  = 0x0D
      */
@@ -458,7 +458,7 @@ static int h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
     TRACE();
 
     /* skip initial quote in normal case.
-     * dont do this is pos == 0 since it means we have started
+     * don't do this "if (pos == 0)" since it means we have started
      * in a non-data state.  given an input of '><foo
      * we want to make 0-length attribute name
      */

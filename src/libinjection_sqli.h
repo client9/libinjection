@@ -53,7 +53,7 @@ struct libinjection_sqli_token {
 
     /*  count:
      *  in type 'v', used for number of opening '@'
-     *  but maybe unsed in other contexts
+     *  but maybe used in other contexts
      */
     int  count;
 
@@ -118,7 +118,7 @@ struct libinjection_sqli_state {
     /*
      * fingerprint pattern c-string
      * +1 for ending null
-     * Mimimum of 8 bytes to add gcc's -fstack-protector to work
+     * Minimum of 8 bytes to add gcc's -fstack-protector to work
      */
     char fingerprint[8];
 
