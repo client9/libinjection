@@ -262,7 +262,7 @@ int main(int argc, char** argv)
     int quiet = 0;
 
     const char* fname;
-    while (1) {
+    while (argc > offset) {
         if (strcmp(argv[offset], "-q") == 0 || strcmp(argv[offset], "--quiet") == 0) {
             quiet = 1;
             offset += 1;
