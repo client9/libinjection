@@ -6,7 +6,7 @@ AR=ar -r
 CC=cc
 LD=ld
 LDSHARED=ld -shared
-CFLAGS=-Wall -Wextra -Werror -pedantic -ansi -g -O3
+CFLAGS=-Wall -Wextra -Werror -pedantic -ansi -g -O3 -fPIC
 
 INSTALL=install
 PREFIX=/usr/local
@@ -33,8 +33,8 @@ OBJECTS=libinjection_sqli.o \
 SAMPLES=html5 sqli fptool
 TESTDRIVERS=reader testdriver testspeedxss testspeedsqli
 
-#all: ${SHAREDLIB} ${STATICLIB}
-all: ${STATICLIB}
+all: ${SHAREDLIB} ${STATICLIB}
+#all: ${STATICLIB}
 
 samples: ${SAMPLES}
 .PHONY: samples
