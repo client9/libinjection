@@ -10,6 +10,7 @@ SQL / SQLI tokenizer parser analyzer. For
 * [PHP](https://libinjection.client9.com/doc-sqli-php)
 * [Python](https://libinjection.client9.com/doc-sqli-python)
 * [Lua](/lua)
+* external [Java](https://github.com/jeonglee/Libinjection)
 
 See
 [https://libinjection.client9.com/](https://libinjection.client9.com/)
