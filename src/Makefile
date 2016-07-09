@@ -43,7 +43,12 @@ fingerprints.txt: make_parens.py
 	./make_parens.py < fingerprints.txt > fingerprints2.txt
 	mv fingerprints2.txt fingerprints.txt
 
-sqlparse_data.json: sqlparse_map.py fingerprints.txt
+fingerprints:
+	./make_parens.py < fingerprints.txt > fingerprints2.txt
+	mv fingerprints2.txt fingerprints.txt
+.PHONY: fingerprints
+
+sqlparse_data.json: sqlparse_map.py fingerprints
 	./sqlparse_map.py > sqlparse_data.json
 
 libinjection_sqli_data.h: sqlparse2c.py sqlparse_data.json
