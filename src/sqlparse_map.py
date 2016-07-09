@@ -1010,6 +1010,8 @@ KEYWORDS = {
 'TRUE'                        : '1',
 'TRUNC'                       : 'f',
 'TRUNCATE'                    : 'f',
+# sqlserver
+'TRY'                         : 'T',
 'TRY_CAST'                    : 'f',
 'TRY_CONVERT'                 : 'f',
 'TRY_PARSE'                   : 'f',
