@@ -282,7 +282,7 @@ class PermuteFingerprints(object):
             return False
         if 'v(n' in s:
             return False
-        if 'v(1' in s:
+        if 'v(1' in s and 'Tv(1' not in s:
             return False
         if 'v(v' in s:
             return False
