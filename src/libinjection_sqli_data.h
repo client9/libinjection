@@ -6243,7 +6243,18 @@ static const keyword_t sql_keywords[] = {
     {"0SOVUS", 'F'},
     {"0SOVUT", 'F'},
     {"0SOVUV", 'F'},
+    {"0STN;E", 'F'},
+    {"0STN;N", 'F'},
+    {"0STN;T", 'F'},
     {"0STNSC", 'F'},
+    {"0STTE(", 'F'},
+    {"0STTE1", 'F'},
+    {"0STTEF", 'F'},
+    {"0STTEN", 'F'},
+    {"0STTES", 'F'},
+    {"0STTEV", 'F'},
+    {"0STTTV", 'F'},
+    {"0STTV(", 'F'},
     {"0STV(1", 'F'},
     {"0SU(1)", 'F'},
     {"0SU(1O", 'F'},
@@ -8866,6 +8877,7 @@ static const keyword_t sql_keywords[] = {
     {"TRUE", '1'},
     {"TRUNC", 'f'},
     {"TRUNCATE", 'f'},
+    {"TRY", 'T'},
     {"TRY_CAST", 'f'},
     {"TRY_CONVERT", 'f'},
     {"TRY_PARSE", 'f'},
@@ -9002,5 +9014,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 8706;
+static const size_t sql_keywords_sz = 8718;
 #endif

