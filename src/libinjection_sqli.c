@@ -1327,16 +1327,22 @@ static int syntax_merge_words(struct libinjection_sqli_state * sf,stoken_t * a, 
          a->type == TYPE_UNION ||
          a->type == TYPE_FUNCTION ||
          a->type == TYPE_EXPRESSION ||
+         a->type == TYPE_TSQL ||
          a->type == TYPE_SQLTYPE)) {
-        return CHAR_NULL;
+        return FALSE;
     }
 
-    if (b->type != TYPE_KEYWORD  && b->type != TYPE_BAREWORD &&
-        b->type != TYPE_OPERATOR && b->type != TYPE_SQLTYPE &&
-        b->type != TYPE_LOGIC_OPERATOR &&
-        b->type != TYPE_FUNCTION &&
-        b->type != TYPE_UNION    && b->type != TYPE_EXPRESSION) {
-        return CHAR_NULL;
+    if (!
+        (b->type == TYPE_KEYWORD ||
+         b->type == TYPE_BAREWORD ||
+         b->type == TYPE_OPERATOR ||
+         b->type == TYPE_UNION ||
+         b->type == TYPE_FUNCTION ||
+         b->type == TYPE_EXPRESSION ||
+         b->type == TYPE_TSQL ||
+         b->type == TYPE_SQLTYPE ||
+         b->type == TYPE_LOGIC_OPERATOR)) {
+        return FALSE;
     }
 
     sz1 = a->len;
@@ -1352,7 +1358,6 @@ static int syntax_merge_words(struct libinjection_sqli_state * sf,stoken_t * a, 
     tmp[sz1] = ' ';
     memcpy(tmp + sz1 + 1, b->val, sz2);
     tmp[sz3] = CHAR_NULL;
-
     ch = sf->lookup(sf, LOOKUP_WORD, tmp, sz3);
 
     if (ch != CHAR_NULL) {

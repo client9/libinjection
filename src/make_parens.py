@@ -286,10 +286,10 @@ class PermuteFingerprints(object):
             return False
         if 'v(v' in s:
             return False
-
+        if 'TTT' in s:
+            return False
         if s.startswith('n('):
             return False
-
         if s.startswith('vs'):
             return False
 
