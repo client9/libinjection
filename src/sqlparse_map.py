@@ -122,6 +122,7 @@ KEYWORDS = {
 'BEGIN TRY'                   : 'T',
 'BEGIN TRY DECLARE'           : 'T',
 'BEGIN DECLARE'               : 'T',
+'BEGIN GOTO'                  : 'T',
 'BENCHMARK'                   : 'f',
 'BETWEEN'                     : 'o',
 'BIGINT'                      : 't',
