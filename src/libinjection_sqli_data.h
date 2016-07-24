@@ -8796,6 +8796,7 @@ static const keyword_t sql_keywords[] = {
     {"IS_USED_LOCK", 'f'},
     {"ITERATE", 'k'},
     {"JOIN", 'k'},
+    {"JSON_KEYS", 'f'},
     {"JULIANDAY", 'f'},
     {"JUSTIFY_DAYS", 'f'},
     {"JUSTIFY_HOURS", 'f'},
@@ -9338,5 +9339,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9042;
+static const size_t sql_keywords_sz = 9043;
 #endif

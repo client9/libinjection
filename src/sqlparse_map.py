@@ -566,6 +566,7 @@ KEYWORDS = {
 'IS_USED_LOCK'                : 'f',
 'ITERATE'                     : 'k',
 'JOIN'                        : 'k',
+'JSON_KEYS'                   : 'f',
 'JULIANDAY'                   : 'f',
 # pgsql
 'JUSTIFY_DAYS'                : 'f',

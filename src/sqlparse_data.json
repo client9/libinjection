@@ -8761,6 +8761,7 @@
         "IS_USED_LOCK": "f", 
         "ITERATE": "k", 
         "JOIN": "k", 
+        "JSON_KEYS": "f", 
         "JULIANDAY": "f", 
         "JUSTIFY_DAYS": "f", 
         "JUSTIFY_HOURS": "f", 
