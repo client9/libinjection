@@ -119,6 +119,7 @@ KEYWORDS = {
 'AVG'                         : 'f',
 'BEFORE'                      : 'k',
 'BEGIN'                       : 'T',
+'BEGIN GOTO':                 : 'T',
 'BEGIN TRY'                   : 'T',
 'BEGIN TRY DECLARE'           : 'T',
 'BEGIN DECLARE'               : 'T',
