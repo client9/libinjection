@@ -1100,7 +1100,11 @@
 1TnEn
 1TnEs
 1TnEv
+1TnT(
+1TnT1
+1TnTf
 1TnTn
+1TnTs
 1TnTv
 1Tnf(
 1Tnkn
@@ -4459,6 +4463,7 @@ nTEvo
 nTTnE
 nTTnT
 nTTnk
+nTTnn
 nTf()
 nTf(1
 nTf(f
@@ -4481,8 +4486,10 @@ nTnEn
 nTnEs
 nTnEv
 nTnTn
+nTnTv
 nTnf(
 nTnkn
+nTnn:
 nTnnc
 nTnno
 nTno(
@@ -7811,7 +7818,11 @@ vTnEf
 vTnEn
 vTnEs
 vTnEv
+vTnT(
+vTnT1
+vTnTf
 vTnTn
+vTnTs
 vTnTv
 vTnf(
 vTnkn
