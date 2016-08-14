@@ -424,7 +424,7 @@ test 119 <iframe src="view-source:http://www.example.org/" frameborder="0" style
 
 test 120 <a href="#" onclick="makePopups()">Spam</a>
 
-# originall for SVG masking
+# original for SVG masking
 # repurposing this as a generic "no SVG"
 test 121_1 <svg:svg>
 test 121_2 <svg>

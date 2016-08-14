@@ -425,7 +425,7 @@ foo 'null' bar
 User(foo),junk
 User(login_name),Images(url_170x135)
 mr and mrs table sign
-USPS 1-3 Day (USPS doesnt guarantee 3 day arrival)
+USPS 1-3 Day (USPS doesn't guarantee 3 day arrival)
 foo or bar add 1
 Apt is gated; call when you get here, and we'll come down to get it.
 DaVi - Open and Close Your Blinds With Your Phone!

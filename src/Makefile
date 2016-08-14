@@ -128,7 +128,7 @@ clean:
 # We are not using scan-analyze since it depends on perl
 # Using clang directly produces text output which is fine for
 # automated testing.  Oddly -Werror doesn't work here, and
-# we have to test if any output occured or not.  This done by
+# we have to test if any output occurred or not.  This done by
 # piping output to a file and then checking what it contains.
 #
 # Open to better ideas here.

@@ -36,8 +36,8 @@ Pregenerated [SWIG](http://www.swig.org/) bindings are removed.  You'll need to 
 Here's why:
 
 * Latest versions of swig appear to generate poor quality bindings for LUA and Python.  Bugs are filed upstream [1341](https://sourceforge.net/p/swig/bugs/1341/), [1343](https://sourceforge.net/p/swig/bugs/1343/), [1345](https://sourceforge.net/p/swig/bugs/1345/).  These are fixed or will be fixed in swig 3.0.0.
-* In addition, I've recieved a number of reports of generated code failing various static analysis
-* I can't triangulate which SWIG for which langauge for which OS will work for you
+* In addition, I've received a number of reports of generated code failing various static analysis
+* I can't triangulate which SWIG for which language for which OS will work for you
 * I may be switching to [libffi](http://cffi.readthedocs.org/) for python, and [luajit.ffi](http://luajit.org/ext_ffi.html) for lua(jit) in the future, anyways.
 
 # v3.7.1 -- 2013-10-13
@@ -149,7 +149,7 @@ Major Release
 
 # v3.0.0 2013-06-23
 
-Big Release and Big Engine change.  Highly recommened
+Big Release and Big Engine change.  Highly recommend
 
 * Numerous evasions and false positives fixed!
 * Tokenizer is now really dumb, and publically exposed.  See `libinjection_sqli_tokenize`.
@@ -169,7 +169,7 @@ Big Release and Big Engine change.  Highly recommened
 * new swig bindings for python and lua, with callbacks into original scripting
   language for accept/reject of fingerprints (i.e. manage fingerprints in
   script, not C code)
-* Imporved parsing of various special cases in MySQL
+* Improved parsing of various special cases in MySQL
 * Ban MySQL conditional comments.  If we find them, it's marked as SQLi immediately.
 * Probably a bunch of other stuff too
 
@@ -185,7 +185,7 @@ All users are advised to upgrade due to risk of DOS
 
 ## security
 * Add variations on '1U(((', thanks @LightOS
-* Add automatically all varations on other cases of
+* Add automatically all variations on other cases of
   'parens padding'
 
 # v2.0.2 2013-05-21

