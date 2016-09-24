@@ -5,7 +5,6 @@ AR=ar -r
 
 CC=cc
 LD=ld
-LDSHARED=ld -shared
 CFLAGS=-Wall -Wextra -Werror -pedantic -ansi -g -O3 -fPIC
 
 INSTALL=install
@@ -64,7 +63,7 @@ libinjection_html5.o: libinjection.h libinjection_html5.c libinjection_html5.h
 	${CC} ${CFLAGS} -c -o libinjection_html5.o libinjection_html5.c
 
 ${SHAREDLIB}: ${OBJECTS}
-	${LD} -shared -o ${SHAREDLIB} ${OBJECTS} -lc
+	$(CC) $+ -shared -lc -o $@
 
 ${STATICLIB}: ${OBJECTS}
 	rm -f ${STATICLIB}
