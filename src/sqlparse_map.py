@@ -587,7 +587,7 @@ KEYWORDS = {
 'LEADING'                     : 'k',
 'LEAST'                       : 'f',
 'LEAVE'                       : 'k',
-'LEFT'                        : 'n',
+'LEFT'                        : 'f',
 'LENGTH'                      : 'f',
 'LIKE'                        : 'o',
 'LIMIT'                       : 'B',

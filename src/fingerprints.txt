@@ -4485,7 +4485,11 @@ nTnEf
 nTnEn
 nTnEs
 nTnEv
+nTnT(
+nTnT1
+nTnTf
 nTnTn
+nTnTs
 nTnTv
 nTnf(
 nTnkn
