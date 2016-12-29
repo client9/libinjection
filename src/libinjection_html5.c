@@ -180,6 +180,9 @@ static int h5_state_tag_open(h5_state_t* hs)
     char ch;
 
     TRACE();
+    if (hs->pos >= hs->len) {
+        return 0;
+    }
     ch = hs->s[hs->pos];
     if (ch == CHAR_BANG) {
         hs->pos += 1;
