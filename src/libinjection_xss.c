@@ -210,6 +210,31 @@ static const char* BLACKTAG[] = {
     , NULL
 };
 
+static const char* BLACK_ON_ATTR[] = {
+    "ONABORT",
+    "ONBLUR",
+    "ONCHANGE",
+    "ONCLICK",
+    "ONDBLCLICK",
+    "ONERROR",
+    "ONFOCUS",
+    "ONKEYDOWN",
+    "ONKEYPRESS",
+    "ONKEYUP",
+    "ONLOAD",
+    "ONMOUSEDOWN",
+    "ONMOUSEMOVE",
+    "ONMOUSEOUT",
+    "ONMOUSEOVER",
+    "ONMOUSEUP",
+    "ONRESET",
+    "ONRESIZE",
+    "ONSELECT",
+    "ONSUBMIT",
+    "ONUNLOAD",
+    "ONTOUCH"
+};
+
 
 static int cstrcasecmp_with_null(const char *a, const char *b, size_t n)
 {
@@ -334,6 +359,7 @@ static int is_black_tag(const char* s, size_t len)
 
 static attribute_t is_black_attr(const char* s, size_t len)
 {
+    unsigned int i;
     stringtype_t* black;
 
     if (len < 2) {
@@ -342,8 +368,10 @@ static attribute_t is_black_attr(const char* s, size_t len)
 
     /* JavaScript on.* */
     if ((s[0] == 'o' || s[0] == 'O') && (s[1] == 'n' || s[1] == 'N')) {
+        for (i = 0; i < sizeof(BLACK_ON_ATTR)/sizeof(char*); ++i) {
+            if (cstrcasecmp_with_null(BLACK_ON_ATTR[i], s, strlen(BLACK_ON_ATTR[i])) == 0) return TYPE_BLACK;
+        }
         /* printf("Got JavaScript on- attribute name\n"); */
-        return TYPE_BLACK;
     }
 
 
