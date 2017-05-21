@@ -1,6 +1,6 @@
 # NEXT
 
-* #123 - oracle false negative
+* https://github.com/client9/libinjection/issues/126 - oracle false negative
 * #117 #116 - overread in XSS
 * #112 - fix shared library on macOS
 * #122 #115 - false positive issue for XSS
