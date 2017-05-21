@@ -86,6 +86,7 @@ reader: reader.c ${STATICLIB}
 	${CC} ${CFLAGS} -o reader reader.c -L. ${STATICLIB}
 
 sqli: sqli_cli.c ${STATICLIB}
+	rm -f sqli
 	${CC} ${CFLAGS} -o sqli sqli_cli.c -L. ${STATICLIB}
 
 html5: html5_cli.c ${STATICLIB}
