@@ -8871,6 +8871,7 @@ static const keyword_t sql_keywords[] = {
     {"DAY_SECOND", 'k'},
     {"DBMS_LOCK.SLEEP", 'f'},
     {"DBMS_PIPE.RECEIVE_MESSAGE", 'f'},
+    {"DBMS_UTILITY.SQLID_TO_SQLHASH", 'f'},
     {"DB_ID", 'f'},
     {"DB_NAME", 'f'},
     {"DCOUNT", 'f'},
@@ -9626,5 +9627,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9330;
+static const size_t sql_keywords_sz = 9331;
 #endif

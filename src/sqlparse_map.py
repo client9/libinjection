@@ -1124,6 +1124,7 @@ KEYWORDS = {
 'ZEROBLOB'                    : 'f',
 'ZEROFILL'                    : 'k',
 'DBMS_LOCK.SLEEP'             : 'f',
+'DBMS_UTILITY.SQLID_TO_SQLHASH': 'f',
 'USER_LOCK.SLEEP'             : 'f',
 
 #
