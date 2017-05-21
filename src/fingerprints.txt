@@ -581,6 +581,7 @@
 1)knB
 1)knE
 1)knU
+1)knc
 1)knk
 1)ks&
 1)ks;
@@ -3976,6 +3977,7 @@ n)kn;
 n)knB
 n)knE
 n)knU
+n)knc
 n)knk
 n)ks&
 n)ks;
@@ -5515,6 +5517,7 @@ s)kn;
 s)knB
 s)knE
 s)knU
+s)knc
 s)knk
 s)ks&
 s)ks;
@@ -7301,6 +7304,7 @@ v)kn;
 v)knB
 v)knE
 v)knU
+v)knc
 v)knk
 v)ks&
 v)ks;

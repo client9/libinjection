@@ -878,6 +878,7 @@ static const keyword_t sql_keywords[] = {
     {"01)KN&", 'F'},
     {"01)KN;", 'F'},
     {"01)KNB", 'F'},
+    {"01)KNC", 'F'},
     {"01)KNE", 'F'},
     {"01)KNK", 'F'},
     {"01)KNU", 'F'},
@@ -3970,6 +3971,7 @@ static const keyword_t sql_keywords[] = {
     {"0N)KN&", 'F'},
     {"0N)KN;", 'F'},
     {"0N)KNB", 'F'},
+    {"0N)KNC", 'F'},
     {"0N)KNE", 'F'},
     {"0N)KNK", 'F'},
     {"0N)KNU", 'F'},
@@ -5509,6 +5511,7 @@ static const keyword_t sql_keywords[] = {
     {"0S)KN&", 'F'},
     {"0S)KN;", 'F'},
     {"0S)KNB", 'F'},
+    {"0S)KNC", 'F'},
     {"0S)KNE", 'F'},
     {"0S)KNK", 'F'},
     {"0S)KNU", 'F'},
@@ -7597,6 +7600,7 @@ static const keyword_t sql_keywords[] = {
     {"0V)KN&", 'F'},
     {"0V)KN;", 'F'},
     {"0V)KNB", 'F'},
+    {"0V)KNC", 'F'},
     {"0V)KNE", 'F'},
     {"0V)KNK", 'F'},
     {"0V)KNU", 'F'},
@@ -9630,5 +9634,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9334;
+static const size_t sql_keywords_sz = 9338;
 #endif
