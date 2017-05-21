@@ -1,7 +1,10 @@
 # vNEXT
 
 * client9/libinjection#123 - oracle false negative
-* client9/libinjection#117 - overread in XSS
+* client9/libinjection#117 #116 - overread in XSS
+* client9/libinjection#112 - fix shared library on macOS
+* client9/libinjection#122 #115 - false positive issue for XSS
+* client9/libinjection#113 - save space in struct
 
 # v3.9.2 - 2016-05-21
 
