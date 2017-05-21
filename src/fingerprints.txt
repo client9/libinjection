@@ -4207,12 +4207,16 @@ nAvUE
 nAvo(
 nAvof
 nAvos
+nB(1&
 nB(1)
 nB(1o
 nB(f(
+nB(n&
 nB(no
+nB(s&
 nB(s)
 nB(so
+nB(v&
 nB(v)
 nB(vo
 nB1
