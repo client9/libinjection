@@ -137,6 +137,8 @@
 &vosU
 &vosf
 &vosv
+)&(Ek
+)&(En
 )UE(1
 )UE(f
 )UE(n
