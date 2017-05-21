@@ -1,0 +1,8 @@
+# https://github.com/client9/libinjection/issues/125 HT @d0znpp
+
+-sqlite_version() UNION SELECT password FROM users- --
+=)-sleep(9999
+=1337) INTO OUTFILE ‘xxx’--
+123);DROP TABLE users--
+) OR (SELECT password FROM users ...
+*/UNION SELECT password FROM users--
