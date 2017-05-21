@@ -698,6 +698,7 @@
 1;Evo
 1;T(1
 1;T(E
+1;T(c
 1;T(f
 1;T(n
 1;T(s
@@ -1801,6 +1802,8 @@
 1vson
 1vsos
 1vsov
+;T(Ef
+;T(Ek
 ;Tknc
 E(1&(
 E(1&1
@@ -4122,6 +4125,7 @@ n;Evk
 n;Evo
 n;T(1
 n;T(E
+n;T(c
 n;T(f
 n;T(n
 n;T(s
@@ -5661,6 +5665,7 @@ s;Evk
 s;Evo
 s;T(1
 s;T(E
+s;T(c
 s;T(f
 s;T(n
 s;T(s
@@ -7429,6 +7434,7 @@ v;Evk
 v;Evo
 v;T(1
 v;T(E
+v;T(c
 v;T(f
 v;T(n
 v;T(s

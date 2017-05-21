@@ -1496,16 +1496,6 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
             pos -= 1;
             sf->stats_folds += 1;
             continue;
-        } else if (sf->tokenvec[left].type == TYPE_SEMICOLON &&
-                   sf->tokenvec[left+1].type == TYPE_FUNCTION &&
-                   cstrcasecmp("IF", sf->tokenvec[left+1].val, sf->tokenvec[left+1].len) == 0) {
-            /* IF is normally a function, except in Transact-SQL where it can be used as a
-             * standalone control flow operator, e.g. ; IF 1=1 ...
-             * if found after a semicolon, convert from 'f' type to 'T' type
-             */
-            sf->tokenvec[left+1].type = TYPE_TSQL;
-            left += 2;
-            continue; /* reparse everything, but we probably can advance left, and pos */
         } else if ((sf->tokenvec[left].type == TYPE_OPERATOR ||
                     sf->tokenvec[left].type == TYPE_LOGIC_OPERATOR) &&
                    (st_is_unary_op(&sf->tokenvec[left+1]) ||
@@ -1529,6 +1519,19 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
                 left -= 1;
             }
             continue;
+        } else if (sf->tokenvec[left].type == TYPE_SEMICOLON &&
+                   sf->tokenvec[left+1].type == TYPE_FUNCTION &&
+		   (sf->tokenvec[left+1].val[0] == 'I' ||
+		    sf->tokenvec[left+1].val[0] == 'i' ) &&
+		   (sf->tokenvec[left+1].val[1] == 'F' ||
+                    sf->tokenvec[left+1].val[1] == 'f' )) {
+            /* IF is normally a function, except in Transact-SQL where it can be used as a
+             * standalone control flow operator, e.g. ; IF 1=1 ...
+             * if found after a semicolon, convert from 'f' type to 'T' type
+             */
+            sf->tokenvec[left+1].type = TYPE_TSQL;
+            /* left += 2; */
+            continue; /* reparse everything, but we probably can advance left, and pos */
         } else if ((sf->tokenvec[left].type == TYPE_BAREWORD || sf->tokenvec[left].type == TYPE_VARIABLE) &&
                    sf->tokenvec[left+1].type == TYPE_LEFTPARENS && (
                        /* TSQL functions but common enough to be column names */

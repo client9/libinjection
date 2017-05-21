@@ -6,8 +6,8 @@
 * client9/libinjection#122 #115 - false positive issue for XSS
 * client9/libinjection#113 - save space in struct
 * #126 - add usage to sqli cli tool
-* client9/libinjection#113 
 * #125 many false positives
+* #114 false negative with TSQL and "IF NOT" operation
 
 # v3.9.2 - 2016-05-21
 

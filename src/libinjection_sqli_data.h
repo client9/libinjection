@@ -1006,6 +1006,7 @@ static const keyword_t sql_keywords[] = {
     {"01;EVT", 'F'},
     {"01;N:T", 'F'},
     {"01;T(1", 'F'},
+    {"01;T(C", 'F'},
     {"01;T(E", 'F'},
     {"01;T(F", 'F'},
     {"01;T(N", 'F'},
@@ -2109,6 +2110,8 @@ static const keyword_t sql_keywords[] = {
     {"01VUE;", 'F'},
     {"01VUEC", 'F'},
     {"01VUEK", 'F'},
+    {"0;T(EF", 'F'},
+    {"0;T(EK", 'F'},
     {"0;TKNC", 'F'},
     {"0E(1&(", 'F'},
     {"0E(1&1", 'F'},
@@ -4127,6 +4130,7 @@ static const keyword_t sql_keywords[] = {
     {"0N;EVT", 'F'},
     {"0N;N:T", 'F'},
     {"0N;T(1", 'F'},
+    {"0N;T(C", 'F'},
     {"0N;T(E", 'F'},
     {"0N;T(F", 'F'},
     {"0N;T(N", 'F'},
@@ -5666,6 +5670,7 @@ static const keyword_t sql_keywords[] = {
     {"0S;EVT", 'F'},
     {"0S;N:T", 'F'},
     {"0S;T(1", 'F'},
+    {"0S;T(C", 'F'},
     {"0S;T(E", 'F'},
     {"0S;T(F", 'F'},
     {"0S;T(N", 'F'},
@@ -7736,6 +7741,7 @@ static const keyword_t sql_keywords[] = {
     {"0V;EVT", 'F'},
     {"0V;N:T", 'F'},
     {"0V;T(1", 'F'},
+    {"0V;T(C", 'F'},
     {"0V;T(E", 'F'},
     {"0V;T(F", 'F'},
     {"0V;T(N", 'F'},
@@ -9033,7 +9039,7 @@ static const keyword_t sql_keywords[] = {
     {"IDENT_SEED", 'f'},
     {"IF", 'f'},
     {"IF EXISTS", 'f'},
-    {"IF NOT", 'n'},
+    {"IF NOT", 'f'},
     {"IF NOT EXISTS", 'f'},
     {"IFF", 'f'},
     {"IFNULL", 'f'},
@@ -9642,5 +9648,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9346;
+static const size_t sql_keywords_sz = 9352;
 #endif
