@@ -10,7 +10,7 @@ in `src/libinjection_sqli.c` edit the definition
 #define LIBINJECTION_VERSION "3.9.1"
 ```
 
-## Update the changelog file
+## Update the CHANGELOG.md file
 
 There isn't much of specific format. It's not GNU changelog style.  Just make sure it looks good in markdown.
 
