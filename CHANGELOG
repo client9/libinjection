@@ -1,6 +1,7 @@
 # vNEXT
 
 * client9/libinjection#123 - oracle false negative
+* client9/libinjection#117 - overread in XSS
 
 # v3.9.2 - 2016-05-21
 
