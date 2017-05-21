@@ -1,5 +1,7 @@
 # vNEXT
 
+* client9/libinjection#123 - oracle false negative
+
 # v3.9.2 - 2016-05-21
 
 * Release of whatever changes have been made over the last 2.5 years.
