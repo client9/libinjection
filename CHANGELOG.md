@@ -1,13 +1,13 @@
 # NEXT
 
-* https://github.com/client9/libinjection/issues/126 - oracle false negative
-* #117 #116 - overread in XSS
-* #112 - fix shared library on macOS
-* #122 #115 - false positive issue for XSS
-* #113 - save space in struct
-* #126 - add usage to sqli cli tool
-* #125 many false positives
-* #114 false negative with TSQL and "IF NOT" operation
+* [#126](/client9/libinjection/issues/126) oracle false negative
+* [#117](/client9/libinjection/issues/117) [#116](/client9/libinjection/issues/116) - overread in XSS
+* [#112](/client9/libinjection/issues/112) fix shared library on macOS
+* [#122](/client9/libinjection/issues/122) [#115](/client9/libinjection/issues/115) - false positive issue for XSS
+* [#113](/client9/libinjection/issues/113) save space in struct
+* [#126](/client9/libinjection/issues/126) add usage to sqli cli tool
+* [#125](/client9/libinjection/issues/125) many false positives
+* [#114](/client9/libinjection/issues/114) false negative with TSQL and "IF NOT" operation
 
 # v3.9.2 - 2016-05-21
 
