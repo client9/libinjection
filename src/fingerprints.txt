@@ -279,6 +279,7 @@
 1&k(s
 1&k(v
 1&k1o
+1&kc
 1&kf(
 1&knk
 1&ko(
@@ -3689,6 +3690,7 @@ n&k(n
 n&k(s
 n&k(v
 n&k1o
+n&kc
 n&kf(
 n&knk
 n&ko(
@@ -5214,6 +5216,7 @@ s&k(n
 s&k(s
 s&k(v
 s&k1o
+s&kc
 s&kf(
 s&knk
 s&ko(
@@ -7001,6 +7004,7 @@ v&k(n
 v&k(s
 v&k(v
 v&k1o
+v&kc
 v&kf(
 v&knk
 v&ko(
