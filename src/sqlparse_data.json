@@ -9361,6 +9361,7 @@
         "SPLIT_PART": "f", 
         "SQL": "k", 
         "SQLEXCEPTION": "k", 
+        "SQLITE_VERSION": "f", 
         "SQLSTATE": "k", 
         "SQLWARNING": "k", 
         "SQL_BIG_RESULT": "k", 

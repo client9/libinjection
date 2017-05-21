@@ -900,6 +900,7 @@ KEYWORDS = {
 'SQL_NO_CACHE'                : 'k',
 'SQL_SMALL_RESULT'            : 'k',
 'SQL_VARIANT_PROPERTY'        : 'f',
+'SQLITE_VERSION'              : 'f',
 'SQRT'                        : 'f',
 'SSL'                         : 'k',
 'STARTING'                    : 'k',

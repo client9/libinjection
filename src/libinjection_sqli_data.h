@@ -9396,6 +9396,7 @@ static const keyword_t sql_keywords[] = {
     {"SPLIT_PART", 'f'},
     {"SQL", 'k'},
     {"SQLEXCEPTION", 'k'},
+    {"SQLITE_VERSION", 'f'},
     {"SQLSTATE", 'k'},
     {"SQLWARNING", 'k'},
     {"SQL_BIG_RESULT", 'k'},
@@ -9627,5 +9628,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9331;
+static const size_t sql_keywords_sz = 9332;
 #endif
