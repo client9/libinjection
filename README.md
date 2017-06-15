@@ -13,7 +13,7 @@ SQL / SQLI tokenizer parser analyzer. For
 * [Java](https://github.com/jeonglee/Libinjection) (external port)
 
 See
-[https://libinjection.client9.com/](https://libinjection.client9.com/)
+[https://www.client9.com/](https://www.client9.com/)
 for details and presentations.
 
 Simple example:
