@@ -1066,9 +1066,9 @@ static size_t parse_money(struct libinjection_sqli_state *sf)
             }
 
             /* we have $foobar$ ... find it again */
-            strend = my_memmem(cs+xlen+2, slen - (pos+xlen+2), cs + pos, xlen+2);
+            strend = my_memmem(cs+pos+xlen+2, slen - (pos+xlen+2), cs + pos, xlen+2);
 
-            if (strend == NULL || ((size_t)(strend - cs) < (pos+xlen+2))) {
+            if (strend == NULL) {
                 /* fell off edge */
                 st_assign(sf->current, TYPE_STRING, pos+xlen+2, slen - pos - xlen - 2, cs+pos+xlen+2);
                 sf->current->str_open = '$';
