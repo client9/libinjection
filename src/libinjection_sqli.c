@@ -177,7 +177,7 @@ strlencspn(const char *s, size_t len, const char *accept)
         /* likely we can do better by inlining this function
          * but this works for now
          */
-        if (strchr(accept, s[i]) != NULL) {
+        if (s[i]<32 || strchr(accept, s[i]) != NULL) {
             return i;
         }
     }
