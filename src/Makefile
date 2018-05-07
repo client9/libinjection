@@ -47,7 +47,7 @@ fingerprints:
 	mv fingerprints2.txt fingerprints.txt
 .PHONY: fingerprints
 
-sqlparse_data.json: sqlparse_map.py fingerprints
+sqlparse_data.json: sqlparse_map.py fingerprints.txt
 	./sqlparse_map.py > sqlparse_data.json
 
 libinjection_sqli_data.h: sqlparse2c.py sqlparse_data.json
