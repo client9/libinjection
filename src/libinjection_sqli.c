@@ -1484,7 +1484,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
          * "foo" "bar" is valid SQL
          * just ignore second string
          */
-        if (sf->tokenvec[left].type == TYPE_NUMBER && sf->tokenvec[left+1].type == TYPE_STRING) {
+        if (sf->tokenvec[left].type == TYPE_NUMBER && sf->tokenvec[left+1].type == TYPE_NUMBER) {
             pos -= 1;
             sf->stats_folds += 1;
             continue;
