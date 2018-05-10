@@ -358,8 +358,7 @@ static size_t parse_operator1(struct libinjection_sqli_state * sf)
 {
     const char *cs = sf->s;
     size_t pos = sf->pos;
-	if (cs[pos] == '+')
-		return pos + 1;
+
     st_assign_char(sf->current, TYPE_OPERATOR, pos, 1, cs[pos]);
     return pos + 1;
 }
@@ -1484,11 +1483,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
          * "foo" "bar" is valid SQL
          * just ignore second string
          */
-        if (sf->tokenvec[left].type == TYPE_NUMBER && sf->tokenvec[left+1].type == TYPE_NUMBER) {
-            pos -= 1;
-            sf->stats_folds += 1;
-            continue;
-        } else if (sf->tokenvec[left].type == TYPE_STRING && sf->tokenvec[left+1].type == TYPE_STRING) {
+        if (sf->tokenvec[left].type == TYPE_STRING && sf->tokenvec[left+1].type == TYPE_STRING) {
             pos -= 1;
             sf->stats_folds += 1;
             continue;
