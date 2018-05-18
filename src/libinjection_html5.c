@@ -1,7 +1,6 @@
 #include "libinjection_html5.h"
 
 #include <string.h>
-#include <assert.h>
 
 #ifdef DEBUG
 #include <stdio.h>
@@ -29,36 +28,36 @@
 /* prototypes */
 
 static int h5_skip_white(h5_state_t* hs);
-static int h5_is_white(char c);
-static int h5_state_eof(h5_state_t* hs);
-static int h5_state_data(h5_state_t* hs);
-static int h5_state_tag_open(h5_state_t* hs);
-static int h5_state_tag_name(h5_state_t* hs);
-static int h5_state_tag_name_close(h5_state_t* hs);
-static int h5_state_end_tag_open(h5_state_t* hs);
-static int h5_state_self_closing_start_tag(h5_state_t* hs);
-static int h5_state_attribute_name(h5_state_t* hs);
-static int h5_state_after_attribute_name(h5_state_t* hs);
-static int h5_state_before_attribute_name(h5_state_t* hs);
-static int h5_state_before_attribute_value(h5_state_t* hs);
-static int h5_state_attribute_value_double_quote(h5_state_t* hs);
-static int h5_state_attribute_value_single_quote(h5_state_t* hs);
-static int h5_state_attribute_value_back_quote(h5_state_t* hs);
-static int h5_state_attribute_value_no_quote(h5_state_t* hs);
-static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs);
-static int h5_state_comment(h5_state_t* hs);
-static int h5_state_cdata(h5_state_t* hs);
+static int h5_is_white(char ch);
+static tri_result_t h5_state_eof(h5_state_t* hs);
+static tri_result_t h5_state_data(h5_state_t* hs);
+static tri_result_t h5_state_tag_open(h5_state_t* hs);
+static tri_result_t h5_state_tag_name(h5_state_t* hs);
+static tri_result_t h5_state_tag_name_close(h5_state_t* hs);
+static tri_result_t h5_state_end_tag_open(h5_state_t* hs);
+static tri_result_t h5_state_self_closing_start_tag(h5_state_t* hs);
+static tri_result_t h5_state_attribute_name(h5_state_t* hs);
+static tri_result_t h5_state_after_attribute_name(h5_state_t* hs);
+static tri_result_t h5_state_before_attribute_name(h5_state_t* hs);
+static tri_result_t h5_state_before_attribute_value(h5_state_t* hs);
+static tri_result_t h5_state_attribute_value_double_quote(h5_state_t* hs);
+static tri_result_t h5_state_attribute_value_single_quote(h5_state_t* hs);
+static tri_result_t h5_state_attribute_value_back_quote(h5_state_t* hs);
+static tri_result_t h5_state_attribute_value_no_quote(h5_state_t* hs);
+static tri_result_t h5_state_after_attribute_value_quoted_state(h5_state_t* hs);
+static tri_result_t h5_state_comment(h5_state_t* hs);
+static tri_result_t h5_state_cdata(h5_state_t* hs);
 
 
 /* 12.2.4.44 */
-static int h5_state_bogus_comment(h5_state_t* hs);
-static int h5_state_bogus_comment2(h5_state_t* hs);
+static tri_result_t h5_state_bogus_comment(h5_state_t* hs);
+static tri_result_t h5_state_bogus_comment2(h5_state_t* hs);
 
 /* 12.2.4.45 */
-static int h5_state_markup_declaration_open(h5_state_t* hs);
+static tri_result_t h5_state_markup_declaration_open(h5_state_t* hs);
 
 /* 8.2.4.52 */
-static int h5_state_doctype(h5_state_t* hs);
+static tri_result_t h5_state_doctype(h5_state_t* hs);
 
 /**
  * public function
@@ -91,9 +90,11 @@ void libinjection_h5_init(h5_state_t* hs, const char* s, size_t len, enum html5_
 /**
  * public function
  */
-int libinjection_h5_next(h5_state_t* hs)
+tri_result_t libinjection_h5_next(h5_state_t* hs)
 {
-    assert(hs->state != NULL);
+    if (hs->state == NULL) {
+        return RESULT_ERROR;
+    }
     return (*hs->state)(hs);
 }
 
@@ -137,19 +138,22 @@ static int h5_skip_white(h5_state_t* hs)
     return CHAR_EOF;
 }
 
-static int h5_state_eof(h5_state_t* hs)
+static tri_result_t h5_state_eof(h5_state_t* hs)
 {
     /* eliminate unused function argument warning */
     (void)hs;
-    return 0;
+    return RESULT_FALSE;
 }
 
-static int h5_state_data(h5_state_t* hs)
+static tri_result_t h5_state_data(h5_state_t* hs)
 {
     const char* idx;
 
     TRACE();
-    assert(hs->len >= hs->pos);
+    if (hs->len < hs->pos) {
+        /* todo: log state */
+        return RESULT_ERROR;
+    }
     idx = (const char*) memchr(hs->s + hs->pos, CHAR_LT, hs->len - hs->pos);
     if (idx == NULL) {
         hs->token_start = hs->s + hs->pos;
@@ -157,7 +161,7 @@ static int h5_state_data(h5_state_t* hs)
         hs->token_type = DATA_TEXT;
         hs->state = h5_state_eof;
         if (hs->token_len == 0) {
-            return 0;
+            return RESULT_FALSE;
         }
     } else {
         hs->token_start = hs->s + hs->pos;
@@ -169,19 +173,19 @@ static int h5_state_data(h5_state_t* hs)
             return h5_state_tag_open(hs);
         }
     }
-    return 1;
+    return RESULT_TRUE;
 }
 
 /**
  * 12 2.4.8
  */
-static int h5_state_tag_open(h5_state_t* hs)
+static tri_result_t h5_state_tag_open(h5_state_t* hs)
 {
     char ch;
 
     TRACE();
     if (hs->pos >= hs->len) {
-        return 0;
+        return RESULT_FALSE;
     }
     ch = hs->s[hs->pos];
     if (ch == CHAR_BANG) {
@@ -213,20 +217,20 @@ static int h5_state_tag_open(h5_state_t* hs)
         hs->token_len = 1;
         hs->token_type = DATA_TEXT;
         hs->state = h5_state_data;
-        return 1;
+        return RESULT_TRUE;
     }
 }
 /**
  * 12.2.4.9
  */
-static int h5_state_end_tag_open(h5_state_t* hs)
+static tri_result_t h5_state_end_tag_open(h5_state_t* hs)
 {
     char ch;
 
     TRACE();
 
     if (hs->pos >= hs->len) {
-        return 0;
+        return RESULT_FALSE;
     }
     ch = hs->s[hs->pos];
     if (ch == CHAR_GT) {
@@ -241,7 +245,7 @@ static int h5_state_end_tag_open(h5_state_t* hs)
 /*
  *
  */
-static int h5_state_tag_name_close(h5_state_t* hs)
+static tri_result_t h5_state_tag_name_close(h5_state_t* hs)
 {
     TRACE();
     hs->is_close = 0;
@@ -255,13 +259,13 @@ static int h5_state_tag_name_close(h5_state_t* hs)
         hs->state = h5_state_eof;
     }
 
-    return 1;
+    return RESULT_TRUE;
 }
 
 /**
  * 12.2.4.10
  */
-static int h5_state_tag_name(h5_state_t* hs)
+static tri_result_t h5_state_tag_name(h5_state_t* hs)
 {
     char ch;
     size_t pos;
@@ -281,14 +285,14 @@ static int h5_state_tag_name(h5_state_t* hs)
             hs->token_type = TAG_NAME_OPEN;
             hs->pos = pos + 1;
             hs->state = h5_state_before_attribute_name;
-            return 1;
+            return RESULT_TRUE;
         } else if (ch == CHAR_SLASH) {
             hs->token_start = hs->s + hs->pos;
             hs->token_len = pos - hs->pos;
             hs->token_type = TAG_NAME_OPEN;
             hs->pos = pos + 1;
             hs->state = h5_state_self_closing_start_tag;
-            return 1;
+            return RESULT_TRUE;
         } else if (ch == CHAR_GT) {
             hs->token_start = hs->s + hs->pos;
             hs->token_len = pos - hs->pos;
@@ -302,7 +306,7 @@ static int h5_state_tag_name(h5_state_t* hs)
                 hs->token_type = TAG_NAME_OPEN;
                 hs->state = h5_state_tag_name_close;
             }
-            return 1;
+            return RESULT_TRUE;
         } else {
             pos += 1;
         }
@@ -312,13 +316,13 @@ static int h5_state_tag_name(h5_state_t* hs)
     hs->token_len = hs->len - hs->pos;
     hs->token_type = TAG_NAME_OPEN;
     hs->state = h5_state_eof;
-    return 1;
+    return RESULT_TRUE;
 }
 
 /**
  * 12.2.4.34
  */
-static int h5_state_before_attribute_name(h5_state_t* hs)
+static tri_result_t h5_state_before_attribute_name(h5_state_t* hs)
 {
     int ch;
 
@@ -326,7 +330,7 @@ static int h5_state_before_attribute_name(h5_state_t* hs)
     ch = h5_skip_white(hs);
     switch (ch) {
     case CHAR_EOF: {
-        return 0;
+        return RESULT_FALSE;
     }
     case CHAR_SLASH: {
         hs->pos += 1;
@@ -338,7 +342,7 @@ static int h5_state_before_attribute_name(h5_state_t* hs)
         hs->token_len = 1;
         hs->token_type = TAG_NAME_CLOSE;
         hs->pos += 1;
-        return 1;
+        return RESULT_TRUE;
     }
     default: {
         return h5_state_attribute_name(hs);
@@ -346,7 +350,7 @@ static int h5_state_before_attribute_name(h5_state_t* hs)
     }
 }
 
-static int h5_state_attribute_name(h5_state_t* hs)
+static tri_result_t h5_state_attribute_name(h5_state_t* hs)
 {
     char ch;
     size_t pos;
@@ -361,28 +365,28 @@ static int h5_state_attribute_name(h5_state_t* hs)
             hs->token_type  = ATTR_NAME;
             hs->state = h5_state_after_attribute_name;
             hs->pos = pos + 1;
-            return 1;
+            return RESULT_TRUE;
         } else if (ch == CHAR_SLASH) {
             hs->token_start = hs->s + hs->pos;
             hs->token_len   = pos - hs->pos;
             hs->token_type  = ATTR_NAME;
             hs->state = h5_state_self_closing_start_tag;
             hs->pos = pos + 1;
-            return 1;
+            return RESULT_TRUE;
         } else if (ch == CHAR_EQUALS) {
             hs->token_start = hs->s + hs->pos;
             hs->token_len   = pos - hs->pos;
             hs->token_type  = ATTR_NAME;
             hs->state = h5_state_before_attribute_value;
             hs->pos = pos + 1;
-            return 1;
+            return RESULT_TRUE;
         } else if (ch == CHAR_GT) {
             hs->token_start = hs->s + hs->pos;
             hs->token_len   = pos - hs->pos;
             hs->token_type  = ATTR_NAME;
             hs->state = h5_state_tag_name_close;
             hs->pos = pos;
-            return 1;
+            return RESULT_TRUE;
         } else {
             pos += 1;
         }
@@ -393,13 +397,13 @@ static int h5_state_attribute_name(h5_state_t* hs)
     hs->token_type  = ATTR_NAME;
     hs->state = h5_state_eof;
     hs->pos = hs->len;
-    return 1;
+    return RESULT_TRUE;
 }
 
 /**
  * 12.2.4.36
  */
-static int h5_state_after_attribute_name(h5_state_t* hs)
+static tri_result_t h5_state_after_attribute_name(h5_state_t* hs)
 {
     int c;
 
@@ -407,7 +411,7 @@ static int h5_state_after_attribute_name(h5_state_t* hs)
     c = h5_skip_white(hs);
     switch (c) {
     case CHAR_EOF: {
-        return 0;
+        return RESULT_FALSE;
     }
     case CHAR_SLASH: {
         hs->pos += 1;
@@ -429,7 +433,7 @@ static int h5_state_after_attribute_name(h5_state_t* hs)
 /**
  * 12.2.4.37
  */
-static int h5_state_before_attribute_value(h5_state_t* hs)
+static tri_result_t h5_state_before_attribute_value(h5_state_t* hs)
 {
     int c;
     TRACE();
@@ -438,7 +442,7 @@ static int h5_state_before_attribute_value(h5_state_t* hs)
 
     if (c == CHAR_EOF) {
         hs->state = h5_state_eof;
-        return 0;
+        return RESULT_FALSE;
     }
 
     if (c == CHAR_DOUBLE) {
@@ -454,7 +458,7 @@ static int h5_state_before_attribute_value(h5_state_t* hs)
 }
 
 
-static int h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
+static tri_result_t h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
 {
     const char* idx;
 
@@ -483,31 +487,31 @@ static int h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
         hs->state = h5_state_after_attribute_value_quoted_state;
         hs->pos += hs->token_len + 1;
     }
-    return 1;
+    return RESULT_TRUE;
 }
 
 static
-int h5_state_attribute_value_double_quote(h5_state_t* hs)
+tri_result_t h5_state_attribute_value_double_quote(h5_state_t* hs)
 {
     TRACE();
     return h5_state_attribute_value_quote(hs, CHAR_DOUBLE);
 }
 
 static
-int h5_state_attribute_value_single_quote(h5_state_t* hs)
+tri_result_t h5_state_attribute_value_single_quote(h5_state_t* hs)
 {
     TRACE();
     return h5_state_attribute_value_quote(hs, CHAR_SINGLE);
 }
 
 static
-int h5_state_attribute_value_back_quote(h5_state_t* hs)
+tri_result_t h5_state_attribute_value_back_quote(h5_state_t* hs)
 {
     TRACE();
     return h5_state_attribute_value_quote(hs, CHAR_TICK);
 }
 
-static int h5_state_attribute_value_no_quote(h5_state_t* hs)
+static tri_result_t h5_state_attribute_value_no_quote(h5_state_t* hs)
 {
     char ch;
     size_t pos;
@@ -522,14 +526,14 @@ static int h5_state_attribute_value_no_quote(h5_state_t* hs)
             hs->token_len = pos - hs->pos;
             hs->pos = pos + 1;
             hs->state = h5_state_before_attribute_name;
-            return 1;
+            return RESULT_TRUE;
         } else if (ch == CHAR_GT) {
             hs->token_type = ATTR_VALUE;
             hs->token_start = hs->s + hs->pos;
             hs->token_len = pos - hs->pos;
             hs->pos = pos;
             hs->state = h5_state_tag_name_close;
-            return 1;
+            return RESULT_TRUE;
         }
         pos += 1;
     }
@@ -539,19 +543,19 @@ static int h5_state_attribute_value_no_quote(h5_state_t* hs)
     hs->token_start = hs->s + hs->pos;
     hs->token_len = hs->len - hs->pos;
     hs->token_type = ATTR_VALUE;
-    return 1;
+    return RESULT_TRUE;
 }
 
 /**
  * 12.2.4.41
  */
-static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
+static tri_result_t h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
 {
     char ch;
 
     TRACE();
     if (hs->pos >= hs->len) {
-        return 0;
+        return RESULT_FALSE;
     }
     ch = hs->s[hs->pos];
     if (h5_is_white(ch)) {
@@ -566,7 +570,7 @@ static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
         hs->token_type = TAG_NAME_CLOSE;
         hs->pos += 1;
         hs->state = h5_state_data;
-        return 1;
+        return RESULT_TRUE;
     } else {
         return h5_state_before_attribute_name(hs);
     }
@@ -575,23 +579,25 @@ static int h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
 /**
  * 12.2.4.43
  */
-static int h5_state_self_closing_start_tag(h5_state_t* hs)
+static tri_result_t h5_state_self_closing_start_tag(h5_state_t* hs)
 {
     char ch;
 
     TRACE();
     if (hs->pos >= hs->len) {
-        return 0;
+        return RESULT_FALSE;
     }
     ch = hs->s[hs->pos];
     if (ch == CHAR_GT) {
-        assert(hs->pos > 0);
+        if (hs->pos <= 0) {
+            return RESULT_ERROR;
+        }
         hs->token_start = hs->s + hs->pos -1;
         hs->token_len = 2;
         hs->token_type = TAG_NAME_SELFCLOSE;
         hs->state = h5_state_data;
         hs->pos += 1;
-        return 1;
+        return RESULT_TRUE;
     } else {
         return h5_state_before_attribute_name(hs);
     }
@@ -600,7 +606,7 @@ static int h5_state_self_closing_start_tag(h5_state_t* hs)
 /**
  * 12.2.4.44
  */
-static int h5_state_bogus_comment(h5_state_t* hs)
+static tri_result_t h5_state_bogus_comment(h5_state_t* hs)
 {
     const char* idx;
 
@@ -619,13 +625,13 @@ static int h5_state_bogus_comment(h5_state_t* hs)
     }
 
     hs->token_type = TAG_COMMENT;
-    return 1;
+    return RESULT_TRUE;
 }
 
 /**
  * 12.2.4.44 ALT
  */
-static int h5_state_bogus_comment2(h5_state_t* hs)
+static tri_result_t h5_state_bogus_comment2(h5_state_t* hs)
 {
     const char* idx;
     size_t pos;
@@ -640,7 +646,7 @@ static int h5_state_bogus_comment2(h5_state_t* hs)
             hs->pos = hs->len;
             hs->token_type = TAG_COMMENT;
             hs->state = h5_state_eof;
-            return 1;
+            return RESULT_TRUE;
         }
 
         if (*(idx +1) != CHAR_GT) {
@@ -654,14 +660,14 @@ static int h5_state_bogus_comment2(h5_state_t* hs)
         hs->pos = (size_t)(idx - hs->s) + 2;
         hs->state = h5_state_data;
         hs->token_type = TAG_COMMENT;
-        return 1;
+        return RESULT_TRUE;
     }
 }
 
 /**
  * 8.2.4.45
  */
-static int h5_state_markup_declaration_open(h5_state_t* hs)
+static tri_result_t h5_state_markup_declaration_open(h5_state_t* hs)
 {
     size_t remaining;
 
@@ -711,7 +717,7 @@ static int h5_state_markup_declaration_open(h5_state_t* hs)
  *   2) ending in -->
  *   3) ending in -!>
  */
-static int h5_state_comment(h5_state_t* hs)
+static tri_result_t h5_state_comment(h5_state_t* hs)
 {
     char ch;
     const char* idx;
@@ -731,7 +737,7 @@ static int h5_state_comment(h5_state_t* hs)
             hs->token_start = hs->s + hs->pos;
             hs->token_len = hs->len - hs->pos;
             hs->token_type = TAG_COMMENT;
-            return 1;
+            return RESULT_TRUE;
         }
         offset = 1;
 
@@ -744,7 +750,7 @@ static int h5_state_comment(h5_state_t* hs)
             hs->token_start = hs->s + hs->pos;
             hs->token_len = hs->len - hs->pos;
             hs->token_type = TAG_COMMENT;
-            return 1;
+            return RESULT_TRUE;
         }
 
         ch = *(idx + offset);
@@ -764,7 +770,7 @@ static int h5_state_comment(h5_state_t* hs)
             hs->token_start = hs->s + hs->pos;
             hs->token_len = hs->len - hs->pos;
             hs->token_type = TAG_COMMENT;
-            return 1;
+            return RESULT_TRUE;
         }
 #endif
 
@@ -774,7 +780,7 @@ static int h5_state_comment(h5_state_t* hs)
             hs->token_start = hs->s + hs->pos;
             hs->token_len = hs->len - hs->pos;
             hs->token_type = TAG_COMMENT;
-            return 1;
+            return RESULT_TRUE;
         }
 
 
@@ -791,11 +797,11 @@ static int h5_state_comment(h5_state_t* hs)
         hs->pos = (size_t)(idx + offset - hs->s);
         hs->state = h5_state_data;
         hs->token_type = TAG_COMMENT;
-        return 1;
+        return RESULT_TRUE;
     }
 }
 
-static int h5_state_cdata(h5_state_t* hs)
+static tri_result_t h5_state_cdata(h5_state_t* hs)
 {
     const char* idx;
     size_t pos;
@@ -811,14 +817,14 @@ static int h5_state_cdata(h5_state_t* hs)
             hs->token_start = hs->s + hs->pos;
             hs->token_len = hs->len - hs->pos;
             hs->token_type = DATA_TEXT;
-            return 1;
+            return RESULT_TRUE;
         } else if ( *(idx+1) == CHAR_RIGHTB && *(idx+2) == CHAR_GT) {
             hs->state = h5_state_data;
             hs->token_start = hs->s + hs->pos;
             hs->token_len = (size_t)(idx - hs->s) - hs->pos;
             hs->pos = (size_t)(idx - hs->s) + 3;
             hs->token_type = DATA_TEXT;
-            return 1;
+            return RESULT_TRUE;
         } else {
             pos = (size_t)(idx - hs->s) + 1;
         }
@@ -829,7 +835,7 @@ static int h5_state_cdata(h5_state_t* hs)
  * 8.2.4.52
  * http://www.w3.org/html/wg/drafts/html/master/syntax.html#doctype-state
  */
-static int h5_state_doctype(h5_state_t* hs)
+static tri_result_t h5_state_doctype(h5_state_t* hs)
 {
     const char* idx;
 
@@ -846,5 +852,5 @@ static int h5_state_doctype(h5_state_t* hs)
         hs->token_len = (size_t)(idx - hs->s) - hs->pos;
         hs->pos = (size_t)(idx - hs->s) + 1;
     }
-    return 1;
+    return RESULT_TRUE;
 }

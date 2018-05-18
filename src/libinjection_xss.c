@@ -247,8 +247,8 @@ static int cstrcasecmp_with_null(const char *a, const char *b, size_t n)
  *
  * return 1 if match / starts with
  * return 0 if not
- */
-static int htmlencode_startswith(const char *a, const char *b, size_t n)
+ */                            /*const char* prefix, const char *src, size_t n*/
+static int htmlencode_startswith(const char *a,      const char *b,   size_t n)
 {
     size_t consumed;
     int cb;
@@ -415,9 +415,10 @@ int libinjection_is_xss(const char* s, size_t len, int flags)
 {
     h5_state_t h5;
     attribute_t attr = TYPE_NONE;
+    tri_result_t parser_result;
 
     libinjection_h5_init(&h5, s, len, (enum html5_flags) flags);
-    while (libinjection_h5_next(&h5)) {
+    while ((parser_result = libinjection_h5_next(&h5)) == RESULT_TRUE) {
         if (h5.token_type != ATTR_VALUE) {
             attr = TYPE_NONE;
         }
@@ -502,6 +503,9 @@ int libinjection_is_xss(const char* s, size_t len, int flags)
                 }
             }
         }
+    }
+    if (parser_result == RESULT_ERROR) {
+        /* todo: log*/
     }
     return 0;
 }
