@@ -29,35 +29,35 @@
 
 static int h5_skip_white(h5_state_t* hs);
 static int h5_is_white(char ch);
-static tri_result_t h5_state_eof(h5_state_t* hs);
-static tri_result_t h5_state_data(h5_state_t* hs);
-static tri_result_t h5_state_tag_open(h5_state_t* hs);
-static tri_result_t h5_state_tag_name(h5_state_t* hs);
-static tri_result_t h5_state_tag_name_close(h5_state_t* hs);
-static tri_result_t h5_state_end_tag_open(h5_state_t* hs);
-static tri_result_t h5_state_self_closing_start_tag(h5_state_t* hs);
-static tri_result_t h5_state_attribute_name(h5_state_t* hs);
-static tri_result_t h5_state_after_attribute_name(h5_state_t* hs);
-static tri_result_t h5_state_before_attribute_name(h5_state_t* hs);
-static tri_result_t h5_state_before_attribute_value(h5_state_t* hs);
-static tri_result_t h5_state_attribute_value_double_quote(h5_state_t* hs);
-static tri_result_t h5_state_attribute_value_single_quote(h5_state_t* hs);
-static tri_result_t h5_state_attribute_value_back_quote(h5_state_t* hs);
-static tri_result_t h5_state_attribute_value_no_quote(h5_state_t* hs);
-static tri_result_t h5_state_after_attribute_value_quoted_state(h5_state_t* hs);
-static tri_result_t h5_state_comment(h5_state_t* hs);
-static tri_result_t h5_state_cdata(h5_state_t* hs);
+static injection_result_t h5_state_eof(h5_state_t* hs);
+static injection_result_t h5_state_data(h5_state_t* hs);
+static injection_result_t h5_state_tag_open(h5_state_t* hs);
+static injection_result_t h5_state_tag_name(h5_state_t* hs);
+static injection_result_t h5_state_tag_name_close(h5_state_t* hs);
+static injection_result_t h5_state_end_tag_open(h5_state_t* hs);
+static injection_result_t h5_state_self_closing_start_tag(h5_state_t* hs);
+static injection_result_t h5_state_attribute_name(h5_state_t* hs);
+static injection_result_t h5_state_after_attribute_name(h5_state_t* hs);
+static injection_result_t h5_state_before_attribute_name(h5_state_t* hs);
+static injection_result_t h5_state_before_attribute_value(h5_state_t* hs);
+static injection_result_t h5_state_attribute_value_double_quote(h5_state_t* hs);
+static injection_result_t h5_state_attribute_value_single_quote(h5_state_t* hs);
+static injection_result_t h5_state_attribute_value_back_quote(h5_state_t* hs);
+static injection_result_t h5_state_attribute_value_no_quote(h5_state_t* hs);
+static injection_result_t h5_state_after_attribute_value_quoted_state(h5_state_t* hs);
+static injection_result_t h5_state_comment(h5_state_t* hs);
+static injection_result_t h5_state_cdata(h5_state_t* hs);
 
 
 /* 12.2.4.44 */
-static tri_result_t h5_state_bogus_comment(h5_state_t* hs);
-static tri_result_t h5_state_bogus_comment2(h5_state_t* hs);
+static injection_result_t h5_state_bogus_comment(h5_state_t* hs);
+static injection_result_t h5_state_bogus_comment2(h5_state_t* hs);
 
 /* 12.2.4.45 */
-static tri_result_t h5_state_markup_declaration_open(h5_state_t* hs);
+static injection_result_t h5_state_markup_declaration_open(h5_state_t* hs);
 
 /* 8.2.4.52 */
-static tri_result_t h5_state_doctype(h5_state_t* hs);
+static injection_result_t h5_state_doctype(h5_state_t* hs);
 
 /**
  * public function
@@ -90,7 +90,7 @@ void libinjection_h5_init(h5_state_t* hs, const char* s, size_t len, enum html5_
 /**
  * public function
  */
-tri_result_t libinjection_h5_next(h5_state_t* hs)
+injection_result_t libinjection_h5_next(h5_state_t* hs)
 {
     if (hs->state == NULL) {
         return RESULT_ERROR;
@@ -138,14 +138,14 @@ static int h5_skip_white(h5_state_t* hs)
     return CHAR_EOF;
 }
 
-static tri_result_t h5_state_eof(h5_state_t* hs)
+static injection_result_t h5_state_eof(h5_state_t* hs)
 {
     /* eliminate unused function argument warning */
     (void)hs;
     return RESULT_FALSE;
 }
 
-static tri_result_t h5_state_data(h5_state_t* hs)
+static injection_result_t h5_state_data(h5_state_t* hs)
 {
     const char* idx;
 
@@ -179,7 +179,7 @@ static tri_result_t h5_state_data(h5_state_t* hs)
 /**
  * 12 2.4.8
  */
-static tri_result_t h5_state_tag_open(h5_state_t* hs)
+static injection_result_t h5_state_tag_open(h5_state_t* hs)
 {
     char ch;
 
@@ -223,7 +223,7 @@ static tri_result_t h5_state_tag_open(h5_state_t* hs)
 /**
  * 12.2.4.9
  */
-static tri_result_t h5_state_end_tag_open(h5_state_t* hs)
+static injection_result_t h5_state_end_tag_open(h5_state_t* hs)
 {
     char ch;
 
@@ -245,7 +245,7 @@ static tri_result_t h5_state_end_tag_open(h5_state_t* hs)
 /*
  *
  */
-static tri_result_t h5_state_tag_name_close(h5_state_t* hs)
+static injection_result_t h5_state_tag_name_close(h5_state_t* hs)
 {
     TRACE();
     hs->is_close = 0;
@@ -265,7 +265,7 @@ static tri_result_t h5_state_tag_name_close(h5_state_t* hs)
 /**
  * 12.2.4.10
  */
-static tri_result_t h5_state_tag_name(h5_state_t* hs)
+static injection_result_t h5_state_tag_name(h5_state_t* hs)
 {
     char ch;
     size_t pos;
@@ -322,7 +322,7 @@ static tri_result_t h5_state_tag_name(h5_state_t* hs)
 /**
  * 12.2.4.34
  */
-static tri_result_t h5_state_before_attribute_name(h5_state_t* hs)
+static injection_result_t h5_state_before_attribute_name(h5_state_t* hs)
 {
     int ch;
 
@@ -350,7 +350,7 @@ static tri_result_t h5_state_before_attribute_name(h5_state_t* hs)
     }
 }
 
-static tri_result_t h5_state_attribute_name(h5_state_t* hs)
+static injection_result_t h5_state_attribute_name(h5_state_t* hs)
 {
     char ch;
     size_t pos;
@@ -403,7 +403,7 @@ static tri_result_t h5_state_attribute_name(h5_state_t* hs)
 /**
  * 12.2.4.36
  */
-static tri_result_t h5_state_after_attribute_name(h5_state_t* hs)
+static injection_result_t h5_state_after_attribute_name(h5_state_t* hs)
 {
     int c;
 
@@ -433,7 +433,7 @@ static tri_result_t h5_state_after_attribute_name(h5_state_t* hs)
 /**
  * 12.2.4.37
  */
-static tri_result_t h5_state_before_attribute_value(h5_state_t* hs)
+static injection_result_t h5_state_before_attribute_value(h5_state_t* hs)
 {
     int c;
     TRACE();
@@ -458,7 +458,7 @@ static tri_result_t h5_state_before_attribute_value(h5_state_t* hs)
 }
 
 
-static tri_result_t h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
+static injection_result_t h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
 {
     const char* idx;
 
@@ -491,27 +491,27 @@ static tri_result_t h5_state_attribute_value_quote(h5_state_t* hs, char qchar)
 }
 
 static
-tri_result_t h5_state_attribute_value_double_quote(h5_state_t* hs)
+injection_result_t h5_state_attribute_value_double_quote(h5_state_t* hs)
 {
     TRACE();
     return h5_state_attribute_value_quote(hs, CHAR_DOUBLE);
 }
 
 static
-tri_result_t h5_state_attribute_value_single_quote(h5_state_t* hs)
+injection_result_t h5_state_attribute_value_single_quote(h5_state_t* hs)
 {
     TRACE();
     return h5_state_attribute_value_quote(hs, CHAR_SINGLE);
 }
 
 static
-tri_result_t h5_state_attribute_value_back_quote(h5_state_t* hs)
+injection_result_t h5_state_attribute_value_back_quote(h5_state_t* hs)
 {
     TRACE();
     return h5_state_attribute_value_quote(hs, CHAR_TICK);
 }
 
-static tri_result_t h5_state_attribute_value_no_quote(h5_state_t* hs)
+static injection_result_t h5_state_attribute_value_no_quote(h5_state_t* hs)
 {
     char ch;
     size_t pos;
@@ -549,7 +549,7 @@ static tri_result_t h5_state_attribute_value_no_quote(h5_state_t* hs)
 /**
  * 12.2.4.41
  */
-static tri_result_t h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
+static injection_result_t h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
 {
     char ch;
 
@@ -579,7 +579,7 @@ static tri_result_t h5_state_after_attribute_value_quoted_state(h5_state_t* hs)
 /**
  * 12.2.4.43
  */
-static tri_result_t h5_state_self_closing_start_tag(h5_state_t* hs)
+static injection_result_t h5_state_self_closing_start_tag(h5_state_t* hs)
 {
     char ch;
 
@@ -606,7 +606,7 @@ static tri_result_t h5_state_self_closing_start_tag(h5_state_t* hs)
 /**
  * 12.2.4.44
  */
-static tri_result_t h5_state_bogus_comment(h5_state_t* hs)
+static injection_result_t h5_state_bogus_comment(h5_state_t* hs)
 {
     const char* idx;
 
@@ -631,7 +631,7 @@ static tri_result_t h5_state_bogus_comment(h5_state_t* hs)
 /**
  * 12.2.4.44 ALT
  */
-static tri_result_t h5_state_bogus_comment2(h5_state_t* hs)
+static injection_result_t h5_state_bogus_comment2(h5_state_t* hs)
 {
     const char* idx;
     size_t pos;
@@ -667,7 +667,7 @@ static tri_result_t h5_state_bogus_comment2(h5_state_t* hs)
 /**
  * 8.2.4.45
  */
-static tri_result_t h5_state_markup_declaration_open(h5_state_t* hs)
+static injection_result_t h5_state_markup_declaration_open(h5_state_t* hs)
 {
     size_t remaining;
 
@@ -717,7 +717,7 @@ static tri_result_t h5_state_markup_declaration_open(h5_state_t* hs)
  *   2) ending in -->
  *   3) ending in -!>
  */
-static tri_result_t h5_state_comment(h5_state_t* hs)
+static injection_result_t h5_state_comment(h5_state_t* hs)
 {
     char ch;
     const char* idx;
@@ -801,7 +801,7 @@ static tri_result_t h5_state_comment(h5_state_t* hs)
     }
 }
 
-static tri_result_t h5_state_cdata(h5_state_t* hs)
+static injection_result_t h5_state_cdata(h5_state_t* hs)
 {
     const char* idx;
     size_t pos;
@@ -835,7 +835,7 @@ static tri_result_t h5_state_cdata(h5_state_t* hs)
  * 8.2.4.52
  * http://www.w3.org/html/wg/drafts/html/master/syntax.html#doctype-state
  */
-static tri_result_t h5_state_doctype(h5_state_t* hs)
+static injection_result_t h5_state_doctype(h5_state_t* hs)
 {
     const char* idx;
 
