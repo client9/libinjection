@@ -426,7 +426,7 @@ static attribute_t is_black_attr(const char* s, size_t len)
         if ((s[0] == 'o' || s[0] == 'O') && (s[1] == 'n' || s[1] == 'N')) {
 	    black = BLACKATTREVENT;
 	    while (black->name != NULL) {
-		if (cstrcasecmp_with_null(black->name, s, len) == 0) {
+		if (cstrcasecmp_with_null(black->name, s, strlen(black->name)) == 0) {
 		         /* printf("Got banned attribute name %s\n", black->name); */
 		    return black->atype;
 		}
