@@ -135,6 +135,86 @@ static int html_decode_char_at(const char* src, size_t len, size_t* consumed)
     }
 }
 
+/*
+ * view-source:
+ * data:
+ * javascript:
+ * events:
+ */
+static stringtype_t BLACKATTREVENT[] = {
+   { "ONBEFOREUNLOAD", TYPE_BLACK }
+ , { "ONERROR", TYPE_BLACK }
+ , { "ONHASHCHANGE", TYPE_BLACK }
+ , { "ONLOAD", TYPE_BLACK }
+ , { "ONMESSAGE", TYPE_BLACK }
+ , { "ONOFFLINE", TYPE_BLACK }
+ , { "ONONLINE", TYPE_BLACK }
+ , { "ONPAGEHIDE", TYPE_BLACK }
+ , { "ONPAGESHOW", TYPE_BLACK }
+ , { "ONPOPSTATE", TYPE_BLACK }
+ , { "ONRESIZE", TYPE_BLACK }
+ , { "ONSTORAGE", TYPE_BLACK }
+ , { "ONUNLOAD", TYPE_BLACK }
+ , { "ONBLUR", TYPE_BLACK }
+ , { "ONCHANGE", TYPE_BLACK }
+ , { "ONCONTEXTMENU", TYPE_BLACK }
+ , { "ONFOCUS", TYPE_BLACK }
+ , { "ONINPUT", TYPE_BLACK }
+ , { "ONINVALID", TYPE_BLACK }
+ , { "ONRESET", TYPE_BLACK }
+ , { "ONSEARCH", TYPE_BLACK }
+ , { "ONSELECT", TYPE_BLACK }
+ , { "ONSUBMIT", TYPE_BLACK }
+ , { "ONKEYDOWN", TYPE_BLACK }
+ , { "ONKEYPRESS", TYPE_BLACK }
+ , { "ONKEYUP", TYPE_BLACK }
+ , { "ONCLICK", TYPE_BLACK }
+ , { "ONDBLCLICK", TYPE_BLACK }
+ , { "ONMOUSEDOWN", TYPE_BLACK }
+ , { "ONMOUSEMOVE", TYPE_BLACK }
+ , { "ONMOUSEOUT", TYPE_BLACK }
+ , { "ONMOUSEOVER", TYPE_BLACK }
+ , { "ONMOUSEUP", TYPE_BLACK }
+ , { "ONMOUSEWHEEL", TYPE_BLACK }
+ , { "ONWHEEL", TYPE_BLACK }
+ , { "ONDRAG", TYPE_BLACK }
+ , { "ONDRAGEND", TYPE_BLACK }
+ , { "ONDRAGENTER", TYPE_BLACK }
+ , { "ONDRAGLEAVE", TYPE_BLACK }
+ , { "ONDRAGOVER", TYPE_BLACK }
+ , { "ONDRAGSTART", TYPE_BLACK }
+ , { "ONDROP", TYPE_BLACK }
+ , { "ONSCROLL", TYPE_BLACK }
+ , { "ONCOPY", TYPE_BLACK }
+ , { "ONCUT", TYPE_BLACK }
+ , { "ONPASTE", TYPE_BLACK }
+ , { "ONABORT", TYPE_BLACK }
+ , { "ONCANPLAY", TYPE_BLACK }
+ , { "ONCANPLAYTHROUGH", TYPE_BLACK }
+ , { "ONCUECHANGE", TYPE_BLACK }
+ , { "ONDURATIONCHANGE", TYPE_BLACK }
+ , { "ONEMPTIED", TYPE_BLACK }
+ , { "ONENDED", TYPE_BLACK }
+ , { "ONERROR", TYPE_BLACK }
+ , { "ONLOADEDDATA", TYPE_BLACK }
+ , { "ONLOADEDMETADATA", TYPE_BLACK }
+ , { "ONLOADSTART", TYPE_BLACK }
+ , { "ONPAUSE", TYPE_BLACK }
+ , { "ONPLAY", TYPE_BLACK }
+ , { "ONPLAYING", TYPE_BLACK }
+ , { "ONPROGRESS", TYPE_BLACK }
+ , { "ONRATECHANGE", TYPE_BLACK }
+ , { "ONSEEKED", TYPE_BLACK }
+ , { "ONSEEKING", TYPE_BLACK }
+ , { "ONSTALLED", TYPE_BLACK }
+ , { "ONSUSPEND", TYPE_BLACK }
+ , { "ONTIMEUPDATE", TYPE_BLACK }
+ , { "ONVOLUMECHANGE", TYPE_BLACK }
+ , { "ONWAITING", TYPE_BLACK }
+ , { "ONAFTERPRINT", TYPE_BLACK }
+ , { "ONBEFOREPRINT", TYPE_BLACK }
+ , { NULL, TYPE_NONE }
+};
 
 /*
  * view-source:
@@ -341,10 +421,17 @@ static attribute_t is_black_attr(const char* s, size_t len)
     }
 
     if (len >= 5) {
-        /* JavaScript on.* */
+
+	/* JavaScript on.* event handlers */
         if ((s[0] == 'o' || s[0] == 'O') && (s[1] == 'n' || s[1] == 'N')) {
-            /* printf("Got JavaScript on- attribute name\n"); */
-            return TYPE_BLACK;
+	    black = BLACKATTREVENT;
+	    while (black->name != NULL) {
+		if (cstrcasecmp_with_null(black->name, s, len) == 0) {
+		         /* printf("Got banned attribute name %s\n", black->name); */
+		    return black->atype;
+		}
+		black += 1;
+	    }
         }
 
 
