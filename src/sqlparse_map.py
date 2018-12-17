@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # pylint: disable=C0301,C0302
 # Turn off line-too-long, and too-many-lines warnings
 #

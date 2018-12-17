@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 """
 Small script to convert fingerprints back to SQL or SQLi
 """
