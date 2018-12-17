@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 #
 #  Copyright 2012, 2013 Nick Galbreath
 #  nickg@client9.com
