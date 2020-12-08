@@ -210,6 +210,72 @@ static const char* BLACKTAG[] = {
     , NULL
 };
 
+/* Blacklist of known JS GlobalEventHandlers */
+static const char* BLACKGEH[] = {
+    "ONABORT"
+    , "ONANIMATIONCANCEL"
+    , "ONANIMATIONEND"
+    , "ONANIMATIONITERATION"
+    , "ONAUXCLICK"
+    , "ONBLUR"
+    , "ONCANCEL"
+    , "ONCANPLAY"
+    , "ONCANPLAYTHROUGH"
+    , "ONCHANGE"
+    , "ONCLICK"
+    , "ONCLOSE"
+    , "ONCONTEXTMENU"
+    , "ONCUECHANGE"
+    , "ONDBLCLICK"
+    , "ONDURATIONCHANGE"
+    , "ONENDED"
+    , "ONERROR"
+    , "ONFOCUS"
+    , "ONFORMDATA"
+    , "ONGOTPOINTERCAPTURE"
+    , "ONINPUT"
+    , "ONINVALID"
+    , "ONKEYDOWN"
+    , "ONKEYPRESS"
+    , "ONKEYUP"
+    , "ONLOAD"
+    , "ONLOADEDDATA"
+    , "ONLOADEDMETADATA"
+    , "ONLOADEND"
+    , "ONLOADSTART"
+    , "ONLOSTPOINTERCAPTURE"
+    , "ONMOUSEDOWN"
+    , "ONMOUSEENTER"
+    , "ONMOUSELEAVE"
+    , "ONMOUSEMOVE"
+    , "ONMOUSEOUT"
+    , "ONMOUSEOVER"
+    , "ONMOUSEUP"
+    , "ONPAUSE"
+    , "ONPLAY"
+    , "ONPLAYING"
+    , "ONPOINTERCANCEL"
+    , "ONPOINTERDOWN"
+    , "ONPOINTERENTER"
+    , "ONPOINTERLEAVE"
+    , "ONPOINTERMOVE"
+    , "ONPOINTEROUT"
+    , "ONPOINTEROVER"
+    , "ONPOINTERUP"
+    , "ONRESET"
+    , "ONRESIZE"
+    , "ONSCROLL"
+    , "ONSELECT"
+    , "ONSELECTIONCHANGE"
+    , "ONSELECTSTART"
+    , "ONSUBMIT"
+    , "ONTOUCHCANCEL"
+    , "ONTOUCHSTART"
+    , "ONTRANSITIONCANCEL"
+    , "ONTRANSITIONEND"
+    , "ONWHEEL"
+    , NULL
+};
 
 static int cstrcasecmp_with_null(const char *a, const char *b, size_t n)
 {
@@ -332,6 +398,27 @@ static int is_black_tag(const char* s, size_t len)
     return 0;
 }
 
+static int is_black_geh(const char* s, size_t len)
+{
+    const char** black;
+
+    if (len < 3) {
+        return 0;
+    }
+
+    black = BLACKGEH;
+    while (*black != NULL) {
+        if (cstrcasecmp_with_null(*black, s, len) == 0) {
+            /* printf("Got black event handler %s\n", *black); */
+            return 1;
+        }
+        black+= 1;
+    }
+
+    return 0;
+}
+
+
 static attribute_t is_black_attr(const char* s, size_t len)
 {
     stringtype_t* black;
@@ -344,10 +431,11 @@ static attribute_t is_black_attr(const char* s, size_t len)
         /* JavaScript on.* */
         if ((s[0] == 'o' || s[0] == 'O') && (s[1] == 'n' || s[1] == 'N')) {
             /* printf("Got JavaScript on- attribute name\n"); */
-            return TYPE_BLACK;
+
+            if (is_black_geh(s, len)) {
+                return TYPE_BLACK;
+            }
         }
-
-
 
         /* XMLNS can be used to create arbitrary tags */
         if (cstrcasecmp_with_null("XMLNS", s, 5) == 0 || cstrcasecmp_with_null("XLINK", s, 5) == 0) {
