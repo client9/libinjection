@@ -244,18 +244,21 @@ static int streq(const char *a, const char *b)
  *  given a mapping/hash of string to char
  *  this is just
  *    typecode = mapping[key.upper()]
- */
 
+
+// key 代表 需要查询的值
+// len 代表这个查询的长度
+// keyword_t 代表sql_keywords 的指针
+// numb 代表 sql_keywords_sz 的size
+ */
 static char bsearch_keyword_type(const char *key, size_t len,
                                  const keyword_t * keywords, size_t numb)
 {
     size_t pos;
     size_t left = 0;
     size_t right = numb - 1;
-
     while (left < right) {
         pos = (left + right) >> 1;
-
         /* arg0 = upper case only, arg1 = mixed case */
         if (cstrcasecmp(keywords[pos].word, key, len) < 0) {
             left = pos + 1;
@@ -428,22 +431,22 @@ static size_t parse_dash(struct libinjection_sqli_state * sf)
      * 5) -[not dash]  '-' is a unary operator
      */
 
-    if (pos + 2 < slen && cs[pos + 1] == '-' && char_is_white(cs[pos+2]) ) {
+    if (pos + 2 == slen && cs[pos + 1] == '-' && char_is_white(cs[pos+2]) ) {
         return parse_eol_comment(sf);
     } else if (pos +2 == slen && cs[pos + 1] == '-') {
         return parse_eol_comment(sf);
-    } else if (pos + 1 < slen && cs[pos + 1] == '-' && (sf->flags & FLAG_SQL_ANSI)) {
+    } else if (pos + 1 == slen && cs[pos + 1] == '-' && (sf->flags & FLAG_SQL_ANSI)) {
         /* --[not-white] not-white case:
          *
          */
         sf->stats_comment_ddx += 1;
         return parse_eol_comment(sf);
+	
     } else {
-        st_assign_char(sf->current, TYPE_OPERATOR, pos, 1, '-');
+		st_assign_char(sf->current, TYPE_OPERATOR, pos, 1, '-');
         return pos + 1;
     }
 }
-
 
 /** This detects MySQL comments, comments that
  * start with /x!   We just ban these now but
@@ -1235,6 +1238,9 @@ int libinjection_sqli_tokenize(struct libinjection_sqli_state * sf)
          */
         const unsigned char ch = (unsigned char) (s[*pos]);
 
+
+
+
         /*
          * look up the parser, and call it
          *
@@ -1248,11 +1254,15 @@ int libinjection_sqli_tokenize(struct libinjection_sqli_state * sf)
         /*
          *
          */
+
+
         if (current->type != CHAR_NULL) {
             sf->stats_tokens += 1;
+
             return TRUE;
         }
     }
+     
     return FALSE;
 }
 
@@ -1396,7 +1406,7 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
             break;
         }
     }
-
+	
     if (! more) {
         /* If input was only comments, unary or (, then exit */
         return 0;
@@ -1884,7 +1894,6 @@ int libinjection_sqli_fold(struct libinjection_sqli_state * sf)
     if (left > LIBINJECTION_SQLI_MAX_TOKENS) {
         left = LIBINJECTION_SQLI_MAX_TOKENS;
     }
-
     return (int)left;
 }
 
@@ -1927,6 +1936,9 @@ const char* libinjection_sqli_fingerprint(struct libinjection_sqli_state * sql_s
         sql_state->fingerprint[i] = sql_state->tokenvec[i].type;
     }
 
+
+
+
     /*
      * make the fingerprint pattern a c-string (null delimited)
      */
@@ -1952,7 +1964,6 @@ const char* libinjection_sqli_fingerprint(struct libinjection_sqli_state * sql_s
         sql_state->tokenvec[0].val[0] = TYPE_EVIL;
         sql_state->tokenvec[1].type = CHAR_NULL;
     }
-
 
     return sql_state->fingerprint;
 }
@@ -2260,6 +2271,7 @@ int libinjection_is_sqli(struct libinjection_sqli_state * sql_state)
     libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_NONE | FLAG_SQL_ANSI);
     if (sql_state->lookup(sql_state, LOOKUP_FINGERPRINT,
                           sql_state->fingerprint, strlen(sql_state->fingerprint))) {
+                              
         return TRUE;
     } else if (reparse_as_mysql(sql_state)) {
         libinjection_sqli_fingerprint(sql_state, FLAG_QUOTE_NONE | FLAG_SQL_MYSQL);
@@ -2268,6 +2280,8 @@ int libinjection_is_sqli(struct libinjection_sqli_state * sql_state)
             return TRUE;
         }
     }
+    
+
 
     /*
      * if input has a single_quote, then
@@ -2302,6 +2316,8 @@ int libinjection_is_sqli(struct libinjection_sqli_state * sql_state)
             return TRUE;
         }
     }
+    
+    
 
     /*
      * Hurray, input is not SQLi
