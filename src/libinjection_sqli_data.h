@@ -1,4 +1,3 @@
-
 #ifndef LIBINJECTION_SQLI_DATA_H
 #define LIBINJECTION_SQLI_DATA_H
 
@@ -604,6 +603,7 @@ static const keyword_t sql_keywords[] = {
     {"01&N&F", 'F'},
     {"01&N&N", 'F'},
     {"01&N&S", 'F'},
+    {"01&N(E", 'F'},
     {"01&N&V", 'F'},
     {"01&N)&", 'F'},
     {"01&N)C", 'F'},
@@ -5147,6 +5147,7 @@ static const keyword_t sql_keywords[] = {
     {"0S&1)C", 'F'},
     {"0S&1)O", 'F'},
     {"0S&1)U", 'F'},
+	{"0S&11S",'F'},
     {"0S&1;", 'F'},
     {"0S&1;C", 'F'},
     {"0S&1;E", 'F'},
@@ -5168,9 +5169,12 @@ static const keyword_t sql_keywords[] = {
     {"0S&1KS", 'F'},
     {"0S&1KV", 'F'},
     {"0S&1O(", 'F'},
+	{"0S&1OE", 'F'},
     {"0S&1OF", 'F'},
     {"0S&1OS", 'F'},
     {"0S&1OV", 'F'},
+    {"0S&1O{", 'F'},
+	{ "0S&1S", 'F' },
     {"0S&1TN", 'F'},
     {"0S&1U", 'F'},
     {"0S&1U(", 'F'},
@@ -5248,6 +5252,8 @@ static const keyword_t sql_keywords[] = {
     {"0S&N&N", 'F'},
     {"0S&N&S", 'F'},
     {"0S&N&V", 'F'},
+	{ "0S&N()", 'F' },
+    {"0S&N(E", 'F'},
     {"0S&N)&", 'F'},
     {"0S&N)C", 'F'},
     {"0S&N)O", 'F'},
@@ -5375,6 +5381,9 @@ static const keyword_t sql_keywords[] = {
     {"0S&VU;", 'F'},
     {"0S&VUC", 'F'},
     {"0S&VUE", 'F'},
+    {"0S&{(F", 'F'},
+    {"0S&{F(", 'F'},
+    {"0S&{FF", 'F'},
     {"0S(EF(", 'F'},
     {"0S(EKF", 'F'},
     {"0S(EKN", 'F'},
@@ -6302,7 +6311,9 @@ static const keyword_t sql_keywords[] = {
     {"0SO1N&", 'F'},
     {"0SO1N(", 'F'},
     {"0SO1N,", 'F'},
+    {"0SO1N1", 'F'},
     {"0SO1NE", 'F'},
+    {"0SO1NN", 'F'},
     {"0SO1NU", 'F'},
     {"0SO1SU", 'F'},
     {"0SO1SV", 'F'},
@@ -6428,6 +6439,7 @@ static const keyword_t sql_keywords[] = {
     {"0SONKS", 'F'},
     {"0SONKU", 'F'},
     {"0SONKV", 'F'},
+	{"0SONS", 'F'},
     {"0SONSU", 'F'},
     {"0SONT(", 'F'},
     {"0SONT1", 'F'},
@@ -6636,6 +6648,7 @@ static const keyword_t sql_keywords[] = {
     {"0SOVUS", 'F'},
     {"0SOVUT", 'F'},
     {"0SOVUV", 'F'},
+    {"0SO{F(", 'F'},
     {"0ST(1)", 'F'},
     {"0ST(1O", 'F'},
     {"0ST(F(", 'F'},
@@ -9648,5 +9661,5 @@ static const keyword_t sql_keywords[] = {
     {"||", '&'},
     {"~*", 'o'},
 };
-static const size_t sql_keywords_sz = 9352;
+static const size_t sql_keywords_sz = 9366;
 #endif
