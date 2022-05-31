@@ -24,6 +24,7 @@ LIBINJECTION_BEGIN_DECLS
  * Pull in size_t
  */
 #include <string.h>
+#include "libinjection_html5.h"
 
 /*
  * Version info.
@@ -58,7 +59,7 @@ int libinjection_sqli(const char* s, size_t slen, char fingerprint[]);
  * \return 1 if XSS found, 0 if benign
  *
  */
-int libinjection_xss(const char* s, size_t slen);
+injection_result_t libinjection_xss(const char *s, size_t slen);
 
 LIBINJECTION_END_DECLS
 

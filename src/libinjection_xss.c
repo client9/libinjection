@@ -247,8 +247,8 @@ static int cstrcasecmp_with_null(const char *a, const char *b, size_t n)
  *
  * return 1 if match / starts with
  * return 0 if not
- */
-static int htmlencode_startswith(const char *a, const char *b, size_t n)
+ */                            /*const char* prefix, const char *src, size_t n*/
+static int htmlencode_startswith(const char *a,      const char *b,   size_t n)
 {
     size_t consumed;
     int cb;
@@ -411,22 +411,23 @@ static int is_black_url(const char* s, size_t len)
     return 0;
 }
 
-int libinjection_is_xss(const char* s, size_t len, int flags)
+injection_result_t libinjection_is_xss(const char *s, size_t len, int flags)
 {
     h5_state_t h5;
     attribute_t attr = TYPE_NONE;
+    injection_result_t parser_result;
 
     libinjection_h5_init(&h5, s, len, (enum html5_flags) flags);
-    while (libinjection_h5_next(&h5)) {
+    while ((parser_result = libinjection_h5_next(&h5)) == RESULT_TRUE) {
         if (h5.token_type != ATTR_VALUE) {
             attr = TYPE_NONE;
         }
 
         if (h5.token_type == DOCTYPE) {
-            return 1;
+            return RESULT_TRUE;
         } else if (h5.token_type == TAG_NAME_OPEN) {
             if (is_black_tag(h5.token_start, h5.token_len)) {
-                return 1;
+                return RESULT_TRUE;
             }
         } else if (h5.token_type == ATTR_NAME) {
             attr = is_black_attr(h5.token_start, h5.token_len);
@@ -450,18 +451,18 @@ int libinjection_is_xss(const char* s, size_t len, int flags)
             case TYPE_NONE:
                 break;
             case TYPE_BLACK:
-                return 1;
+                return RESULT_TRUE;
             case TYPE_ATTR_URL:
                 if (is_black_url(h5.token_start, h5.token_len)) {
-                    return 1;
+                    return RESULT_TRUE;
                 }
                 break;
             case TYPE_STYLE:
-                return 1;
+                return RESULT_TRUE;
             case TYPE_ATTR_INDIRECT:
                 /* an attribute name is specified in a _value_ */
                 if (is_black_attr(h5.token_start, h5.token_len)) {
-                    return 1;
+                    return RESULT_TRUE;
                 }
                 break;
 /*
@@ -473,7 +474,7 @@ int libinjection_is_xss(const char* s, size_t len, int flags)
         } else if (h5.token_type == TAG_COMMENT) {
             /* IE uses a "`" as a tag ending char */
             if (memchr(h5.token_start, '`', h5.token_len) != NULL) {
-                return 1;
+                return RESULT_TRUE;
             }
 
             /* IE conditional comment */
@@ -481,52 +482,52 @@ int libinjection_is_xss(const char* s, size_t len, int flags)
                 if (h5.token_start[0] == '[' &&
                     (h5.token_start[1] == 'i' || h5.token_start[1] == 'I') &&
                     (h5.token_start[2] == 'f' || h5.token_start[2] == 'F')) {
-                    return 1;
+                    return RESULT_TRUE;
                 }
                 if ((h5.token_start[0] == 'x' || h5.token_start[0] == 'X') &&
                     (h5.token_start[1] == 'm' || h5.token_start[1] == 'M') &&
                     (h5.token_start[2] == 'l' || h5.token_start[2] == 'L')) {
-                    return 1;
+                    return RESULT_TRUE;
                 }
             }
 
             if (h5.token_len > 5) {
                 /*  IE <?import pseudo-tag */
                 if (cstrcasecmp_with_null("IMPORT", h5.token_start, 6) == 0) {
-                    return 1;
+                    return RESULT_TRUE;
                 }
 
                 /*  XML Entity definition */
                 if (cstrcasecmp_with_null("ENTITY", h5.token_start, 6) == 0) {
-                    return 1;
+                    return RESULT_TRUE;
                 }
             }
         }
     }
-    return 0;
+    return parser_result;
 }
 
 
 /*
  * wrapper
  */
-int libinjection_xss(const char* s, size_t len)
-{
-    if (libinjection_is_xss(s, len, DATA_STATE)) {
-        return 1;
+injection_result_t libinjection_xss(const char *s, size_t len) {
+    injection_result_t result;
+    if ((result = libinjection_is_xss(s, len, DATA_STATE)) != RESULT_FALSE) {
+        return result;
     }
-    if (libinjection_is_xss(s, len, VALUE_NO_QUOTE)) {
-        return 1;
+    if ((result = libinjection_is_xss(s, len, VALUE_NO_QUOTE)) != RESULT_FALSE) {
+        return result;
     }
-    if (libinjection_is_xss(s, len, VALUE_SINGLE_QUOTE)) {
-        return 1;
+    if ((result = libinjection_is_xss(s, len, VALUE_SINGLE_QUOTE)) != RESULT_FALSE) {
+        return result;
     }
-    if (libinjection_is_xss(s, len, VALUE_DOUBLE_QUOTE)) {
-        return 1;
+    if ((result = libinjection_is_xss(s, len, VALUE_DOUBLE_QUOTE)) != RESULT_FALSE) {
+        return result;
     }
-    if (libinjection_is_xss(s, len, VALUE_BACK_QUOTE)) {
-        return 1;
+    if ((result = libinjection_is_xss(s, len, VALUE_BACK_QUOTE)) != RESULT_FALSE) {
+        return result;
     }
 
-    return 0;
+    return RESULT_FALSE;
 }
