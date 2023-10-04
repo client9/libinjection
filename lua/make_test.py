@@ -51,22 +51,22 @@ def genluatest(fname, data):
 
     name = name.replace('.txt', '')
 
-    print "is({0}('{1}'),\n   '{2}{3}',\n   '{4}')\n".format(
+    print("is({0}('{1}'),\n   '{2}{3}',\n   '{4}')\n".format(
         testname,
         luaescape(data[1]),
         extra,
         luaescape(data[2]),
         name
-    )
+    ))
 
 def test2lua(fname):
     data = readtestdata(fname)
     genluatest(fname, data)
 
 def main():
-    print "require 'testdriver'\n"
+    print("require 'testdriver'\n")
     files = glob.glob('../tests/test-*.txt')
-    print "plan({0})\n".format(len(files))
+    print("plan({0})\n".format(len(files)))
     for testfile in sorted(files):
         test2lua(testfile)
 

@@ -7,8 +7,8 @@
 import datetime
 import sys
 import logging
-import urllib
-import urlparse
+import urllib.request, urllib.parse, urllib.error
+import urllib.parse
 try:
     import libinjection
 except:
@@ -31,7 +31,7 @@ def breakapart(s):
 def chunks(l, n):
     """ Yield successive n-sized chunks from l.
     """
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 def breakify(s):
@@ -142,14 +142,14 @@ class XssTestHandler(tornado.web.RequestHandler):
 
         qsl = [ x.split('=', 1) for x in self.request.query.split('&') ]
         for kv in qsl:
-            print kv
+            print(kv)
             try:
                 index = int(kv[0])
                 val = tornado.escape.url_unescape(kv[1])
-                print "XXX", index, val
+                print("XXX", index, val)
                 args[index] = val
-            except Exception,e:
-                print e
+            except Exception as e:
+                print(e)
 
         self.add_header('Cache-Control', 'no-cache, no-store, must-revalidate')
         self.add_header('Pragma', 'no-cache')
@@ -195,7 +195,7 @@ class NullHandler(tornado.web.RequestHandler):
         else:
             formvalue = ''
 
-        val = urllib.unquote(formvalue)
+        val = urllib.parse.unquote(formvalue)
         parsed = []
         parsed.append(alltokens(val, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI))
         parsed.append(alltokens(val, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_MYSQL))
@@ -235,14 +235,14 @@ class NullHandler(tornado.web.RequestHandler):
         sqlstate = libinjection.sqli_state()
 
         allfp = {}
-        for name,values in self.request.arguments.iteritems():
+        for name,values in self.request.arguments.items():
             if name == 'type':
                 continue
 
             fps = []
 
             val = values[0]
-            val = urllib.unquote(val)
+            val = urllib.parse.unquote(val)
             if len(val) == 0:
                 continue
             libinjection.sqli_init(sqlstate, val, 0)
@@ -271,12 +271,12 @@ class NullHandler(tornado.web.RequestHandler):
                 'fingerprints': fps
             }
 
-        for name,values in self.request.arguments.iteritems():
+        for name,values in self.request.arguments.items():
             if name == 'type':
                 continue
             for val in values:
                 # do it one more time include cut-n-paste was already url-encoded
-                val = urllib.unquote(val)
+                val = urllib.parse.unquote(val)
                 if len(val) == 0:
                     continue
 

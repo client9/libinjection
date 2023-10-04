@@ -12,26 +12,26 @@ Converts a libinjection JSON data file to a C header (.h) file
 def toc(obj):
     """ main routine """
     if False:
-        print 'fingerprints = {'
-        for  fp in sorted(obj[u'fingerprints']):
-            print "['{0}']='X',".format(fp)
-        print '}'
+        print('fingerprints = {')
+        for  fp in sorted(obj['fingerprints']):
+            print("['{0}']='X',".format(fp))
+        print('}')
 
     words = {}
     keywords = obj['keywords']
 
-    for k,v in keywords.iteritems():
+    for k,v in keywords.items():
         words[str(k)] = str(v)
 
-    for  fp in list(obj[u'fingerprints']):
+    for  fp in list(obj['fingerprints']):
         fp = '0' + fp.upper()
         words[str(fp)] = 'F';
 
-    print 'words = {'
+    print('words = {')
     for k in sorted(words.keys()):
         #print "['{0}']='{1}',".format(k, words[k])
-        print "['{0}']={1},".format(k, ord(words[k]))
-    print '}'
+        print("['{0}']={1},".format(k, ord(words[k])))
+    print('}')
     return 0
 
 if __name__ == '__main__':

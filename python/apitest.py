@@ -7,7 +7,7 @@ Work-in-progress
 from libinjection import *
 from words import words
 
-print dir(libinjection)
+print(dir(libinjection))
 
 def print_token_string(tok):
     """
@@ -55,4 +55,4 @@ sqli_init(s, sqli, libinjection.FLAG_QUOTE_NONE | libinjection.FLAG_SQL_ANSI)
 sqli_callback(s, lookup)
 
 while sqli_tokenize(s):
-    print print_token(s.current)
+    print(print_token(s.current))

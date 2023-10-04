@@ -412,7 +412,7 @@ def main():
         mutator.permute(line.strip())
 
     for fingerprint in mutator.aslist():
-        print fingerprint
+        print(fingerprint)
 
 
 if __name__ == '__main__':

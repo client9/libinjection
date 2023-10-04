@@ -6,7 +6,7 @@
 
 import sys
 import logging
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 import tornado.httpserver
 import tornado.ioloop

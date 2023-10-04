@@ -47,12 +47,12 @@ def fingerprint_to_sqli():
 
         sqlstr = ' '.join(sql)
         if mode == 'print':
-            print fingerprint, ' '.join(sql)
+            print(fingerprint, ' '.join(sql))
         else:
             args = ['./fptool', '-0', sqlstr]
             actualfp = subprocess.check_output(args).strip()
             if fingerprint != actualfp:
-                print fingerprint, actualfp, ' '.join(sql)
+                print(fingerprint, actualfp, ' '.join(sql))
 
 
 if __name__ == '__main__':

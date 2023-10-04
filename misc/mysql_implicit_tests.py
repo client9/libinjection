@@ -35,13 +35,13 @@ mysql_ops = (
     'XOR'
 )
 
-print '# mysql implicit conversions tests'
+print('# mysql implicit conversions tests')
 
 for op in mysql_ops:
     if op == '+':
         op = '%2B'
 
-    print "A' {0} 'B".format(op)
-    print "A '{0}' B".format(op)
-    print "'{0}'".format(op)
-    print "' {0} '".format(op)
+    print("A' {0} 'B".format(op))
+    print("A '{0}' B".format(op))
+    print("'{0}'".format(op))
+    print("' {0} '".format(op))

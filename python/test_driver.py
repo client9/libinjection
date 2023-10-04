@@ -8,7 +8,7 @@ import glob
 from libinjection import *
 from words import *
 
-print version()
+print(version())
 
 def print_token_string(tok):
     """
@@ -105,11 +105,11 @@ def runtest(testname, flag, sqli_flags):
     actual = actual.strip()
 
     if actual != data[2]:
-        print "INPUT: \n" + toascii(data[1])
-        print
-        print "EXPECTED: \n" + toascii(data[2])
-        print
-        print "GOT: \n" + toascii(actual)
+        print("INPUT: \n" + toascii(data[1]))
+        print()
+        print("EXPECTED: \n" + toascii(data[2]))
+        print()
+        print("GOT: \n" + toascii(actual))
         assert actual == data[2]
 
 def test_tokens():

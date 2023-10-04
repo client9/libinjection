@@ -11,10 +11,10 @@ def make_lua_table(obj):
     so they don't need to be escaped.  The output may be
     sorted but it is not required.
     """
-    fp = obj[u'fingerprints']
+    fp = obj['fingerprints']
     print("sqlifingerprints = {")
     for f in fp:
-        print('  ["{0}"]=true,'.format(f))
+        print(('  ["{0}"]=true,'.format(f)))
     print("}")
     return 0
 

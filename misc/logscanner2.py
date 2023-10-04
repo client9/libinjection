@@ -3,8 +3,8 @@
 import datetime
 import json
 import sys
-from urlparse import *
-import urllib
+from urllib.parse import *
+import urllib.request, urllib.parse, urllib.error
 import libinjection
 
 from tornado import template
@@ -77,7 +77,7 @@ def chunks(l, n):
     """
     Yield successive n-sized chunks from l.
     """
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 def breakify(s):
@@ -93,7 +93,7 @@ def doline(line):
     line = line.replace("\\x", "%").strip()
     try:
         data = json.loads(line)
-    except ValueError, e:
+    except ValueError as e:
         data = parse_apache(line)
 
     if data is None:
@@ -120,10 +120,10 @@ def doline(line):
         return None
 
     # part one, normal decode
-    target = urllib.unquote_plus(target)
+    target = urllib.parse.unquote_plus(target)
 
     # do it again, but preserve '+'
-    target = urllib.unquote(target)
+    target = urllib.parse.unquote(target)
 
     sstate = libinjection.sqli_state()
     # BAD the string created by target.encode is stored in
@@ -136,7 +136,7 @@ def doline(line):
     try:
         targetutf8 = target.encode('utf-8')
         #targetutf8 = target
-    except UnicodeDecodeError, e:
+    except UnicodeDecodeError as e:
         targetutf8 = target
         #if type(target) == str:
         #    sys.stderr.write("Target is a string\n")
@@ -152,7 +152,7 @@ def doline(line):
         sys.stderr.write("fail in decode: {0}".format(targetutf8))
         if type(target) == str:
             sys.stderr.write("Target is a string\n")
-        if type(target) == unicode:
+        if type(target) == str:
             sys.stderr.write("Target is unicde\n")
         return None
 
@@ -210,4 +210,4 @@ if __name__ == '__main__':
         ssl_cipher=''
         )
 
-    print txt
+    print(txt)

@@ -14,7 +14,7 @@ import sys
 def toc(obj):
     """ main routine """
 
-    print """
+    print("""
 #ifndef LIBINJECTION_SQLI_DATA_H
 #define LIBINJECTION_SQLI_DATA_H
 
@@ -48,7 +48,7 @@ static size_t parse_xstring(sfilter * sf);
 static size_t parse_bstring(sfilter * sf);
 static size_t parse_estring(sfilter * sf);
 static size_t parse_bword(sfilter * sf);
-"""
+""")
 
     #
     # Mapping of character to function
@@ -85,26 +85,26 @@ static size_t parse_bword(sfilter * sf);
         'CHAR_ESTRING'   : 'parse_estring',
         'CHAR_BWORD'     : 'parse_bword'
         }
-    print
-    print "typedef size_t (*pt2Function)(sfilter *sf);"
-    print "static const pt2Function char_parse_map[] = {"
+    print()
+    print("typedef size_t (*pt2Function)(sfilter *sf);")
+    print("static const pt2Function char_parse_map[] = {")
     pos = 0
     for character in obj['charmap']:
-        print "   &%s, /* %d */" % (fnmap[character], pos)
+        print("   &%s, /* %d */" % (fnmap[character], pos))
         pos += 1
-    print "};"
-    print
+    print("};")
+    print()
 
     # keywords
     #  load them
     keywords = obj['keywords']
 
-    for  fingerprint in list(obj[u'fingerprints']):
+    for  fingerprint in list(obj['fingerprints']):
         fingerprint = '0' + fingerprint.upper()
         keywords[fingerprint] = 'F'
 
     needhelp = []
-    for key  in keywords.iterkeys():
+    for key  in keywords.keys():
         if key != key.upper():
             needhelp.append(key)
 
@@ -113,17 +113,17 @@ static size_t parse_bword(sfilter * sf);
         del keywords[key]
         keywords[key.upper()] = tmpv
 
-    print "static const keyword_t sql_keywords[] = {"
+    print("static const keyword_t sql_keywords[] = {")
     for k in sorted(keywords.keys()):
         if len(k) > 31:
             sys.stderr.write("ERROR: keyword greater than 32 chars\n")
             sys.exit(1)
 
-        print "    {\"%s\", '%s'}," % (k, keywords[k])
-    print "};"
-    print "static const size_t sql_keywords_sz = %d;" % (len(keywords), )
+        print("    {\"%s\", '%s'}," % (k, keywords[k]))
+    print("};")
+    print("static const size_t sql_keywords_sz = %d;" % (len(keywords), ))
 
-    print "#endif"
+    print("#endif")
     return 0
 
 if __name__ == '__main__':

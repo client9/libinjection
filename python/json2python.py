@@ -12,7 +12,7 @@ Converts a libinjection JSON data file to python dict
 def toc(obj):
     """ main routine """
 
-    print """
+    print("""
 import libinjection
 
 def lookup(state, stype, keyword):
@@ -24,24 +24,24 @@ def lookup(state, stype, keyword):
             return chr(0)
     return words.get(keyword, chr(0))
 
-"""
+""")
 
     words = {}
     keywords = obj['keywords']
-    for k,v in keywords.iteritems():
+    for k,v in keywords.items():
         words[str(k)] = str(v)
 
-    print 'words = {'
+    print('words = {')
     for k in sorted(words.keys()):
-        print "'{0}': '{1}',".format(k, words[k])
-    print '}\n'
+        print("'{0}': '{1}',".format(k, words[k]))
+    print('}\n')
 
 
     keywords = obj['fingerprints']
-    print 'fingerprints = set(['
+    print('fingerprints = set([')
     for k in sorted(keywords):
-        print "'{0}',".format(k.upper())
-    print '])'
+        print("'{0}',".format(k.upper()))
+    print('])')
 
     return 0
 

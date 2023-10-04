@@ -31,58 +31,58 @@ def main():
 
     t0 = time.clock()
     sfilter = sqli_state()
-    for i in xrange(imax):
+    for i in range(imax):
         s = inputs[i % 7]
         sqli_init(sfilter, s, 0)
         is_sqli(sfilter)
     t1 = time.clock()
     total = imax / (t1 - t0)
-    print("python->c TPS            = {0}".format(total))
+    print(("python->c TPS            = {0}".format(total)))
 
     t0 = time.clock()
     sfilter = sqli_state()
-    for i in xrange(imax):
+    for i in range(imax):
         s = inputs[i % 7]
         sqli_init(sfilter, s, 0)
         sqli_callback(sfilter, lookup_null)
         is_sqli(sfilter)
     t1 = time.clock()
     total = imax / (t1 - t0)
-    print("python lookup_null TPS    = {0}".format(total))
+    print(("python lookup_null TPS    = {0}".format(total)))
 
     t0 = time.clock()
     sfilter = sqli_state()
-    for i in xrange(imax):
+    for i in range(imax):
         s = inputs[i % 7]
         sqli_init(sfilter, s, 0)
         sqli_callback(sfilter, lookup_upcase)
         is_sqli(sfilter)
     t1 = time.clock()
     total = imax / (t1 - t0)
-    print("python lookup_upcase TPS    = {0}".format(total))
+    print(("python lookup_upcase TPS    = {0}".format(total)))
 
     t0 = time.clock()
     sfilter = sqli_state()
-    for i in xrange(imax):
+    for i in range(imax):
         s = inputs[i % 7]
         sqli_init(sfilter, s, 0)
         sqli_callback(sfilter, lookup_c)
         is_sqli(sfilter)
     t1 = time.clock()
     total = imax / (t1 - t0)
-    print("python lookup_c TPS    = {0}".format(total))
+    print(("python lookup_c TPS    = {0}".format(total)))
 
 
     t0 = time.clock()
     sfilter = sqli_state()
-    for i in xrange(imax):
+    for i in range(imax):
         s = inputs[i % 7]
         sqli_init(sfilter, s, 0)
         sqli_callback(sfilter, lookup)
         is_sqli(sfilter)
     t1 = time.clock()
     total = imax / (t1 - t0)
-    print("python lookup TPS = {0}".format(total))
+    print(("python lookup TPS = {0}".format(total)))
 
 
 if __name__ == '__main__':

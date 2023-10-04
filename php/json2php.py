@@ -12,7 +12,7 @@ Converts a libinjection JSON data file to PHP array
 def toc(obj):
     """ main routine """
 
-    print """<?php
+    print("""<?php
 function lookup($state, $stype, $keyword) {
     $keyword = struper(keyword);
     if ($stype == libinjection.LOOKUP_FINGERPRINT) {
@@ -24,24 +24,24 @@ function lookup($state, $stype, $keyword) {
     }
     return $words.get(keyword, chr(0));
 }
-"""
+""")
 
     words = {}
     keywords = obj['keywords']
-    for k,v in keywords.iteritems():
+    for k,v in keywords.items():
         words[str(k)] = str(v)
 
-    print '$words = array('
+    print('$words = array(')
     for k in sorted(words.keys()):
-        print "'{0}' => '{1}',".format(k, words[k])
-    print ');\n'
+        print("'{0}' => '{1}',".format(k, words[k]))
+    print(');\n')
 
 
     keywords = obj['fingerprints']
-    print '$fingerprints = array('
+    print('$fingerprints = array(')
     for k in sorted(keywords):
-        print "'{0}',".format(k.upper())
-    print ');'
+        print("'{0}',".format(k.upper()))
+    print(');')
 
     return 0
 
